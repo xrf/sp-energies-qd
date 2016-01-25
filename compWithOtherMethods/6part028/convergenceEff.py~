@@ -1,0 +1,33 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import linecache as lc
+import sys
+import os
+from pylab import *
+
+dataSRG = loadtxt("6part.dat")
+dataFCI = loadtxt("6partFCIStd.dat")
+dataFCIEff = loadtxt("6partFCIEff.dat")
+dataCCSD = loadtxt("CCSD.dat")
+dataCCSDHO = loadtxt("CCSDHO.dat")
+
+fig = plt.figure(figsize=plt.figaspect(1.))
+#ax = fig.add_subplot(2, 1, 1)
+ax = fig.gca()
+ax.set_xlim((4,20))
+#ax.set_ylim((20.0,21.0))
+ax.set_ylabel(r'$E_0\, [E_H]$',fontsize=18)
+ax.set_xlabel(r'$R$',fontsize=18)
+
+l = len(dataSRG[:,0])
+data7 = zeros(l)
+data7[:] = 7.6001
+
+plt.plot(dataSRG[:,0], dataSRG[:,4],'b', dataSRG[:,0], dataSRG[:,3],'r-o', 
+dataFCIEff[:,0], dataFCIEff[:,1],'g^-', dataCCSD[:,0], dataCCSD[:,2], 'm*-',dataCCSDHO[:,0], dataCCSDHO[:,2], 'y-x',dataSRG[:,0], data7[:], 'k--')
+
+plt.title(r'$N=6,\, \omega=0.28,\, V_{eff}$', fontsize=16, horizontalalignment='center')
+plt.legend(('SRG','HF','FCI','CCSD-HF','CCSD-H0','DMC'),
+           'upper right', shadow=False, fancybox=False)
+
+plt.show()

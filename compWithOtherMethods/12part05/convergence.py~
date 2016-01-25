@@ -1,0 +1,33 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import linecache as lc
+import sys
+import os
+from pylab import *
+
+dataSRG = loadtxt("12part.dat")
+dataFCIEff = loadtxt("12partFCIEff.dat")
+dataCCSD = loadtxt("CCSD.dat")
+
+
+fig = plt.figure(figsize=plt.figaspect(1.))
+#ax = fig.add_subplot(2, 1, 1)
+ax = fig.gca()
+
+ax.set_xlim((5,20))
+ax.set_ylim((39.1,40.7))
+
+ax.set_ylabel(r'$E_0\, [E_H]$',fontsize=18)
+ax.set_xlabel(r'$R$',fontsize=18)
+
+l = len(dataSRG[:,0])
+data7 = zeros(l)
+data7[:] = 39.162
+
+plt.plot(dataSRG[:,0], dataSRG[:,2],'b-*', dataSRG[:,0], dataSRG[:,1],'r:.', dataCCSD[:,0], dataCCSD[:,1], 'm:v',dataSRG[:,0], data7[:], 'k--')
+
+#plt.title(r'$N=12,\, \omega=1.0,\, V_{std}$', fontsize=16, horizontalalignment='center')
+plt.legend(('SRG','HF','CCSD-HF','DMC'),
+           'upper right', shadow=False, fancybox=False)
+
+plt.show()

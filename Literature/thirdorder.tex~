@@ -1,0 +1,62 @@
+\documentclass[aps,preprint,amsmath,amssymb]{revtex4-1}
+
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{bm}
+\usepackage{color}
+\usepackage{float}
+\usepackage{dcolumn}
+\usepackage{subfigure}
+\usepackage{multirow} 
+
+
+\begin{document}
+
+\title{Third order onebody diagrams}
+
+
+\author{Magic One} 
+\affiliation{National
+  Superconducting Cyclotron Laboratory and Department of Physics and
+  Astronomy, Michigan State University,
+  East Lansing, MI 48824, USA} 
+
+
+\begin{abstract} 
+All diagrams to third order in the interaction for an arbitrary two-body interaction $\hat{v}$.
+\end{abstract}
+
+%\pacs{02.70.Ss, 31.15.A-, 31.15.bw, 71.15.-m, 73.21.La}
+
+\maketitle
+
+\section*{Expressions}
+\subsection*{Diagram 1-5}
+\[
+\frac{1}{4}\sum_{abcd}\sum_{i}\frac{\langle pi| \hat{v} |ab  \rangle \langle ab| \hat{v} |cd  \rangle \langle cd| \hat{v} |qi  \rangle }{(\varepsilon_q+\varepsilon_i-\varepsilon_c-\varepsilon_d) (\varepsilon_q+\varepsilon_i-\varepsilon_a-\varepsilon_b)}.
+\]
+
+\subsection*{Diagram 1-6}
+\[
+\frac{1}{4}\sum_{abc}\sum_{ij}\frac{\langle pc| \hat{v} |ab  \rangle \langle ab| \hat{v} |ij  \rangle \langle ij| \hat{v} |cq  \rangle }{(\varepsilon_i\varepsilon_j-\varepsilon_a-\varepsilon_b) (\varepsilon_q+\varepsilon_i+\varepsilon_j-\varepsilon_p)}.
+\]
+
+\subsection*{Diagram 1-7}
+\[
+\frac{1}{4}\sum_{abc}\sum_{ij}\frac{\langle pc| \hat{v} |ij  \rangle \langle ij| \hat{v} |ab  \rangle \langle ab| \hat{v} |cq  \rangle }{(\varepsilon_i+\varepsilon_j-\varepsilon_p-\varepsilon_c) (\varepsilon_i+\varepsilon_j-\varepsilon_j-\varepsilon_p)}.
+\]
+
+\subsection*{Diagram 1-8}
+\[
+\frac{1}{4}\sum_{a}\sum_{ijkl}\frac{\langle ij| \hat{v} |qa  \rangle \langle kl| \hat{v} |ij  \rangle \langle pa| \hat{v} |kl  \rangle }{(\varepsilon_k\varepsilon_l-\varepsilon_p-\varepsilon_a) (\varepsilon_i+\varepsilon_j+\varepsilon_q-\varepsilon_p)}.
+\]
+
+
+
+\end{document}
+
+
+
+
+
+

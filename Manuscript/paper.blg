@@ -1,0 +1,65 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: paper.aux
+The style file: apsrev4-1.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: paperNotes.bib
+Database file #2: paper.bib
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+merlin.mbs apsrev4-1.bst 2010-07-25 4.21a (PWD, AO, DPC) hacked
+Control: key (0) 
+Control: author (72) initials jnrlst
+Control: editor formatted (1) identically to author
+Control: production of article title (-1) disabled
+Control: page (0) single
+Control: year (1) truncated
+Control: production of eprint (0) enabled
+Warning--missing journal in Kvaalcode
+You've used 27 entries,
+            5847 wiz_defined-function locations,
+            1783 strings with 19627 characters,
+and the built_in function-call counts, 27640 in all, are:
+= -- 1726
+> -- 770
+< -- 185
++ -- 242
+- -- 186
+* -- 4347
+:= -- 2711
+add.period$ -- 27
+call.type$ -- 27
+change.case$ -- 108
+chr.to.int$ -- 27
+cite$ -- 28
+duplicate$ -- 2533
+empty$ -- 2032
+format.name$ -- 443
+if$ -- 5509
+int.to.chr$ -- 1
+int.to.str$ -- 35
+missing$ -- 326
+newline$ -- 133
+num.names$ -- 81
+pop$ -- 1030
+preamble$ -- 1
+purify$ -- 135
+quote$ -- 0
+skip$ -- 1011
+stack$ -- 0
+substring$ -- 708
+swap$ -- 2440
+text.length$ -- 93
+text.prefix$ -- 0
+top$ -- 8
+type$ -- 390
+warning$ -- 1
+while$ -- 78
+width$ -- 0
+write$ -- 268
+(There was 1 warning)

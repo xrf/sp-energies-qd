@@ -1,0 +1,18 @@
+# Addition and removal energies (DMC)
+#
+# num_filled: number of shells fully occupied by electrons;
+# The number of electrons is given by num_filled * (num_filled + 1).
+#
+# freq: frequency of the harmonic oscillator potential in atomic units.
+#
+# is_hole: whether the row denotes addition energy or removal energy;
+# 0 => addition, 1 => removal.
+#
+# energy: value of addition/removal energy in atomic units.
+#
+freq num_filled is_hole energy
+0.28 1 0 1.2123
+0.28 2 0 2.4341
+0.28 3 0 3.8582
+0.28 2 1 2.0663
+0.28 3 1 3.5618

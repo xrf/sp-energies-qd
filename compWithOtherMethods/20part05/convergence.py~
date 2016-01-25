@@ -1,0 +1,37 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import linecache as lc
+import sys
+import os
+from pylab import *
+
+dataSRG = loadtxt("20part.dat")
+dataCCSD = loadtxt("CCSD.dat")
+
+fig = plt.figure(figsize=plt.figaspect(1.))
+#ax = fig.add_subplot(2, 1, 1)
+ax = fig.gca()
+
+ax.set_xlim((6,20))
+ax.set_ylim((93.5,98.2))
+
+
+ax.set_ylabel(r'$E_0\, [E_H]$',fontsize=22)
+ax.set_xlabel(r'$R$',fontsize=22)
+
+l = len(dataSRG[:,0])
+data7 = zeros(l)
+data7[:] = 93.8752
+
+plt.plot(dataSRG[:,0], dataSRG[:,2],'b-*', dataSRG[:,0], dataSRG[:,1],'r:.', dataCCSD[:,0], dataCCSD[:,1], 'm:v',dataSRG[:,0], data7[:], 'k--',markersize=7)
+
+#plt.title(r'$N=20,\, \omega=1.0,\, V_{std}$', fontsize=16, horizontalalignment='center')
+plt.legend(('SRG','HF','CCSD-HF','DMC'),
+           'upper right', shadow=False, fancybox=False,prop={"size":19})
+for tick in ax.xaxis.get_major_ticks():
+                tick.label.set_fontsize(18) 
+
+for tick in ax.yaxis.get_major_ticks():
+                tick.label.set_fontsize(18)
+
+plt.show()
