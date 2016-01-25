@@ -6,7 +6,7 @@
 %Control: page (0) single
 %Control: year (1) truncated
 %Control: production of eprint (0) enabled
-\begin{thebibliography}{27}%
+\begin{thebibliography}{35}%
 \makeatletter
 \providecommand \@ifxundefined [1]{%
  \@ifx{#1\undefined}
@@ -314,10 +314,83 @@
   and Similarity Renormalization Group theory}},\ \href@noop {} {Master's
   thesis},\ \bibinfo  {school} {University of Oslo} (\bibinfo {year}
   {2013})\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kehrein}(2006)}]{kehrein2006flow}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Kehrein}},\ }\href@noop {} {\emph {\bibinfo {title} {{The Flow Equation
+  Approach to Many-Particle Systems}}}},\ {Springer Tracts in Modern Physics}\
+  (\bibinfo  {publisher} {Springer},\ \bibinfo {year} {2006})\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Tsukiyama}\ \emph {et~al.}(2011)\citenamefont
+  {Tsukiyama}, \citenamefont {Bogner},\ and\ \citenamefont
+  {Schwenk}}]{PhysRevLett.106.222502}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+  {Tsukiyama}}, \bibinfo {author} {\bibfnamefont {S.~K.}\ \bibnamefont
+  {Bogner}}, \ and\ \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Schwenk}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Phys.
+  Rev. Lett.}\ }\textbf {\bibinfo {volume} {106}},\ \bibinfo {pages} {222502}
+  (\bibinfo {year} {2011})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Roth}\ \emph {et~al.}(2012)\citenamefont {Roth},
+  \citenamefont {Binder}, \citenamefont {Vobig}, \citenamefont {Calci},
+  \citenamefont {Langhammer},\ and\ \citenamefont
+  {Navr{\'a}til}}]{PhysRevLett.109.052501}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Roth}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Binder}},
+  \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont {Vobig}}, \bibinfo
+  {author} {\bibfnamefont {A.}~\bibnamefont {Calci}}, \bibinfo {author}
+  {\bibfnamefont {J.}~\bibnamefont {Langhammer}}, \ and\ \bibinfo {author}
+  {\bibfnamefont {P.}~\bibnamefont {Navr{\'a}til}},\ }\href@noop {} {\bibfield
+  {journal} {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo
+  {volume} {109}},\ \bibinfo {pages} {052501} (\bibinfo {year}
+  {2012})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Shavitt}\ and\ \citenamefont
+  {Bartlett}(2009)}]{shavitt2009many}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {I.}~\bibnamefont
+  {Shavitt}}\ and\ \bibinfo {author} {\bibfnamefont {R.~J.}\ \bibnamefont
+  {Bartlett}},\ }\href@noop {} {\emph {\bibinfo {title} {{Many-Body Methods in
+  Chemistry and Physics: MBPT and Coupled-Cluster Theory}}}},\ {Cambridge
+  Molecular Science}\ (\bibinfo  {publisher} {Cambridge University Press},\
+  \bibinfo {year} {2009})\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Bartlett}(1981)}]{ISI:A1981MN73700014}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.~J.}\ \bibnamefont
+  {Bartlett}},\ }\href {\doibase 10.1146/annurev.pc.32.100181.002043}
+  {\bibfield  {journal} {\bibinfo  {journal} {Annu. Rev. Phys. Chem.}\ }\textbf
+  {\bibinfo {volume} {32}},\ \bibinfo {pages} {359} (\bibinfo {year}
+  {1981})}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Wegner}(1994)}]{PhysRepWegner0}%
   \BibitemOpen
   \bibfield  {author} {\bibinfo {author} {\bibfnamefont {F.~J.}\ \bibnamefont
   {Wegner}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Ann.
   Phys.}\ }\textbf {\bibinfo {volume} {3}},\ \bibinfo {pages} {77} (\bibinfo
   {year} {1994})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {White}(2002)}]{White:cond-mat0201346}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.~R.}\ \bibnamefont
+  {White}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {J.
+  Chem. Phys.}\ }\textbf {\bibinfo {volume} {117}} (\bibinfo {year}
+  {2002})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hammond}\ \emph {et~al.}(1994)\citenamefont
+  {Hammond}, \citenamefont {{W. A. Lester}},\ and\ \citenamefont
+  {Reynolds}}]{abInitioMC}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.}~\bibnamefont
+  {Hammond}}, \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {{W. A.
+  Lester}}}, \ and\ \bibinfo {author} {\bibfnamefont {P.~J.}\ \bibnamefont
+  {Reynolds}},\ }\href@noop {} {\emph {\bibinfo {title} {{Monte Carlo Methods
+  in Ab Initio Quantum Chemistry}}}}\ (\bibinfo  {publisher} {World Scientific
+  Publishing Co.},\ \bibinfo {year} {1994})\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Umrigar}\ \emph {et~al.}(1993)\citenamefont
+  {Umrigar}, \citenamefont {Nightingale},\ and\ \citenamefont
+  {Runge}}]{umrigar:2865}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.~J.}\ \bibnamefont
+  {Umrigar}}, \bibinfo {author} {\bibfnamefont {M.~P.}\ \bibnamefont
+  {Nightingale}}, \ and\ \bibinfo {author} {\bibfnamefont {K.~J.}\ \bibnamefont
+  {Runge}},\ }\href {\doibase 10.1063/1.465195} {\bibfield  {journal} {\bibinfo
+   {journal} {J. of Chem. Phys.}\ }\textbf {\bibinfo {volume} {99}},\ \bibinfo
+  {pages} {2865} (\bibinfo {year} {1993})}\BibitemShut {NoStop}%
 \end{thebibliography}%

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  25 JAN 2016 17:55
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  25 JAN 2016 18:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -283,31 +283,31 @@ Package: subfigure 2002/03/15 v2.1.5 subfigure package
 \subfig@top=\skip55
 \subfig@bottom=\skip56
 )
-Class revtex4-1 Info: Patching array package. on input line 11.
+Class revtex4-1 Info: Patching array package. on input line 32.
 
 
 Class revtex4-1 Warning: Repair the float package.
 
-Class revtex4-1 Info: Robustifying \LaTeX's \boldmath command on input line 11.
+Class revtex4-1 Info: Robustifying \LaTeX's \boldmath command on input line 32.
 
-Class revtex4-1 Info: cite was not loaded (OK!) on input line 11.
-Class revtex4-1 Info: mcite was not loaded (OK!) on input line 11.
-Class revtex4-1 Info: multicol was not loaded (OK!) on input line 11.
+Class revtex4-1 Info: cite was not loaded (OK!) on input line 32.
+Class revtex4-1 Info: mcite was not loaded (OK!) on input line 32.
+Class revtex4-1 Info: multicol was not loaded (OK!) on input line 32.
 (./paper.aux)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
 
 (/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -372,2499 +372,292 @@ e
 ))
 \openout3 = `paperNotes.bib'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 48.
+LaTeX Font Info:    Try loading font information for U+msa on input line 69.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 48.
+LaTeX Font Info:    Try loading font information for U+msb on input line 69.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 
-LaTeX Warning: Reference `subsec:SRG' on page 1 undefined on input line 106.
+LaTeX Warning: Reference `subsec:SRG' on page 1 undefined on input line 127.
 
 
-LaTeX Warning: Reference `subsec:DMC' on page 1 undefined on input line 106.
+LaTeX Warning: Reference `subsec:DMC' on page 1 undefined on input line 127.
 
 
 Package natbib Warning: Citation `HjorthJensen1995' on page 1 undefined on inpu
-t line 118.
+t line 139.
 
 
 Package natbib Warning: Citation `Helgaker2002' on page 1 undefined on input li
-ne 118.
+ne 139.
 
 
 Package natbib Warning: Citation `Reimann2002' on page 1 undefined on input lin
-e 119.
+e 140.
 
 
 Package natbib Warning: Citation `Kvaal2007' on page 1 undefined on input line 
-134.
+155.
 
 [1{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
 Package natbib Warning: Citation `RamMohan2002' on page 2 undefined on input li
-ne 148.
+ne 169.
 
 <fig-shell-structure.pdf, id=19, 972.23247pt x 552.04271pt>
 File: fig-shell-structure.pdf Graphic file (type pdf)
 
 <use fig-shell-structure.pdf>
-Package pdftex.def Info: fig-shell-structure.pdf used on input line 239.
+Package pdftex.def Info: fig-shell-structure.pdf used on input line 260.
 (pdftex.def)             Requested size: 244.79782pt x 138.99588pt.
  [2]
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 265.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 286.
 
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 265.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 286.
 
 
 Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
 
 [3 <./fig-shell-structure.pdf>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 430.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 451.
 
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <8> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 430.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 451.
 
-! Undefined control sequence.
-l.446 ...H}_s = U_s^\dagger \hat{H} U_s \equiv \Hd
-                                                  _s + \Ho_s,
-? s
-OK, entering \scrollmode...
-! Undefined control sequence.
-l.446 ..._s^\dagger \hat{H} U_s \equiv \Hd_s + \Ho
-                                                  _s,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.462 ...articular form of $U_s$, we have that \be
-                                                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-! Package amsmath Error: \hat allowed only in math mode.
-
-See the amsmath package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.463 \hat{\eta}
-                _s = \frac{d U_s}{ds} U_s^\dagger = - U_s \frac{d
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.463 \hat{\eta}_
-                 s = \frac{d U_s}{ds} U_s^\dagger = - U_s \frac{d
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Undefined control sequence.
-l.466 \ee
-          we obtain that \be \frac{d \hat{H}_s}{ds} = \hat{\eta}_s \hat{H}_s
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.466 \ee we obtain that \be
-                             \frac{d \hat{H}_s}{ds} = \hat{\eta}_s \hat{H}_s
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.469 \ee
-          This is the key expression of the SRG method, describing the flow
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-! Package amsmath Error: \hat allowed only in math mode.
-
-See the amsmath package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.471 by the choice of $\hat{\eta}
-                                  _s$.  Through different choices of
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.471 by the choice of $\hat{\eta}_
-                                   s$.  Through different choices of
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 461--474
-\OT1/cmr/m/n/10 Utilizing that for our par-tic-u-lar form of $\OML/cmm/m/it/10 
-U[]$\OT1/cmr/m/n/10 ,
- []
-
-
-Underfull \hbox (badness 8056) in paragraph at lines 461--474
-\OT1/cmr/m/n/10 we have that $[] = []\OML/cmm/m/it/10 U[] \OT1/cmr/m/n/10 = \OM
-S/cmsy/m/n/10 ^^@\OML/cmm/m/it/10 U[][] \OT1/cmr/m/n/10 =
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 461--474
-\OMS/cmsy/m/n/10 ^^@[]\OML/cmm/m/it/10 ;[] weobtainthat[] \OT1/cmr/m/n/10 = [][
-] \OMS/cmsy/m/n/10 ^^@ [][] \OT1/cmr/m/n/10 =
- []
-
-
-Overfull \hbox (441.45107pt too wide) in paragraph at lines 461--474
-[] \OML/cmm/m/it/10 :[]ThisisthekeyexpressionoftheSRGmethod; describingtheflowo
-ftheHamiltonian:Thespecificunitarytransformationisdeterminedbythechoiceof$$[]$\
-OT1/cmr/m/n/10 .
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 461--474
+Underfull \hbox (badness 10000) in paragraph at lines 490--495
 
  []
 
 [4]
-
-Package natbib Warning: Citation `kehrein2006flow' on page 5 undefined on input
- line 487.
-
-
-Package natbib Warning: Citation `PhysRevLett.106.222502' on page 5 undefined o
-n input line 488.
-
-! Undefined control sequence.
-<argument> ...0)} \left | q \right \rangle a_p\da 
-                                                  a_q + \frac {1}{4}\sum \li...
-l.502 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...frac {1}{4}\sum \limits _{pqrs}\lla 
-                                                  pq || r s \rra a_p\da a_q\...
-l.502 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... \limits _{pqrs}\lla pq || r s \rra 
-                                                  a_p\da a_q\da a_s a_r, \la...
-l.502 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...s _{pqrs}\lla pq || r s \rra a_p\da 
-                                                  a_q\da a_s a_r, \label {eq...
-l.502 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...s}\lla pq || r s \rra a_p\da a_q\da 
-                                                  a_s a_r, \label {eq:ourHam...
-l.502 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...0)} \left | q \right \rangle a_p\da 
-                                                  a_q + \frac {1}{4}\sum \li...
-l.502 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...frac {1}{4}\sum \limits _{pqrs}\lla 
-                                                  pq || r s \rra a_p\da a_q\...
-l.502 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... \limits _{pqrs}\lla pq || r s \rra 
-                                                  a_p\da a_q\da a_s a_r, \la...
-l.502 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...s _{pqrs}\lla pq || r s \rra a_p\da 
-                                                  a_q\da a_s a_r, \label {eq...
-l.502 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...s}\lla pq || r s \rra a_p\da a_q\da 
-                                                  a_s a_r, \label {eq:ourHam...
-l.502 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Underfull \hbox (badness 1688) in paragraph at lines 502--507
+Underfull \hbox (badness 1688) in paragraph at lines 523--528
 \OT1/cmr/m/n/10 where the op-er-a-tor $[]$ de-notes the single-particle
  []
 
 
-Underfull \hbox (badness 2689) in paragraph at lines 502--507
+Underfull \hbox (badness 2689) in paragraph at lines 523--528
 \OT1/cmr/m/n/10 symmetrized two-body ma-trix el-e-ments. Normal-
  []
 
-! Undefined control sequence.
-<argument> ... E_0 + \sum \limits _{pq}f_{pq}\llb 
-                                                  a_p\da a_q\rrb + \frac {1}...
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...\sum \limits _{pq}f_{pq}\llb a_p\da 
-                                                  a_q\rrb + \frac {1}{4}\sum...
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...mits _{pq}f_{pq}\llb a_p\da a_q\rrb 
-                                                  + \frac {1}{4}\sum \limits...
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...4}\sum \limits _{pqrs}v_{pqrs} \llb 
-                                                  a_p\da a_q\da a_s a_r \rrb , 
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...\limits _{pqrs}v_{pqrs} \llb a_p\da 
-                                                  a_q\da a_s a_r \rrb , 
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... _{pqrs}v_{pqrs} \llb a_p\da a_q\da 
-                                                  a_s a_r \rrb , 
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...rs} \llb a_p\da a_q\da a_s a_r \rrb 
-                                                  , 
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... E_0 + \sum \limits _{pq}f_{pq}\llb 
-                                                  a_p\da a_q\rrb + \frac {1}...
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...\sum \limits _{pq}f_{pq}\llb a_p\da 
-                                                  a_q\rrb + \frac {1}{4}\sum...
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...mits _{pq}f_{pq}\llb a_p\da a_q\rrb 
-                                                  + \frac {1}{4}\sum \limits...
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...4}\sum \limits _{pqrs}v_{pqrs} \llb 
-                                                  a_p\da a_q\da a_s a_r \rrb , 
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...\limits _{pqrs}v_{pqrs} \llb a_p\da 
-                                                  a_q\da a_s a_r \rrb , 
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... _{pqrs}v_{pqrs} \llb a_p\da a_q\da 
-                                                  a_s a_r \rrb , 
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...rs} \llb a_p\da a_q\da a_s a_r \rrb 
-                                                  , 
-l.510 \end{align*}
-                  
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.513 f_{pq} = \lla
-                    p \right|\hat{h}^{(0)}\left| q \rra + \sum\limits_{i}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Extra \right.
-l.513 f_{pq} = \lla p \right|
-                             \hat{h}^{(0)}\left| q \rra + \sum\limits_{i}
-I'm ignoring a \right that had no matching \left.
-
-! Undefined control sequence.
-l.513 ... \lla p \right|\hat{h}^{(0)}\left| q \rra
-                                                   + \sum\limits_{i}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.514 \lla
-           pi || qi\rra,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.514 \lla pi || qi\rra
-                       ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Missing \right. inserted.
-<inserted text> 
-                \right .
-l.515 \]
-        
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Undefined control sequence.
-l.516 and where $v_{pqrs} = \lla
-                                 pq || r s \rra$ are the amplitudes of the
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.516 and where $v_{pqrs} = \lla pq || r s \rra
-                                               $ are the amplitudes of the
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Package natbib Warning: Citation `PhysRevLett.106.222502' on page 5 undefined o
-n input line 538.
-
-
-Package natbib Warning: Citation `PhysRevLett.109.052501' on page 5 undefined o
-n input line 538.
-
-
-Package natbib Warning: Citation `shavitt2009many' on page 5 undefined on input
- line 542.
-
-
-Package natbib Warning: Citation `ISI:A1981MN73700014' on page 5 undefined on i
-nput line 542.
-
-! Undefined control sequence.
-l.548 \hat{\eta} = \sum_{pq} \eta_{pq}^{(1)} \llb
-                                                  a_p\da a_q\rrb +
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.548 ...} = \sum_{pq} \eta_{pq}^{(1)} \llb a_p\da
-                                                   a_q\rrb +
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.548 ..._{pq} \eta_{pq}^{(1)} \llb a_p\da a_q\rrb
-                                                   +
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.549 ...}\sum\limits_{pqrs}\eta_{pqrs}^{(2)} \llb
-                                                   a_p\da a_q\da a_s
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.549 ...imits_{pqrs}\eta_{pqrs}^{(2)} \llb a_p\da
-                                                   a_q\da a_s
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.549 ...pqrs}\eta_{pqrs}^{(2)} \llb a_p\da a_q\da
-                                                   a_s
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.550 a_r \rrb
-              ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... \frac {d f_{pq}}{ds}&= \sum _r \lb 
-                                                  \eta _{pr}^{(1)}f_{rq} + \...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.569 \end{align}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Extra \right.
-<argument> ...rq} + \eta _{qr}^{(1)}f_{rp}\right )
-                                                   + \sum _{ia}\lb 1-\hat {P...
-l.569 \end{align}
-                 
-I'm ignoring a \right that had no matching \left.
-
-! Undefined control sequence.
-<argument> ...{(1)}f_{rp}\right ) + \sum _{ia}\lb 
-                                                  1-\hat {P}_{ia}\rb \lb \et...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... + \sum _{ia}\lb 1-\hat {P}_{ia}\rb 
-                                                  \lb \eta _{ia}^{(1)}v_{api...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...sum _{ia}\lb 1-\hat {P}_{ia}\rb \lb 
-                                                  \eta _{ia}^{(1)}v_{apiq} -...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...piq} - f_{ia}\eta _{apiq}^{(2)} \rb 
-                                                  \notag \\ & +\frac {1}{2} ...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Missing { inserted.
-<inserted text> 
-                {
-l.569 \end{align}
-                 
-I've put in what seems to be necessary to fix
-the current column of the current alignment.
-Try to go on, since this might almost work.
-
-! Undefined control sequence.
-<argument> ... \\ & +\frac {1}{2} \sum _{aij} \lb 
-                                                  1+\hat {P}_{pq}\rb \eta _{...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... \sum _{aij} \lb 1+\hat {P}_{pq}\rb 
-                                                  \eta _{apij}^{(2)}v_{ijaq}...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...{ijaq} + \frac {1}{2}\sum _{abi}\lb 
-                                                  1+\hat {P}_{pq}\rb \eta _{...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...2}\sum _{abi}\lb 1+\hat {P}_{pq}\rb 
-                                                  \eta _{ipab}^{(2)}v_{abiq}...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... \frac {d f_{pq}}{ds}&= \sum _r \lb 
-                                                  \eta _{pr}^{(1)}f_{rq} + \...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.569 \end{align}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Extra \right.
-<argument> ...rq} + \eta _{qr}^{(1)}f_{rp}\right )
-                                                   + \sum _{ia}\lb 1-\hat {P...
-l.569 \end{align}
-                 
-I'm ignoring a \right that had no matching \left.
-
-! Undefined control sequence.
-<argument> ...{(1)}f_{rp}\right ) + \sum _{ia}\lb 
-                                                  1-\hat {P}_{ia}\rb \lb \et...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... + \sum _{ia}\lb 1-\hat {P}_{ia}\rb 
-                                                  \lb \eta _{ia}^{(1)}v_{api...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...sum _{ia}\lb 1-\hat {P}_{ia}\rb \lb 
-                                                  \eta _{ia}^{(1)}v_{apiq} -...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...piq} - f_{ia}\eta _{apiq}^{(2)} \rb 
-                                                  \notag \\ & +\frac {1}{2} ...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Missing \endgroup inserted.
-<inserted text> 
-                \endgroup 
-l.569 \end{align}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.569 \end{align}
-                 
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.569 \end{align}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.569 \end{align}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Missing \cr inserted.
-<inserted text> 
-                \cr 
-l.569 \end{align}
-                 
-I'm guessing that you meant to end an alignment here.
-
-! Missing { inserted.
-<inserted text> 
-                {
-l.569 \end{align}
-                 
-I've put in what seems to be necessary to fix
-the current column of the current alignment.
-Try to go on, since this might almost work.
-
-! Missing { inserted.
-<inserted text> 
-                {
-l.569 \end{align}
-                 
-I've put in what seems to be necessary to fix
-the current column of the current alignment.
-Try to go on, since this might almost work.
-
-! Extra }, or forgotten $.
-<recently read> }
-                 
-l.569 \end{align}
-                 
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.569 \end{align}
-                 
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.569 \end{align}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Missing $$ inserted.
-<to be read again> 
-                   \unvbox 
-l.569 \end{align}
-                 
-Displays can use special alignments (like \eqalignno)
-only if nothing but the alignment itself is between $$'s.
-
-! Missing number, treated as zero.
-<to be read again> 
-                   \omit 
-l.569 \end{align}
-                 
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-! Misplaced \omit.
-<recently read> \omit 
-                      
-l.569 \end{align}
-                 
-I expect to see \omit only after tab marks or the \cr of
-an alignment. Proceed, and I'll ignore this case.
-
-! Arithmetic overflow.
-<recently read> \pagegrid@col 
-                              
-l.569 \end{align}
-                 
-I can't carry out that multiplication or division,
-since the result is out of range.
-
-! Misplaced \cr.
-\math@cr@@@ ...wtrue \fi \global \lineht@ \z@ \cr 
-                                                  
-l.569 \end{align}
-                 
-I can't figure out why you would want to use a tab mark
-or \cr or \span just now. If something like a right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-! Misplaced \noalign.
-\math@cr@@ ... \iffalse }\fi \math@cr@@@ \noalign 
-                                                  {\vskip #1\relax }
-l.569 \end{align}
-                 
-I expect to see \noalign only after the \cr of
-an alignment. Proceed, and I'll ignore this case.
-
-! Misplaced alignment tab character &.
-<argument> ...a}\eta _{apiq}^{(2)} \rb \notag \\ &
-                                                   +\frac {1}{2} \sum _{aij}...
-l.569 \end{align}
-                 
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.569 \end{align}
-                 
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Extra }, or forgotten $.
-\frac  #1#2->{\begingroup #1\endgroup \@@over #2}
-                                                 
-l.569 \end{align}
-                 
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-! Undefined control sequence.
-<argument> ... \\ & +\frac {1}{2} \sum _{aij} \lb 
-                                                  1+\hat {P}_{pq}\rb \eta _{...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... \sum _{aij} \lb 1+\hat {P}_{pq}\rb 
-                                                  \eta _{apij}^{(2)}v_{ijaq}...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...{ijaq} + \frac {1}{2}\sum _{abi}\lb 
-                                                  1+\hat {P}_{pq}\rb \eta _{...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...2}\sum _{abi}\lb 1+\hat {P}_{pq}\rb 
-                                                  \eta _{ipab}^{(2)}v_{abiq}...
-l.569 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Misplaced \cr.
-\math@cr@@@ ->\cr 
-                  
-l.569 \end{align}
-                 
-I can't figure out why you would want to use a tab mark
-or \cr or \span just now. If something like a right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-! Misplaced \noalign.
-\math@cr@@ ... \iffalse }\fi \math@cr@@@ \noalign 
-                                                  {\vskip #1\relax }
-l.569 \end{align}
-                 
-I expect to see \noalign only after the \cr of
-an alignment. Proceed, and I'll ignore this case.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.569 \end{align}
-                 
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.569 \end{align}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Misplaced \noalign.
-\black@ #1->\noalign 
-                     {\ifdim #1>\displaywidth \dimen@ \prevdepth \nointerlin...
-l.569 \end{align}
-                 
-I expect to see \noalign only after the \cr of
-an alignment. Proceed, and I'll ignore this case.
-
-! Extra }, or forgotten \endgroup.
-\endalign ->\math@cr \black@ \totwidth@ \egroup 
-                                                \ifingather@ \restorealignst...
-l.569 \end{align}
-                 
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.569 \end{align}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Display math should end with $$.
-<to be read again> 
-                   \endgroup 
-l.569 \end{align}
-                 
-The `$' that I just saw supposedly matches a previous `$$'.
-So I shall assume that you typed `$$' both times.
-
-! Undefined control sequence.
-<argument>  \frac {d v_{pqrs}}{ds} &= \sum _t \lb 
-                                                  1-\hat {P}_{pq} \rb \lb \e...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... &= \sum _t \lb 1-\hat {P}_{pq} \rb 
-                                                  \lb \eta _{pt}^{(1)}v_{tqr...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...\sum _t \lb 1-\hat {P}_{pq} \rb \lb 
-                                                  \eta _{pt}^{(1)}v_{tqrs}-f...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ..._{tqrs}-f_{pt}\eta _{tqrs}^{(2)}\rb 
-                                                  -\sum _t \lb 1-\hat {P}_{r...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...}\eta _{tqrs}^{(2)}\rb -\sum _t \lb 
-                                                  1-\hat {P}_{rs} \rb \lb \e...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...rb -\sum _t \lb 1-\hat {P}_{rs} \rb 
-                                                  \lb \eta _{tr}^{(1)} v_{pq...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...\sum _t \lb 1-\hat {P}_{rs} \rb \lb 
-                                                  \eta _{tr}^{(1)} v_{pqts} ...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...qts} - f_{tr} \eta _{pqts}^{(2)}\rb 
-                                                  \notag \\ & +\frac {1}{2}\...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...ag \\ & +\frac {1}{2}\sum _{ab} \lb 
-                                                  \eta _{pqab}^{(2)} v_{abrs...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...rs} - v_{pqab}\eta _{abrs}^{(2)}\rb 
-                                                  - \frac {1}{2}\sum _{ij} \...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...2)}\rb - \frac {1}{2}\sum _{ij} \lb 
-                                                  \eta _{pqij}^{(2)} v_{ijrs...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...rs} - v_{pqij}\eta _{ijrs}^{(2)}\rb 
-                                                  \notag \\ & -\sum _{ia} \l...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...(2)}\rb \notag \\ & -\sum _{ia} \lb 
-                                                  1- \hat {P}_{ia} \rb \lb 1...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...\sum _{ia} \lb 1- \hat {P}_{ia} \rb 
-                                                  \lb 1-\hat {P}_{pq}\rb \lb...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... _{ia} \lb 1- \hat {P}_{ia} \rb \lb 
-                                                  1-\hat {P}_{pq}\rb \lb 1-\...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...{P}_{ia} \rb \lb 1-\hat {P}_{pq}\rb 
-                                                  \lb 1-\hat {P}_{rs} \rb \e...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...{ia} \rb \lb 1-\hat {P}_{pq}\rb \lb 
-                                                  1-\hat {P}_{rs} \rb \eta _...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...{P}_{pq}\rb \lb 1-\hat {P}_{rs} \rb 
-                                                  \eta _{aqis}^{(2)}v_{ipar}...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument>  \frac {d v_{pqrs}}{ds} &= \sum _t \lb 
-                                                  1-\hat {P}_{pq} \rb \lb \e...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... &= \sum _t \lb 1-\hat {P}_{pq} \rb 
-                                                  \lb \eta _{pt}^{(1)}v_{tqr...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...\sum _t \lb 1-\hat {P}_{pq} \rb \lb 
-                                                  \eta _{pt}^{(1)}v_{tqrs}-f...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ..._{tqrs}-f_{pt}\eta _{tqrs}^{(2)}\rb 
-                                                  -\sum _t \lb 1-\hat {P}_{r...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...}\eta _{tqrs}^{(2)}\rb -\sum _t \lb 
-                                                  1-\hat {P}_{rs} \rb \lb \e...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...rb -\sum _t \lb 1-\hat {P}_{rs} \rb 
-                                                  \lb \eta _{tr}^{(1)} v_{pq...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...\sum _t \lb 1-\hat {P}_{rs} \rb \lb 
-                                                  \eta _{tr}^{(1)} v_{pqts} ...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...qts} - f_{tr} \eta _{pqts}^{(2)}\rb 
-                                                  \notag \\ & +\frac {1}{2}\...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...ag \\ & +\frac {1}{2}\sum _{ab} \lb 
-                                                  \eta _{pqab}^{(2)} v_{abrs...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...rs} - v_{pqab}\eta _{abrs}^{(2)}\rb 
-                                                  - \frac {1}{2}\sum _{ij} \...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...2)}\rb - \frac {1}{2}\sum _{ij} \lb 
-                                                  \eta _{pqij}^{(2)} v_{ijrs...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...rs} - v_{pqij}\eta _{ijrs}^{(2)}\rb 
-                                                  \notag \\ & -\sum _{ia} \l...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...(2)}\rb \notag \\ & -\sum _{ia} \lb 
-                                                  1- \hat {P}_{ia} \rb \lb 1...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...\sum _{ia} \lb 1- \hat {P}_{ia} \rb 
-                                                  \lb 1-\hat {P}_{pq}\rb \lb...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... _{ia} \lb 1- \hat {P}_{ia} \rb \lb 
-                                                  1-\hat {P}_{pq}\rb \lb 1-\...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...{P}_{ia} \rb \lb 1-\hat {P}_{pq}\rb 
-                                                  \lb 1-\hat {P}_{rs} \rb \e...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...{ia} \rb \lb 1-\hat {P}_{pq}\rb \lb 
-                                                  1-\hat {P}_{rs} \rb \eta _...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...{P}_{pq}\rb \lb 1-\hat {P}_{rs} \rb 
-                                                  \eta _{aqis}^{(2)}v_{ipar}...
-l.581 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 586--589
-
- []
-
 [5]
-! Undefined control sequence.
-l.593 \be
-          \hat{\eta} = \left[ \Hd, \Ho \right] = \left[ \Hd, \hat{H}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-! Package amsmath Error: \hat allowed only in math mode.
-
-See the amsmath package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.593 \be \hat{\eta}
-                     = \left[ \Hd, \Ho \right] = \left[ \Hd, \hat{H}
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.593 \be \hat{\eta} = \left
-                            [ \Hd, \Ho \right] = \left[ \Hd, \hat{H}
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Undefined control sequence.
-l.593 \be \hat{\eta} = \left[ \Hd
-                                 , \Ho \right] = \left[ \Hd, \hat{H}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.593 \be \hat{\eta} = \left[ \Hd, \Ho
-                                       \right] = \left[ \Hd, \hat{H}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.593 ...a} = \left[ \Hd, \Ho \right] = \left[ \Hd
-                                                  , \hat{H}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.596 \ee
-          As commutator between two Hermitian operators, $\hat{\eta}$
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-! Package amsmath Error: \hat allowed only in math mode.
-
-See the amsmath package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.596 ...ween two Hermitian operators, $\hat{\eta}
-                                                  $
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: Command \bfseries invalid in math mode.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.598 ...al matrix elements \cite{kehrein2006flow}
-                                                  . In general,
-Please use the math alphabet \mathbf instead of the \bfseries command. 
-
-
-Package natbib Warning: Citation `kehrein2006flow' on page 6 undefined on input
- line 598.
-
-
-! Package amsmath Error: \begin{align*} allowed only in paragraph mode.
-
-See the amsmath package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.603 \begin{align*}
-                    
-You've lost some text.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: Bad math environment delimiter.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.615 \[
-        
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing \endgroup inserted.
-<inserted text> 
-                \endgroup 
-l.620 \]
-        
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-
-! LaTeX Error: \begin{document} ended by \end{equation*}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.620 \]
-        
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.620 \]
-        
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Extra \endgroup.
-<recently read> \endgroup 
-                          
-l.620 \]
-        
-Things are pretty mixed up, but I think the worst is over.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 592--621
- \OT1/cmr/m/it/10 Weg-ner's canon-i-cal gen-er-a-tor[] \OT1/cmr/m/n/10 The orig
--i-nal
- []
-
-
-Overfull \hbox (316.44148pt too wide) in paragraph at lines 592--621
-[] \OML/cmm/m/it/10 :[]AscommutatorbetweentwoHermitianoperators;$$fulfilsthecri
-terionofantihermiticityandcanbeshowntosuppresstheoff \OMS/cmsy/m/n/10 ^^@
- []
-
-
-Overfull \hbox (654.60793pt too wide) in paragraph at lines 592--621
-\OML/cmm/m/it/10 diagonalmatrixelements\OT1/cmr/m/n/10 [[]]\OML/cmm/m/it/10 :In
-general; matrixelementsfaroffthediagonal; wheretheHamiltonianconnectsstateswith
-largeenergydifferences; aresuppressedmuchfasterthanelementsclosertothediagonal:
-[] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 592--621
-\OML/cmm/m/it/10 bodyelementswhereweusethestandardnotationn[] \OT1/cmr/m/n/10 =
+Underfull \hbox (badness 10000) in paragraph at lines 607--610
 
  []
 
-
-Package natbib Warning: Citation `White:cond-mat0201346' on page 6 undefined on
- input line 625.
-
-
-Package natbib Warning: Citation `PhysRevLett.106.222502' on page 6 undefined o
-n input line 640.
-
-
-Package natbib Warning: Citation `White:cond-mat0201346' on page 6 undefined on
- input line 640.
-
-! Undefined control sequence.
-<argument> ...i}}{f_a-f_i-v_{aiai}}\lbrace a_a\da 
-                                                  a_i\rbrace -\text {hc} \no...
-l.646 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...f_b-f_i-f_j+A_{abij}}\lbrace a_a\da 
-                                                  a_b\da a_j a_i\rbrace - \t...
-l.646 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...-f_j+A_{abij}}\lbrace a_a\da a_b\da 
-                                                  a_j a_i\rbrace - \text {hc...
-l.646 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...i}}{f_a-f_i-v_{aiai}}\lbrace a_a\da 
-                                                  a_i\rbrace -\text {hc} \no...
-l.646 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...f_b-f_i-f_j+A_{abij}}\lbrace a_a\da 
-                                                  a_b\da a_j a_i\rbrace - \t...
-l.646 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...-f_j+A_{abij}}\lbrace a_a\da a_b\da 
-                                                  a_j a_i\rbrace - \text {hc...
-l.646 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-[6] <fig-diagrams-imsrg.pdf, id=48, 540.07834pt x 585.1166pt>
+[6] <fig-diagrams-imsrg.pdf, id=47, 540.07834pt x 585.1166pt>
 File: fig-diagrams-imsrg.pdf Graphic file (type pdf)
 
 <use fig-diagrams-imsrg.pdf>
-Package pdftex.def Info: fig-diagrams-imsrg.pdf used on input line 781.
+Package pdftex.def Info: fig-diagrams-imsrg.pdf used on input line 802.
 (pdftex.def)             Requested size: 244.79782pt x 265.21065pt.
- [7 <./fig-diagrams-imsrg.pdf>]
-<fig-diagrams-sfe.pdf, id=57, 569.57452pt x 709.64629pt>
-File: fig-diagrams-sfe.pdf Graphic file (type pdf)
+ [7]
 
-<use fig-diagrams-sfe.pdf>
-Package pdftex.def Info: fig-diagrams-sfe.pdf used on input line 871.
-(pdftex.def)             Requested size: 244.79782pt x 305.00117pt.
- [8 <./fig-diagrams-sfe.pdf>]
-! Undefined control sequence.
-<recently read> \OP 
-                    
-l.930 ... by applying the projection operator $\OP
-                                                  {P}(\tau)$ on the crude tr...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 826.
 
-! Undefined control sequence.
-<recently read> \ket 
-                     
-l.930 ...{P}(\tau)$ on the crude trial state $\ket
-                                                  {\Psi_T}$
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
-! Undefined control sequence.
-l.932  \OP
-          {P}(\tau)\ket{\Psi_T} \equiv \exp\left({-(\OP{H} - E_0)\tau}\right...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.932  \OP{P}(\tau)\ket
-                       {\Psi_T} \equiv \exp\left({-(\OP{H} - E_0)\tau}\right...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.932 ...\tau)\ket{\Psi_T} \equiv \exp\left({-(\OP
-                                                  {H} - E_0)\tau}\right)\ket...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.932 ...exp\left({-(\OP{H} - E_0)\tau}\right)\ket
-                                                  {\Psi_T}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.935 ...escribed as imaginary time, and $E_0=\bra
-                                                  {\Psi_0}\OP{H}\ket{\Psi_0}...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.935 ... imaginary time, and $E_0=\bra{\Psi_0}\OP
-                                                  {H}\ket{\Psi_0}$ is the gr...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.935 ...ary time, and $E_0=\bra{\Psi_0}\OP{H}\ket
-                                                  {\Psi_0}$ is the ground st...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<recently read> \OP 
-                    
-l.935 ... the ground state of the Hamiltonian $\OP
-                                                  {H}$. By expanding the tri...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<recently read> \OP 
-                    
-l.935 ...trial state in the eigenfunctions of $\OP
-                                                  {H}$, the ground state is ...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.939  \lim_{\tau\to\infty} \bra
-                                {\mathbf{r}}  \OP{P}(\tau) \ket{\Psi_T} = \b...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.939  \lim_{\tau\to\infty} \bra{\mathbf{r}}  \OP
-                                                 {P}(\tau) \ket{\Psi_T} = \b...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.939 ...nfty} \bra{\mathbf{r}}  \OP{P}(\tau) \ket
-                                                  {\Psi_T} = \braket{\Psi_0}...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.939 ...{r}}  \OP{P}(\tau) \ket{\Psi_T} = \braket
-                                                  {\Psi_0}{\Psi_T}\Psi_0(\ma...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.942 Defining $\Phi(\mathbf{r}, \tau) \equiv \bra
-                                                  {\mathbf{r}}\OP{P}(\tau)\k...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.942 ...thbf{r}, \tau) \equiv \bra{\mathbf{r}}\OP
-                                                  {P}(\tau)\ket{\Psi_T}$, we...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-l.942 ...) \equiv \bra{\mathbf{r}}\OP{P}(\tau)\ket
-                                                  {\Psi_T}$, we obtain the s...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...f {r}, \tau + \delta \tau ) &= \bra 
-                                                  {\mathbf {r}} P(\tau + \de...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...bf {r}} P(\tau + \delta \tau ) \ket 
-                                                  {\Psi _T} \notag \\ &= \br...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... ) \ket {\Psi _T} \notag \\ &= \bra 
-                                                  {\mathbf {r}} \exp \left (...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...ra {\mathbf {r}} \exp \left ({-(\OP 
-                                                  {H} - E_0)\delta \tau }\ri...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...{H} - E_0)\delta \tau }\right ) \OP 
-                                                  {P}(\tau ) \ket {\Psi _T} ...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... \tau }\right ) \OP {P}(\tau ) \ket 
-                                                  {\Psi _T} \notag \\ &= \br...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... ) \ket {\Psi _T} \notag \\ &= \bra 
-                                                  {\mathbf {r}} \exp \left (...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...ra {\mathbf {r}} \exp \left ({-(\OP 
-                                                  {H} - E_0)\delta \tau }\ri...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...H} - E_0)\delta \tau }\right ) \ket 
-                                                  {\Phi (\tau )} \notag \\ &...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...= \int \mathrm {d}\mathbf {r}' \bra 
-                                                  {\mathbf {r}} \exp \left (...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...ra {\mathbf {r}} \exp \left ({-(\OP 
-                                                  {H} - E_0)\delta \tau }\ri...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...{H} - E_0)\delta \tau }\right )\ket 
-                                                  {\mathbf {r}'} \Phi (\math...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...f {r}, \tau + \delta \tau ) &= \bra 
-                                                  {\mathbf {r}} P(\tau + \de...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...bf {r}} P(\tau + \delta \tau ) \ket 
-                                                  {\Psi _T} \notag \\ &= \br...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... ) \ket {\Psi _T} \notag \\ &= \bra 
-                                                  {\mathbf {r}} \exp \left (...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...ra {\mathbf {r}} \exp \left ({-(\OP 
-                                                  {H} - E_0)\delta \tau }\ri...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...{H} - E_0)\delta \tau }\right ) \OP 
-                                                  {P}(\tau ) \ket {\Psi _T} ...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... \tau }\right ) \OP {P}(\tau ) \ket 
-                                                  {\Psi _T} \notag \\ &= \br...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ... ) \ket {\Psi _T} \notag \\ &= \bra 
-                                                  {\mathbf {r}} \exp \left (...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...ra {\mathbf {r}} \exp \left ({-(\OP 
-                                                  {H} - E_0)\delta \tau }\ri...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...H} - E_0)\delta \tau }\right ) \ket 
-                                                  {\Phi (\tau )} \notag \\ &...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...= \int \mathrm {d}\mathbf {r}' \bra 
-                                                  {\mathbf {r}} \exp \left (...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...ra {\mathbf {r}} \exp \left ({-(\OP 
-                                                  {H} - E_0)\delta \tau }\ri...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...{H} - E_0)\delta \tau }\right )\ket 
-                                                  {\mathbf {r}'} \Phi (\math...
-l.950 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<recently read> \OP 
-                    
-l.954 ... the the Coulomb interaction term in $\OP
-                                                  {H}$. Due to Pauli exclusi...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Package natbib Warning: Citation `abInitioMC' on page 9 undefined on input line
- 958.
-
-
-Package natbib Warning: Citation `umrigar:2865' on page 9 undefined on input li
-ne 960.
-
-
-Package natbib Warning: Citation `abInitioMC' on page 9 undefined on input line
- 960.
-
-
-Package natbib Warning: Citation `umrigar:2865' on page 9 undefined on input li
-ne 962.
-
-! Undefined control sequence.
-<argument> ...athbf {r}'; \delta \tau )_f &= \bra 
-                                                  {\mathbf {r}} \exp \left (...
-l.968 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...hbf {r}) - E_T\right )}\right )\ket 
-                                                  {\mathbf {r}'} \label {eq:...
-l.968 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...athbf {r}'; \delta \tau )_f &= \bra 
-                                                  {\mathbf {r}} \exp \left (...
-l.968 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> ...hbf {r}) - E_T\right )}\right )\ket 
-                                                  {\mathbf {r}'} \label {eq:...
-l.968 \end{align}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Overfull \hbox (15.30829pt too wide) in paragraph at lines 968--968
-[] 
- []
-
-! Undefined control sequence.
-l.979 E_L(\mathbf{r}) = \Psi_T(\mathbf{r})^{-1}\OP
-                                                  {H} \Psi_T(\mathbf{r})
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Package natbib Warning: Citation `abInitioMC' on page 9 undefined on input line
- 981.
-
-
-LaTeX Warning: Reference `DMC_IS_GF_raw' on page 9 undefined on input line 983.
-
-
-[9]
-Missing character: There is no Ã in font cmr10!
-Missing character: There is no © in font cmr10!
-
-
-LaTeX Warning: Reference `eq:potential' on page 10 undefined on input line 1015
-.
-
-<figures/6parthw1.pdf, id=67, 578.16pt x 433.62pt>
-File: figures/6parthw1.pdf Graphic file (type pdf)
- <use figures/6parthw1.pdf>
-Package pdftex.def Info: figures/6parthw1.pdf used on input line 1078.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/6parthw05.pdf, id=68, 578.16pt x 433.62pt>
-File: figures/6parthw05.pdf Graphic file (type pdf)
-
-<use figures/6parthw05.pdf>
-Package pdftex.def Info: figures/6parthw05.pdf used on input line 1082.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/6parthw028.pdf, id=69, 578.16pt x 433.62pt>
-File: figures/6parthw028.pdf Graphic file (type pdf)
-
-<use figures/6parthw028.pdf>
-Package pdftex.def Info: figures/6parthw028.pdf used on input line 1086.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/6parthw01.pdf, id=70, 578.16pt x 433.62pt>
-File: figures/6parthw01.pdf Graphic file (type pdf)
-
-<use figures/6parthw01.pdf>
-Package pdftex.def Info: figures/6parthw01.pdf used on input line 1090.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-
-LaTeX Warning: Float too large for page by 102.90503pt on input line 1102.
-
-<figures/12parthw1.pdf, id=71, 578.16pt x 433.62pt>
-File: figures/12parthw1.pdf Graphic file (type pdf)
-
-<use figures/12parthw1.pdf>
-Package pdftex.def Info: figures/12parthw1.pdf used on input line 1113.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/12parthw05.pdf, id=72, 578.16pt x 433.62pt>
-File: figures/12parthw05.pdf Graphic file (type pdf)
-
-<use figures/12parthw05.pdf>
-Package pdftex.def Info: figures/12parthw05.pdf used on input line 1117.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/12parthw028.pdf, id=73, 578.16pt x 433.62pt>
-File: figures/12parthw028.pdf Graphic file (type pdf)
-
-<use figures/12parthw028.pdf>
-Package pdftex.def Info: figures/12parthw028.pdf used on input line 1121.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/12parthw01.pdf, id=74, 578.16pt x 433.62pt>
-File: figures/12parthw01.pdf Graphic file (type pdf)
-
-<use figures/12parthw01.pdf>
-Package pdftex.def Info: figures/12parthw01.pdf used on input line 1125.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-
-LaTeX Warning: Float too large for page by 102.90503pt on input line 1137.
-
-<figures/20parthw1.pdf, id=75, 578.16pt x 433.62pt>
-File: figures/20parthw1.pdf Graphic file (type pdf)
-
-<use figures/20parthw1.pdf>
-Package pdftex.def Info: figures/20parthw1.pdf used on input line 1148.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/20parthw05.pdf, id=76, 578.16pt x 433.62pt>
-File: figures/20parthw05.pdf Graphic file (type pdf)
-
-<use figures/20parthw05.pdf>
-Package pdftex.def Info: figures/20parthw05.pdf used on input line 1151.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/20parthw028.pdf, id=77, 578.16pt x 433.62pt>
-File: figures/20parthw028.pdf Graphic file (type pdf)
-
-<use figures/20parthw028.pdf>
-Package pdftex.def Info: figures/20parthw028.pdf used on input line 1155.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/20parthw01.pdf, id=78, 578.16pt x 433.62pt>
-File: figures/20parthw01.pdf Graphic file (type pdf)
-
-<use figures/20parthw01.pdf>
-Package pdftex.def Info: figures/20parthw01.pdf used on input line 1158.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-
-LaTeX Warning: Float too large for page by 102.90503pt on input line 1170.
-
-<figures/30parthw1.pdf, id=79, 578.16pt x 433.62pt>
-File: figures/30parthw1.pdf Graphic file (type pdf)
-
-<use figures/30parthw1.pdf>
-Package pdftex.def Info: figures/30parthw1.pdf used on input line 1179.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/30parthw05.pdf, id=80, 578.16pt x 433.62pt>
-File: figures/30parthw05.pdf Graphic file (type pdf)
-
-<use figures/30parthw05.pdf>
-Package pdftex.def Info: figures/30parthw05.pdf used on input line 1182.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/30parthw028.pdf, id=81, 578.16pt x 433.62pt>
-File: figures/30parthw028.pdf Graphic file (type pdf)
-
-<use figures/30parthw028.pdf>
-Package pdftex.def Info: figures/30parthw028.pdf used on input line 1186.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/30parthw01.pdf, id=82, 578.16pt x 433.62pt>
-File: figures/30parthw01.pdf Graphic file (type pdf)
-
-<use figures/30parthw01.pdf>
-Package pdftex.def Info: figures/30parthw01.pdf used on input line 1189.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-
-LaTeX Warning: Float too large for page by 102.90503pt on input line 1201.
-
-<figures/42parthw1.pdf, id=83, 578.16pt x 433.62pt>
-File: figures/42parthw1.pdf Graphic file (type pdf)
-
-<use figures/42parthw1.pdf>
-Package pdftex.def Info: figures/42parthw1.pdf used on input line 1210.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/42parthw05.pdf, id=84, 578.16pt x 433.62pt>
-File: figures/42parthw05.pdf Graphic file (type pdf)
-
-<use figures/42parthw05.pdf>
-Package pdftex.def Info: figures/42parthw05.pdf used on input line 1213.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/42parthw028.pdf, id=85, 578.16pt x 433.62pt>
-File: figures/42parthw028.pdf Graphic file (type pdf)
-
-<use figures/42parthw028.pdf>
-Package pdftex.def Info: figures/42parthw028.pdf used on input line 1217.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-<figures/42parthw01.pdf, id=86, 578.16pt x 433.62pt>
-File: figures/42parthw01.pdf Graphic file (type pdf)
-
-<use figures/42parthw01.pdf>
-Package pdftex.def Info: figures/42parthw01.pdf used on input line 1220.
-(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
-
-
-LaTeX Warning: Float too large for page by 102.90503pt on input line 1232.
-
-
-LaTeX Warning: Reference `fig:gs' on page 10 undefined on input line 1287.
-
-[10]
-
-LaTeX Warning: A float is stuck (cannot be placed) on input line 1305.
-
-
-LaTeX Warning: A float is stuck (cannot be placed) on input line 1305.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 826.
 
 
 Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
+
+<fig-diagrams-sfe.pdf, id=52, 569.57452pt x 709.64629pt>
+File: fig-diagrams-sfe.pdf Graphic file (type pdf)
+
+<use fig-diagrams-sfe.pdf>
+Package pdftex.def Info: fig-diagrams-sfe.pdf used on input line 892.
+(pdftex.def)             Requested size: 244.79782pt x 305.00117pt.
+ [8 <./fig-diagrams-imsrg.pdf>]
+
+LaTeX Warning: A float is stuck (cannot be placed) on input line 935.
+
+
+LaTeX Warning: A float is stuck (cannot be placed) on input line 935.
+
+
+Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
+
+
+Overfull \hbox (28.64166pt too wide) in paragraph at lines 989--989
+[] 
+ []
+
+[9 <./fig-diagrams-sfe.pdf>]
+
+LaTeX Warning: Reference `DMC_IS_GF_raw' on page 10 undefined on input line 100
+4.
+
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no © in font cmr10!
+
+LaTeX Warning: Reference `eq:potential' on page 10 undefined on input line 1036
+.
+
+[10] <figures/6parthw1.pdf, id=69, 578.16pt x 433.62pt>
+File: figures/6parthw1.pdf Graphic file (type pdf)
+
+<use figures/6parthw1.pdf>
+Package pdftex.def Info: figures/6parthw1.pdf used on input line 1099.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+ <figures/6parthw05.pdf, id=70, 578.16pt x 433.62pt>
+File: figures/6parthw05.pdf Graphic file (type pdf)
+
+<use figures/6parthw05.pdf>
+Package pdftex.def Info: figures/6parthw05.pdf used on input line 1103.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/6parthw028.pdf, id=71, 578.16pt x 433.62pt>
+File: figures/6parthw028.pdf Graphic file (type pdf)
+
+<use figures/6parthw028.pdf>
+Package pdftex.def Info: figures/6parthw028.pdf used on input line 1107.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/6parthw01.pdf, id=72, 578.16pt x 433.62pt>
+File: figures/6parthw01.pdf Graphic file (type pdf)
+
+<use figures/6parthw01.pdf>
+Package pdftex.def Info: figures/6parthw01.pdf used on input line 1111.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+
+LaTeX Warning: Float too large for page by 102.90503pt on input line 1123.
+
+<figures/12parthw1.pdf, id=73, 578.16pt x 433.62pt>
+File: figures/12parthw1.pdf Graphic file (type pdf)
+
+<use figures/12parthw1.pdf>
+Package pdftex.def Info: figures/12parthw1.pdf used on input line 1134.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/12parthw05.pdf, id=74, 578.16pt x 433.62pt>
+File: figures/12parthw05.pdf Graphic file (type pdf)
+
+<use figures/12parthw05.pdf>
+Package pdftex.def Info: figures/12parthw05.pdf used on input line 1138.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/12parthw028.pdf, id=75, 578.16pt x 433.62pt>
+File: figures/12parthw028.pdf Graphic file (type pdf)
+
+<use figures/12parthw028.pdf>
+Package pdftex.def Info: figures/12parthw028.pdf used on input line 1142.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/12parthw01.pdf, id=76, 578.16pt x 433.62pt>
+File: figures/12parthw01.pdf Graphic file (type pdf)
+
+<use figures/12parthw01.pdf>
+Package pdftex.def Info: figures/12parthw01.pdf used on input line 1146.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+
+LaTeX Warning: Float too large for page by 102.90503pt on input line 1158.
+
+<figures/20parthw1.pdf, id=77, 578.16pt x 433.62pt>
+File: figures/20parthw1.pdf Graphic file (type pdf)
+
+<use figures/20parthw1.pdf>
+Package pdftex.def Info: figures/20parthw1.pdf used on input line 1169.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/20parthw05.pdf, id=78, 578.16pt x 433.62pt>
+File: figures/20parthw05.pdf Graphic file (type pdf)
+
+<use figures/20parthw05.pdf>
+Package pdftex.def Info: figures/20parthw05.pdf used on input line 1172.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/20parthw028.pdf, id=79, 578.16pt x 433.62pt>
+File: figures/20parthw028.pdf Graphic file (type pdf)
+
+<use figures/20parthw028.pdf>
+Package pdftex.def Info: figures/20parthw028.pdf used on input line 1176.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/20parthw01.pdf, id=80, 578.16pt x 433.62pt>
+File: figures/20parthw01.pdf Graphic file (type pdf)
+
+<use figures/20parthw01.pdf>
+Package pdftex.def Info: figures/20parthw01.pdf used on input line 1179.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+
+LaTeX Warning: Float too large for page by 102.90503pt on input line 1191.
+
+<figures/30parthw1.pdf, id=81, 578.16pt x 433.62pt>
+File: figures/30parthw1.pdf Graphic file (type pdf)
+
+<use figures/30parthw1.pdf>
+Package pdftex.def Info: figures/30parthw1.pdf used on input line 1200.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/30parthw05.pdf, id=82, 578.16pt x 433.62pt>
+File: figures/30parthw05.pdf Graphic file (type pdf)
+
+<use figures/30parthw05.pdf>
+Package pdftex.def Info: figures/30parthw05.pdf used on input line 1203.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/30parthw028.pdf, id=83, 578.16pt x 433.62pt>
+File: figures/30parthw028.pdf Graphic file (type pdf)
+
+<use figures/30parthw028.pdf>
+Package pdftex.def Info: figures/30parthw028.pdf used on input line 1207.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/30parthw01.pdf, id=84, 578.16pt x 433.62pt>
+File: figures/30parthw01.pdf Graphic file (type pdf)
+
+<use figures/30parthw01.pdf>
+Package pdftex.def Info: figures/30parthw01.pdf used on input line 1210.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+
+LaTeX Warning: Float too large for page by 102.90503pt on input line 1222.
+
+<figures/42parthw1.pdf, id=85, 578.16pt x 433.62pt>
+File: figures/42parthw1.pdf Graphic file (type pdf)
+
+<use figures/42parthw1.pdf>
+Package pdftex.def Info: figures/42parthw1.pdf used on input line 1231.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/42parthw05.pdf, id=86, 578.16pt x 433.62pt>
+File: figures/42parthw05.pdf Graphic file (type pdf)
+
+<use figures/42parthw05.pdf>
+Package pdftex.def Info: figures/42parthw05.pdf used on input line 1234.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/42parthw028.pdf, id=87, 578.16pt x 433.62pt>
+File: figures/42parthw028.pdf Graphic file (type pdf)
+
+<use figures/42parthw028.pdf>
+Package pdftex.def Info: figures/42parthw028.pdf used on input line 1238.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+<figures/42parthw01.pdf, id=88, 578.16pt x 433.62pt>
+File: figures/42parthw01.pdf Graphic file (type pdf)
+
+<use figures/42parthw01.pdf>
+Package pdftex.def Info: figures/42parthw01.pdf used on input line 1241.
+(pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
+
+
+LaTeX Warning: Float too large for page by 102.90503pt on input line 1253.
+
+
+LaTeX Warning: Reference `fig:gs' on page 11 undefined on input line 1308.
 
 [11 <./figures/6parthw1.pdf> <./figures/6parthw05.pdf
 
@@ -2878,11 +671,17 @@ le pdfs with page group included in a single page
 
 pdfTeX warning: pdflatex (file ./figures/6parthw01.pdf): PDF inclusion: multipl
 e pdfs with page group included in a single page
-> <./figures/12parthw1.pdf
+>]
 
-pdfTeX warning: pdflatex (file ./figures/12parthw1.pdf): PDF inclusion: multipl
-e pdfs with page group included in a single page
-> <./figures/12parthw05.pdf
+LaTeX Warning: A float is stuck (cannot be placed) on input line 1326.
+
+
+LaTeX Warning: A float is stuck (cannot be placed) on input line 1326.
+
+
+Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
+
+[12 <./figures/12parthw1.pdf> <./figures/12parthw05.pdf
 
 pdfTeX warning: pdflatex (file ./figures/12parthw05.pdf): PDF inclusion: multip
 le pdfs with page group included in a single page
@@ -2894,17 +693,11 @@ ple pdfs with page group included in a single page
 
 pdfTeX warning: pdflatex (file ./figures/12parthw01.pdf): PDF inclusion: multip
 le pdfs with page group included in a single page
->]
+> <./figures/20parthw1.pdf
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 1305.
-
-
-LaTeX Warning: A float is stuck (cannot be placed) on input line 1305.
-
-
-Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
-
-[12 <./figures/20parthw1.pdf> <./figures/20parthw05.pdf
+pdfTeX warning: pdflatex (file ./figures/20parthw1.pdf): PDF inclusion: multipl
+e pdfs with page group included in a single page
+> <./figures/20parthw05.pdf
 
 pdfTeX warning: pdflatex (file ./figures/20parthw05.pdf): PDF inclusion: multip
 le pdfs with page group included in a single page
@@ -2916,11 +709,17 @@ ple pdfs with page group included in a single page
 
 pdfTeX warning: pdflatex (file ./figures/20parthw01.pdf): PDF inclusion: multip
 le pdfs with page group included in a single page
-> <./figures/30parthw1.pdf
+>]
 
-pdfTeX warning: pdflatex (file ./figures/30parthw1.pdf): PDF inclusion: multipl
-e pdfs with page group included in a single page
-> <./figures/30parthw05.pdf
+LaTeX Warning: A float is stuck (cannot be placed) on input line 1326.
+
+
+LaTeX Warning: A float is stuck (cannot be placed) on input line 1326.
+
+
+Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
+
+[13 <./figures/30parthw1.pdf> <./figures/30parthw05.pdf
 
 pdfTeX warning: pdflatex (file ./figures/30parthw05.pdf): PDF inclusion: multip
 le pdfs with page group included in a single page
@@ -2932,23 +731,11 @@ ple pdfs with page group included in a single page
 
 pdfTeX warning: pdflatex (file ./figures/30parthw01.pdf): PDF inclusion: multip
 le pdfs with page group included in a single page
->]
+> <./figures/42parthw1.pdf
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 1305.
-
-
-LaTeX Warning: A float is stuck (cannot be placed) on input line 1305.
-
-
-Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
-
-
-LaTeX Warning: Reference `fig:add' on page 13 undefined on input line 1309.
-
-
-LaTeX Warning: Reference `fig:rm' on page 13 undefined on input line 1309.
-
-[13 <./figures/42parthw1.pdf> <./figures/42parthw05.pdf
+pdfTeX warning: pdflatex (file ./figures/42parthw1.pdf): PDF inclusion: multipl
+e pdfs with page group included in a single page
+> <./figures/42parthw05.pdf
 
 pdfTeX warning: pdflatex (file ./figures/42parthw05.pdf): PDF inclusion: multip
 le pdfs with page group included in a single page
@@ -2960,7 +747,23 @@ ple pdfs with page group included in a single page
 
 pdfTeX warning: pdflatex (file ./figures/42parthw01.pdf): PDF inclusion: multip
 le pdfs with page group included in a single page
->] (./paper.bbl [14]
+>]
+
+LaTeX Warning: A float is stuck (cannot be placed) on input line 1326.
+
+
+LaTeX Warning: A float is stuck (cannot be placed) on input line 1326.
+
+
+Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
+
+
+LaTeX Warning: Reference `fig:add' on page 14 undefined on input line 1330.
+
+
+LaTeX Warning: Reference `fig:rm' on page 14 undefined on input line 1330.
+
+[14] (./paper.bbl
 Underfull \hbox (badness 2951) in paragraph at lines 101--107
  []\OT1/cmr/m/n/9 S. Strauf, K. Hen-nessy, M. Rakher, Y.-S. Choi,
  []
@@ -2970,58 +773,57 @@ Underfull \hbox (badness 1859) in paragraph at lines 193--196
  []\OT1/cmr/m/n/9 M. Ped-er-sen Lohne, G. Ha-gen, M. Hjorth-Jensen,
  []
 
-)
+[15])
 
 Package natbib Warning: There were undefined citations.
 
-[15] (./paper.aux)
+[16] (./paper.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 5581 strings out of 493089
- 75022 string characters out of 6134842
- 186478 words of memory out of 5000000
- 8935 multiletter control sequences out of 15000+600000
+ 5614 strings out of 493089
+ 75705 string characters out of 6134842
+ 184466 words of memory out of 5000000
+ 8968 multiletter control sequences out of 15000+600000
  16807 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,19n,35p,713b,340s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,19n,35p,713b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></
 usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></us
 r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr
-/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb></
-usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
-sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></us
-r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/
-local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/lo
-cal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/loca
-l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/
-texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/te
-xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/te
-xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texl
-ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texliv
-e/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/
-2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/201
-5/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2015/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2015/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2015/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2015/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2015/texmf-dist/font
-s/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2015/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2015/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/p
-ublic/amsfonts/symbols/msbm10.pfb>
-Output written on paper.pdf (15 pages, 621984 bytes).
+/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/
+local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/l
+ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/loc
+al/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local
+/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/tex
+live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texli
+ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texli
+ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive
+/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2
+015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/201
+5/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2015/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2015/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2015/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2015/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2015/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2015/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2015/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmti9.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/publ
+ic/amsfonts/symbols/msbm10.pfb>
+Output written on paper.pdf (16 pages, 615012 bytes).
 PDF statistics:
- 533 PDF objects out of 1000 (max. 8388607)
- 395 compressed objects within 4 object streams
+ 532 PDF objects out of 1000 (max. 8388607)
+ 394 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
  116 words of extra memory for PDF output out of 10000 (max. 10000000)
 
