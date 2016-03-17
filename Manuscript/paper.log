@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  25 JAN 2016 18:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  17 MAR 2016 08:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**paper.tex
+**paper
 (./paper.tex
 LaTeX2e <2015/01/01>
 Babel <3.9l> and hyphenation patterns for 79 languages loaded.
@@ -372,85 +372,85 @@ e
 ))
 \openout3 = `paperNotes.bib'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 69.
+LaTeX Font Info:    Try loading font information for U+msa on input line 80.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 69.
+LaTeX Font Info:    Try loading font information for U+msb on input line 80.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 
-LaTeX Warning: Reference `subsec:SRG' on page 1 undefined on input line 127.
+LaTeX Warning: Reference `subsec:SRG' on page 1 undefined on input line 138.
 
 
-LaTeX Warning: Reference `subsec:DMC' on page 1 undefined on input line 127.
+LaTeX Warning: Reference `subsec:DMC' on page 1 undefined on input line 138.
 
 
 Package natbib Warning: Citation `HjorthJensen1995' on page 1 undefined on inpu
-t line 139.
+t line 150.
 
 
 Package natbib Warning: Citation `Helgaker2002' on page 1 undefined on input li
-ne 139.
+ne 150.
 
 
 Package natbib Warning: Citation `Reimann2002' on page 1 undefined on input lin
-e 140.
+e 151.
 
 
 Package natbib Warning: Citation `Kvaal2007' on page 1 undefined on input line 
-155.
+166.
 
 [1{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
 Package natbib Warning: Citation `RamMohan2002' on page 2 undefined on input li
-ne 169.
+ne 180.
 
 <fig-shell-structure.pdf, id=19, 972.23247pt x 552.04271pt>
 File: fig-shell-structure.pdf Graphic file (type pdf)
 
 <use fig-shell-structure.pdf>
-Package pdftex.def Info: fig-shell-structure.pdf used on input line 260.
+Package pdftex.def Info: fig-shell-structure.pdf used on input line 271.
 (pdftex.def)             Requested size: 244.79782pt x 138.99588pt.
  [2]
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 286.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 297.
 
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 286.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 297.
 
 
 Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
 
 [3 <./fig-shell-structure.pdf>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 451.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 462.
 
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <8> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 451.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 462.
 
-Underfull \hbox (badness 10000) in paragraph at lines 490--495
+Underfull \hbox (badness 10000) in paragraph at lines 501--506
 
  []
 
 [4]
-Underfull \hbox (badness 1688) in paragraph at lines 523--528
+Underfull \hbox (badness 1688) in paragraph at lines 534--539
 \OT1/cmr/m/n/10 where the op-er-a-tor $[]$ de-notes the single-particle
  []
 
 
-Underfull \hbox (badness 2689) in paragraph at lines 523--528
+Underfull \hbox (badness 2689) in paragraph at lines 534--539
 \OT1/cmr/m/n/10 symmetrized two-body ma-trix el-e-ments. Normal-
  []
 
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 607--610
+Underfull \hbox (badness 10000) in paragraph at lines 618--621
 
  []
 
@@ -458,14 +458,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 607--610
 File: fig-diagrams-imsrg.pdf Graphic file (type pdf)
 
 <use fig-diagrams-imsrg.pdf>
-Package pdftex.def Info: fig-diagrams-imsrg.pdf used on input line 802.
+Package pdftex.def Info: fig-diagrams-imsrg.pdf used on input line 813.
 (pdftex.def)             Requested size: 244.79782pt x 265.21065pt.
  [7]
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 826.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 837.
 
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 826.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 837.
 
 
 Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
@@ -474,190 +474,190 @@ Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
 File: fig-diagrams-sfe.pdf Graphic file (type pdf)
 
 <use fig-diagrams-sfe.pdf>
-Package pdftex.def Info: fig-diagrams-sfe.pdf used on input line 892.
+Package pdftex.def Info: fig-diagrams-sfe.pdf used on input line 903.
 (pdftex.def)             Requested size: 244.79782pt x 305.00117pt.
  [8 <./fig-diagrams-imsrg.pdf>]
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 935.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 946.
 
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 935.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 946.
 
 
 Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
 
 
-Overfull \hbox (28.64166pt too wide) in paragraph at lines 989--989
+Overfull \hbox (28.64166pt too wide) in paragraph at lines 1000--1000
 [] 
  []
 
 [9 <./fig-diagrams-sfe.pdf>]
 
-LaTeX Warning: Reference `DMC_IS_GF_raw' on page 10 undefined on input line 100
-4.
+LaTeX Warning: Reference `DMC_IS_GF_raw' on page 10 undefined on input line 101
+5.
 
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no © in font cmr10!
 
-LaTeX Warning: Reference `eq:potential' on page 10 undefined on input line 1036
+LaTeX Warning: Reference `eq:potential' on page 10 undefined on input line 1047
 .
 
 [10] <figures/6parthw1.pdf, id=69, 578.16pt x 433.62pt>
 File: figures/6parthw1.pdf Graphic file (type pdf)
 
 <use figures/6parthw1.pdf>
-Package pdftex.def Info: figures/6parthw1.pdf used on input line 1099.
+Package pdftex.def Info: figures/6parthw1.pdf used on input line 1110.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
  <figures/6parthw05.pdf, id=70, 578.16pt x 433.62pt>
 File: figures/6parthw05.pdf Graphic file (type pdf)
 
 <use figures/6parthw05.pdf>
-Package pdftex.def Info: figures/6parthw05.pdf used on input line 1103.
+Package pdftex.def Info: figures/6parthw05.pdf used on input line 1114.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/6parthw028.pdf, id=71, 578.16pt x 433.62pt>
 File: figures/6parthw028.pdf Graphic file (type pdf)
 
 <use figures/6parthw028.pdf>
-Package pdftex.def Info: figures/6parthw028.pdf used on input line 1107.
+Package pdftex.def Info: figures/6parthw028.pdf used on input line 1118.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/6parthw01.pdf, id=72, 578.16pt x 433.62pt>
 File: figures/6parthw01.pdf Graphic file (type pdf)
 
 <use figures/6parthw01.pdf>
-Package pdftex.def Info: figures/6parthw01.pdf used on input line 1111.
+Package pdftex.def Info: figures/6parthw01.pdf used on input line 1122.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 
-LaTeX Warning: Float too large for page by 102.90503pt on input line 1123.
+LaTeX Warning: Float too large for page by 102.90503pt on input line 1134.
 
 <figures/12parthw1.pdf, id=73, 578.16pt x 433.62pt>
 File: figures/12parthw1.pdf Graphic file (type pdf)
 
 <use figures/12parthw1.pdf>
-Package pdftex.def Info: figures/12parthw1.pdf used on input line 1134.
+Package pdftex.def Info: figures/12parthw1.pdf used on input line 1145.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/12parthw05.pdf, id=74, 578.16pt x 433.62pt>
 File: figures/12parthw05.pdf Graphic file (type pdf)
 
 <use figures/12parthw05.pdf>
-Package pdftex.def Info: figures/12parthw05.pdf used on input line 1138.
+Package pdftex.def Info: figures/12parthw05.pdf used on input line 1149.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/12parthw028.pdf, id=75, 578.16pt x 433.62pt>
 File: figures/12parthw028.pdf Graphic file (type pdf)
 
 <use figures/12parthw028.pdf>
-Package pdftex.def Info: figures/12parthw028.pdf used on input line 1142.
+Package pdftex.def Info: figures/12parthw028.pdf used on input line 1153.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/12parthw01.pdf, id=76, 578.16pt x 433.62pt>
 File: figures/12parthw01.pdf Graphic file (type pdf)
 
 <use figures/12parthw01.pdf>
-Package pdftex.def Info: figures/12parthw01.pdf used on input line 1146.
+Package pdftex.def Info: figures/12parthw01.pdf used on input line 1157.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 
-LaTeX Warning: Float too large for page by 102.90503pt on input line 1158.
+LaTeX Warning: Float too large for page by 102.90503pt on input line 1169.
 
 <figures/20parthw1.pdf, id=77, 578.16pt x 433.62pt>
 File: figures/20parthw1.pdf Graphic file (type pdf)
 
 <use figures/20parthw1.pdf>
-Package pdftex.def Info: figures/20parthw1.pdf used on input line 1169.
+Package pdftex.def Info: figures/20parthw1.pdf used on input line 1180.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/20parthw05.pdf, id=78, 578.16pt x 433.62pt>
 File: figures/20parthw05.pdf Graphic file (type pdf)
 
 <use figures/20parthw05.pdf>
-Package pdftex.def Info: figures/20parthw05.pdf used on input line 1172.
+Package pdftex.def Info: figures/20parthw05.pdf used on input line 1183.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/20parthw028.pdf, id=79, 578.16pt x 433.62pt>
 File: figures/20parthw028.pdf Graphic file (type pdf)
 
 <use figures/20parthw028.pdf>
-Package pdftex.def Info: figures/20parthw028.pdf used on input line 1176.
+Package pdftex.def Info: figures/20parthw028.pdf used on input line 1187.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/20parthw01.pdf, id=80, 578.16pt x 433.62pt>
 File: figures/20parthw01.pdf Graphic file (type pdf)
 
 <use figures/20parthw01.pdf>
-Package pdftex.def Info: figures/20parthw01.pdf used on input line 1179.
+Package pdftex.def Info: figures/20parthw01.pdf used on input line 1190.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 
-LaTeX Warning: Float too large for page by 102.90503pt on input line 1191.
+LaTeX Warning: Float too large for page by 102.90503pt on input line 1202.
 
 <figures/30parthw1.pdf, id=81, 578.16pt x 433.62pt>
 File: figures/30parthw1.pdf Graphic file (type pdf)
 
 <use figures/30parthw1.pdf>
-Package pdftex.def Info: figures/30parthw1.pdf used on input line 1200.
+Package pdftex.def Info: figures/30parthw1.pdf used on input line 1211.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/30parthw05.pdf, id=82, 578.16pt x 433.62pt>
 File: figures/30parthw05.pdf Graphic file (type pdf)
 
 <use figures/30parthw05.pdf>
-Package pdftex.def Info: figures/30parthw05.pdf used on input line 1203.
+Package pdftex.def Info: figures/30parthw05.pdf used on input line 1214.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/30parthw028.pdf, id=83, 578.16pt x 433.62pt>
 File: figures/30parthw028.pdf Graphic file (type pdf)
 
 <use figures/30parthw028.pdf>
-Package pdftex.def Info: figures/30parthw028.pdf used on input line 1207.
+Package pdftex.def Info: figures/30parthw028.pdf used on input line 1218.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/30parthw01.pdf, id=84, 578.16pt x 433.62pt>
 File: figures/30parthw01.pdf Graphic file (type pdf)
 
 <use figures/30parthw01.pdf>
-Package pdftex.def Info: figures/30parthw01.pdf used on input line 1210.
+Package pdftex.def Info: figures/30parthw01.pdf used on input line 1221.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 
-LaTeX Warning: Float too large for page by 102.90503pt on input line 1222.
+LaTeX Warning: Float too large for page by 102.90503pt on input line 1233.
 
 <figures/42parthw1.pdf, id=85, 578.16pt x 433.62pt>
 File: figures/42parthw1.pdf Graphic file (type pdf)
 
 <use figures/42parthw1.pdf>
-Package pdftex.def Info: figures/42parthw1.pdf used on input line 1231.
+Package pdftex.def Info: figures/42parthw1.pdf used on input line 1242.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/42parthw05.pdf, id=86, 578.16pt x 433.62pt>
 File: figures/42parthw05.pdf Graphic file (type pdf)
 
 <use figures/42parthw05.pdf>
-Package pdftex.def Info: figures/42parthw05.pdf used on input line 1234.
+Package pdftex.def Info: figures/42parthw05.pdf used on input line 1245.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/42parthw028.pdf, id=87, 578.16pt x 433.62pt>
 File: figures/42parthw028.pdf Graphic file (type pdf)
 
 <use figures/42parthw028.pdf>
-Package pdftex.def Info: figures/42parthw028.pdf used on input line 1238.
+Package pdftex.def Info: figures/42parthw028.pdf used on input line 1249.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 <figures/42parthw01.pdf, id=88, 578.16pt x 433.62pt>
 File: figures/42parthw01.pdf Graphic file (type pdf)
 
 <use figures/42parthw01.pdf>
-Package pdftex.def Info: figures/42parthw01.pdf used on input line 1241.
+Package pdftex.def Info: figures/42parthw01.pdf used on input line 1252.
 (pdftex.def)             Requested size: 193.80249pt x 145.35126pt.
 
 
-LaTeX Warning: Float too large for page by 102.90503pt on input line 1253.
+LaTeX Warning: Float too large for page by 102.90503pt on input line 1264.
 
 
-LaTeX Warning: Reference `fig:gs' on page 11 undefined on input line 1308.
+LaTeX Warning: Reference `fig:gs' on page 11 undefined on input line 1319.
 
 [11 <./figures/6parthw1.pdf> <./figures/6parthw05.pdf
 
@@ -673,10 +673,10 @@ pdfTeX warning: pdflatex (file ./figures/6parthw01.pdf): PDF inclusion: multipl
 e pdfs with page group included in a single page
 >]
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 1326.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 1337.
 
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 1326.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 1337.
 
 
 Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
@@ -711,10 +711,10 @@ pdfTeX warning: pdflatex (file ./figures/20parthw01.pdf): PDF inclusion: multip
 le pdfs with page group included in a single page
 >]
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 1326.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 1337.
 
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 1326.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 1337.
 
 
 Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
@@ -749,19 +749,19 @@ pdfTeX warning: pdflatex (file ./figures/42parthw01.pdf): PDF inclusion: multip
 le pdfs with page group included in a single page
 >]
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 1326.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 1337.
 
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 1326.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 1337.
 
 
 Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
 
 
-LaTeX Warning: Reference `fig:add' on page 14 undefined on input line 1330.
+LaTeX Warning: Reference `fig:add' on page 14 undefined on input line 1341.
 
 
-LaTeX Warning: Reference `fig:rm' on page 14 undefined on input line 1330.
+LaTeX Warning: Reference `fig:rm' on page 14 undefined on input line 1341.
 
 [14] (./paper.bbl
 Underfull \hbox (badness 2951) in paragraph at lines 101--107
@@ -785,11 +785,11 @@ LaTeX Warning: There were undefined references.
 Here is how much of TeX's memory you used:
  5614 strings out of 493089
  75705 string characters out of 6134842
- 184466 words of memory out of 5000000
+ 184468 words of memory out of 5000000
  8968 multiletter control sequences out of 15000+600000
  16807 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,19n,35p,713b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,19n,35p,709b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></
@@ -820,7 +820,7 @@ e1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1
 ublic/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/pu
 blic/amsfonts/cm/cmti9.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/publ
 ic/amsfonts/symbols/msbm10.pfb>
-Output written on paper.pdf (16 pages, 615012 bytes).
+Output written on paper.pdf (16 pages, 615086 bytes).
 PDF statistics:
  532 PDF objects out of 1000 (max. 8388607)
  394 compressed objects within 4 object streams
