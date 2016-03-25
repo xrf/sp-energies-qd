@@ -73,7 +73,7 @@
   using in-medium similarity renormalization group (IM-SRG).  Additionally, we
   calculate the addition and removal energies using quasidegenerate
   perturbation theory (QDPT).  Our results are benchmarked against quasi-exact
-  diffusion Monte Carlo and Coupled Cluster calculations.  
+  diffusion Monte Carlo and Coupled Cluster calculations.
 \end{abstract}
 
 \pacs{02.70.Ss, 31.15.A-, 31.15.bw, 71.15.-m, 73.21.La}
@@ -531,7 +531,7 @@ second-quantized form, this one is given by
 \left| q \right\rangle a_p\da a_q + \frac{1}{4}\sum\limits_{pqrs}\lla
 pq || r s \rra a_p\da a_q\da a_s a_r,
 \label{eq:ourHamiltonian}
-\end{align} 
+\end{align}
 where the operator $\hat{h}^{(0)}$ denotes the single-particle
 Hamiltonian, and the elements $\langle pq||rs\rangle$ are the
 anti-symmetrized two-body matrix elements.  Normal-ordering with
@@ -961,7 +961,7 @@ Diffusion Monte-Carlo (DMC) is a method used for refining a crude estimate to th
 
 The equations representing the DMC algorithm is obtained by applying the projection operator $\OP{P}(\tau)$ on the crude trial state $\ket{\Psi_T}$
 \begin{equation}
- \OP{P}(\tau)\ket{\Psi_T} \equiv \exp\left({-(\OP{H} - E_0)\tau}\right)\ket{\Psi_T} 
+ \OP{P}(\tau)\ket{\Psi_T} \equiv \exp\left({-(\OP{H} - E_0)\tau}\right)\ket{\Psi_T}
 \end{equation}
 \noindent
 where $\tau$ is a constant often described as imaginary time, and $E_0=\bra{\Psi_0}\OP{H}\ket{\Psi_0}$ is the ground state of the Hamiltonian $\OP{H}$. By expanding the trial state in the eigenfunctions of $\OP{H}$, the ground state is obtained up to a constant factor
@@ -983,9 +983,9 @@ Defining $\Phi(\mathbf{r}, \tau) \equiv \bra{\mathbf{r}}\OP{P}(\tau)\ket{\Psi_T}
 
 In practice, the ground state energy is a priori unknown, hence a trailing averaged value obtained from the converging DMC density is used. This energy is often referred to as the trial energy, and it is believed that with a sufficiently good trial state, the error due to this approximation is small.
 
-The Green's function introduced in Eq.~(\ref{eq:DMC_GreenFuncRevealed}) has singularities due to the the Coulomb interaction term in $\OP{H}$. Due to Pauli exclusion these are not physical, nevertheless, in numerical implementations they are unpredictable and undesirable, hence we want to avoid them. 
+The Green's function introduced in Eq.~(\ref{eq:DMC_GreenFuncRevealed}) has singularities due to the the Coulomb interaction term in $\OP{H}$. Due to Pauli exclusion these are not physical, nevertheless, in numerical implementations they are unpredictable and undesirable, hence we want to avoid them.
 
-For evaluation of the local energy, the trial state is designed to cancel the Coulomb singularities by containing so-called correlation factors, however, this cancellation does not apply to the terms in the Green's function. In order to transfer this behavior to apply to the Green's function, a change to the formalism is introduced by iterating on a mixed density $f(\mathbf{r}, \tau) \equiv \Phi(\mathbf{r}, \tau)\Psi_T(\mathbf{r})$. Note that all previous arguments regarding convergence to the true ground state still applies for the new distribution. 
+For evaluation of the local energy, the trial state is designed to cancel the Coulomb singularities by containing so-called correlation factors, however, this cancellation does not apply to the terms in the Green's function. In order to transfer this behavior to apply to the Green's function, a change to the formalism is introduced by iterating on a mixed density $f(\mathbf{r}, \tau) \equiv \Phi(\mathbf{r}, \tau)\Psi_T(\mathbf{r})$. Note that all previous arguments regarding convergence to the true ground state still applies for the new distribution.
 
 Methods exist for transforming the mixed density into the pure density $|\Phi(\mathbf{r}, \tau)|^2$ \cite{abInitioMC}, but unless the pure density is explicitly needed (e.g.~for comparisons with other methods), this is strictly not necessary.
 
@@ -998,7 +998,7 @@ The Green's function for the mixed density is given as \cite{umrigar:2865}
   &\propto e^{-\left[|\mathbf{r} - \mathbf{r}' - \frac{1}{2}\delta\tau\mathbf{F}(\mathbf{r})|^2/2\delta\tau\right]} \label{eq:DMC_IS_GF}\\
   &\qquad\times e^{-\left[\frac{1}{2}\left[E_L(\mathbf{r'}) + E_L(\mathbf{r})\right] - E_T\right]\delta\tau} + \mathcal{O}(\delta\tau^2), \notag
 \end{align}
-where 
+where
 \begin{equation}
   \mathbf{F}(\mathbf{r}) = 2\Psi_T(\mathbf{r})^{-1} \nabla \Psi_T(\mathbf{r})
 \end{equation}
@@ -1006,10 +1006,10 @@ where
 \noindent
 is the drift vector commonly referred to as the \textit{quantum force}.
 
-The local energy 
-\begin{equation} 
+The local energy
+\begin{equation}
 E_L(\mathbf{r}) = \Psi_T(\mathbf{r})^{-1}\OP{H} \Psi_T(\mathbf{r})
-\end{equation} 
+\end{equation}
 is necessarily sampled from $|\Psi_T(\mathbf{r})|^2$ (ensured by using the Metropolis Algorithm \cite{abInitioMC}) to avoid undefined energies when sampling close to the nodes of $\Psi_T(\mathbf{r})$.
 
 The Green's function from Eq.~(\ref{DMC_IS_GF_raw}) has been split into two for practical reasons; one part containing the kinetic terms, more specifically this represents a Fokker-Planck diffusion process, and a second part which is commonly referred to as a \textit{branching function}, which is an effective reweighing of a positions contribution to the overall density. Excluding branching we will simply sample from the density of the trial state.
@@ -1033,19 +1033,19 @@ For each time step, diffusion and branching repeats a given number of blocks $N_
  E_T^{k+1} = \frac{1}{M^{(k)}}\sum_{i=1}^{M^{(k)}} G_b(\mathbf{r}^{(k)}_i)E_L(\mathbf{r}^{(k)}_i),
 \end{equation}
 \noindent
-where $M^{(k)}$ is the total number of samples obtained in cycle $k$. For this work we have found a value of $N_b = 100$ to be sufficient. 
+where $M^{(k)}$ is the total number of samples obtained in cycle $k$. For this work we have found a value of $N_b = 100$ to be sufficient.
 
-Several methods for estimating $E_0$ exist in the literature, one of which is simply an average of all $N_c$ trial energies calculated after $N_t$ thermalization cycles 
+Several methods for estimating $E_0$ exist in the literature, one of which is simply an average of all $N_c$ trial energies calculated after $N_t$ thermalization cycles
 \begin{equation}
  E_0 = \frac{1}{N_c-N_t}\sum\limits_{k=N_t}^{N_c} E_T^{(k)}.
 \end{equation}
 This is the relation we use in this work to obtain the DMC energies.
 
-In this work, the trial state has been chosen to consist of a single Slater determinant (cite) 
-together with a single variational parameter Padé-Jastrow correlation function (cite). 
+In this work, the trial state has been chosen to consist of a single Slater determinant (cite)
+together with a single variational parameter Padé-Jastrow correlation function (cite).
 
 The Slater determinant contains eigenstates $\phi_n(\mathbf{r})$ of Eq.~(\ref{eq:potential})
-with a variational parameter $\alpha$ scaling the oscillator frequency $\omega$ 
+with a variational parameter $\alpha$ scaling the oscillator frequency $\omega$
 such that $\omega\to\alpha\omega$ in all solutions:
 
 \begin{equation}
@@ -1056,7 +1056,7 @@ such that $\omega\to\alpha\omega$ in all solutions:
 where $H_n$ is the $n$'th level Hermite polynomial.
 
 
-The eigenstates are selected such that the $N$ lowest lying energy eigenstates are selected (counting spin-degeneracy). Due to the Hamiltonian being spin independent we may split the Slater determinant into two equal parts - 
+The eigenstates are selected such that the $N$ lowest lying energy eigenstates are selected (counting spin-degeneracy). Due to the Hamiltonian being spin independent we may split the Slater determinant into two equal parts -
 one for each spin level (cite). The overall form of the trial state is as follows:
 
 \begin{equation}
@@ -1074,13 +1074,13 @@ with
  \end{array} \right|,
 \end{equation}
 
-and 
+and
 
 \begin{equation}
  J(r_{ij}) = \exp\left(\frac{r_{ij}}{1 + \beta r_{ij}}\right),
 \end{equation}
 
-where $\mathbf{r}^s_i$ denotes $i$'th particle with spin $s$, and $r_{ij}$ is the relative distance between two electrons. 
+where $\mathbf{r}^s_i$ denotes $i$'th particle with spin $s$, and $r_{ij}$ is the relative distance between two electrons.
 Since Metropolis Monte-Carlo only involves ratios of density functions, all normalization factors are skipped.
 
 As a consequence of the variational principle, the optimal numeric values for $\alpha$ and $\beta$ can be found by minimizing the energy in the variational parameter space.
@@ -1092,9 +1092,9 @@ state density. It should be mentioned that for systems where the single-particle
 will indeed be insufficient due to low overlap between the initial and exact state.
 
 A single Slater determinant and a simple correlation function opens up numerous optimization schemes which trivializes the CPU-time of most calculations.
-We refer to Refs (cite optimization techniques) for more information. 
+We refer to Refs (cite optimization techniques) for more information.
 Moreover, the most costly part of evaluating the single-particle eigenstates, the exponentials, is independent of the quantum number $n$, and can thus be tabulated once
-for the entire calculation. This holds for the gradient and Laplacian needed in the quantum force and local energy, respectively, since the exponential shape is 
+for the entire calculation. This holds for the gradient and Laplacian needed in the quantum force and local energy, respectively, since the exponential shape is
 preserved under differentiation.
 
 
@@ -1440,10 +1440,10 @@ Distributing the workload across multiple nodes can significantly reduce the
 cost of the calculations, allowing larger systems to be studied.
 
 \begin{acknowledgments}
- This work was supported by the 
-National Science Foundation Grant No.~PHY-1404159 
+ This work was supported by the
+National Science Foundation Grant No.~PHY-1404159
 (Michigan State University) and by the Research
-Council of Norway under contract ISP-Fysikk/216699. 
+Council of Norway under contract ISP-Fysikk/216699.
 \end{acknowledgments}
 
 \bibliography{paper}
@@ -1461,7 +1461,7 @@ Council of Norway under contract ISP-Fysikk/216699.
 \usepackage{float}
 \usepackage{dcolumn}
 \usepackage{subfigure}
-\usepackage{multirow} 
+\usepackage{multirow}
 
 
 
@@ -1609,9 +1609,3 @@ function of R. This is justified by the results of Kvaal [16] together with gene
 erations about the form of the function. As we will see in this section, this assumption
 seems to hold well for the systems that we have threated. To minimize ν(R) and reduce the
 extrapolation error, we have only used energies calculated with R ≥ 5.
-
-
-
-
-
-
