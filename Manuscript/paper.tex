@@ -461,9 +461,14 @@ the full transformation $\hat U(s)$ is recovered:\footnote{Alternatively, this
   can also be reinterpreted as an $s'$-ordered integral.  See \cite[\S
   6.1]{reimann2013quantum}.}
 \begin{align*}
-  \hat U(s) = \lim_{\Delta s' \to 0} \prod_{s' = 0}^{s' = s}
-  \mathrm e^{\hat \eta(s') \Delta s'}
+  \hat U(s')
+  = \mathcal T_s \left\{ \exp \left(\int_0^{s'} \hat \eta_s \, d s \right)\},
+  := \lim_{\Delta s \to 0} \prod_{s = 0}^{s = s'}
+  \mathrm e^{\hat \eta(s) \Delta s}
 \end{align*}
+where $\mathcal T_s$ denotes $s$-ordering, defined analogously to the usual
+time-ordering from quantum field theory.
+
 The evolution of the Hamiltonian itself is governed by a differential
 equation, commonly referred to as the flow equation:
 \begin{gather} \label{eq:imsrgode}
@@ -480,20 +485,16 @@ full transformation $\hat U(s)$.
 with the relations $U_{s=0} = \mathbf{1}$, and $\hat{H}_{s= 0} =
 \hat{H}$.  The transformation $U_s$ is parametrized as
 \[
-U_s = T_s \exp \left(\int_0^s \! ds'\hat{\eta}_{s'} \right),
+U(s') = \mathcal T_s \left\{ \exp \left(\int_0^{s'} \! ds'\hat{\eta}_s \right)\},
 \]
-where the anti-hermitian operator $\hat{\eta}_s$ serves as generator
-of the transformation. With $T_s$ we denote $s$-ordering, which is
-defined equivalently to usual time-ordering.  Taking the derivative of
-$\hat{H}_s$ with respect to $s$ gives
+Taking the derivative of $\hat{H}_s$ with respect to $s$ gives
 \begin{equation}
- \frac{d \hat{H}_s}{ds} = \frac{d U_s}{ds}\hat{H} U_s^\dagger + U_s
- \hat{H} \frac{d U_s^\dagger}{ds}.
+ \frac{d \hat H(s)}{d s} = \frac{d U(s)}{ds} \hat{H}(0) U^\dagger(s) + U(s)
+ \hat{H} \frac{d U^\dagger(s)}{ds}.
 \label{eq:flow_long}
 \end{equation}
-Utilizing that for our particular form of $U_s$, we have that \be
-\hat{\eta}_s = \frac{d U_s}{ds} U_s^\dagger = - U_s \frac{d
-  U_s^\dagger}{ds} = -\hat{\eta}_s,
+Utilizing that for our particular form of $U(s)$, we have that \be
+\hat{\eta}(s) = \frac{d U_s}{ds} U^\dagger(s) = - U(s) \frac{d U^\dagger(s)}{ds} = -\hat{\eta}(s),
 \label{eq:eta}
 \ee we obtain that \be \frac{d \hat{H}_s}{ds} = \hat{\eta}_s \hat{H}_s
 - \hat{H}_s \hat{\eta}_s = \left[\hat{\eta}_s, \hat{H}_s \right].
