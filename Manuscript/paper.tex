@@ -9,9 +9,9 @@
 \usepackage{subfigure}
 
 \newcommand{\D}{\operatorname{d\!}}
-\newcommand{\ket}[1]{\left| #1 \right>}
-\newcommand{\bra}[1]{\left< #1 \right|}
-\newcommand{\braket}[2]{\left\langle #1 | #2\right\rangle}
+\newcommand{\ket}[1]{| #1 \rangle}
+\newcommand{\bra}[1]{\langle #1 |}
+\newcommand{\braket}[2]{\langle #1 | #2\rangle}
 \newcommand{\normord}[1]{\mathopen: #1 \mathclose:}
 
 \begin{document}
@@ -198,8 +198,8 @@ $v(\bm r, \bm r') \equiv |\bm r - \bm r'|^{-1}$ where $\bm r$ and $\bm r'$ are
 their positions.  The full many-body problem is described by the
 nonrelativistic Hamiltonian
 \begin{align*}
-  \hat H \equiv \sum_{p} \bigl(
-  t(\hat{\bm p}_p) + u(\hat{\bm r}_p)
+  \hat H \equiv \hat H^{\text o} + \hat V = \sum_{p} \bigl(
+    t(\hat{\bm p}_p) + u(\hat{\bm r}_p)
   \bigr) + \sum_{p < q} v(\hat{\bm r}_p, \hat{\bm r}_q)
 \end{align*}
 where $\hat{\bm p}_p$ and $\hat{\bm r}_p$ respectively denote the momentum and
@@ -207,9 +207,7 @@ position operators of a particle $p$.  The first summation is performed over
 every particle, while the the second summation is performed over every
 unordered pair of distinct particles (the ordering of $p$ is arbitrary).
 
-The full problem is not a trivial one.  We shall first consider a much simpler
-problem: a noninteracting Hamiltonian $\hat H^{\text o}$ in which the Coulomb
-interaction $v$ is removed:
+The full problem is not a trivial one.  We shall first consider a much simpler problem: the noninteracting part of the Hamiltonian, $\hat H^{\text o}$, which does not contain the Coulomb interaction $v$:
 \begin{align} \label{eq:onebodyhamiltonian}
   \hat H^{\text o} \equiv \sum_p \hat h^{\text o}_p
   \equiv \sum_{p} \bigl(
@@ -342,8 +340,10 @@ that has the opposite effect.  For fermions, the field operators $\hat a_p$
 and $\hat a_p^\dagger$ satisfy the essential anticommutation relations,
 \begin{align*}
   &\{\hat a_p, \hat a_q\} = \{\hat a_p^\dagger, \hat a_q^\dagger\} = 0, &
-  &\{\hat a_p, \hat a_q^\dagger\} = \delta_{p, q}.
+  &\{\hat a_p, \hat a_q^\dagger\} = [p = q].
 \end{align*}
+where $[P]$ denotes the Iverson bracket, which returns $1$ if the predicate $P$ is true and $0$ otherwise.  Here, $[p = q]$ is simply an alternative way to denote the Kronecker delta $\delta_{p, q}$, but this notation will be used later for other kinds of predicates as well.
+
 Operators can be rewritten in this formalism as well.  The one-body
 Hamiltonian $H^{\text o}$ defined by \eqref{eq:onebodyhamiltonian} can be
 rewritten in second quantization as
@@ -359,6 +359,10 @@ can likewise be extended to $\hat V$,
 \end{align}
 where $U_{p, q} \equiv \langle \varnothing_p | \hat U | \varnothing_q \rangle$ and
 $V_{p, q, r, s} \equiv \langle \varnothing_{p, q} | \hat V | \varnothing_{r, s} \rangle$.
+The complete Hamiltonian is given by their sum:
+\begin{align}
+  \hat{H} = \sum_{p, q} H^{\text o}_{p, q} \hat{a}_p^\dagger \hat{a}_q + \frac{1}{4} \sum_{p, q, r, s} V_{p, q, r, s} \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_r \hat{a}_s  \label{eq:vacuumhamiltonian}
+\end{align}
 Note that due to the antisymmetry present in the Slater determinants, we have
 the property that exchanging either $p$ with $q$ or $r$ with $s$ causes
 $V_{p, q, r, s}$ to reverse in sign, leading to a $4$-fold symmetry that is
@@ -390,12 +394,12 @@ not involve operators at all -- rather, they involve the calculation of
 
 The first correction that we will apply to our solution is that of the
 Hartree-Fock (HF) method.  Using the variational principle, we compute an
-approximate ground state $\Psi^{\text{HF}}$ by minimizing the energy
+approximate ground state $\Psi_{\text{HF}}$ by minimizing the energy
 \begin{align*}
-  E^{\text{HF}} \equiv \langle \Psi^{\text{HF}} | \hat H | \Psi^{\text{HF}} \rangle
+  E_{\Psi_{\text{HF}}} \equiv \langle \Psi_{\text{HF}} | \hat H | \Psi_{\text{HF}} \rangle
 \end{align*}
-with respect to $\Psi^{\text{HF}}$, subject to the restriction that
-$\Psi^{\text{HF}}$ is a single Slater determinant constructed from an unknown
+with respect to $\Psi_{\text{HF}}$, subject to the restriction that
+$\Psi_{\text{HF}}$ is a single Slater determinant constructed from an unknown
 set of $N$ orthonormal single-particle states.  We denote each unknown
 single-particle state $\psi_u$ by some label $u$.
 
@@ -414,24 +418,22 @@ linear transformation matrix $\bm C$:
   \psi_u \equiv \sum_p \phi_p C_{p, u}
 \end{align*}
 To ensure the orthonormality of the states, we assume the set of unknown
-states $\{\psi_u\}$ has as many elements as the set of $\{\phi_pp\}$ and
+states $\{\psi_u\}$ has as many elements as the set of $\{\phi_p\}$ and
 require the coefficient matrix $\bm C$ to be unitary.  While these conditions
 are more strict than necessary, they greatly simplify the calculations and
 allow the states $\{\psi_u\}$ to act as inputs for methods beyond HF.  The set
 of states $\psi$ now consists of $N$ \textit{occupied} states that participate
-in the Slater determinant $\Psi^{\text{HF}}$ and the remaining
+in the Slater determinant $\Psi_{\text{HF}}$ and the remaining
 \textit{unoccupied} states that do not.
 
 Since the coefficient matrix uniquely determines the unknown states, the
 variational problem has been reduced to that of solving of the coefficients
-$\bm C$ that minimize the energy $E$, which is given by
-\begin{align*}
-  E^{\text{HF}} = \sum_{\underline u} C_{p, \underline u}^* H_{p, q}^{\text o} C_{q, \underline u}^{}
-  + \sum_{\underline u, \underline v}
-  C_{p, \underline u}^* C_{q, \underline v}^* V_{p, q, r, s}^{} C_{r, \underline u}^{} C_{s, \underline v}^{}
-\end{align*}
-where the underlined indices indicate that the summation is over occupied
-states only.
+$\bm C$ that minimize the energy $E_{\Psi_{\text{HF}}}$, which is given by
+\begin{align}
+  E_{\Psi_{\text{HF}}} &= \sum_{u \in \text{occ.}} C_{p, u}^* H_{p, q}^{\text o} C_{q, u}^{}
+  \notag \\ &\hphantom{{}=} + \sum_{u, v \in \text{occ.}}
+  C_{p, u}^* C_{q, v}^* V_{p, q, r, s}^{} C_{r, u}^{} C_{s, v}^{} \label{eq:hfenergy}
+\end{align}
 
 Using the method of Lagrange multiplers, the minimization problem can be
 reduced to the solving of a nonlinear equation -- the \textit{Hartree-Fock
@@ -441,11 +443,11 @@ reduced to the solving of a nonlinear equation -- the \textit{Hartree-Fock
 \end{align}
 where the \textit{Fock matrix} $\bm F$ is defined as
 \begin{align} \label{eq:fock}
-  F_{p, q} \equiv H_{p, q}^{\text o} + \sum_{\underline u r s}
-  C_{r, \underline u}^* V_{p, r, q, s}^{} C_{s, \underline u}^{}
+  F_{p, q} \equiv H_{p, q}^{\text o} + \sum_{r, s \in \text{any}; u \in \text{occ.}}
+  C_{r, u}^* V_{p, r, q, s}^{} C_{s, u}^{}
 \end{align}
 and $\bm \epsilon$ is a vector of Lagrange multipliers with each element
-$\epsilon_u$ associated with a particular state $u$.  [[move this sentence
+$\epsilon_u$ associated with a particular state $\psi_u$.  [[move this sentence
 later to the intro to normal-ordering: While the Fock matrix $\bm F$ may
 appear to be an artificial Hamiltonian derived purely from the minimization
 problem, it can be considered the normal-ordered operator with respect to a
@@ -561,26 +563,29 @@ expectation value of zero:
 They are said to be \emph{normal-ordered} with respect to the vacuum state
 $\varnothing$.  It is possible to be normal-ordered with respect to a
 non-vacuum state, however.  Consider a Slater determinant $\Phi$ with
-$N_{\text F}$ occupied states.  One can define a set of \textit{quasiparticle
+$N_{\text F}$ occupied states:
+\begin{align*}
+  \ket{\Phi} \equiv \ket{\varnothing_{i_1, i_2, \ldots, i_{N_{\text F}}}}
+\end{align*}
+Here $\{i_1, i_2, \ldots, i_{N_{\text F}}\}$ is a set of $N_{\text F}$ indices that label the occupied states.
+
+One can define a set of \textit{quasiparticle
   field operators} $\hat b$ and $\hat b^\dagger$ that obey the same
 anticommutation relations as the $\hat a$ operators.  The field operators are
 defined as:
 \begin{align*}
-  \hat b_p \equiv \hat a_{\overline p} + \hat a_{\underline p}^\dagger = \begin{cases}
-    \hat a_{\overline p} & \text{if $\overline p$ is unoccupied in $\Phi$} \\
-    \hat a_{\underline p}^\dagger & \text{if $\underline p$ is occupied in $\Phi$}
+  \hat b_p \equiv \begin{cases}
+    \hat a_{p} & \text{if $p$ is unoccupied in $\Phi$} \\
+    \hat a_{p}^\dagger & \text{if $p$ is occupied in $\Phi$}
   \end{cases}
 \end{align*}
-Here we use an underline to indicate that only an occupied state is accepted
-and an overline to indicate only an unoccupied state is accepted.  If the
-state is not acceptable, then that term does not contribute to the overall
-expression.
+The quasiparticle field operators consider $\ket{\Phi}$ to be their ``vacuum state'' (sometimes called ``Fermi vaccuum''), even though it is not a true vacuum state.  Analogously, it is possible to construct any other Slater determinant by applying quasiparticle operators on top of the reference state:
+\begin{align*}
+  \ket{\Phi_{p_1, \ldots, p_k}} \equiv \hat{b}^\dagger_{p_1} \cdots \hat{b}^\dagger_{p_k} \ket{\Phi}
+\end{align*}
+In nonrelativistic many-body theory, it is expected that $\{p_1, \ldots, p_k\}$ contain a balanced number of occupied and unoccupied states to conserve the total number of particles.
 
-We can then define normal ordering with respect to the reference state $\Phi$:
-namely, rearrange an operator string such that every creation operator appears
-before an annihilation operator by repeatedly exchanging neighboring
-operators, with each exchange costing a minus sign.  In this form, it is
-guaranteed that the expectation value of the operator string with respect to
+We can then define normal ordering with respect to the reference state $\Phi$: namely, rearrange an operator string such that every quasiparticle creation operator appears before a quasiparticle annihilation operator by repeatedly exchanging neighboring operators, with each exchange costing a minus sign.  In this form, it is guaranteed that the expectation value of the operator string with respect to
 $\Phi$ is zero:
 \begin{align*}
 &\bra{\Phi} \hat{b}_p^\dagger \hat{b}_q \ket{\Phi} = 0 &
@@ -597,28 +602,23 @@ quasiparticle field operators, since the result is trivial to compute.  What
 is more interesting is the normal ordering of the physical field operators
 $\hat a$ and $\hat a^\dagger$ with respect to $\Phi$:
 \begin{align*}
-  \normord{\hat{a}_p^\dagger \hat{a}_q} =
-  -\hat{a}_{\underline q} \hat{a}_{\underline p}^\dagger
-  + \hat{a}_{\underline p}^\dagger \hat{a}_{\overline q}
-  + \hat{a}_{\overline p}^\dagger \hat{a}_{\underline q}
-  + \hat{a}_{\overline p}^\dagger \hat{a}_{\overline q} =
-  -\delta_{\underline q \underline p}
-  + \hat{a}_p^\dagger \hat{a}_q
+  \normord{\hat{a}_p^\dagger \hat{a}_q} &=
+  \hat{a}_p^\dagger \hat{a}_q - [p, q \in \text{occ.} \text{ and } p = q]
 \end{align*}
-This makes the normal ordering notation a useful and concise way of expressing
-the right-hand side.
+This makes the normal ordering notation a useful and concise way of expressing the right-hand side.
 
 Using the normal ordering formalism, we can rewrite the Hamiltonian
 $\hat H = \hat H^{\text o} + \hat V$ as
-\begin{align*}
-  \hat{H} = E + \sum_{p, q} F_{p, q} \normord{\hat{a}_p^\dagger \hat{a}_q} + \frac{1}{4} \sum_{p, q, r, s} V_{p, q, r, s} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_r \hat{a}_s}
-\end{align*}
+\begin{align}
+  \hat{H} = E_\Phi + \sum_{p, q} F_{p, q} \normord{\hat{a}_p^\dagger \hat{a}_q} + \frac{1}{4} \sum_{p, q, r, s} V_{p, q, r, s} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_r \hat{a}_s}
+  \label{eq:normordhamiltonian}
+\end{align}
 where
 \begin{align*}
-  E &= \sum_{\underline p} H^{\text o}_{\underline p, \underline p} + \frac{1}{2} \sum_{\underline p, \underline q} V_{\underline p, \underline q, \underline p, \underline q} \\
-  F_{p, q} &= H^{\text o}_{\underline p, \underline q} + \sum_{\underline r} V_{\underline p, \underline r, \underline q, \underline r} \\
+  E_\Phi &= \sum_{i \in \text{occ.}} H^{\text o}_{i, i} + \frac{1}{2} \sum_{i, j \in \text{occ.}} V_{i, j, i, j} \\
+  F_{p, q} &= H^{\text o}_{p, q} + \sum_{i \in \text{occ.}} V_{p, i, q, i} \\
 \end{align*}
-Notice that $E$ is in fact the Hartree-Fock energy and $F_{p, q}$ is the Fock matrix.
+Notice that $E_\Phi$ is in fact the Hartree-Fock energy and $F_{p, q}$ is the Fock matrix.  The representation of $\hat H$ in \eqref{eq:normordhamiltonian} is completely equivalent to that of $\hat H$ in \eqref{eq:vacuumhamiltonian}.  The only difference is that it shuffles the matrix elements so as to put the reference state $\ket{\Phi}$ into the main focus, as opposed to the vacuum state $\ket{\varnothing}$.  Where this makes a crucial difference is when the equations become \emph{truncated}.
 
 Integrating the flow equations (\ref{eq:imsrgode}), we face one of the
 major challenges of the SRG method, namely the generation of higher and higher
@@ -637,51 +637,53 @@ excellent results for several nuclei
 
 %[[---]]
 
-The commutator in the flow equations (\ref{eq:imsrgode}) guarantees that the
-IM-SRG wave function $U^\dagger(s) \ket{\Phi}$ can be expanded in terms of
+The commutator in the flow equations \eqref{eq:imsrgode} guarantees that the
+IM-SRG wave function $\hat U(s) \ket{\Phi}$ can be expanded in terms of
 linked diagrams only \cite{shavitt2009many,ISI:A1981MN73700014}, which
-suggests that IM-SRG is size-extensive. Regarding the quality of the SRG
+suggests that IM-SRG is size-extensive.  Regarding the quality of the SRG
 results, it means that the error introduced by truncating the many-body
 expansions scales linearly with the number of particles $N$.
 
-With this truncation, the generator
-$\hat{\eta}$ can be written as
-\[
-\hat{\eta} = \sum_{pq} \eta_{pq}^{(1)} \lbrace a_p^\dagger a_q\rbrace +
-\frac{1}{4}\sum\limits_{pqrs}\eta_{pqrs}^{(2)} \lbrace a_p^\dagger a_q^\dagger a_s
-a_r \rbrace,
-\]
-where $\eta_{pq}^{(1)}$ and $ \eta_{pqrs}^{(2)}$ are the one- and
-two-body elements, respectively. Making use of the permutation
-operator $ \hat{P}_{pq}f(p,q) = f(q,p)$, the IM-SRG(2) flow equations
-are given by
-% [[fix the equations to avoid requiring (anti)hermittivity in H]]
+With this truncation, the generator $\hat{\eta}$ can be written as
+\begin{align*}
+\hat{\eta} = \sum_{p, q} \eta_{p, q}^{[1]} \normord{\hat a_p^\dagger \hat a_q} +
+\frac{1}{4} \sum_{p, q, r, s}\eta_{p, q, r, s}^{[2]} \normord{\hat a_p^\dagger \hat a_q^\dagger \hat a_s \hat a_r}
+\end{align*}
+where $\eta_{p, q}^{[1]}$ and $ \eta_{p, q, r, s}^{[2]}$ are the one- and two-body elements respectively.  For consistency, we define $H^{[0]} \equiv E_\Phi$, $H^{[1]}_{p, q} \equiv F_{p, q}$, and $H^{[2]}_{p, q, r, s} \equiv V_{p, q, r, s}$ as well.
+
+By expanding the commutator in \eqref{eq:imsrgode} and dropping the three-body term, we obtain the IM-SRG(2) flow equations:
 \begin{widetext}
-\begin{align}
-\frac{\D E}{\D s} &= \sum_{\underline p, \overline q} \left(\eta_{\underline p, \overline q} F_{a, \underline p} - \eta_{\overline q, \underline p} f_{\underline p, \overline q}\right) + \frac{1}{2} \sum_{\underline p, \underline q, \overline r, \overline s} \eta_{\underline p, \underline q, \overline r, \overline s} V_{\overline r, \overline s, \underline p, \underline q},
-\label{eq:flow1}\\
-\frac{\D F_{p, q}}{ds}&= \sum_r \left( \eta_{pr}^{(1)}f_{rq} +
-\eta_{qr}^{(1)}f_{rp}\right) + \sum_{ia}\left( 1-\hat{P}_{ia}\right) \left(
-\eta_{ia}^{(1)}v_{apiq} - f_{ia}\eta_{apiq}^{(2)} \right) \notag \\ &
-+\frac{1}{2} \sum_{aij} \left( 1+\hat{P}_{pq}\right)
-\eta_{apij}^{(2)}v_{ijaq} + \frac{1}{2}\sum_{abi}\left( 1+\hat{P}_{pq}\right)
-\eta_{ipab}^{(2)}v_{abiq},
-\label{eq:flow2}
-\end{align}
-\begin{align}
-\frac{\D V_{p, q, r, s}}{ds} &= \sum_t \left( 1-\hat{P}_{pq} \right) \left(
-\eta_{pt}^{(1)}v_{tqrs}-f_{pt}\eta_{tqrs}^{(2)}\right) -\sum_t \left(
-1-\hat{P}_{rs} \right) \left( \eta_{tr}^{(1)} v_{pqts} - f_{tr}
-\eta_{pqts}^{(2)}\right) \notag \\ & +\frac{1}{2}\sum_{ab}
-\left(\eta_{pqab}^{(2)} v_{abrs} - v_{pqab}\eta_{abrs}^{(2)}\right) -
-\frac{1}{2}\sum_{ij} \left(\eta_{pqij}^{(2)} v_{ijrs} -
-v_{pqij}\eta_{ijrs}^{(2)}\right) \notag \\ & -\sum_{ia} \left( 1-
-\hat{P}_{ia} \right) \left( 1-\hat{P}_{pq}\right) \left( 1-\hat{P}_{rs} \right)
-\eta_{aqis}^{(2)}v_{ipar}.
-\label{eq:flow3}
+  \begin{align}
+    \frac{\mathrm{d} H^{[0]}}{\mathrm{d} s}
+    &= \tilde{\mathcal{A}}_{\eta, H} \Biggl(
+      \sum_{i, a} \eta^{[1]}_{i, a} H^{[1]}_{a, i}
+      + \frac{1}{4} \sum_{i, j, a, b} \eta^{[2]}_{i, j, a, b} H^{[2]}_{a, b, i, j}
+    \Biggr) \label{eq:flow0} \\
+    \frac{\mathrm{d} H^{[1]}_{p, q}}{\mathrm{d} s}
+    &= \tilde{\mathcal{A}}_{\eta, H} \Biggl(
+      \sum_{r} \eta^{[1]}_{p, r} H^{[1]}_{r, q}
+      - \frac{1}{2} \sum_{a, i, j} \eta^{[2]}_{i, j, a, q} H^{[2]}_{a, p, i, j}
+      + \frac{1}{2} \sum_{a, b, i} \eta^{[2]}_{i, p, a, b} H^{[2]}_{a, b, i, q}
+      + \sum_{a, i} \bigl(
+        \eta^{[1]}_{i, a} H^{[2]}_{a, p, i, q}
+        + \eta^{[2]}_{i, p, a, q} H^{[1]}_{a, i}
+      \bigr)
+    \Biggr) \label{eq:flow1} \\
+    \frac{\mathrm{d} H^{[2]}_{p, q, r, s}}{\mathrm{d} s}
+    &= \tilde{\mathcal{A}}_{\eta, H} \Biggl(
+      \tilde{\mathcal{A}}_{p, q} \tilde{\mathcal{A}}_{r, s}
+        \sum_{a, i} \eta^{[2]}_{i, p, a, r} H^{[2]}_{a, q, i, s}
+      + \frac{1}{2} \sum_{i, j} \eta^{[2]}_{i, j, r, s} H^{[2]}_{p, q, i, j}
+      + \frac{1}{2} \sum_{a, b} \eta^{[2]}_{p, q, a, b} H^{[2]}_{a, b, r, s}
+      \notag \\ &\hphantom{{}=\tilde{\mathcal{A}}_{\eta, H} \Biggl(}
+      + \sum_{t} \bigl(
+        \tilde{\mathcal{A}}_{p, q} \eta^{[1]}_{q, t} H^{[2]}_{p, t, r, s}
+        + \tilde{\mathcal{A}}_{r, s} \eta^{[2]}_{p, q, r, t} H^{[1]}_{t, s}
+      \bigr)
+    \Biggr) \label{eq:flow1}
 \end{align}
 \end{widetext}
-Note that for brevity, we skip all $s$-dependence in the equations.
+Note that for brevity, we skip all the $s$ parameter in the equations and make use of the unnormalized antisymmetrizer $\tilde{\mathcal{A}}_{x, y} f(x, y) \equiv f(x, y) - f(y, x)$.  We also use the convention that $i, j$ denote indices of occupied states, $a, b$ denote indices of unoccupied states, and $p, q, r, s, t$ denote indices of any state.
 
 \subsubsection*{Choice of generator}
 To determine the specific unitary transformation, one needs to specify
@@ -694,7 +696,7 @@ The original choice, suggested by Wegner \cite{PhysRepWegner0}, reads
 \begin{equation}
   \hat{\eta}_{\text{Wegner}}
   = \left[ \hat{H}_{\text{diagonal}}, \hat{H}_{\text{off-diagonal}} \right]
-  = \left[ \hat{H}_{\text{off-diagonal}}, \hat{H} \right].
+  = \left[ \hat{H}_{\text{diagonal}}, \hat{H} \right].
   \label{eq:etaWegner}
 \end{equation}
 The commutator between two Hermitian operators, $\hat{\eta}$ is always
