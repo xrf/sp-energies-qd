@@ -662,9 +662,9 @@ By expanding the commutator in \eqref{eq:imsrgode} and dropping the three-body t
     \frac{\mathrm{d} H^{[1]}_{p, q}}{\mathrm{d} s}
     &= \tilde{\mathcal{A}}_{\eta, H} \Biggl(
       \sum_{r} \eta^{[1]}_{p, r} H^{[1]}_{r, q}
-      - \frac{1}{2} \sum_{a, i, j} \eta^{[2]}_{i, j, a, q} H^{[2]}_{a, p, i, j}
-      + \frac{1}{2} \sum_{a, b, i} \eta^{[2]}_{i, p, a, b} H^{[2]}_{a, b, i, q}
-      + \sum_{a, i} \bigl(
+      - \frac{1}{2} \sum_{i, j, a} \eta^{[2]}_{i, j, a, q} H^{[2]}_{a, p, i, j}
+      + \frac{1}{2} \sum_{i, a, b} \eta^{[2]}_{i, p, a, b} H^{[2]}_{a, b, i, q}
+      + \sum_{i, a} \bigl(
         \eta^{[1]}_{i, a} H^{[2]}_{a, p, i, q}
         + \eta^{[2]}_{i, p, a, q} H^{[1]}_{a, i}
       \bigr)
@@ -672,7 +672,7 @@ By expanding the commutator in \eqref{eq:imsrgode} and dropping the three-body t
     \frac{\mathrm{d} H^{[2]}_{p, q, r, s}}{\mathrm{d} s}
     &= \tilde{\mathcal{A}}_{\eta, H} \Biggl(
       \tilde{\mathcal{A}}_{p, q} \tilde{\mathcal{A}}_{r, s}
-        \sum_{a, i} \eta^{[2]}_{i, p, a, r} H^{[2]}_{a, q, i, s}
+        \sum_{i, a} \eta^{[2]}_{i, p, a, r} H^{[2]}_{a, q, i, s}
       + \frac{1}{2} \sum_{i, j} \eta^{[2]}_{i, j, r, s} H^{[2]}_{p, q, i, j}
       + \frac{1}{2} \sum_{a, b} \eta^{[2]}_{p, q, a, b} H^{[2]}_{a, b, r, s}
       \notag \\ &\hphantom{{}=\tilde{\mathcal{A}}_{\eta, H} \Biggl(}
