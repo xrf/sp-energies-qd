@@ -136,13 +136,7 @@ particular, we compare the results obtained with five different \textit{ab
 \ref{sec:conclusions} concludes our work and gives perspectives for future
 work.
 
-The harmonic oscillator (HO) is a ubiquitous system in quantum physics. It is
-the basis for an extremely diverse set of many-body calculations -- in nuclear
-physics \cite{HjorthJensen1995}, quantum chemistry \cite{Helgaker2002}, and
-quantum dot calculations of solid state physics \cite{Reimann2002}. In these
-calculations, one typically seeks a few of the lowest eigenvalues $E_k$ and
-eigenvectors of a many-body Hamiltonian $\hat{H}$ that describes the full
-system by solving the Schr\"odinger equation,
+The harmonic oscillator (HO) is a ubiquitous system in quantum physics. It is the basis for an extremely diverse set of many-body calculations -- in nuclear physics \cite{HJORTHJENSEN1995125}, quantum chemistry \cite{Helgaker2002} [[missing ref for Helgaker 2002]], and quantum dot calculations of solid state physics \cite{reimann2002}. In these calculations, one typically seeks a few of the lowest eigenvalues $E_k$ and eigenvectors of a many-body Hamiltonian $\hat{H}$ that describes the full system by solving the Schr\"odinger equation,
 \begin{equation*}
 \hat{H} \ket{\psi_k} = E_k \ket{\psi_k}, \quad k \in \{1, 2, \ldots, k_{\text{max}}\}.
 \end{equation*}
@@ -162,17 +156,7 @@ analysis and give practical convergence estimates of HO basis expansions. It
 generalizes and refines the findings of a recent study of one-dimensional
 systems.\cite{Kvaal2007}
 
-The HO eigenfunctions are popular for several reasons. Many quantum systems,
-such as the quantum dot model considered here, can be considered perturbed
-harmonic oscillators \textit{per se}, thus the true eigenstates should be
-perturbations of the HO eigenstates.  Moreover, the HO has many beautiful
-properties, such as separability, invariance under orthogonal coordinate
-changes, and easily computable eigenfunctions, so that computing matrix
-elements of relevant operators becomes relatively simple.  Since HO
-eigenfunctions are defined on the \emph{entire} space in which particles live,
-a truncation of the spatial domain is unnecessary.  This avoids one of the
-main problems with approaches such as finite difference or finite element
-methods.\cite{RamMohan2002}
+The HO eigenfunctions are popular for several reasons. Many quantum systems, such as the quantum dot model considered here, can be considered perturbed harmonic oscillators \textit{per se}, thus the true eigenstates should be perturbations of the HO eigenstates.  Moreover, the HO has many beautiful properties, such as separability, invariance under orthogonal coordinate changes, and easily computable eigenfunctions, so that computing matrix elements of relevant operators becomes relatively simple.  Since HO eigenfunctions are defined on the \emph{entire} space in which particles live, a truncation of the spatial domain is unnecessary.  This avoids one of the main problems with approaches such as finite difference or finite element methods.\cite{RamMohan2002} [[Unknown citation]]
 
 
 \section{Formalism}
@@ -339,10 +323,10 @@ is $\hat a_p$, which is an \textit{annihilation operator} for the state $p$
 that has the opposite effect.  For fermions, the field operators $\hat a_p$
 and $\hat a_p^\dagger$ satisfy the essential anticommutation relations,
 \begin{align*}
-  &\{\hat a_p, \hat a_q\} = \{\hat a_p^\dagger, \hat a_q^\dagger\} = 0, &
-  &\{\hat a_p, \hat a_q^\dagger\} = [p = q].
+  &\{\hat a_p, \hat a_q\} = \{\hat a_p^\dagger, \hat a_q^\dagger\} = 0 &
+  &\{\hat a_p, \hat a_q^\dagger\} = \delta_{p, q}
 \end{align*}
-where $[P]$ denotes the Iverson bracket, which returns $1$ if the predicate $P$ is true and $0$ otherwise.  Here, $[p = q]$ is simply an alternative way to denote the Kronecker delta $\delta_{p, q}$, but this notation will be used later for other kinds of predicates as well.
+where $\delta_{p, q}$ denotes the Kronecker delta.
 
 Operators can be rewritten in this formalism as well.  The one-body
 Hamiltonian $H^{\text o}$ defined by \eqref{eq:onebodyhamiltonian} can be
@@ -394,17 +378,17 @@ not involve operators at all -- rather, they involve the calculation of
 
 The first correction that we will apply to our solution is that of the
 Hartree-Fock (HF) method.  Using the variational principle, we compute an
-approximate ground state $\Psi_{\text{HF}}$ by minimizing the energy
+approximate ground state $\Phi$ by minimizing the energy expectation value
 \begin{align*}
-  E_{\Psi_{\text{HF}}} \equiv \langle \Psi_{\text{HF}} | \hat H | \Psi_{\text{HF}} \rangle
+  E_{\Phi} \equiv \langle \Phi | \hat H | \Phi \rangle
 \end{align*}
-with respect to $\Psi_{\text{HF}}$, subject to the restriction that
-$\Psi_{\text{HF}}$ is a single Slater determinant constructed from an unknown
+with respect to $\Phi$, subject to the restriction that
+$\Phi$ is a single Slater determinant constructed from an unknown
 set of $N$ orthonormal single-particle states.  We denote each unknown
-single-particle state $\psi_u$ by some label $u$.
+single-particle state $\phi_{q}'$ by some label $q$.
 
 To make this computationally feasible, we further assume that the unknown
-states $\{\psi_u\}$ are built from a linear combination of known functions,
+states $\{\phi_q'\}$ are built from a linear combination of known functions,
 drawn from a finite set $\{\phi_p\}$.  This reduces the problem from an
 abstract mathematical one to a numerical linear algebra problem, with the
 caveat that this set of known functions must be chosen carefully to ensure
@@ -412,52 +396,42 @@ convergence.
 
 Assuming the interaction is not too strong, we can use the single-particle
 states $\{\phi_p\}$ of our noninteracting Hamiltonian as a basis for the
-unknown states $\{\psi_u\}$.  The two sets of states are then related by a
+unknown states $\{\phi'_u\}$.  The two sets of states are then related by a
 linear transformation matrix $\bm C$:
 \begin{align*}
-  \psi_u \equiv \sum_p \phi_p C_{p, u}
+  \phi_q' \equiv \sum_p \phi_p C_{p, q}
 \end{align*}
-To ensure the orthonormality of the states, we assume the set of unknown
-states $\{\psi_u\}$ has as many elements as the set of $\{\phi_p\}$ and
-require the coefficient matrix $\bm C$ to be unitary.  While these conditions
-are more strict than necessary, they greatly simplify the calculations and
-allow the states $\{\psi_u\}$ to act as inputs for methods beyond HF.  The set
-of states $\psi$ now consists of $N$ \textit{occupied} states that participate
-in the Slater determinant $\Psi_{\text{HF}}$ and the remaining
-\textit{unoccupied} states that do not.
+To ensure the orthonormality of the states, we assume the set of unknown states $\{\phi_q'\}$ has as many elements as the set of $\{\phi_p\}$ and require the coefficient matrix $\bm C$ to be unitary.  While these conditions are more strict than necessary, they greatly simplify the calculations and allow the states $\{\phi_q'\}$ to act as inputs for methods beyond HF.  The set of states $\{\phi_q'\}$ now consists of $N$ \textit{occupied} states that participate in the Slater determinant $\Phi$ and the remaining \textit{unoccupied} states that do not.
 
-Since the coefficient matrix uniquely determines the unknown states, the
-variational problem has been reduced to that of solving of the coefficients
-$\bm C$ that minimize the energy $E_{\Psi_{\text{HF}}}$, which is given by
+Since the coefficient matrix uniquely determines the unknown states, the variational problem has been reduced to that of solving of the coefficients $\bm C$ that minimize the energy $E_{\Phi}$, which is given by
 \begin{align}
-  E_{\Psi_{\text{HF}}} &= \sum_{u \in \text{occ.}} C_{p, u}^* H_{p, q}^{\text o} C_{q, u}^{}
-  \notag \\ &\hphantom{{}=} + \sum_{u, v \in \text{occ.}}
-  C_{p, u}^* C_{q, v}^* V_{p, q, r, s}^{} C_{r, u}^{} C_{s, v}^{} \label{eq:hfenergy}
+  E_{\Phi} &= \sum_{j} n_j H^{\text{o} \prime}_{j, j} + \sum_{j, k} n_j n_k V'_{j, k, j, k} \label{eq:hfenergy}
 \end{align}
+where the transformed operators are defined as
+\begin{align}
+  H^{\text{o} \prime}_{p, q} &\equiv \sum_{r, s} C_{r, p}^* H_{r, s}^{\text o} C_{s, q}^{} \label{eq:hftransform1} \\
+  V'_{p, q, r, s} &\equiv \sum_{t, u, v, w} C_{t, p}^* C_{u, q}^* V_{t, u, v, w}^{} C_{v, r}^{} C_{w, s}^{} \label{eq:hftransform2}
+\end{align}
+and the occupancy number $n_p$ is defined as
+\begin{align}
+  n_p \equiv \begin{cases}
+    1 & \text{if $p$ is an occupied state in $\Phi$} \\
+    0 & \text{if $p$ is an unoccupied state in $\Phi$}
+  \end{cases}
+\end{align}
+and further define $\bar n_p \equiv 1 - n_p$ as the complement.
 
-Using the method of Lagrange multiplers, the minimization problem can be
-reduced to the solving of a nonlinear equation -- the \textit{Hartree-Fock
-  equation}:
+With the method of Lagrange multipliers, the minimization problem can be reduced to the solving of a nonlinear equation -- the \textit{Hartree-Fock equation}:
 \begin{align} \label{eq:hartreefock}
   \bm F \bm C = \bm C \bm \epsilon
 \end{align}
 where the \textit{Fock matrix} $\bm F$ is defined as
 \begin{align} \label{eq:fock}
-  F_{p, q} \equiv H_{p, q}^{\text o} + \sum_{r, s \in \text{any}; u \in \text{occ.}}
-  C_{r, u}^* V_{p, r, q, s}^{} C_{s, u}^{}
+  F_{p, q} \equiv H_{p, q}^{\text o} + \sum_{r, s, j} n_j C_{r, j}^* V_{p, r, q, s}^{} C_{s, j}^{}
 \end{align}
-and $\bm \epsilon$ is a vector of Lagrange multipliers with each element
-$\epsilon_u$ associated with a particular state $\psi_u$.  [[move this sentence
-later to the intro to normal-ordering: While the Fock matrix $\bm F$ may
-appear to be an artificial Hamiltonian derived purely from the minimization
-problem, it can be considered the normal-ordered operator with respect to a
-non-vacuum state, as explained later.]]
+and $\bm \epsilon$ is a vector of Lagrange multipliers with each element $\epsilon_q$ associated with a particular state $\phi'_q$.
 
-The HF equation can be solved by an iterative technique: a solution $\bm C$
-can be fed into \eqref{eq:fock} and new solution can then obtained by solving
-the eigenvalue problem in \eqref{eq:hartreefock} using the Fock matrix
-obtained.  For the initial guess, we use the ground state of our
-noninteracting Hamiltonian, thus $\bm C$ is initially the identity matrix.
+The HF equation can be solved by an iterative technique: a solution $\bm C$ can be fed into \eqref{eq:fock} and new solution can then obtained by solving the eigenvalue problem in \eqref{eq:hartreefock} using the Fock matrix obtained.  For the initial guess, we use the ground state of our noninteracting Hamiltonian, thus $\bm C$ is initially the identity matrix.  After dozens of iterations, perhaps with the aid of a convergence acceleration technique (such as DIIS [[cite??] or Broyden's method [[cite?]]), one would usually reach a state of self-consistency where the solution converges to a fixed value.  This is the Hartree-Fock solution.
 
 Since HF restricts the ground state to a Slater determinant of single-particle
 states, it cannot provide an exact solution to a problem where correlations
@@ -467,10 +441,13 @@ state energy is thus by definition known as the \textit{correlation energy}.
 The focus of post-HF methods such as IM-SRG is to improve on the HF results,
 thus recovering parts of this missing energy.
 
-\subsection{The SRG methods}
+To make use of the HF solution as the reference state for future calculations, we transform the operators via \eqref{eq:hftransform1} and \eqref{eq:hftransform2}.  Therefore, the post-HF methods described in the next few sections generally use the transformed operators $\hat H^{\text{o} \prime}$ and $\hat V'$ as inputs.  However, for generality, we omit the prime symbols as the methods do not necessitate a state optimized by HF.
+
+\subsection{The IM-SRG method}
 \label{subsec:imsrgmethod}
 
-\subsubsection*{Similarity renormalization group methods}
+\subsubsection{Similarity renormalization group methods}
+\label{subsubsec:srgmethods}
 
 In similarity renormalization group (SRG) methods, one performs a continuous
 sequence of unitary transformations on a Hamiltonian operator $\hat H$ to
@@ -519,25 +496,11 @@ as a product, the full transformation $\hat U(s)$ is recovered:
   \equiv \lim_{\Delta s \to 0} \prod_{s = 0, \Delta s, \ldots}^{s = s'}
   \mathrm{e}^{\hat \eta(s) \Delta s}
 \end{align*}
-Here $\mathcal T_s$ is a notational device that denotes $s$-ordering: a
-reordering of the $\eta(s)$ operator products expanded from the exponential
-with respect to $s$ in ascending order \cite[\S 6.1]{reimann2013quantum}.
-This is analogous to the usual time-ordering from quantum field theory.
+Here $\mathcal T_s$ is a notational device that denotes $s$-ordering: a reordering of the $\hat{\eta}(s)$ operator products expanded from the exponential with respect to $s$ in ascending order \cite[\S 6.1]{reimann2013quantum}.  This is analogous to the usual time-ordering from quantum field theory.
 
-The operator $\hat{\eta}(s)$ can be chosen to suppress certain undesirable
-parts of the Hamiltonian matrix, which can be considered the ``off-diagonal''
-parts in a loose sense.  The ``off-diagonal'' parts could be elements far away
-from the matrix diagonal, in which case the evolution drives the matrix
-towards a band-diagonal form.  Or, the ``off-diagonal'' parts could be
-elements that couple the ground state from the excited state, in which case
-the evolution drives the matrix towards a block-diagonal form that isolates
-the ground state.  Or, the ``off-diagonal'' could be literally the elements
-that do not lie on the diagonal, in which case the evolution would simply
-diagonalize the Hamiltonian.  Through different choices of $\hat{\eta}_s$, the
-SRG evolution can be controlled and adapted to the features of a particular
-problem.
+The operator $\hat{\eta}$ can be chosen to suppress certain undesirable parts of the Hamiltonian matrix, which can be considered the ``off-diagonal'' parts in a loose sense.  The ``off-diagonal'' parts could be elements far away from the matrix diagonal, in which case the evolution drives the matrix towards a band-diagonal form.  Or, the ``off-diagonal'' parts could be elements that couple the ground state from the excited state, in which case the evolution drives the matrix towards a block-diagonal form that isolates the ground state.  Or, the ``off-diagonal'' could be literally the elements that do not lie on the diagonal, in which case the evolution would simply diagonalize the Hamiltonian.  Through different choices of $\hat{\eta}$, the SRG evolution can be controlled and adapted to the features of a particular problem.
 
-\subsubsection*{In-medium SRG}
+\subsubsection{Evolving the flow equation in medium}
 
 The SRG flow equation \eqref{eq:imsrgode} can be solved in the second
 quantization formalism described in Section \ref{subsec:modelHamiltonian},
@@ -567,269 +530,155 @@ $N_{\text F}$ occupied states:
 \begin{align*}
   \ket{\Phi} \equiv \ket{\varnothing_{i_1, i_2, \ldots, i_{N_{\text F}}}}
 \end{align*}
-Here $\{i_1, i_2, \ldots, i_{N_{\text F}}\}$ is a set of $N_{\text F}$ indices that label the occupied states.
-
-One can define a set of \textit{quasiparticle
-  field operators} $\hat b$ and $\hat b^\dagger$ that obey the same
-anticommutation relations as the $\hat a$ operators.  The field operators are
-defined as:
+where $\{i_1, i_2, \ldots, i_{N_{\text F}}\}$ is a set of $N_{\text F}$ indices that label the occupied states.  One can define a set of \textit{quasiparticle field operators} $\hat b$ and $\hat b^\dagger$ that obey the same anticommutation relations as the $\hat a$ operators:
 \begin{align*}
-  \hat b_p \equiv \begin{cases}
-    \hat a_{p} & \text{if $p$ is unoccupied in $\Phi$} \\
-    \hat a_{p}^\dagger & \text{if $p$ is occupied in $\Phi$}
-  \end{cases}
+  \hat b_p \equiv \bar n_p \hat a_{p} + n_p \hat a_{p}^\dagger
 \end{align*}
-The quasiparticle field operators consider $\ket{\Phi}$ to be their ``vacuum state'' (sometimes called ``Fermi vaccuum''), even though it is not a true vacuum state.  Analogously, it is possible to construct any other Slater determinant by applying quasiparticle operators on top of the reference state:
+The quasiparticle field operators treat $\ket{\Phi}$ as their ``vacuum state'' (sometimes called ``Fermi vaccuum'' in an abstract sense), despite not being the physical vacuum state.  As before, it is possible to construct arbitrary Slater determinants by applying quasiparticle operators to the reference state:
 \begin{align*}
   \ket{\Phi_{p_1, \ldots, p_k}} \equiv \hat{b}^\dagger_{p_1} \cdots \hat{b}^\dagger_{p_k} \ket{\Phi}
 \end{align*}
-In nonrelativistic many-body theory, it is expected that $\{p_1, \ldots, p_k\}$ contain a balanced number of occupied and unoccupied states to conserve the total number of particles.
+In nonrelativistic many-body theory, it is expected that $\{p_1, \ldots, p_k\}$ contain a balanced number of occupied and unoccupied states to conserve the total number of particles; otherwise, the Slater determinant would represent a different system.
 
-We can then define normal ordering with respect to the reference state $\Phi$: namely, rearrange an operator string such that every quasiparticle creation operator appears before a quasiparticle annihilation operator by repeatedly exchanging neighboring operators, with each exchange costing a minus sign.  In this form, it is guaranteed that the expectation value of the operator string with respect to
-$\Phi$ is zero:
-\begin{align*}
-&\bra{\Phi} \hat{b}_p^\dagger \hat{b}_q \ket{\Phi} = 0 &
-&\bra{\Phi} \hat{b}_p^\dagger \hat{b}_q^\dagger \hat{b}_s \hat{b}_r \ket{\Phi} = 0
-\end{align*}
-We denote normal ordering of an operator string with respect to $\Phi$ by a
-pair of colons:
+We may then define \emph{normal ordering with respect to the reference state} $\Phi$, a notational device that rearranges a string of operators such that every quasiparticle creation operator appears before a quasiparticle annihilation operator by repeatedly exchanging neighboring operators, with each exchange incurring a change in sign.  A simple example would be the normal ordering of a pair of field operators such as:
 \begin{align*}
   \normord{\hat{b}_p \hat{b}_q^\dagger} =
   -\hat{b}_q^\dagger \hat{b}_p
 \end{align*}
-It is not particularly interesting to examine normal ordering of the
-quasiparticle field operators, since the result is trivial to compute.  What
-is more interesting is the normal ordering of the physical field operators
-$\hat a$ and $\hat a^\dagger$ with respect to $\Phi$:
+Here, we denote normal ordering of an operator string with respect to $\Phi$ by a pair of colons.  The expectation value of a normal ordered string of operators with respect to $\Phi$ is guaranteed to vanish:
+\begin{align*}
+&\bra{\Phi} \hat{b}_p^\dagger \hat{b}_q \ket{\Phi} = 0 &
+&\bra{\Phi} \hat{b}_p^\dagger \hat{b}_q^\dagger \hat{b}_s \hat{b}_r \ket{\Phi} = 0
+\end{align*}
+The normal ordering of the quasiparticle field operators are straightforward to compute, but what is more interesting is the normal ordering of the physical field operators $\hat a$ and $\hat a^\dagger$ with respect to $\Phi$:
 \begin{align*}
   \normord{\hat{a}_p^\dagger \hat{a}_q} &=
-  \hat{a}_p^\dagger \hat{a}_q - [p, q \in \text{occ.} \text{ and } p = q]
+  \hat{a}_p^\dagger \hat{a}_q - n_p \delta_{p, q}
 \end{align*}
-This makes the normal ordering notation a useful and concise way of expressing the right-hand side.
-
-Using the normal ordering formalism, we can rewrite the Hamiltonian
-$\hat H = \hat H^{\text o} + \hat V$ as
+The normal ordering notation thus provides a concise way of expressing the right-hand side.  In this new notation, we can rewrite the Hamiltonian $\hat H = \hat H^{\text o} + \hat V$ in its \emph{normal-ordered representation}:
 \begin{align}
-  \hat{H} = E_\Phi + \sum_{p, q} F_{p, q} \normord{\hat{a}_p^\dagger \hat{a}_q} + \frac{1}{4} \sum_{p, q, r, s} V_{p, q, r, s} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_r \hat{a}_s}
+  \hat{H} = H^{[0]} + \sum_{p, q} H^{[1]}_{p, q} \normord{\hat{a}_p^\dagger \hat{a}_q} + \frac{1}{4} \sum_{p, q, r, s} H^{[2]}_{p, q, r, s} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_r \hat{a}_s}
   \label{eq:normordhamiltonian}
 \end{align}
 where
 \begin{align*}
-  E_\Phi &= \sum_{i \in \text{occ.}} H^{\text o}_{i, i} + \frac{1}{2} \sum_{i, j \in \text{occ.}} V_{i, j, i, j} \\
-  F_{p, q} &= H^{\text o}_{p, q} + \sum_{i \in \text{occ.}} V_{p, i, q, i} \\
+  H^{[0]} &\equiv \sum_{i} n_i H^{\text o}_{i, i} + \frac{1}{2} \sum_{i, j} n_i n_j V_{i, j, i, j} \\
+  H^{[1]}_{p, q} &\equiv H^{\text o}_{p, q} + \sum_{i} n_i V_{p, i, q, i} \\
+  H^{[2]}_{p, q, r, s} &\equiv V_{p, q, r, s} \\
 \end{align*}
-Notice that $E_\Phi$ is in fact the Hartree-Fock energy and $F_{p, q}$ is the Fock matrix.  The representation of $\hat H$ in \eqref{eq:normordhamiltonian} is completely equivalent to that of $\hat H$ in \eqref{eq:vacuumhamiltonian}.  The only difference is that it shuffles the matrix elements so as to put the reference state $\ket{\Phi}$ into the main focus, as opposed to the vacuum state $\ket{\varnothing}$.  Where this makes a crucial difference is when the equations become \emph{truncated}.
+If $\Phi$ is a state optimized by the HF method, then $H^{[0]}$ is simply the HF energy $E_\Phi$ and $H^{[1]}_{p, q}$ is the Fock matrix $F_{p, q}$.  The normal-ordered representation of $\hat H$ in \eqref{eq:normordhamiltonian} is completely equivalent to that of $\hat H$ in \eqref{eq:vacuumhamiltonian}.  The only difference is that it rearranges the matrix elements so as to emphasize the reference state $\Phi$ rather than vacuum state $\ket{\varnothing}$.  This makes a critical difference when the expressions containing 3-body or higher terms are \emph{truncated} to only 2-body.  If the reference state $\Phi$ is good approximation of the true solution $\Psi$, then the importance of the higher-body parts of the Hamiltonian are greatly reduced.
 
-Integrating the flow equations (\ref{eq:imsrgode}), we face one of the
-major challenges of the SRG method, namely the generation of higher and higher
-order interaction terms during the flow.  With each evaluation of the
-commutator, the Hamiltonian gains terms of higher order, and these induced
-contributions will in subsequent integration steps contribute to terms of
-lower order.  In principle, this continues to infinity.
+Higher-body operators arise from integrating the flow equations (\ref{eq:imsrgode}), which is one of the major challenges of the SRG method.  With each evaluation of the commutator, the Hamiltonian gains terms of higher order, and these induced contributions will in subsequent integration steps feed back into terms of lower order.  Thus, the higher-body contributions are not irrelevant to the final solution even if only the ground state energy is of interest.
 
-To make the method computationally possible, we must close the IM-SRG flow
-equations: we are thus forced to truncate the equations to a certain order. We
-choose to truncate both $\hat{H}(s)$ and $\hat{\eta}(s)$ at the two-body
-level, an approach which is referred to as IM-SRG(2).  This normal-ordered
-two-body approximation appears to be sufficient in many cases and has yielded
-excellent results for several nuclei
-\cite{PhysRevLett.106.222502,PhysRevLett.109.052501,IMSRG}.
+Computationally, higher-body terms are difficult to handle: the amount of memory required to store an $r$-body operator is grows exponentially with $r$.  Moreover, the flow equations are capable of generating an infinite number of higher-body terms as the Hamiltonian evolves.  Thus, to make the method tractable, we must close the IM-SRG flow equations, truncating the equations to a finite order.  In this paper, we truncate both $\hat{H}$ and $\hat{\eta}$ at the two-body level, an approach known as IM-SRG(2).  This normal-ordered two-body approximation appears to be sufficient in many cases and has yielded excellent results for several nuclei \cite{PhysRevLett.106.222502,PhysRevLett.109.052501,IMSRG}.
 
-%[[---]]
-
-The commutator in the flow equations \eqref{eq:imsrgode} guarantees that the
-IM-SRG wave function $\hat U(s) \ket{\Phi}$ can be expanded in terms of
-linked diagrams only \cite{shavitt2009many,ISI:A1981MN73700014}, which
-suggests that IM-SRG is size-extensive.  Regarding the quality of the SRG
-results, it means that the error introduced by truncating the many-body
-expansions scales linearly with the number of particles $N$.
-
-With this truncation, the generator $\hat{\eta}$ can be written as
+With the truncation, the generator $\hat{\eta}$ can be written as a generic antihermitian 2-body operator:
 \begin{align*}
 \hat{\eta} = \sum_{p, q} \eta_{p, q}^{[1]} \normord{\hat a_p^\dagger \hat a_q} +
 \frac{1}{4} \sum_{p, q, r, s}\eta_{p, q, r, s}^{[2]} \normord{\hat a_p^\dagger \hat a_q^\dagger \hat a_s \hat a_r}
 \end{align*}
-where $\eta_{p, q}^{[1]}$ and $ \eta_{p, q, r, s}^{[2]}$ are the one- and two-body elements respectively.  For consistency, we define $H^{[0]} \equiv E_\Phi$, $H^{[1]}_{p, q} \equiv F_{p, q}$, and $H^{[2]}_{p, q, r, s} \equiv V_{p, q, r, s}$ as well.
+where $\eta_{p, q}^{[1]}$ and $ \eta_{p, q, r, s}^{[2]}$ respectively are its one- and two-body matrix elements normal ordered with respect to $\Phi$.
 
-By expanding the commutator in \eqref{eq:imsrgode} and dropping the three-body term, we obtain the IM-SRG(2) flow equations:
+By expanding the commutator in \eqref{eq:imsrgode} without consideration of the three-body term, we obtain the matrix-element form of the IM-SRG(2) flow equation:
+\begin{align}
+    \frac{\D H^{[r]}}{\D s} = C^{[r]}(\eta, H) \label{eq:flowmxe}
+\end{align}
+where
+\begin{align}
+  C^{[r]}(A, B) &\equiv \tilde{\mathcal{A}}_{A, B} D^{[r]}(A, B) \text{ for any $r$, $A$, $B$} \label{eq:commutmxe} \\
+  \tilde{\mathcal{A}}_{x, y} f(x, y) &\equiv f(x, y) - f(y, x) \text{ for any $x$, $y$, $f$}
+\end{align}
+and finally
 \begin{widetext}
   \begin{align}
-    \frac{\mathrm{d} H^{[0]}}{\mathrm{d} s}
-    &= \tilde{\mathcal{A}}_{\eta, H} \Biggl(
-      \sum_{i, a} \eta^{[1]}_{i, a} H^{[1]}_{a, i}
-      + \frac{1}{4} \sum_{i, j, a, b} \eta^{[2]}_{i, j, a, b} H^{[2]}_{a, b, i, j}
-    \Biggr) \label{eq:flow0} \\
-    \frac{\mathrm{d} H^{[1]}_{p, q}}{\mathrm{d} s}
-    &= \tilde{\mathcal{A}}_{\eta, H} \Biggl(
-      \sum_{r} \eta^{[1]}_{p, r} H^{[1]}_{r, q}
-      - \frac{1}{2} \sum_{i, j, a} \eta^{[2]}_{i, j, a, q} H^{[2]}_{a, p, i, j}
-      + \frac{1}{2} \sum_{i, a, b} \eta^{[2]}_{i, p, a, b} H^{[2]}_{a, b, i, q}
-      + \sum_{i, a} \bigl(
-        \eta^{[1]}_{i, a} H^{[2]}_{a, p, i, q}
-        + \eta^{[2]}_{i, p, a, q} H^{[1]}_{a, i}
-      \bigr)
-    \Biggr) \label{eq:flow1} \\
-    \frac{\mathrm{d} H^{[2]}_{p, q, r, s}}{\mathrm{d} s}
-    &= \tilde{\mathcal{A}}_{\eta, H} \Biggl(
+    D^{[0]}(A, B)
+    &\equiv
+      \sum_{i, a} n_i \bar{n}_a A^{[1]}_{i, a} B^{[1]}_{a, i}
+      + \frac{1}{4} \sum_{i, j, a, b} n_i n_j \bar{n}_a \bar{n}_b A^{[2]}_{i, j, a, b} B^{[2]}_{a, b, i, j}
+      \label{eq:flow0} \\
+    D^{[1]}_{p, q}(A, B)
+    &\equiv
+      \sum_{r} A^{[1]}_{p, r} B^{[1]}_{r, q}
+      - \frac{1}{2} \sum_{i, j, a} n_i n_j \bar{n}_a A^{[2]}_{i, j, a, q} B^{[2]}_{a, p, i, j}
+      + \frac{1}{2} \sum_{i, a, b} n_i \bar{n}_a \bar{n}_b A^{[2]}_{i, p, a, b} B^{[2]}_{a, b, i, q}
+      \notag \\
+    &\hphantom{=}
+      + \sum_{i, a} n_i \bar{n}_a \left(
+        A^{[1]}_{i, a} B^{[2]}_{a, p, i, q}
+        + A^{[2]}_{i, p, a, q} B^{[1]}_{a, i}
+      \right)
+      \label{eq:flow1} \\
+    D^{[2]}_{p, q, r, s}(A, B)
+    &\equiv
       \tilde{\mathcal{A}}_{p, q} \tilde{\mathcal{A}}_{r, s}
-        \sum_{i, a} \eta^{[2]}_{i, p, a, r} H^{[2]}_{a, q, i, s}
-      + \frac{1}{2} \sum_{i, j} \eta^{[2]}_{i, j, r, s} H^{[2]}_{p, q, i, j}
-      + \frac{1}{2} \sum_{a, b} \eta^{[2]}_{p, q, a, b} H^{[2]}_{a, b, r, s}
-      \notag \\ &\hphantom{{}=\tilde{\mathcal{A}}_{\eta, H} \Biggl(}
-      + \sum_{t} \bigl(
-        \tilde{\mathcal{A}}_{p, q} \eta^{[1]}_{q, t} H^{[2]}_{p, t, r, s}
-        + \tilde{\mathcal{A}}_{r, s} \eta^{[2]}_{p, q, r, t} H^{[1]}_{t, s}
-      \bigr)
-    \Biggr) \label{eq:flow1}
+        \sum_{i, a} n_i \bar{n}_a A^{[2]}_{i, p, a, r} B^{[2]}_{a, q, i, s}
+      + \frac{1}{2} \sum_{i, j} n_i n_j A^{[2]}_{i, j, r, s} B^{[2]}_{p, q, i, j}
+      + \frac{1}{2} \sum_{a, b} \bar{n}_a \bar{n}_b A^{[2]}_{p, q, a, b} B^{[2]}_{a, b, r, s}
+      \notag \\
+    &\hphantom{=}
+      + \sum_{t} \left(
+        \tilde{\mathcal{A}}_{p, q} A^{[1]}_{q, t} B^{[2]}_{p, t, r, s}
+        + \tilde{\mathcal{A}}_{r, s} A^{[2]}_{p, q, r, t} B^{[1]}_{t, s}
+      \right)
+      \label{eq:flow2}
 \end{align}
 \end{widetext}
-Note that for brevity, we skip all the $s$ parameter in the equations and make use of the unnormalized antisymmetrizer $\tilde{\mathcal{A}}_{x, y} f(x, y) \equiv f(x, y) - f(y, x)$.  We also use the convention that $i, j$ denote indices of occupied states, $a, b$ denote indices of unoccupied states, and $p, q, r, s, t$ denote indices of any state.
+\begin{figure}
+\includegraphics[width=.48\textwidth]{fig-diagrams-imsrg}
+\caption{Diagrammatic representation of $C^{[r]}(\circ, \bullet)$ in \eqref{eq:commutmxe} that forms part of the IM-SRG flow equation \eqref{eq:flowmxe}.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams \cite{HUGENHOLTZ1957481} as described in \cite{shavitt2009many} \S 4.4.3).}
+\label{fig:diagrams-imsrg}
+\end{figure}
+The equations can be derived directly from the anticommutation relations of the field operators, but it is more convenient to use Wick's theorem [[ref]] or, even more efficiently, diagrammatic techniques [[ref]] to arrive at the results.  In particular, the diagrammatic representation of antisymmetrized matrix elements are shown in Figure \ref{fig:diagrams-imsrg}.
 
-\subsubsection*{Choice of generator}
-To determine the specific unitary transformation, one needs to specify
-the generator~$\hat{\eta}$. Through different choices, the SRG flow
-can be adapted to the features of a particular problem.
+The commutator in the flow equations \eqref{eq:imsrgode} guarantees that the IM-SRG state $\hat U(s) \ket{\Phi}$ can be expanded in terms of \emph{linked diagrams} only \cite{shavitt2009many,ISI:A1981MN73700014}, which demonstrates that IM-SRG is size-extensive.  Regarding the quality of the SRG results, it means that the error introduced by truncating the many-body expansions scales linearly with the number of particles $N$.
 
-\subsubsection*{Wegner's canonical generator}
+\subsubsection{Wegner's canonical generator}
 
-The original choice, suggested by Wegner \cite{PhysRepWegner0}, reads
+To determine the specific unitary transformation, one needs to specify the generator $\hat{\eta}$.  Through different choices, the SRG flow can be adapted to the features of a particular problem.
+
+The original choice suggested by Wegner \cite{PhysRepWegner0} reads
 \begin{equation}
   \hat{\eta}_{\text{Wegner}}
-  = \left[ \hat{H}_{\text{diagonal}}, \hat{H}_{\text{off-diagonal}} \right]
-  = \left[ \hat{H}_{\text{diagonal}}, \hat{H} \right].
+  = [\hat{H}^{\text{d}}, \hat{H} - \hat{H}^{\text{d}}]
+  = [\hat{H}^{\text{d}}, \hat{H}]
   \label{eq:etaWegner}
 \end{equation}
-The commutator between two Hermitian operators, $\hat{\eta}$ is always
-antihermitian, as required for a generator.  Additionally, it can be shown that the commutator to suppress the off-diagonal matrix elements
-\cite{kehrein2006flow}. In general, matrix elements far off the diagonal,
-where the Hamiltonian connects states with large energy differences, are
-suppressed much faster than elements closer to the diagonal. \\ Evaluating the
-commutator, we get for the one- and two-body elements
+where $\hat{H}^{\text{d}}$ denotes the ``diagonal'' part of the Hamiltonian (and $\hat{H} - \hat{H}^{\text{d}}$ denotes the ``off-diagonal'' part) in the abstract sense described at the end of section \ref{subsubsec:srgmethods}.
+
+The commutator between two Hermitian operators, $\hat{\eta}$ is always antihermitian, as required for a generator.  Additionally, it can be shown that the commutator has the property of suppressing off-diagonal matrix elements as the state evolves via the flow equation \cite{kehrein2006flow}, as we would like.  In particular, matrix elements far off the diagonal, where the Hamiltonian couples states with large energy differences, are suppressed much faster than elements closer to the diagonal.
+
+The matrix elements of the generator can be evaluated using \eqref{eq:commutmxe} to \eqref{eq:flow2}.  If assume that $\hat{H}^{\text{d}}$ does not couple the ground state to the excited states, the equations can be simplified considerably: [[clean up this equation]]
 \begin{align*}
-\eta_{pq}^{(1)} = & \sum_{r}\left( f_{pr}^d f_{rq} - f_{pr} f_{rq}^d \right)
-+ f_{pq} v_{qppq}^d \left( n_q - n_p \right) \\ \eta_{pqrs}^{(2)} = & -
-\sum_t \left\lbrace \left( 1-\hat{P}_{pq} \right) f_{pt} v_{tqrs}^d - \left( 1 -
-\hat{P}_{rs} \right) f_{tr} v_{pqts}^d \right\rbrace \notag \\ & + \sum_t
-\left\lbrace \left( 1 - \hat{P}_{pq} \right) f_{pt}^d v_{tqrs} - \left( 1 -
-\hat{P}_{rs} \right) f_{tr}^d v_{pqts} \right\rbrace \notag \\ & +
-\frac{1}{2} \sum_{tu} (1 - n_t - n_u) \left( v_{pqtu}^d v_{turs} -
-v_{pqtu} v_{turs}^d \right) \notag \\ & + \sum_{tu} \left( n_t - n_u \right) \left(
-1 - \hat{P}_{pq} \right) \left( 1 - \hat{P}_{rs} \right) v_{tpur}^d v_{uqts},
+\eta_{pq}^{(1)} = & \sum_{r} \left(f_{pr}^d f_{rq} - f_{pr} f_{rq}^d \right) + f_{pq} v_{qppq}^d \left( n_q - n_p \right) \\ \eta_{pqrs}^{(2)} = & - \sum_t \left\lbrace \tilde{\mathcal{A}}_{p, q} f_{pt} v_{tqrs}^d - \tilde{\mathcal{A}}_{r, s} f_{tr} v_{pqts}^d \right\rbrace \notag \\ & + \sum_t \left\lbrace \tilde{\mathcal{A}}_{p, q} f_{pt}^d v_{tqrs} - \tilde{\mathcal{A}}_{r, s} f_{tr}^d v_{pqts} \right\rbrace \notag \\ & + \frac{1}{2} \sum_{tu} (1 - n_t - n_u) \left( v_{pqtu}^d v_{turs} - v_{pqtu} v_{turs}^d \right) \notag \\ & + \sum_{tu} \left( n_t - n_u \right) \tilde{\mathcal{A}}_{p, q} \tilde{\mathcal{A}}_{r, s} v_{tpur}^d v_{uqts},
 \end{align*}
-where we use the standard notation
-\[
-n_p = \begin{cases} 1, & \mbox{if } p< \epsilon_F \quad(p\;\mbox{is
-    hole state})\\ 0, &\mbox{if } p> \epsilon_F \quad(p\;\mbox{is
-    particle state})\\
-\end{cases}.
-\]
 
-\subsubsection*{White's generator}
-Apart from this canonical generator, there exist several other ones in
-literature. One choice, proposed by White
-\cite{White:cond-mat0201346}, makes numerical approaches much
-more efficient.  The problem with Wegner's generator is the widely
-varying decaying speeds of the elements, removing first terms with
-large energy differences and then subsequently those ones with smaller
-energy separations.  That way the flow equations become a stiff set of
-coupled differential equations, which often gets numerically
-unstable.
+\subsubsection{White's generator}
 
-White takes an alternative approach, which is especially
-suited for problems where one is interested in the ground state of a
-system. Instead of driving all off-diagonal elements of the
-Hamiltonian to zero, he focuses solely on those ones that are
-connected to the reference state $|\Phi_0\rangle$, aiming to decouple
-the reference state from the remaining Hamiltonian. With a suitable
-transformation, the elements would decay near the same rate, solving
-the stiffness problem in the flow equations.  The generator is
-explicitly constructed the following way
-\cite{PhysRevLett.106.222502,White:cond-mat0201346}
+Apart from Wegner's choice of the generator, there exist several other ones in literature. One choice, proposed by White \cite{White:cond-mat0201346}, makes numerical approaches much more efficient.  The problem with Wegner's generator is the widely varying decaying speeds of the Hamiltonian matrix elements.  Terms with large energy separations from the ground state are suppressed initially, followed by those with smaller energy separations.  This leads to stiffness in the flow equation, leading to numerical difficulties in solving the set of coupled differential equations.
+
+White takes an alternative approach, which is especially suited for problems where one is interested in the ground state of a system.  Firstly, instead of driving all off-diagonal elements of the Hamiltonian to zero, he focuses solely on those ones that are connected to the reference state $\Phi$, aiming to decouple the reference state from the remaining Hamiltonian.  This reduces the amount of change performed on the Hamiltonian, which can reduce the accuracy loss resulting from the truncated higher-body terms.  Secondly, the rate of decay in Hamiltonian matrix elements are approximately normalized by dividing the generator matrix elements by an appropriate factor.  This reduces the stiffness of the flow equations.
+
+The generator is explicitly constructed the following way \cite{PhysRevLett.106.222502,White:cond-mat0201346}
 \begin{align}
-\hat{\eta}_{\text{White}} &\equiv \hat{\eta}'_{\text{White}} - \hat{\eta}'{}^\dagger_{\text{White}} \text{ where} \notag \\
-\hat{\eta}'_{\text{White}} &\equiv \sum_{ai} \frac{f_{ai}}{f_a-f_i-v_{aiai}}\lbrace a_a^\dagger a_i\rbrace \notag \\ & + \sum_{abij}
-\frac{v_{abij}}{f_a+f_b-f_i-f_j+A_{abij}}\lbrace a_a^\dagger a_b^\dagger a_j
-a_i\rbrace,
-\label{eq:WhiteFull}
+\hat{\eta}_{\text{White}} &\equiv \hat{\eta}' - \hat{\eta}'{}^\dagger
 \end{align}
-with $f_p \equiv f_{pp}$ and
-\[
-A_{abij} = v_{abab} + v_{ijij} - v_{aiai} - v_{ajaj} - v_{bibi} -
-v_{bjbj}.
+where
+\begin{align}
+\eta^{\prime [1]}_{a, i} &\equiv \frac{\bar{n}_a n_i H^{[1]}_{a, i}}{H^{[1]}_{a, a} - H^{[1]}_{i, i} - H^{[2]}_{a, i, a, i}}
+\label{eq:WhiteFull1} \\
+\eta^{\prime [2]}_{a, b, i, j} &\equiv \frac{4 \bar{n}_a \bar{n}_b n_i n_j H^{[2]}_{a, b, i, j}}{H^{[1]}_{a, a} + H^{[1]}_{b, b} - H^{[1]}_{i, i} - H^{[1]}_{j, j} + X_{a, b, i, j}}
+\label{eq:WhiteFull2} \\
+X_{a, b, i, j}
+  &\equiv v_{a, b, a, b} + v_{i, j, i, j} \notag \\
+  &\hphantom{\equiv} - v_{a, i, a, i} - v_{a, j, a, j} \notag \\
+  &\hphantom{\equiv} - v_{b, i, b, i} - v_{b, j, b, j}
 \label{eq:White7}
-\]
-Compared to Wegner's canonical generator, where the final flow
-equations involve third order powers of the $f$- and $v$-elements,
-these elements contribute only linearly with White's generator, which
-results in much better numerical properties.
+\end{align}
 
+Compared to Wegner's canonical generator, where the final flow equations involve cubes of the one-body and two-body Hamiltonian matrix elements, these elements contribute only linearly with White's generator, which results in much better numerical properties.  [[It is not explained at all what ``final flow equations'' means]]
 
+% [[---]]
 
-
-We may attempt follow the same technique as for Hartree-Fock and reduce the
-operator problem into a linear algebra problem by evaluating the operator
-using a single-particle basis.  However, since a commutator between two-body
-operators can result in a three-body operator, it follows that as $s$
-increases, the evolved Hamiltonian $\tilde H(s)$ can gain terms that couple
-more and more particles.  It is not practical to keep all such terms,
-especially since higher-body operators are much more computationally
-expensive.
-
-In-medium SRG follows the same procedure as with ordinary SRG, but the
-calculations are performed relative to some reference state rather than the
-vacuum state.  This is advantageous for systems with many-particles as the
-effect of truncation is not quite as drastic as it would be in SRG
-[[true/false?]].
-
-[[need some more content before diving straight into the algebra]]
-
-Normal-ordering is a syntactic operation that reorders a product of operators
-so as to eliminate all but the highest-body interaction.  The operation is
-must be defined against a fixed many-body state, such as the vacuum state.  We
-denote normal ordering using $\mathopen: \ldots \mathclose:$, with with the
-state given by context.
-
-\textit{Normal-ordering with respect to the vacuum state} is performed by
-rearranging the operator product such that every $\hat a^\dagger$ appear
-before $\hat a$, with the caveat that the parity of the permutation must also
-be applied to the sign of the result.
-
-For many-body problems involving large number of particles, the vacuum state
-is not very convenient as it requires the application of many creation
-operators to reach the states of interest.  Therefore, it is preferable to
-utilize some reference state $\Phi$ (a Slater determinant) so that any other
-state can be readily expressed as some excitation from this state.
-
-Given a reference state $\Phi$, we may define a set of \textit{quasiparticle
-  creation and annihilation operators} $\hat b^\dagger$ and $\hat b$ that obey
-the same commutation relations as the $\hat a$ operators.  The two sets of
-operators are related by:
-\begin{align*}
-  \hat b_p^\dagger \equiv \begin{cases}
-    \hat a_p^\dagger & \text{if $p$ is unoccupied in $\Phi$} \\
-    \hat a_p^{} & \text{if $p$ is occupied in $\Phi$}
-  \end{cases}
-\end{align*}
-Analogously, there is a similar notion of normal-ordering with respect to the
-reference state: namely, the rearrangement operators such that every
-$\hat b^\dagger$ appears before $\hat b$.
-
-The relationship between the $\hat b$ operators and $\Phi$ is completely
-analogous to the relationship between the $\hat a$ operators and $0$.  As a
-result, theorems governing these operators can be applied to both.  In
-particular, \textit{Wick's theorem} -- an algebraic theorem that allows
-complicated strings of creation and annihilation operators to be simplified
-algorithmically -- plays an important role in simplifying the equations of
-IM-SRG.
-
-For conciseness, we introduce the notation $\hat A_{q_1,\dots,q_k}^\dagger$ to
-denote the normal-ordered string of creation operators
-$\hat a_{p_1}^\dagger \dots \hat a_{p_k}^\dagger$, and similarly for
-$\hat B^\dagger$ as well as their annihilation counterparts.  Note that this
-implies that the ordering is reversed in the annihilation version of this
-notation.
-
-[[...]]
 
 For our purposes, we restrict ourselves to at most two-body operators, and
 thus any higher-body operators that emerge from the commutator are neglected.
@@ -885,11 +734,6 @@ Adams predictor-corrector formulas [[Ref: Shampine and Gordon book]].
 
 [[...]]
 
-\begin{figure}
-\includegraphics[width=.48\textwidth]{fig-diagrams-imsrg}
-\caption{Diagrammatic form of $\hat C(\circ, \bullet)$.}
-\label{fig:diagrams-imsrg}
-\end{figure}
 Expanding the commutator leads to the expression
 \begin{align*}
   [\hat \eta, \hat H] = \hat C(\hat \eta, \hat H) - \hat C(\hat H, \hat \eta)
@@ -1053,8 +897,8 @@ Defining $\Phi(\mathbf{r}, \tau) \equiv \bra{\mathbf{r}}\hat{P}(\tau)\ket{\Psi_T
  \Phi(\mathbf{r}, \tau + \delta\tau) &= \bra{\mathbf{r}} P(\tau + \delta\tau) \ket{\Psi_T} \notag\\
  &= \bra{\mathbf{r}} \exp\left({-(\hat{H} - E_0)\delta\tau}\right) \hat{P}(\tau) \ket{\Psi_T} \notag\\
  &= \bra{\mathbf{r}} \exp\left({-(\hat{H} - E_0)\delta\tau}\right) \ket{\Phi(\tau)} \notag\\
- &= \int \mathrm{d}\mathbf{r}' \bra{\mathbf{r}} \exp\left({-(\hat{H} - E_0)\delta\tau}\right)\ket{\mathbf{r}'} \Phi(\mathbf{r}', \tau)\notag \\
- &\equiv \int \mathrm{d}\mathbf{r}' G(\mathbf{r}, \mathbf{r}'; \delta\tau) \Phi(\mathbf{r}', \tau). \label{eq:DMC_GreenFuncRevealed}
+ &= \int \D\mathbf{r}' \bra{\mathbf{r}} \exp\left({-(\hat{H} - E_0)\delta\tau}\right)\ket{\mathbf{r}'} \Phi(\mathbf{r}', \tau)\notag \\
+ &\equiv \int \D\mathbf{r}' G(\mathbf{r}, \mathbf{r}'; \delta\tau) \Phi(\mathbf{r}', \tau). \label{eq:DMC_GreenFuncRevealed}
 \end{align}
 
 In practice, the ground state energy is a priori unknown, hence a trailing averaged value obtained from the converging DMC density is used. This energy is often referred to as the trial energy, and it is believed that with a sufficiently good trial state, the error due to this approximation is small.
