@@ -502,31 +502,14 @@ The operator $\hat{\eta}$ can be chosen to suppress certain undesirable parts of
 
 \subsubsection{Evolving the flow equation in medium}
 
-The SRG flow equation \eqref{eq:imsrgode} can be solved in the second
-quantization formalism described in Section \ref{subsec:modelHamiltonian},
-where field operators are defined with respect to the physical vacuum state.
-However, since the size of the problem grows enormously with the number of
-particles and the size of the model space, the applicability of this
-free-space SRG method is restricted to comparatively small systems.
-Alternatively, the evolution can be done at finite density, i.e.\ directly in
-an $N$-particle system defined by a reference state \cite{kehrein2006flow}.
-This gives rise to the IM-SRG method.
+The SRG flow equation \eqref{eq:imsrgode} can be solved in the second quantization formalism described in Section \ref{subsec:modelHamiltonian}, where field operators are defined with respect to the physical vacuum state.  However, since the size of the problem grows enormously with the number of particles and the size of the model space, the applicability of this free-space SRG method is restricted to comparatively small systems.  Alternatively, the evolution can be done at finite density, i.e.\ directly in an $N$-particle system defined by a reference state \cite{kehrein2006flow}.  This gives rise to the IM-SRG method.
 
-The second-quantized operators in
-\eqref{eq:second_quantized_one_body_hamiltonian} and
-\eqref{eq:second_quantized_two_body_hamiltonian} are constructed with respect
-to the vacuum state.  That is, the operator strings
-$\hat{a}_p^\dagger \hat{a}_q$ and
-$\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r$ both have a vacuum
-expectation value of zero:
+The second-quantized operators in \eqref{eq:second_quantized_one_body_hamiltonian} and \eqref{eq:second_quantized_two_body_hamiltonian} are constructed with respect to the vacuum state.  That is, the operator strings $\hat{a}_p^\dagger \hat{a}_q$ and $\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r$ both have a vacuum expectation value of zero:
 \begin{align*}
 &\bra{\varnothing} \hat{a}_p^\dagger \hat{a}_q \ket{\varnothing} = 0 &
 &\bra{\varnothing} \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r \ket{\varnothing} = 0
 \end{align*}
-They are said to be \emph{normal-ordered} with respect to the vacuum state
-$\varnothing$.  It is possible to be normal-ordered with respect to a
-non-vacuum state, however.  Consider a Slater determinant $\Phi$ with
-$N_{\text F}$ occupied states:
+They are said to be \emph{normal-ordered} with respect to the vacuum state $\varnothing$.  It is possible to be normal-ordered with respect to a non-vacuum state, however.  Consider a Slater determinant $\Phi$ with $N_{\text F}$ occupied states:
 \begin{align*}
   \ket{\Phi} \equiv \ket{\varnothing_{i_1, i_2, \ldots, i_{N_{\text F}}}}
 \end{align*}
@@ -535,9 +518,10 @@ where $\{i_1, i_2, \ldots, i_{N_{\text F}}\}$ is a set of $N_{\text F}$ indices 
   \hat b_p \equiv \bar n_p \hat a_{p} + n_p \hat a_{p}^\dagger
 \end{align*}
 The quasiparticle field operators treat $\ket{\Phi}$ as their ``vacuum state'' (sometimes called ``Fermi vaccuum'' in an abstract sense), despite not being the physical vacuum state.  As before, it is possible to construct arbitrary Slater determinants by applying quasiparticle operators to the reference state:
-\begin{align*}
+\begin{align}
   \ket{\Phi_{p_1, \ldots, p_k}} \equiv \hat{b}^\dagger_{p_1} \cdots \hat{b}^\dagger_{p_k} \ket{\Phi}
-\end{align*}
+  \label{eq:quasisd}
+\end{align}
 In nonrelativistic many-body theory, it is expected that $\{p_1, \ldots, p_k\}$ contain a balanced number of occupied and unoccupied states to conserve the total number of particles; otherwise, the Slater determinant would represent a different system.
 
 We may then define \emph{normal ordering with respect to the reference state} $\Phi$, a notational device that rearranges a string of operators such that every quasiparticle creation operator appears before a quasiparticle annihilation operator by repeatedly exchanging neighboring operators, with each exchange incurring a change in sign.  A simple example would be the normal ordering of a pair of field operators such as:
@@ -570,9 +554,13 @@ If $\Phi$ is a state optimized by the HF method, then $H^{[0]}$ is simply the HF
 
 Higher-body operators arise from integrating the flow equations (\ref{eq:imsrgode}), which is one of the major challenges of the SRG method.  With each evaluation of the commutator, the Hamiltonian gains terms of higher order, and these induced contributions will in subsequent integration steps feed back into terms of lower order.  Thus, the higher-body contributions are not irrelevant to the final solution even if only the ground state energy is of interest.
 
-Computationally, higher-body terms are difficult to handle: the amount of memory required to store an $r$-body operator is grows exponentially with $r$.  Moreover, the flow equations are capable of generating an infinite number of higher-body terms as the Hamiltonian evolves.  Thus, to make the method tractable, we must close the IM-SRG flow equations, truncating the equations to a finite order.  In this paper, we truncate both $\hat{H}$ and $\hat{\eta}$ at the two-body level, an approach known as IM-SRG(2).  This normal-ordered two-body approximation appears to be sufficient in many cases and has yielded excellent results for several nuclei \cite{PhysRevLett.106.222502,PhysRevLett.109.052501,IMSRG}.
+Computationally, higher-body terms are difficult to handle: the amount of memory required to store an $r$-body operator is grows exponentially with $r$.  Moreover, the flow equations are capable of generating an infinite number of higher-body terms as the Hamiltonian evolves.  Thus, to make the method tractable, we must close the IM-SRG flow equations, truncating the equations to a finite order.
 
-With the truncation, the generator $\hat{\eta}$ can be written as a generic antihermitian 2-body operator:
+In this paper, we truncate both $\hat{H}$ and $\hat{\eta}$ at the two-body level, an approach known as IM-SRG(2).  This normal-ordered two-body approximation appears to be sufficient in many cases and has yielded excellent results for several nuclei \cite{PhysRevLett.106.222502,PhysRevLett.109.052501,IMSRG}.
+
+Note that the loss of three-body and higher-body terms (\textit{operator truncation}) is only one out of the two sources of error in this method.  The other source of error is due to the \textit{basis truncation}, as with any method that relies on a finite single-particle basis.  The latter can be reduced by increasing the size of the basis at the expense of greater computational effort.
+
+With the operator truncation, the generator $\hat{\eta}$ can be written as a generic antihermitian 2-body operator:
 \begin{align*}
 \hat{\eta} = \sum_{p, q} \eta_{p, q}^{[1]} \normord{\hat a_p^\dagger \hat a_q} +
 \frac{1}{4} \sum_{p, q, r, s}\eta_{p, q, r, s}^{[2]} \normord{\hat a_p^\dagger \hat a_q^\dagger \hat a_s \hat a_r}
@@ -630,7 +618,11 @@ and finally
 \end{figure}
 The equations can be derived directly from the anticommutation relations of the field operators, but it is more convenient to use Wick's theorem [[ref]] or, even more efficiently, diagrammatic techniques [[ref]] to arrive at the results.  In particular, the diagrammatic representation of antisymmetrized matrix elements are shown in Figure \ref{fig:diagrams-imsrg}.
 
-The commutator in the flow equations \eqref{eq:imsrgode} guarantees that the IM-SRG state $\hat U(s) \ket{\Phi}$ can be expanded in terms of \emph{linked diagrams} only \cite{shavitt2009many,ISI:A1981MN73700014}, which demonstrates that IM-SRG is size-extensive.  Regarding the quality of the SRG results, it means that the error introduced by truncating the many-body expansions scales linearly with the number of particles $N$.
+An accurate and robust ODE solver is required to solve \eqref{eq:imsrgode}.  In particular, the solver must be able to handle the stiffness that can often arise (even in the case of White generator).  For this, we use an accurate, high-order ODE solver implementation by Shampine and Gordon that uses the Adams predictor-corrector formulas [[Ref: Shampine and Gordon book]].
+
+Through the flow equation and with an appropriate choice of the generator $\hat{\eta}$, the evolved state $\hat U(s) \ket{\Phi}$ will gradually approach a more ``diagonal'' form.  If the ``diagonal'' form decouples the ground state from the excited states, then $\hat U(\infty) \ket{\Phi}$ would yield the exact ground state solution of the problem if no operator or basis truncations are made.  In particular, $H^{[0]}$ would approach the true ground state energy.
+
+The commutator in the flow equations \eqref{eq:imsrgode} guarantees that the evolved state $\hat U(s) \ket{\Phi}$ can be expanded in terms of \emph{linked diagrams} only \cite{shavitt2009many,ISI:A1981MN73700014}, which demonstrates that IM-SRG is size-extensive.  Regarding the quality of the SRG results, it means that the error introduced by truncating the many-body expansions scales linearly with the number of particles $N$.
 
 \subsubsection{Wegner's canonical generator}
 
@@ -677,88 +669,22 @@ X_{a, b, i, j}
 
 Compared to Wegner's canonical generator, where the final flow equations involve cubes of the one-body and two-body Hamiltonian matrix elements, these elements contribute only linearly with White's generator, which results in much better numerical properties.  [[It is not explained at all what ``final flow equations'' means]]
 
-% [[---]]
-
-
-For our purposes, we restrict ourselves to at most two-body operators, and
-thus any higher-body operators that emerge from the commutator are neglected.
-In this approximation, the method is known as ``IMSRG (2)''.  The loss of
-three-body and higher terms one of the two sources of error in this method,
-the other being the basis truncation.
-
-The heart of the method lies in the choice of the generator $\eta(s)$.  We
-would like to choose the generator such that as $s \to \infty$ the transformed
-Hamiltonian $\tilde H(s)$ approaches either a diagonal, block-diagonal, or
-band-diagonal form, all of which reduce the amount of effort needed to solve
-the problem.  For our problem, we choose to decouple the ground state from all
-the excited states in the Hamiltonian matrix using a carefully chosen
-generator.  Doing so allows us to readily recover the ground state energy.
-
-There are two commonly used generators: the Wegner generator and the White
-generator.  The Wegner generator has been known since the introduction of the
-SRG method by Wegner\cite{PhysRepWegner0} and has a particularly simple form:
-\begin{align*}
-  \hat \eta^{\text{g}}(s) \equiv [\hat H^{\text d}(s), \hat H(s)]
-\end{align*}
-where $\hat H^{\text d}$ denotes the diagonal component of $\hat H$.  Despite
-its apparently simplicity, it does not work particularly well in practice as
-the off-diagonal elements vanish at vastly different rates, leading to
-differential equations that are typically stiff.
-
-The White generator remedies this problem by introducing denominators for each
-term to control and normalize the rate at which off-diagonal elements vanish:
-\begin{align*}
-  \hat \eta^{\text{h}}(s) \equiv
-  \sum_{\substack{a \\ p_1, \ldots, p_a \\ q_1, \ldots, q_a}}
-  \frac{
-  \langle \Phi_{p_1, \ldots, p_a} | \hat H^{[a]} | \Phi_{q_1, \ldots, q_a} \rangle
-  \hat B_{p_1, \ldots, p_a}^\dagger \hat B_{q_1, \ldots, q_a}^{}
-  }{E_{p_1, \ldots, p_a} - E_{q_1, \ldots, q_a}}
-\end{align*}
-where [[note: haven't explained what $\hat b$ means]]
-\begin{align*}
-  E_{p_1, \ldots, p_a} &\equiv
-  \langle \Phi_{p_1, \ldots, p_a} | \hat H | \Phi_{p_1, \ldots, p_a} \rangle \\
-  \hat B_{p_1, \ldots, p_a}^\dagger &\equiv
-  \hat b_{p_1}^\dagger \cdots \hat b_{p_a}^\dagger
-\end{align*}
-and $\hat H^{[a]}$ denotes the $a$-body term of the Hamiltonian.  As a result
-of this modification, the White generator exhibits better numerical stability
-and is computationally less expensive than the Wegner generator.
-
-An accurate and robust ODE solver is required to solve \eqref{eq:imsrgode}.
-In particular, the solver must be able to handle the stiffness that can often
-arise (even in the case of White generator).  For this, we use an accurate,
-high-order ODE solver implementation by Shampine and Gordon that uses the
-Adams predictor-corrector formulas [[Ref: Shampine and Gordon book]].
-
-[[...]]
-
-Expanding the commutator leads to the expression
-\begin{align*}
-  [\hat \eta, \hat H] = \hat C(\hat \eta, \hat H) - \hat C(\hat H, \hat \eta)
-\end{align*}
-where $\hat C$ is defined diagrammatically in Figure \ref{fig:diagrams-imsrg}.
-For IM-SRG(2), we truncate the commutator to a two-body operator, neglecting
-the three-body term.
-
-\subsection{The self-energy correction}
+\subsection{Quasigenerate perturbation theory}
 \label{subsec:selfenergy}
 
-IM-SRG, in the form described, does not provide a means to obtain ground state
-energies of open-shell systems.  While there exists a multi-reference IM-SRG
-that can handle the general problem ([[cite Heiko?]]), we opted to use a much
-simpler approach to obtain the addition and removal energies: quasidegenerate
-perturbation theory (QDPT).  In QDPT, the solutions of the approximate
-Hamiltonian $\hat H^{\text o}$ are used as the basis of the model space.  One
-then assumes the existence of an operator $\hat \Omega$, known as the
-\textit{wave operator}, that maps some set of states $\tilde \Phi_u$ within
-the model space to the exact ground state $\Psi_u$:
-\begin{align} \label{eq:omega-condition1}
-  \Psi_u = \hat \Omega \tilde \Phi_u
+IM-SRG, in the approach described, provides a means to calculate the ground state energy of any system that is reasonably approximated by a single Slater determinant.  This works well for closed-shell systems, but it does not provide a direct means to obtain the ground state energy of open-shell systems.  While there exists more complicated multi-reference approaches to IM-SRG that can tackle the general problem \cite{Hergert2016165}, we opted to use the simpler quasidegenerate perturbation theory (QDPT), which provides us with a simple approach to extract ground state energies of open-shell systems that are only a few particles removed from a closed-shell system.  In particular, it allows us to calculate \textit{addition energies} $\epsilon_a$ and \textit{removal energies} $\epsilon_i$ of such systems, which we define as:
+\begin{align}
+  \epsilon_a &\equiv E_{\Phi_a} - E_{\Phi} \\
+  \epsilon_i &\equiv E_{\Phi} - E_{\Phi_i}
 \end{align}
-The states $\tilde \Phi_u$ consist of some mixture of the eigenstates
-$\Phi_{u'}$ of the approximate Hamiltonian $\hat H^{\text o}$.
+where the meaning of $\Phi_p$ is defined in \eqref{eq:quasisd}, $i$ is restricted to labels of occupied states, and $a$ is restricted to labels of unoccupied states.
+
+In QDPT, the solutions of the approximate Hamiltonian $\hat H^{\text o}$ are used as the basis of the model space.  One then assumes the existence of an operator $\hat \Omega$, known as the \textit{wave operator}, that maps some set of states $\tilde \Psi^{\text o}_u$ within the model space to the exact ground state $\Psi_u$:
+\begin{align} \label{eq:omega-condition1}
+  \Psi_u = \hat \Omega \tilde \Psi^{\text o}_u
+\end{align}
+The states $\tilde \Psi^{\text o}_u$ consist of some mixture of the eigenstates
+$\Psi^{\text o}_{u'}$ of the approximate Hamiltonian $\hat H^{\text o}$.
 
 There is some freedom in the choice of the wave operator $\hat \Omega$.  We
 assume it has the following form:
@@ -768,35 +694,26 @@ assume it has the following form:
 where $\hat P$ projects any state into the model space and $\hat Q$ is the
 complement of $\hat P$.  This entails that the exact states $\Psi_u$ is no
 longer normalized but instead satisfies the typical intermediate
-normalization: $\langle \Psi_u | \tilde \Phi_u \rangle = 1$.
+normalization: $\langle \Psi_u | \tilde \Psi^{\text o}_u \rangle = 1$.
 
-Making use of the assumptions in Eq.\ \eqref{eq:omega-condition1} and
-\eqref{eq:omega-condition2}, one can derive from the Schr\"odinger equation
-the generalized Bloch equation, the main equation of QDPT:
+Making use of the assumptions in Eq.\ \eqref{eq:omega-condition1} and \eqref{eq:omega-condition2}, one can derive from the Schr\"odinger equation the generalized Bloch equation, the principal equation of QDPT:
 \begin{gather*}
   [\hat \Omega, \hat H^{\text o}] =
   (1 - \hat \Omega) \hat V \Omega
 \end{gather*}
 where $\hat V \equiv \hat H - \hat H^{\text o}$ is the perturbation.  The
 commutator on the left may be ``inverted'' using the resolvent approach
-[[ShavittBartlett,p.50]], resulting in:
+(\cite{shavitt2009many}, p.\ 50), resulting in:
 \begin{align*}
   \hat Q \Omega \hat P_u =
   \hat R_u (1 - \hat \Omega) \hat V \Omega \hat P_u
 \end{align*}
-where
-$\hat R_u \equiv \hat Q (E_u - \hat Q \hat H^{\text o} \hat Q)^{-1} \hat Q$ is
-the resolvent and $\hat P_u$ projects any state onto $\Phi_u$.  As is typical
-in perturbation theory, we assume $\hat \Omega$ can be expanded as a series of
-the increasing order as measured by the ``power'' of the perturbation
-$\hat V$:
+where $\hat R_u \equiv \hat Q (E_u - \hat Q \hat H^{\text o} \hat Q)^{-1} \hat Q$ is the resolvent and $\hat P_u$ is the projection operator that projects any state onto $\Psi^{\text o}_u$.  As is typical in perturbation theory, we assume $\hat \Omega$ can be expanded as a series of the increasing order as measured by the ``power'' of the perturbation $\hat V$:
 \begin{align*}
   \hat \Omega = \hat P +
   \hat Q\bigl(\hat \Omega_1 + \hat \Omega_2 + \cdots\bigr) \hat P
 \end{align*}
-This leads to a recursion relation of $\hat \Omega$ that enables $\hat \Omega$
-to be calculated up to any order, as least in theory.  Here, we show
-$\hat \Omega$ up to third order: [[double-check]]
+This leads to a recursion relation of $\hat \Omega$ that enables $\hat \Omega$ to be calculated up to any order, as least in principle.  Up to third order, we have: [[double-check]]
 \begin{align*}
   &\hat \Omega_1 \hat P_u = \hat R_u \hat V \hat P_u \\
   &\hat \Omega_2 \hat P_u =
@@ -815,34 +732,29 @@ $\hat \Omega$ up to third order: [[double-check]]
     + \sum_v \hat R_v \sum_w \hat R_w \hat V \hat P_w \hat V \hat P_v
     \biggr) \hat V \hat P_u
 \end{align*}
-
-[[Since the systems are all closed-shell, the
-diagonal approximation can be used here to simplify the calculations.]]
+Until now, the solution is described purely in terms of abstract operators in Hilbert space.  To make this concrete and relevant for many-body physics, we must make some additional assumptions.  First, we make use of the single-particle basis as we have for HF and IM-SRG.  Secondly, we assume the set of reference states $\Psi^{\text o}_u$ are Slater determinants of the single-particle states.
 
 \begin{figure}
 \includegraphics[width=.48\textwidth]{fig-diagrams-sfe}
-\caption{Diagrammatic form of the second- and third-order self-energy
-  corrections.}
+\caption{Diagrammatic form of the second- and third-order QDPT corrections.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams), but also have implicit denominators as with many-body perturbation theory.}
 \label{fig:diagrams-sfe}
 \end{figure}
-[[Discuss how]]
-The diagrams for each order of correction can be evaluated using algebraic or
-diagrammatic techniques.  The second-order correction is given by
-\begin{gather*}
-  \epsilon_p = \frac{1}{2} \biggl(
-      \sum_{i a b} \frac{|V_{p i a b}|^2}{f_p + f_i - f_a - f_b}
-    - \sum_{i j a} \frac{|V_{i j p a}|^2}{f_i + f_j - f_p - f_a}
-  \biggr)
-\end{gather*}
-and depicted in Figure \ref{fig:diagrams-sfe}.  Since there are numerous terms in
-the third-order correction, they are simply listed in a diagrammatic form in
-Figure \ref{fig:diagrams-sfe}.
 
-[[...]]
+Since for this paper we are interested in the addition and removal energies, which involve one particle more or one particle less than a closed-shell state, we can take the label $u$ to be simply the label of the state that is added or removed from the closed-shell state $\Phi$.  With this realization, we can then express the perturbation expansion in terms of summations over matrix elements as we had done before for the IM-SRG flow equation, perhaps with the aid of Wick's theorem or diagrammatic techniques.  This leads to the following expression for the second-order correction:
+\begin{gather*}
+  \epsilon_p^{(2)} =
+      \frac{1}{2} \sum_{i a b} \frac{n_i \bar{n}_a \bar{n}_b |V_{p i a b}|^2}{H^{[1]}_p + H^{[1]}_i - H^{[1]}_a - H^{[1]}_b}
+    - \frac{1}{2} \sum_{i j a} \frac{n_i n_j \bar{n}_a |V_{i j p a}|^2}{H^{[1]}_i + H^{[1]}_j - H^{[1]}_p - H^{[1]}_a}
+\end{gather*}
+[[write out the full thing using $H^1_{p,p}$]]
+The expression is depicted in Figure \ref{fig:diagrams-sfe}.  Since there are numerous terms in the third-order correction $\epsilon_p^{(3)}$, they are listed exclusively in a diagrammatic form in Figure \ref{fig:diagrams-sfe}.
+
+Taking into account the perturbation corrections, one can obtain reasonably accurate addition and removal energies for single-particle states near the Fermi level via:
+\begin{align*}
+  \epsilon_p = H^{[1]}_{p, p} + \epsilon_p^{(2)} + \epsilon_p^{(3)}
+\end{align*}
 
 \subsection{Diffusion Monte Carlo}
-
-
 
 
 Diffusion Monte Carlo (DMC) is a method for calculating the ground state
@@ -850,7 +762,7 @@ properties via a stochastic process akin to classical diffusion, refining an
 approximate ground state density towards that of the exact ground state.  The
 rules that govern the diffusion process are obtained by evolving the wave
 function using what can be formally be thought of as the time-dependent
-Schr\"odinger equation along imaginary time $t = \mathrm i \tau$:
+Schr\"odinger equation along imaginary time $\tau \equiv t / \mathrm{i}$:
 \begin{align} \label{eq:itse}
   \frac{\partial}{\partial \tau} |\Phi(\tau)\rangle = \hat H |\Phi(\tau)\rangle
 \end{align}
