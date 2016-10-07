@@ -52,10 +52,13 @@ label = "rm"
 for num_filled in [2, 3]:
     for label in ["add", "rm"]:
         fig, ax = plt.subplots()
+        fig2, ax2 = plt.subplots()
         ax.axhline(0.0, color="grey")
         for ml in [0, 1, 2]:
             dr = {
                 "num_shells": [],
+                "energy_qdpt": [],
+                "energy_eom": [],
                 "rel_diff": [],
             }
             for num_shells in [5, 6, 7, 8, 9, 10, 12, 13, 14, 15]:
@@ -72,10 +75,16 @@ for num_filled in [2, 3]:
                 rel_diff = ((energy_eom - energy_qdpt) /
                             (energy_eom + energy_qdpt) * 2.0)
                 dr["num_shells"].append(num_shells)
+                dr["energy_qdpt"].append(energy_qdpt)
+                dr["energy_eom"].append(energy_eom)
                 dr["rel_diff"].append(rel_diff)
             dr = pd.DataFrame.from_dict(dr)
             ax.plot(dr["num_shells"], dr["rel_diff"] * 100.0, "-x",
                     label="ml={}".format(ml))
+            ax2.plot(dr["num_shells"], dr["energy_qdpt"], "-x",
+                     label="qdpt,ml={}".format(ml))
+            ax2.plot(dr["num_shells"], dr["energy_eom"], "-x",
+                     label="eom,ml={}".format(ml))
 
         ax.set_title("number_of_particles = {}, type = {}"
                      .format(num_filled * (num_filled + 1),
@@ -84,4 +93,10 @@ for num_filled in [2, 3]:
         ax.set_ylabel("relative_difference /%")
         ax.set_ylim(-1.5, 1.5)
         ax.legend()
+        ax2.set_title("number_of_particles = {}, type = {}"
+                     .format(num_filled * (num_filled + 1),
+                             {"add": "addition", "rm": "removal"}[label]))
+        ax2.set_xlabel("number_of_shells")
+        ax2.set_ylabel("energy")
+        ax2.legend()
 plt.show()
