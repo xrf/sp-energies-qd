@@ -1,4 +1,4 @@
-\documentclass[amsmath, amssymb, aps, floatfix, nofootinbib, preprintnumbers,showpacs, superscriptaddress, twocolumn]{revtex4-1}
+e\documentclass[amsmath, amssymb, aps, floatfix, nofootinbib, preprintnumbers,showpacs, superscriptaddress, twocolumn]{revtex4-1}
 \usepackage{bm}
 \usepackage[cmyk]{xcolor}
 \usepackage{dcolumn}
@@ -753,6 +753,47 @@ Taking into account the perturbation corrections, one can obtain reasonably accu
 \begin{align*}
   \epsilon_p = H^{[1]}_{p, p} + \epsilon_p^{(2)} + \epsilon_p^{(3)}
 \end{align*}
+
+\subsection{Equations of Motion Methods}
+Particle attached and particle removed equations of motion (EOM) methods can be coupled with either IM-SRG
+or coupled cluster calculations. The principle idea is that one may construct a ladder operator $X$, 
+which promotes the $A$-body ground state to any state in the $A$+$1$ or $A$-$1$ spectrum,
+\begin{equation}\label{eq:ladder_def} 
+  | \Psi^{(A \pm 1)}_\nu \rangle  = X^{(A \pm 1)}_\nu | \Psi^{(A)}_0 \rangle, 
+\end{equation} 
+where $X$ is in principle a linear combination of excitation and de-excitation operators which change particle number by one,
+\begin{align}
+  \label{eq:gen_attached}
+  X^{(A+1)}_\nu &= \sum_p \bar{n}_p x^p  a^\dagger_p + \frac{1}{2} \sum_{pqr} \bar{n}_p \bar{n}_q n_r x^{pq}_r  a^\dagger_p a^\dagger_q a_r + \cdots,  \\
+  \label{eq:gen_removed}
+  X^{(A-1)}_\nu &= \sum_p n_p x_p a_p + \frac{1}{2} \sum_{pqr} n_p n_q \bar{n}_r  x_{pq}^r  a^\dagger_r a_q a_p  + \cdots. 
+\end{align}
+Substitution of equation~\ref{eq:ladder_def} into the energy eigenvalue problem $H | \Psi_\nu^{(A \pm 1)} \rangle = E^{(A\pm1)}_\nu | \Psi_\nu^{(A \pm 1)} \rangle$ gives
+\begin{equation}\label{eq:EOM}
+  [H,X^{(A \pm 1)}_\nu] | \Psi^{(A)}_0 \rangle = \omega_\pm X^{(A \pm 1)}_\nu | \Psi^{(A)}_0 \rangle,
+\end{equation}
+which constitutes a generalized eigenvalue problem for the amplitudes $x$, where $\omega_\pm$ are the
+single particle addition and removal energies. The quality of this calculation depends on the ansatz for the $A$-body ground state, as well as the systematically
+improvable truncation on the ladder operators. In this work we include 1p and 2p1h excitations in the $A$+1 ladder operator and likewise 1h and 2h1p operators for
+the $A$-1 ladder operators. 
+
+\subsubsection{IM-SRG}
+After a single-reference ground state IM-SRG calculation, the Hamiltonian has been rotated such that the reference state is an eigenfunction with
+corresponding eigenvalue $E^{(A)}_0$, which is the correlated $A$-body ground state energy. The EOM equation is therefore 
+\begin{equation}\label{eq:EOMIMSRG} 
+  [\bar{H},\bar{X}^{(A \pm 1)}_\nu] | \Phi^{(A)}_0 \rangle = \omega_\pm \bar{X}^{(A \pm 1)}_\nu | \Phi^{(A)}_0 \rangle,
+\end{equation}
+where bars denote rotated operators. Now the reference state is used in place of the bare correlated ground state. The ground state IM-SRG procedure has
+implicitly re-summed contributions from higher order excitations (3p2h, 3h2p, 4p3h,...) into the lower order amplitudes of the ladder operators (1p, 1h, 2p1h, 2h1p).
+
+Despite these gains, the EOM calculation is still a partial diagonalization method, limited by the truncation to 2p1h and 2h1p operators. We expect $A$+1 ($A$-1) states
+to be described appropriately by EOM-IMSRG if their wavefunctions are dominated by 1p (1h) contributions in the rotated frame. We use partial norms of the EOM ladder operators
+to make this determination:
+\begin{align}\label{eq:partial_norms}
+  n(1p) &= \sqrt{ \sum_p \bar{n}_p | \bar{x}^p |^2 },\\
+  n(1h) &= \sqrt{ \sum_p n_p | \bar{x}_p |^2 }.
+\end{align}
+Large single particle partial norms indicate that the EOM truncation is valid for the relevant state. States with lower single particle norms should be treated by with a higher EOM approximation, which can be accomplished directly or perturbatively. {\color{red} My paper talks about this a bit more, and we have some plots. Of course it only concerns the A-body stuff}. 
 
 \subsection{Diffusion Monte Carlo}
 
