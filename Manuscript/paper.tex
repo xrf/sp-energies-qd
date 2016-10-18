@@ -765,30 +765,27 @@ Particle attached and particle removed equations of motion (EOM) methods can be 
 where $\hat{X}$ is in principle a linear combination of excitation and de-excitation operators that change particle number by one,
 \begin{align}
   \label{eq:gen_attached}
-  \hat{X}^{(N+1)}_u &= \sum_p \bar{n}_p x_p  \hat{a}^\dagger_p + \frac{1}{2} \sum_{p, q, r} \bar{n}_p \bar{n}_q n_r x_{p, q; r} \hat{a}^\dagger_p \hat{a}^\dagger_q \hat{a}_r + \cdots,  \\
+  \hat{X}^{(N+1)}_u &= \sum_p \bar{n}_p x^{[1,0]}_p  \hat{a}^\dagger_p + \frac{1}{2} \sum^{[2,1]}_{p, q, r} \bar{n}_p \bar{n}_q n_r x_{p, q, r} \hat{a}^\dagger_p \hat{a}^\dagger_q \hat{a}_r + \cdots,  \\
   \label{eq:gen_removed}
-  \hat{X}^{(N-1)}_u &= \sum_p n_p x_p \hat{a}_p + \frac{1}{2} \sum_{p, q, r} n_p n_q \bar{n}_r  x_{p, q}{}^r \hat{a}^\dagger_r \hat{a}_q \hat{a}_p  + \cdots.
+  \hat{X}^{(N-1)}_u &= \sum_p n_p x_p^{[0,1]} \hat{a}_p + \frac{1}{2} \sum_{p, q, r} n_p n_q \bar{n}_r  x^{[1,2]}_{p, q, r} \hat{a}^\dagger_r \hat{a}_q \hat{a}_p  + \cdots.
 \end{align}
 Substitution of \eqref{eq:ladder_def} into the energy eigenvalue problem $\hat H \ket{\Psi_u^{(N \pm 1)}} = E^{(N\pm1)}_u \ket{\Psi_u^{(N \pm 1)}}$ gives
 \begin{equation}\label{eq:EOM}
-  [\hat{H}, \hat{X}^{(N \pm 1)}_u] \ket{\Psi^{(N)}_0} = \epsilon_\pm \hat{X}^{(N \pm 1)}_u \ket{\Psi^{(N)}_0},
+  [\hat{H}, \hat{X}^{(N \pm 1)}_u] \ket{\Psi^{(N)}_0} = \pm \epsilon^{(\pm)}_u \hat{X}^{(N \pm 1)}_u \ket{\Psi^{(N)}_0},
 \end{equation}
-which constitutes a generalized eigenvalue problem for the amplitudes $x$, where $\epsilon_\pm$ are the single-particle addition ($+$) and removal ($-$) energies. The quality of this calculation depends on the ansatz for the $N$-particle ground state, as well as the systematically improvable truncation on the ladder operators. In this work we include 1p and 2p1h excitations in the $N + 1$ ladder operator and likewise 1h and 2h1p operators for the $N - 1$ ladder operators.
+which constitutes a generalized eigenvalue problem for the amplitudes $x$, where $\epsilon^{(\pm)}_u$ are the single-particle addition ($+$) and removal ($-$) energies. The quality of this calculation depends on the ansatz for the $N$-particle ground state, as well as the systematically improvable truncation on the ladder operators. In this work we include 1p and 2p1h excitations in the $N + 1$ ladder operator and likewise 1h and 2h1p operators for the $N - 1$ ladder operators.
 
 \subsubsection*{EOM-IM-SRG}
-After a single-reference ground state IM-SRG calculation, the Hamiltonian has been rotated such that the reference state is an eigenfunction with corresponding eigenvalue $E^{(A)}_0$, which is the correlated $A$-particle ground state energy. The EOM equation is therefore
+After a single-reference ground state IM-SRG calculation, the Hamiltonian has been rotated such that the reference state is an eigenfunction with corresponding eigenvalue $E^{(N)}_0$, which is the correlated $N$-particle ground state energy. The EOM equation is therefore
 \begin{equation}\label{eq:EOMIMSRG}
-  [\bar{H},\bar{X}^{(A \pm 1)}_u] \ket{\Phi^{(A)}_0} = \omega_\pm \bar{X}^{(A \pm 1)}_u \ket{\Phi^{(A)}_0},
+  [\bar{H},\bar{X}^{(N \pm 1)}_u] \ket{\Phi^{(N)}_0} = \pm \epsilon^{(\pm)}_u \bar{X}^{(N \pm 1)}_u \ket{\Phi^{(N)}_0},
 \end{equation}
-where bars denote rotated operators. Now the reference state is used in place of the bare correlated ground state. The ground state IM-SRG procedure has
-implicitly re-summed contributions from higher order excitations (3p2h, 3h2p, 4p3h,...) into the lower order amplitudes of the ladder operators (1p, 1h, 2p1h, 2h1p).
+where bars denote rotated operators. Now the reference state is used in place of the bare correlated ground state. The ground state IM-SRG procedure has implicitly re-summed contributions from higher order excitations (3-particle-2-hole, 2-particle-3-hole, 2-particle-3-hole, 4-particle-3-hole, \ldots) into the lower order amplitudes of the ladder operators (1-particle-0-hole, 0-particle-1-hole, 2-particle-1-hole, 1-particle-2-hole).
 
-Despite these gains, the EOM calculation is still a partial diagonalization method, limited by the truncation to 2p1h and 2h1p operators. We expect $A$+1 ($A$-1) states
-to be described appropriately by EOM-IM-SRG if their wavefunctions are dominated by 1p (1h) contributions in the rotated frame. We use partial norms of the EOM ladder operators
-to make this determination:
+Despite these gains, the EOM calculation is still a partial diagonalization method, limited by the truncation to 2-particle-1-hole and 1-particle-2-hole operators. We expect $N + 1$ (or $N - 1$) states to be described appropriately by EOM-IM-SRG if their wavefunctions are dominated by 1-particle-0-hole (or 0-particle-1-hole) contributions in the rotated frame. We use partial norms of the EOM ladder operators to make this determination:
 \begin{align}\label{eq:partial_norms}
-  n(1p) &= \sqrt{\sum_p \bar{n}_p | \bar{x}^p |^2},\\
-  n(1h) &= \sqrt{\sum_p n_p | \bar{x}_p |^2}.
+  n_{\text{1-particle}} &= \sqrt{\sum_p \bar{n}_p | \bar{x}^{[1,0]}_p |^2},\\
+  n_{\text{1-hole}} &= \sqrt{\sum_p n_p | \bar{x}^{[0,1]}_p |^2}.
 \end{align}
 Large single particle partial norms indicate that the EOM truncation is valid for the relevant state. States with lower single particle norms should be treated by with a higher EOM approximation, which can be accomplished directly or perturbatively. {\color{red} My paper talks about this a bit more, and we have some plots. Of course it only concerns the A-body stuff}.
 
