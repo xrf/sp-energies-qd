@@ -1,4 +1,4 @@
-e\documentclass[amsmath, amssymb, aps, floatfix, nofootinbib, preprintnumbers,showpacs, superscriptaddress, twocolumn]{revtex4-1}
+\documentclass[amsmath, amssymb, aps, floatfix, nofootinbib, preprintnumbers,showpacs, superscriptaddress, twocolumn]{revtex4-1}
 \usepackage{bm}
 \usepackage[cmyk]{xcolor}
 \usepackage{dcolumn}
@@ -522,7 +522,7 @@ The quasiparticle field operators treat $\ket{\Phi}$ as their ``vacuum state'' (
   \ket{\Phi_{p_1, \ldots, p_k}} \equiv \hat{b}^\dagger_{p_1} \cdots \hat{b}^\dagger_{p_k} \ket{\Phi}
   \label{eq:quasisd}
 \end{align}
-In nonrelativistic many-body theory, it is expected that $\{p_1, \ldots, p_k\}$ contain a balanced number of occupied and unoccupied states to conserve the total number of particles; otherwise, the Slater determinant would represent a different system.
+If $p$ is an unoccupied state, then applying $\hat{b}_p^\dagger$ creates a particle exactly like $\hat{a}_p^\dagger$.  However, if $p$ is an occupied state, then applying $\hat{b}_p^\dagger$ destroys an existing particle in $\Phi$ or, equivalently, creates a \textit{hole} state.  The set of labels $\{p_1, \ldots, p_k\}$ may contain up to $N$ hole states and a potentially infinite number of particle states.  It is typical to classify the state $\Phi_{p_1, \ldots, p_k}$ as an $N_{\text{p}}$-particle-$N_{\text{h}}$-hole state, meaning that it contains $N_{\text{p}}$ labels that denote unoccupied states and $N_{\text{h}}$ labels that denote occupied states.  If $N_{\text{p}} = N_{\text{h}}$, the Slater determinant represents a system containing the same number of physical particles.
 
 We may then define \emph{normal ordering with respect to the reference state} $\Phi$, a notational device that rearranges a string of operators such that every quasiparticle creation operator appears before a quasiparticle annihilation operator by repeatedly exchanging neighboring operators, with each exchange incurring a change in sign.  A simple example would be the normal ordering of a pair of field operators such as:
 \begin{align*}
@@ -741,11 +741,13 @@ Until now, the solution is described purely in terms of abstract operators in Hi
 \end{figure}
 
 Since for this paper we are interested in the addition and removal energies, which involve one particle more or one particle less than a closed-shell state, we can take the label $u$ to be simply the label of the state that is added or removed from the closed-shell state $\Phi$.  With this realization, we can then express the perturbation expansion in terms of summations over matrix elements as we had done before for the IM-SRG flow equation, perhaps with the aid of Wick's theorem or diagrammatic techniques.  This leads to the following expression for the second-order correction:
-\begin{gather*}
-  \epsilon_p^{(2)} =
-      \frac{1}{2} \sum_{i a b} \frac{n_i \bar{n}_a \bar{n}_b |V_{p i a b}|^2}{H^{[1]}_p + H^{[1]}_i - H^{[1]}_a - H^{[1]}_b}
-    - \frac{1}{2} \sum_{i j a} \frac{n_i n_j \bar{n}_a |V_{i j p a}|^2}{H^{[1]}_i + H^{[1]}_j - H^{[1]}_p - H^{[1]}_a}
-\end{gather*}
+\begin{align*}
+  \epsilon_p^{(2)}
+  &=
+  \frac{1}{2} \sum_{i a b} \frac{n_i \bar{n}_a \bar{n}_b |H^{[2]}_{p i a b}|^2}{H^{[1]}_p + H^{[1]}_i - H^{[1]}_a - H^{[1]}_b} \\
+  &{}-
+  \frac{1}{2} \sum_{i j a} \frac{n_i n_j \bar{n}_a |H^{[2]}_{i j p a}|^2}{H^{[1]}_i + H^{[1]}_j - H^{[1]}_p - H^{[1]}_a}
+\end{align*}
 [[write out the full thing using $H^1_{p,p}$]]
 The expression is depicted in Figure \ref{fig:diagrams-sfe}.  Since there are numerous terms in the third-order correction $\epsilon_p^{(3)}$, they are listed exclusively in a diagrammatic form in Figure \ref{fig:diagrams-sfe}.
 
@@ -755,45 +757,40 @@ Taking into account the perturbation corrections, one can obtain reasonably accu
 \end{align*}
 
 \subsection{Equations of Motion Methods}
-Particle attached and particle removed equations of motion (EOM) methods can be coupled with either IM-SRG
-or coupled cluster calculations. The principle idea is that one may construct a ladder operator $X$, 
-which promotes the $A$-body ground state to any state in the $A$+$1$ or $A$-$1$ spectrum,
-\begin{equation}\label{eq:ladder_def} 
-  | \Psi^{(A \pm 1)}_\nu \rangle  = X^{(A \pm 1)}_\nu | \Psi^{(A)}_0 \rangle, 
-\end{equation} 
-where $X$ is in principle a linear combination of excitation and de-excitation operators which change particle number by one,
+
+Particle attached and particle removed equations of motion (EOM) methods can be coupled with either IM-SRG or coupled cluster calculations. The principal idea is that one may construct a ladder operator $\hat{X}$ that promotes the $N$-particle ground state to any state in the $N + 1$ or $N - 1$ spectrum,
+\begin{equation}\label{eq:ladder_def}
+  \ket{\Psi^{(N \pm 1)}_u}  = \hat{X}^{(N \pm 1)}_u \ket{\Psi^{(N)}_0},
+\end{equation}
+where $\hat{X}$ is in principle a linear combination of excitation and de-excitation operators that change particle number by one,
 \begin{align}
   \label{eq:gen_attached}
-  X^{(A+1)}_\nu &= \sum_p \bar{n}_p x^p  a^\dagger_p + \frac{1}{2} \sum_{pqr} \bar{n}_p \bar{n}_q n_r x^{pq}_r  a^\dagger_p a^\dagger_q a_r + \cdots,  \\
+  \hat{X}^{(N+1)}_u &= \sum_p \bar{n}_p x_p  \hat{a}^\dagger_p + \frac{1}{2} \sum_{p, q, r} \bar{n}_p \bar{n}_q n_r x_{p, q; r} \hat{a}^\dagger_p \hat{a}^\dagger_q \hat{a}_r + \cdots,  \\
   \label{eq:gen_removed}
-  X^{(A-1)}_\nu &= \sum_p n_p x_p a_p + \frac{1}{2} \sum_{pqr} n_p n_q \bar{n}_r  x_{pq}^r  a^\dagger_r a_q a_p  + \cdots. 
+  \hat{X}^{(N-1)}_u &= \sum_p n_p x_p \hat{a}_p + \frac{1}{2} \sum_{p, q, r} n_p n_q \bar{n}_r  x_{p, q}{}^r \hat{a}^\dagger_r \hat{a}_q \hat{a}_p  + \cdots.
 \end{align}
-Substitution of equation~\ref{eq:ladder_def} into the energy eigenvalue problem $H | \Psi_\nu^{(A \pm 1)} \rangle = E^{(A\pm1)}_\nu | \Psi_\nu^{(A \pm 1)} \rangle$ gives
+Substitution of \eqref{eq:ladder_def} into the energy eigenvalue problem $\hat H \ket{\Psi_u^{(N \pm 1)}} = E^{(N\pm1)}_u \ket{\Psi_u^{(N \pm 1)}}$ gives
 \begin{equation}\label{eq:EOM}
-  [H,X^{(A \pm 1)}_\nu] | \Psi^{(A)}_0 \rangle = \omega_\pm X^{(A \pm 1)}_\nu | \Psi^{(A)}_0 \rangle,
+  [\hat{H}, \hat{X}^{(N \pm 1)}_u] \ket{\Psi^{(N)}_0} = \epsilon_\pm \hat{X}^{(N \pm 1)}_u \ket{\Psi^{(N)}_0},
 \end{equation}
-which constitutes a generalized eigenvalue problem for the amplitudes $x$, where $\omega_\pm$ are the
-single particle addition and removal energies. The quality of this calculation depends on the ansatz for the $A$-body ground state, as well as the systematically
-improvable truncation on the ladder operators. In this work we include 1p and 2p1h excitations in the $A$+1 ladder operator and likewise 1h and 2h1p operators for
-the $A$-1 ladder operators. 
+which constitutes a generalized eigenvalue problem for the amplitudes $x$, where $\epsilon_\pm$ are the single-particle addition ($+$) and removal ($-$) energies. The quality of this calculation depends on the ansatz for the $N$-particle ground state, as well as the systematically improvable truncation on the ladder operators. In this work we include 1p and 2p1h excitations in the $N + 1$ ladder operator and likewise 1h and 2h1p operators for the $N - 1$ ladder operators.
 
-\subsubsection{IM-SRG}
-After a single-reference ground state IM-SRG calculation, the Hamiltonian has been rotated such that the reference state is an eigenfunction with
-corresponding eigenvalue $E^{(A)}_0$, which is the correlated $A$-body ground state energy. The EOM equation is therefore 
-\begin{equation}\label{eq:EOMIMSRG} 
-  [\bar{H},\bar{X}^{(A \pm 1)}_\nu] | \Phi^{(A)}_0 \rangle = \omega_\pm \bar{X}^{(A \pm 1)}_\nu | \Phi^{(A)}_0 \rangle,
+\subsubsection*{EOM-IM-SRG}
+After a single-reference ground state IM-SRG calculation, the Hamiltonian has been rotated such that the reference state is an eigenfunction with corresponding eigenvalue $E^{(A)}_0$, which is the correlated $A$-particle ground state energy. The EOM equation is therefore
+\begin{equation}\label{eq:EOMIMSRG}
+  [\bar{H},\bar{X}^{(A \pm 1)}_u] \ket{\Phi^{(A)}_0} = \omega_\pm \bar{X}^{(A \pm 1)}_u \ket{\Phi^{(A)}_0},
 \end{equation}
 where bars denote rotated operators. Now the reference state is used in place of the bare correlated ground state. The ground state IM-SRG procedure has
 implicitly re-summed contributions from higher order excitations (3p2h, 3h2p, 4p3h,...) into the lower order amplitudes of the ladder operators (1p, 1h, 2p1h, 2h1p).
 
 Despite these gains, the EOM calculation is still a partial diagonalization method, limited by the truncation to 2p1h and 2h1p operators. We expect $A$+1 ($A$-1) states
-to be described appropriately by EOM-IMSRG if their wavefunctions are dominated by 1p (1h) contributions in the rotated frame. We use partial norms of the EOM ladder operators
+to be described appropriately by EOM-IM-SRG if their wavefunctions are dominated by 1p (1h) contributions in the rotated frame. We use partial norms of the EOM ladder operators
 to make this determination:
 \begin{align}\label{eq:partial_norms}
-  n(1p) &= \sqrt{ \sum_p \bar{n}_p | \bar{x}^p |^2 },\\
-  n(1h) &= \sqrt{ \sum_p n_p | \bar{x}_p |^2 }.
+  n(1p) &= \sqrt{\sum_p \bar{n}_p | \bar{x}^p |^2},\\
+  n(1h) &= \sqrt{\sum_p n_p | \bar{x}_p |^2}.
 \end{align}
-Large single particle partial norms indicate that the EOM truncation is valid for the relevant state. States with lower single particle norms should be treated by with a higher EOM approximation, which can be accomplished directly or perturbatively. {\color{red} My paper talks about this a bit more, and we have some plots. Of course it only concerns the A-body stuff}. 
+Large single particle partial norms indicate that the EOM truncation is valid for the relevant state. States with lower single particle norms should be treated by with a higher EOM approximation, which can be accomplished directly or perturbatively. {\color{red} My paper talks about this a bit more, and we have some plots. Of course it only concerns the A-body stuff}.
 
 \subsection{Diffusion Monte Carlo}
 
@@ -898,7 +895,7 @@ Initially, $N_w$ walkers are initialized to span $|\Psi_T(\mathbf{r})|^2$. This 
 x_{i+1} = x_i + \frac{1}{2}\delta\tau F(\mathbf{r})_x + \xi,
 \end{equation}
 \noindent
-where $\xi$ is a uniform distributed random number with variance $\mathrm{Var}(\xi) = 2D\delta\tau$. A typical value of $N_w$ in this work is 250 000.
+where $\xi$ is a uniform distributed random number with variance $\mathrm{Var}(\xi) = 2D\delta\tau$. A typical value of $N_w$ in this work is 250\,000.
 
 For each time step, diffusion and branching repeats a given number of blocks $N_b$ for each walker. New branches are not active until the next time step, and if a walker hits zero branches the block repetition stops. During these block loops, the trial energy $E_T$ is sampled for use in the next time step $k+1$
 
@@ -1191,22 +1188,22 @@ $N$ & $\omega$ & IM-SRG(2) &IM-SRG(2)$_{R\rightarrow \infty}$ & DMC \\
 
 In Figure \ref{fig:gs} we show the calculated ground state energies from
 Hartree-Fock, second-order (M\o ller-Plesset) perturbation theory (MPPT), and
-IMSRG.  The exact result from diffusion Monte Carlo (DMC) is also shown as a
+IM-SRG.  The exact result from diffusion Monte Carlo (DMC) is also shown as a
 dashed line in systems where it is known \cite{PhysRevB.84.115302}.
 
-Both perturbation theory and IMSRG add corrections in addition to the
+Both perturbation theory and IM-SRG add corrections in addition to the
 Hartree-Fock results to recover the correlation energy and they do quite well
-in recovering the correlation energy in the system.  Compared with MPPT, IMSRG
+in recovering the correlation energy in the system.  Compared with MPPT, IM-SRG
 generally converges faster, although does not always converge to the DMC
-result.  Generally speaking, IMSRG is closer to the DMC result as the number
+result.  Generally speaking, IM-SRG is closer to the DMC result as the number
 of particles increases.
 
-There are a few cases where the IMSRG over-corrects the result, leading to a
+There are a few cases where the IM-SRG over-corrects the result, leading to a
 ground state energy that is lower than the exact result.  This is not
-unexpected given that, unlike Hartree-Fock, IMSRG is non-variational.  These
+unexpected given that, unlike Hartree-Fock, IM-SRG is non-variational.  These
 tend to occur when the number of particles is few, or the frequency is very
 low (high correlation).  However, MPPT does not do much better in the high
-frequency regimes as it often converges slower than IMSRG.
+frequency regimes as it often converges slower than IM-SRG.
 
 [[Q: should we discuss the absolute/relative correction plots?]]
 
