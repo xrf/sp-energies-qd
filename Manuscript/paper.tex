@@ -573,8 +573,8 @@ By expanding the commutator in \eqref{eq:imsrgode} without consideration of the 
 \end{align}
 where
 \begin{align}
-  C^{[r]}(A, B) &\equiv \tilde{\mathcal{A}}_{A, B} D^{[r]}(A, B) \text{ for any $r$, $A$, $B$} \label{eq:commutmxe} \\
-  \tilde{\mathcal{A}}_{x, y} f(x, y) &\equiv f(x, y) - f(y, x) \text{ for any $x$, $y$, $f$}
+  C^{[r]}(A, B) &\equiv 2 \mathcal{A}_{A, B} D^{[r]}(A, B) \text{ for any $r$, $A$, $B$} \label{eq:commutmxe} \\
+  \mathcal{A}_{x, y} f(x, y) &\equiv \frac{1}{2} \bigl(f(x, y) - f(y, x)\bigr) \text{ for any $x$, $y$, $f$}
 \end{align}
 and finally
 \begin{widetext}
@@ -630,19 +630,35 @@ To determine the specific unitary transformation, one needs to specify the gener
 
 The original choice suggested by Wegner \cite{PhysRepWegner0} reads
 \begin{equation}
-  \hat{\eta}_{\text{Wegner}}
+  \hat{\eta}^{\text{Wg}}
   = [\hat{H}^{\text{d}}, \hat{H} - \hat{H}^{\text{d}}]
   = [\hat{H}^{\text{d}}, \hat{H}]
   \label{eq:etaWegner}
 \end{equation}
 where $\hat{H}^{\text{d}}$ denotes the ``diagonal'' part of the Hamiltonian (and $\hat{H} - \hat{H}^{\text{d}}$ denotes the ``off-diagonal'' part) in the abstract sense described at the end of section \ref{subsubsec:srgmethods}.
 
-The commutator between two Hermitian operators, $\hat{\eta}$ is always antihermitian, as required for a generator.  Additionally, it can be shown that the commutator has the property of suppressing off-diagonal matrix elements as the state evolves via the flow equation \cite{kehrein2006flow}, as we would like.  In particular, matrix elements far off the diagonal, where the Hamiltonian couples states with large energy differences, are suppressed much faster than elements closer to the diagonal.
+Since $\hat{\eta}^{\text{Wg}}$ is the commutator between two Hermitian operators, it is antihermitian as required for a generator.  Additionally, it can be shown that the commutator has the property of suppressing off-diagonal matrix elements as the state evolves via the flow equation \cite{kehrein2006flow}, as we would like.  In particular, matrix elements far off the diagonal, where the Hamiltonian couples states with large energy differences, are suppressed much faster than elements closer to the diagonal.
 
-The matrix elements of the generator can be evaluated using \eqref{eq:commutmxe} to \eqref{eq:flow2}.  If assume that $\hat{H}^{\text{d}}$ does not couple the ground state to the excited states, the equations can be simplified considerably: [[clean up this equation]]
+The matrix elements of the generator can be evaluated using \eqref{eq:commutmxe} to \eqref{eq:flow2}.  If define $\hat{H}^{\text{d}}$ via
 \begin{align*}
-\eta_{pq}^{(1)} = & \sum_{r} \left(f_{pr}^d f_{rq} - f_{pr} f_{rq}^d \right) + f_{pq} v_{qppq}^d \left( n_q - n_p \right) \\ \eta_{pqrs}^{(2)} = & - \sum_t \left\lbrace \tilde{\mathcal{A}}_{p, q} f_{pt} v_{tqrs}^d - \tilde{\mathcal{A}}_{r, s} f_{tr} v_{pqts}^d \right\rbrace \notag \\ & + \sum_t \left\lbrace \tilde{\mathcal{A}}_{p, q} f_{pt}^d v_{tqrs} - \tilde{\mathcal{A}}_{r, s} f_{tr}^d v_{pqts} \right\rbrace \notag \\ & + \frac{1}{2} \sum_{tu} (1 - n_t - n_u) \left( v_{pqtu}^d v_{turs} - v_{pqtu} v_{turs}^d \right) \notag \\ & + \sum_{tu} \left( n_t - n_u \right) \tilde{\mathcal{A}}_{p, q} \tilde{\mathcal{A}}_{r, s} v_{tpur}^d v_{uqts},
+  H^{\text{d}, [1]}_{p, q} &\equiv \delta_{p, q} H^{[1]}_{p, p} \\
+  H^{\text{d}, [2]}_{p, q, r, s} &\equiv (\delta_{p, r} \delta_{q, s} - \delta_{p, s} \delta_{q, r}) H^{[2]}_{p, q, p, q}
 \end{align*}
+then the expressions for $\hat{\eta}^{\text{Wg}}$ can be simplified considerably:
+\begin{align*}
+  \eta^{\text{Wg},[0]} &= 0 \\
+  \eta^{\text{Wg},[1]}_{p, q} &= 2 H^{[1]}_{p, q} \mathcal{A}_{p, q} \bigl( H^{[1]}_{p, p} + n_p H^{[2]}_{p, q, p, q} \bigr) \\
+  \eta^{\text{Wg},[2]}_{p, q, r, s} &= 2 \mathcal{A}_{p, q} \mathcal{A}_{r, s} \Big( \\
+  &\qquad H^{[2]}_{p, q, r, s} \mathcal{A}_{(p, q), (r, s)} \Bigl(\\
+  &\qquad \qquad 2 H^{[1]}_{p, p} + 4 n_p H^{[2]}_{p, r, p, r} \\
+  &\qquad \qquad + (1 - 2 n_p) H^{[2]}_{p, q, p, q} \Bigr) \\
+  &\qquad + 4 \delta_{p, r} H^{[1]}_{q, s} \mathcal{A}_{(p, q), (r, s)} H^{[2]}_{p, q, p, q}
+  \Bigr)
+\end{align*}
+where for any $x$, $y$, $z$, $w$, $f$ we define the antisymmetrizer
+\begin{align*}
+  \mathcal{A}_{(x, y), (z, w)} f(x, y, z, w) &\equiv \frac{1}{2} \bigl(f(x, y, z, w) - f(z, w, x, y)\bigr)
+\end{align}
 
 \subsubsection{White's generator}
 
@@ -652,7 +668,7 @@ White takes an alternative approach, which is especially suited for problems whe
 
 The generator is explicitly constructed the following way \cite{PhysRevLett.106.222502,White:cond-mat0201346}
 \begin{align}
-\hat{\eta}_{\text{White}} &\equiv \hat{\eta}' - \hat{\eta}'{}^\dagger
+\hat{\eta}^{\text{Wh}} &\equiv \hat{\eta}' - \hat{\eta}'{}^\dagger
 \end{align}
 where
 \begin{align}
@@ -661,9 +677,8 @@ where
 \eta^{\prime [2]}_{a, b, i, j} &\equiv \frac{4 \bar{n}_a \bar{n}_b n_i n_j H^{[2]}_{a, b, i, j}}{H^{[1]}_{a, a} + H^{[1]}_{b, b} - H^{[1]}_{i, i} - H^{[1]}_{j, j} + X_{a, b, i, j}}
 \label{eq:WhiteFull2} \\
 X_{a, b, i, j}
-  &\equiv v_{a, b, a, b} + v_{i, j, i, j} \notag \\
-  &\hphantom{\equiv} - v_{a, i, a, i} - v_{a, j, a, j} \notag \\
-  &\hphantom{\equiv} - v_{b, i, b, i} - v_{b, j, b, j}
+  &\equiv H^{[2]}_{a, b, a, b} - H^{[2]}_{a, i, a, i} - H^{[2]}_{b, i, b, i} \notag \\
+  &\qquad + H^{[2]}_{i, j, i, j} - H^{[2]}_{a, j, a, j} - H^{[2]}_{b, j, b, j}
 \label{eq:White7}
 \end{align}
 
