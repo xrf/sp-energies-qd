@@ -682,7 +682,7 @@ X_{a, b, i, j}
 \label{eq:White7}
 \end{align}
 
-Compared to Wegner's canonical generator, where the final flow equations involve cubes of the one-body and two-body Hamiltonian matrix elements, these elements contribute only linearly with White's generator, which results in much better numerical properties.  [[It is not explained at all what ``final flow equations'' means]]
+Compared to Wegner's canonical generator, where the derivative of the final flow equations contain cubes of the Hamiltonian matrix elements (i.e.\ each term contains a product of 3 one-body and/or two-body matrix elements), the elements in White's generator contribute only linearly with White's generator.  This has reduces the stiffness in the differential equation, providing a net increase in computational efficiency since stiff ODE solvers tend to be slower and require more memory.
 
 \subsection{Quasigenerate perturbation theory}
 \label{subsec:selfenergy}
