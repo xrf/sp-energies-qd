@@ -2,17 +2,13 @@
 import functools, os
 import matplotlib.pyplot as plt
 import pandas as pd
-
-def skip_comment_char(read_func, filename):
-    with open(filename) as f:
-        s = f.read(2)
-        assert s == "# "
-        return read_func(f)
+import utils
 
 os.chdir(os.getcwd())
 
-d = skip_comment_char(functools.partial(pd.read_csv, delim_whitespace=True),
-                      "imsrg-qdpt/dat_arenergy_by_ml.txt")
+d = utils.skip_comment_char(
+    functools.partial(pd.read_csv, delim_whitespace=True),
+    "imsrg-qdpt/dat_arenergy_by_ml.txt")
 d = d[["num_shells", "num_filled", "freq", "ml", "label", "energy"]]
 d["method"] = "qdpt"
 dq = d

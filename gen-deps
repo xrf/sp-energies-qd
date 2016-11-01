@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+import os, re
+
+os.chdir(os.path.dirname(__file__))
+
+def get_md_fig_deps(fn):
+    with open(fn) as f:
+        doc = f.read()
+    for match in re.finditer("^\[!\]\(([^)]*)\)$", doc, flags=re.MULTILINE):
+        yield match.group(1)
+
+def save_md_fig_deps(name):
+    deps = sorted(get_md_fig_deps(fn=(name + ".md")))
+    with open(name + ".dep", "w") as f:
+        f.write("{}:{}\n".format(
+            name + ".pdf",
+            "".join(" " + x for x in deps),
+        ))
+
+save_md_fig_deps("figures")
