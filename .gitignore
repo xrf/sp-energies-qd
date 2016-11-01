@@ -3,12 +3,8 @@ figures.pdf
 
 FigureFiles/*.pdf
 
-*~
-*.aux
 *.bbl
-*.blg
 *.dep
 *.fdb_latexmk
 *.fls
-*.log
 *Notes.bib

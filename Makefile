@@ -3,6 +3,7 @@
 all: build
 
 build: ../dist/gh-pages/spEnergiesQD/figures.pdf
+	cd Manuscript && $(MAKE)
 
 deploy: ../dist/gh-pages/.git/config build
 	cd ../dist/gh-pages && \
