@@ -182,14 +182,14 @@ $v(\bm r, \bm r') \equiv |\bm r - \bm r'|^{-1}$ where $\bm r$ and $\bm r'$ are
 their positions.  The full many-body problem is described by the
 nonrelativistic Hamiltonian
 \begin{align*}
-  \hat H \equiv \hat H^{\text o} + \hat V = \sum_{p} \bigl(
-    t(\hat{\bm p}_p) + u(\hat{\bm r}_p)
-  \bigr) + \sum_{p < q} v(\hat{\bm r}_p, \hat{\bm r}_q)
+  \hat H \equiv \hat H^{\text o} + \hat V = \sum_j \bigl(
+    t(\hat{\bm p}_j) + u(\hat{\bm r}_j)
+  \bigr) + \sum_{j_1 < j_2} v(\hat{\bm r}_{j_1}, \hat{\bm r}_{j_2})
 \end{align*}
-where $\hat{\bm p}_p$ and $\hat{\bm r}_p$ respectively denote the momentum and
-position operators of a particle $p$.  The first summation is performed over
+where $\hat{\bm p}_j$ and $\hat{\bm r}_j$ respectively denote the momentum and
+position operators of a particle $j$.  The first summation is performed over
 every particle, while the the second summation is performed over every
-unordered pair of distinct particles (the ordering of $p$ is arbitrary).
+unordered pair of distinct particles (the ordering of the particle labels $j$ is arbitrary).
 
 The full problem is not a trivial one.  We shall first consider a much simpler problem: the noninteracting part of the Hamiltonian, $\hat H^{\text o}$, which does not contain the Coulomb interaction $v$:
 \begin{align} \label{eq:onebodyhamiltonian}
@@ -202,7 +202,7 @@ In this case, the many-body Hamiltonian reduces to $N$ independent
 single-particle Hamiltonians, each of the form:
 \begin{align*}
   \hat h^{\text o} \equiv
-  \frac{\hat{\bm p}^2 + \omega^2 \hat{\bm x}^2}{2}
+  \frac{\hat{\bm p}^2 + \omega^2 \hat{\bm r}^2}{2}
 \end{align*}
 This is a 2-dimensional harmonic oscillator problem for a single particle,
 whose solutions are well known.  There are various ways to construct the set
@@ -211,17 +211,17 @@ momentum $\hat{L}_{\text{z}}$ about the $z$-axis (perpendicular to the 2D
 plane).  The eigenfunctions have the following analytic form in polar
 coordinates:\citep[Appx.\ A]{lohne2010coupled}
 \begin{gather*}
-  \phi^{\text{FD}}_{n, m_\ell}(r, \varphi)
+  \phi^{\text{FD}}_{n, m_\ell}(\rho, \varphi)
   \equiv \sqrt\omega
-  \phi^{\text{FD.R}}_{n, |m_\ell|}(\sqrt \omega r)
-  \phi^{\text{FD.A}}_{m_\ell}(\varphi)
+  \phi^{\text{FDr}}_{n, |m_\ell|}(\sqrt \omega \rho)
+  \phi^{\text{Lz}}_{m_\ell}(\varphi)
 \end{gather*}
-where
+where $\rho$ denotes the radial coordinate, $\varphi$ denotes the angular coordinate,
 \begin{align*}
-  \phi^{\text{FD.R}}_{n, \mu}(\rho) &\equiv
-  \sqrt{\frac{2 \cdot n!}{(n + \mu)!}}
-  {\mathrm e}^{- \rho^2 / 2} \rho^\mu L_n^{(\mu)}(\rho^2) \\
-  \phi^{\text{FD.A}}_{m_\ell}(\varphi) &\equiv
+  \phi^{\text{FDr}}_{n, m}(r) &\equiv
+  \sqrt{\frac{2 \cdot n!}{(n + m)!}}
+  {\mathrm e}^{-r^2 / 2} r^m L_n^{(m)}(r^2) \\
+  \phi^{\text{Lz}}_{m_\ell}(\varphi) &\equiv
   \frac{1}{\sqrt{2 \pi}} {\mathrm e}^{i m_\ell \varphi}
 \end{align*}
 and $L_n^{(\mu)}$ denotes the generalized Laguerre polynomial of degree $n$
@@ -233,8 +233,8 @@ Additionally, since electrons are spin-$1/2$ fermions, they can occupy either
 of the two spin states $\chi_{-\frac12}$ or $\chi_{+\frac12}$.  Thus, the
 single-particle basis states can be constructed as
 \begin{align} \label{eq:singleparticlestate}
-  \phi_{n, m_\ell, m_{\text s}}(r, \varphi) \equiv
-  \phi^{\text{FD}}_{n, m_\ell}(r, \varphi) \chi_{m_{\text s}}
+  \phi_{n, m_\ell, m_{\text s}}(\rho, \varphi) \equiv
+  \phi^{\text{FD}}_{n, m_\ell}(\rho, \varphi) \chi_{m_{\text s}}
 \end{align}
 with the spin projection $m_{\text s} \in \bigl\{-\frac12, +\frac12\bigr\}$.
 
