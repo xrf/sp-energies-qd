@@ -51,17 +51,25 @@ For each figure there is a zoomed-in version that reveals the details on the con
 
 ## 2016-11-08: Altered Coulomb interaction
 
-To investigate the drifts, Scott suggested an modified interaction:
+(Author: Fei)
 
-$$V(r; \sigma, \mu) \left(1 - \mathrm e^{-x^2 / (2 \sigma)}\right)\frac{\mathrm e^{-\mu r}}{r}$$
+To investigate the drifts, Scott suggested a modified interaction (short-range, no cusp):
+
+$$V_{\mathrm I}(r; \sigma, \mu) \equiv \left(1 - \mathrm e^{-r^2 / (2 \sigma)}\right)\frac{\mathrm e^{-\mu r}}{r}$$
 
 where $\sigma$ and $\mu$ are chosen to be near $1$ in natural units.
 
-Simen's OpenFCI code already supports a fairly general Hamiltonian consisting of a reciprocal power, polynomial factor, and a Gaussian factor.  It was therefore easier to code up something more like this:
+Simen's OpenFCI code already supports a fairly general Hamiltonian consisting of a reciprocal power, polynomial factor, and a Gaussian factor.  It was therefore easier to use something more like this:
 
-$$V(r; \sigma_{\mathrm A}, \sigma_{\mathrm B}) \left(1 - \mathrm e^{-x^2 / (2 \sigma_{\mathrm A})}\right) \frac{\mathrm e^{-r^2 / (2 \sigma_{\mathrm B})}}{r}$$
+$$V_{\mathrm{II}}(r; \sigma_{\mathrm A}, \sigma_{\mathrm B}) \equiv C \left(1 - \mathrm e^{-r^2 / (2 \sigma_{\mathrm A}^2)}\right) \frac{\mathrm e^{-r^2 / (2 \sigma_{\mathrm B}^2)}}{r}$$
 
-I choose $\sigma_{\mathrm A} = 0.5$ and $\sigma_{\mathrm B} = 4.0$ (in units of $a_0 / \sqrt{\omega}$ where $a_0$ is the Bohr radius) so that there would be some range remaining where the Coulomb interaction is still present.  I also re-scaled the envelope so that its peak is $1$.  The precise scaling factor is $(1 + c)^{1 - 1/c} / c$ where $c = \sqrt{\sigma_{\mathrm B} / \sigma_{\mathrm A}}$.
+I choose $\sigma_{\mathrm A} = 0.5$ and $\sigma_{\mathrm B} = 4.0$ (in units of $a_0 / \sqrt{\omega}$ where $a_0$ is the Bohr radius) so that there would be some range remaining where the Coulomb interaction is still present.  I also re-scaled the envelope so that its peak is $1$.  The precise scaling factor is $C \equiv (1 + c)^{1 - 1/c} / c$ where $c \equiv \sqrt{\sigma_{\mathrm B} / \sigma_{\mathrm A}}$.
+
+Judging from the fractional change of the last two data points (`rel_slope`)
+
+$$\frac{E_{\mathtt{num\_shells}{=}15} - E_{\mathtt{num\_shells}{=}14}}{E_{\mathtt{num\_shells}{=}15}}$$
+
+it does appear to converge faster: the fractional change of the modified interaction is about 2 orders of magnitude smaller than that of the standard Coulomb interaction (usually, at least.  It varies from case to case).  Keep in mind that the precision of the ODE solver in my calculations is set to $10^{-6}$ anyway, so you can't really expect any better.
 
 ![](FigureFiles/fig-compare-12-0.28-add-0_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
 ![](FigureFiles/fig-compare-12-0.28-rm-0_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
