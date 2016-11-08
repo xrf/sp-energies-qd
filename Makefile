@@ -35,6 +35,9 @@ deploy: ../dist/gh-pages/.git/config build
 .tex.pdf:
 	latexmk -interaction=nonstopmode -pdf $*
 
+figures.dep: figures.md gen-deps
+	./gen-deps figures
+
 -include figures.dep
 
 .SECONDARY:

@@ -48,3 +48,30 @@ For each figure there is a zoomed-in version that reveals the details on the con
 ![](FigureFiles/fig-compare-12-1.0-rm-0.pdf){width=100%}
 
 ![](FigureFiles/fig-compare-20-1.0-rm-1.pdf){width=100%}
+
+## 2016-11-08: Altered Coulomb interaction
+
+To investigate the drifts, Scott suggested an modified interaction:
+
+$$V(r; \sigma, \mu) \left(1 - \mathrm e^{-x^2 / (2 \sigma)}\right)\frac{\mathrm e^{-\mu r}}{r}$$
+
+where $\sigma$ and $\mu$ are chosen to be near $1$ in natural units.
+
+Simen's OpenFCI code already supports a fairly general Hamiltonian consisting of a reciprocal power, polynomial factor, and a Gaussian factor.  It was therefore easier to code up something more like this:
+
+$$V(r; \sigma_{\mathrm A}, \sigma_{\mathrm B}) \left(1 - \mathrm e^{-x^2 / (2 \sigma_{\mathrm A})}\right) \frac{\mathrm e^{-r^2 / (2 \sigma_{\mathrm B})}}{r}$$
+
+I choose $\sigma_{\mathrm A} = 0.5$ and $\sigma_{\mathrm B} = 4.0$ (in units of $a_0 / \sqrt{\omega}$ where $a_0$ is the Bohr radius) so that there would be some range remaining where the Coulomb interaction is still present.  I also re-scaled the envelope so that its peak is $1$.  The precise scaling factor is $(1 + c)^{1 - 1/c} / c$ where $c = \sqrt{\sigma_{\mathrm B} / \sigma_{\mathrm A}}$.
+
+![](FigureFiles/fig-compare-12-0.28-add-0_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
+![](FigureFiles/fig-compare-12-0.28-rm-0_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
+![](FigureFiles/fig-compare-12-1.0-add-0_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
+![](FigureFiles/fig-compare-12-1.0-rm-0_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
+![](FigureFiles/fig-compare-20-0.28-add-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
+![](FigureFiles/fig-compare-20-0.28-rm-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
+![](FigureFiles/fig-compare-20-1.0-add-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
+![](FigureFiles/fig-compare-20-1.0-rm-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
+![](FigureFiles/fig-compare-6-0.28-add-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
+![](FigureFiles/fig-compare-6-0.28-rm-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
+![](FigureFiles/fig-compare-6-1.0-add-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
+![](FigureFiles/fig-compare-6-1.0-rm-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
