@@ -127,7 +127,7 @@ the problem and makes numerical calculations much more efficient \cite{IMSRG}.
 This article is organized as follows: Section \ref{sec:formalism} introduces
 first (\ref{subsec:modelHamiltonian}) the Hamiltonian we use to model circular
 quantum dots, and gives afterwards an overview of the IM-SRG
-(\ref{subsec:SRG}) and DMC (\ref{subsec:DMC}) formalisms.  Our results are
+(\ref{subsec:imsrgmethod}) and DMC (\ref{subsec:DMC}) formalisms.  Our results are
 presented in Section \ref{sec:results}.  We point out the differences arising
 from the use of two different generators (Wegner and White generator), and
 give an overview of the ground state energies up to 42 particles. In
@@ -625,6 +625,7 @@ Through the flow equation and with an appropriate choice of the generator $\hat{
 The commutator in the flow equations \eqref{eq:imsrgode} guarantees that the evolved state $\hat U(s) \ket{\Phi}$ can be expanded in terms of \emph{linked diagrams} only \cite{shavitt2009many,ISI:A1981MN73700014}, which demonstrates that IM-SRG is size-extensive.  Regarding the quality of the SRG results, it means that the error introduced by truncating the many-body expansions scales linearly with the number of particles $N$.
 
 \subsubsection{Wegner's canonical generator}
+\label{subsec:Wegner}
 
 To determine the specific unitary transformation, one needs to specify the generator $\hat{\eta}$.  Through different choices, the SRG flow can be adapted to the features of a particular problem.
 
@@ -661,6 +662,7 @@ where for any $x$, $y$, $z$, $w$, $f$ we define the antisymmetrizer
 \end{align*}
 
 \subsubsection{White's generator}
+\label{subsec:White}
 
 Apart from Wegner's choice of the generator, there exist several other ones in literature. One choice, proposed by White \cite{White:cond-mat0201346}, makes numerical approaches much more efficient.  The problem with Wegner's generator is the widely varying decaying speeds of the Hamiltonian matrix elements.  Terms with large energy separations from the ground state are suppressed initially, followed by those with smaller energy separations.  This leads to stiffness in the flow equation, leading to numerical difficulties in solving the set of coupled differential equations.
 
@@ -711,7 +713,7 @@ complement of $\hat P$.  This entails that the exact states $\Psi_u$ is no
 longer normalized but instead satisfies the typical intermediate
 normalization: $\langle \Psi_u | \tilde \Psi^{\text o}_u \rangle = 1$.
 
-Making use of the assumptions in Eq.\ \eqref{eq:omega-condition1} and \eqref{eq:omega-condition2}, one can derive from the Schr\"odinger equation the generalized Bloch equation, the principal equation of QDPT:
+Making use of the assumptions in  \eqref{eq:omega-condition1} and \eqref{eq:omega-condition2}, one can derive from the Schr\"odinger equation the generalized Bloch equation, the principal equation of QDPT:
 \begin{gather*}
   [\hat \Omega, \hat H^{\text o}] =
   (1 - \hat \Omega) \hat V \Omega
@@ -805,7 +807,7 @@ Despite these gains, the EOM calculation is still a partial diagonalization meth
 Large single particle partial norms indicate that the EOM truncation is valid for the relevant state. States with lower single particle norms should be treated by with a higher EOM approximation, which can be accomplished directly or perturbatively. {\color{red} My paper talks about this a bit more, and we have some plots. Of course it only concerns the A-body stuff}.
 
 \subsection{Diffusion Monte Carlo}
-
+\label{subsec:DMC}
 
 Diffusion Monte Carlo (DMC) is a method for calculating the ground state
 properties via a stochastic process akin to classical diffusion, refining an
@@ -865,7 +867,7 @@ Defining $\Phi(\mathbf{r}, \tau) \equiv \bra{\mathbf{r}}\hat{P}(\tau)\ket{\Psi_T
 
 In practice, the ground state energy is a priori unknown, hence a trailing averaged value obtained from the converging DMC density is used. This energy is often referred to as the trial energy, and it is believed that with a sufficiently good trial state, the error due to this approximation is small.
 
-The Green's function introduced in Eq.~(\ref{eq:DMC_GreenFuncRevealed}) has singularities due to the the Coulomb interaction term in $\hat{H}$. Due to Pauli exclusion these are not physical, nevertheless, in numerical implementations they are unpredictable and undesirable, hence we want to avoid them.
+The Green's function introduced in \eqref{eq:DMC_GreenFuncRevealed} has singularities due to the the Coulomb interaction term in $\hat{H}$. Due to Pauli exclusion these are not physical, nevertheless, in numerical implementations they are unpredictable and undesirable, hence we want to avoid them.
 
 For evaluation of the local energy, the trial state is designed to cancel the Coulomb singularities by containing so-called correlation factors, however, this cancellation does not apply to the terms in the Green's function. In order to transfer this behavior to apply to the Green's function, a change to the formalism is introduced by iterating on a mixed density $f(\mathbf{r}, \tau) \equiv \Phi(\mathbf{r}, \tau)\Psi_T(\mathbf{r})$. Note that all previous arguments regarding convergence to the true ground state still applies for the new distribution.
 
@@ -894,14 +896,14 @@ E_L(\mathbf{r}) = \Psi_T(\mathbf{r})^{-1}\hat{H} \Psi_T(\mathbf{r})
 \end{equation}
 is necessarily sampled from $|\Psi_T(\mathbf{r})|^2$ (ensured by using the Metropolis Algorithm \cite{abInitioMC}) to avoid undefined energies when sampling close to the nodes of $\Psi_T(\mathbf{r})$.
 
-The Green's function from Eq.~(\ref{DMC_IS_GF_raw}) has been split into two for practical reasons; one part containing the kinetic terms, more specifically this represents a Fokker-Planck diffusion process, and a second part which is commonly referred to as a \textit{branching function}, which is an effective reweighing of a positions contribution to the overall density. Excluding branching we will simply sample from the density of the trial state.
+The Green's function from \eqref{eq:DMC_IS_GF_raw} has been split into two for practical reasons; one part containing the kinetic terms, more specifically this represents a Fokker-Planck diffusion process, and a second part which is commonly referred to as a \textit{branching function}, which is an effective reweighing of a positions contribution to the overall density. Excluding branching we will simply sample from the density of the trial state.
 
-In order dampen the errors introduced by splitting the Green's function, the time step $\delta\tau$ should be small. A value in the range of $10^{-3}$ to $10^{-4}$ is used in this work. High variance in energy samples requires a smaller time step to keep the branching controlled, since the fluctuations of the two are connected by Eq.~(\ref{eq:DMC_IS_GF}).
+In order dampen the errors introduced by splitting the Green's function, the time step $\delta\tau$ should be small. A value in the range of $10^{-3}$ to $10^{-4}$ is used in this work. High variance in energy samples requires a smaller time step to keep the branching controlled, since the fluctuations of the two are connected by \eqref{eq:DMC_IS_GF}.
 
-The name branching arise from the fact that in DMC, the weights are implemented as a probability of a given walker to copy or delete itself $n$ times, where $\langle n \rangle$ equals the branching term of Eq.~(\ref{eq:DMC_IS_GF}). Let $G_b$ denote the value of the branching function at a given position. Correct weighting is then ensured by guaranteeing $m = \max\left(\mathrm{floor}\left(G_b\right)-1, 0\right)$ branches with a probability $G_b - m$ of getting an additional branch. A branch is an identical copy of the corresponding walker, with an identical past but with a different future. When the number of requested branches is zero, the walker is removed from the simulation.
+The name branching arise from the fact that in DMC, the weights are implemented as a probability of a given walker to copy or delete itself $n$ times, where $\langle n \rangle$ equals the branching term of \eqref{eq:DMC_IS_GF}. Let $G_b$ denote the value of the branching function at a given position. Correct weighting is then ensured by guaranteeing $m = \max\left(\mathrm{floor}\left(G_b\right)-1, 0\right)$ branches with a probability $G_b - m$ of getting an additional branch. A branch is an identical copy of the corresponding walker, with an identical past but with a different future. When the number of requested branches is zero, the walker is removed from the simulation.
 
 
-Initially, $N_w$ walkers are initialized to span $|\Psi_T(\mathbf{r})|^2$. This is ensured by using the Metropolis Algorithm. Moreover, importance sampling is ensured by sampling according to the kinetic term of  Eq.~(\ref{eq:DMC_IS_GF_raw}) \textit{cite solution langevin}
+Initially, $N_w$ walkers are initialized to span $|\Psi_T(\mathbf{r})|^2$. This is ensured by using the Metropolis Algorithm. Moreover, importance sampling is ensured by sampling according to the kinetic term of \eqref{eq:DMC_IS_GF_raw} [[cite solution langevin]]
 
 \begin{equation}
 x_{i+1} = x_i + \frac{1}{2}\delta\tau F(\mathbf{r})_x + \xi,
@@ -926,7 +928,7 @@ This is the relation we use in this work to obtain the DMC energies.
 In this work, the trial state has been chosen to consist of a single Slater determinant (cite)
 together with a single variational parameter Padé-Jastrow correlation function (cite).
 
-The Slater determinant contains eigenstates $\phi_n(\mathbf{r})$ of Eq.~(\ref{eq:potential})
+The Slater determinant contains eigenstates $\phi_n(\mathbf{r})$ of the 2-dimensional harmonic oscillator
 with a variational parameter $\alpha$ scaling the oscillator frequency $\omega$
 such that $\omega\to\alpha\omega$ in all solutions:
 
@@ -1156,7 +1158,7 @@ preserved under differentiation.
   bare Coulomb interaction and White's generator. For $N=42$ and
   $\omega=0.1$ results are presented up to $R=22$ major shells. The
   results labelled IM-SRG(2)$_{R\rightarrow \infty}$ are obtained
-  using the extrapolation formula of Eq.().}
+  using the extrapolation formula of [[equation?]].}
 \label{tab:SRGDMC-R20}
 \begin{tabular}{ccccc}
 \hline\hline
@@ -1198,7 +1200,7 @@ $N$ & $\omega$ & IM-SRG(2) &IM-SRG(2)$_{R\rightarrow \infty}$ & DMC \\
 
 
 
-In Figure \ref{fig:gs} we show the calculated ground state energies from
+In Figure [[fig:gs]] we show the calculated ground state energies from
 Hartree-Fock, second-order (M\o ller-Plesset) perturbation theory (MPPT), and
 IM-SRG.  The exact result from diffusion Monte Carlo (DMC) is also shown as a
 dashed line in systems where it is known \cite{PhysRevB.84.115302}.
@@ -1220,7 +1222,7 @@ frequency regimes as it often converges slower than IM-SRG.
 [[Q: should we discuss the absolute/relative correction plots?]]
 
 For our addition and removal energy calculations, the results are summarized
-in Figure \ref{fig:add} and Figure \ref{fig:rm} respectively.  The figures
+in Figure [[fig:add]] and Figure [[fig:rm]] respectively.  The figures
 show the the addition/removal energies for Hartree-Fock, combined with IM-SRG
 and/or QDPT (Hartree-Fock is always included, as usual) [[better way to
 explain this? the figure labels are somewhat misleading too]].  The DMC
@@ -1250,6 +1252,27 @@ give any result as the ODE solver eventually leads to divergence [[Why?]]
 This seems to be a particular quirk associated with this specific system and
 does not usually occur in other systems except in a few extreme, isolated
 cases where there are far too few unoccupied states.
+
+[[begin unmerged]]
+
+In this section, we discuss the IM-SRG results for the ground-state
+energies of closed-shell systems. In subsection \ref{subsec:Wegner},
+we start with Wegner's canonical generator. Numerical instabilities in
+the integration process, as well as a rather slow convergence as
+function of the number of oscillator shells, motivate the use of a
+Hartree-Fock basis and the Coulomb interaction. Since higher
+correlations still lead to stiff equation systems, we change in
+subsection \ref{subsec:White} to White's generator. In particular, we
+give an overview of the IM-SRG(2) ground state energies for
+closed-shell systems up to $N=42$ particles and compare with other
+\textit{ab initio} many-body methods.\\ In all our calculations, we
+perform the integration of the flow equations using the algorithm
+developed by Shampine and Gordon \cite{shampine1975computer}. This
+algorithm solves linear systems of differential equations based on the
+implicit Adams method, which is a multi-step method of variable
+order. Source code is freely available \cite{odesolver}.
+
+[[end unmerged]]
 
 \section{Conclusions}
 \label{sec:conclusions}
@@ -1321,59 +1344,8 @@ parallelism does introduce additional complications that must be considered.
 Distributing the workload across multiple nodes can significantly reduce the
 cost of the calculations, allowing larger systems to be studied.
 
-\begin{acknowledgments}
- This work was supported by the
-National Science Foundation Grant No.~PHY-1404159
-(Michigan State University) and by the Research
-Council of Norway under contract ISP-Fysikk/216699.
-\end{acknowledgments}
+[[begin unmerged]]
 
-\bibliography{paper}
-\bibliographystyle{apsrev4-1}
-\end{document}
-
-
-
-\documentclass[aps,twocolumn,showpacs,floatfix,nofootinbib,preprintnumbers,superscriptaddress,amsmath,amssymb]{revtex4-1}
-
-\usepackage{graphicx}
-\usepackage{epsfig}
-\usepackage{bm}
-\usepackage{color}
-\usepackage{float}
-\usepackage{dcolumn}
-\usepackage{subfigure}
-\usepackage{multirow}
-
-
-
-
-
-\section{Results}
-\label{sec:results}
-In this section, we discuss the IM-SRG results for the ground-state
-energies of closed-shell systems. In subsection \ref{subsec:Wegner},
-we start with Wegner's canonical generator. Numerical instabilities in
-the integration process, as well as a rather slow convergence as
-function of the number of oscillator shells, motivate the use of a
-Hartree-Fock basis and the Coulomb interaction. Since higher
-correlations still lead to stiff equation systems, we change in
-subsection \ref{subsec:White} to White's generator. In particular, we
-give an overview of the IM-SRG(2) ground state energies for
-closed-shell systems up to $N=42$ particles and compare with other
-\textit{ab initio} many-body methods.\\ In all our calculations, we
-perform the integration of the flow equations using the algorithm
-developed by Shampine and Gordon \cite{shampine1975computer}. This
-algorithm solves linear systems of differential equations based on the
-implicit Adams method, which is a multi-step method of variable
-order. Source code is freely available \cite{odesolver}.
-
-
-
-
-
-\section{Conclusions}
-\label{sec:conclusions}
 We have used IM-SRG to study the ground state energy of circular,
 two-dimensional quantum dots up to $N=42$ particles. We utilized two
 different generators, Wegner's and White's one, and realized that
@@ -1412,16 +1384,24 @@ to apply these improvements not only to quantum dots, but to extend
 our studies to nuclear and/or atomic systems, which opens up an even
 larger range of applications.
 
-%
+[[end unmerged]]
+
 \begin{acknowledgments}
+  This work was supported by the
+  National Science Foundation Grant No.~PHY-1404159
+  (Michigan State University) and by the Research
+  Council of Norway under contract ISP-Fysikk/216699.
+
+  [[begin unmerged]]
+
   We thank Christoffer Hirth, Simen Kvaal and Veronica Olsen for
   several discussions. This work was supported by the Research Council
   of Norway under contract ISP-Fysikk/216699. This research used
   computational resources of the Notur project in Norway.
+
+  [[end unmerged]]
 \end{acknowledgments}
 
-
-\bibliography{srg}
+\bibliography{paper}
 \bibliographystyle{apsrev4-1}
-
 \end{document}
