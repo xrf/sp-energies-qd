@@ -15,39 +15,28 @@ For each figure there is a zoomed-in version that reveals the details on the con
 
 ### Observations
 
-**Effect due to difference in IM-SRG matrix elements.**  It is noteworthy that `eom` and `eom_f` differ by a very small amount ($\sim 0.01\%$), far than the discrepancy between the methods themselves.
+**Effect due to difference in IM-SRG matrix elements.**  It is noteworthy that `eom` and `eom_f` differ by a very small amount ($\sim 0.01\%$), far less than the discrepancy between the post-IM-SRG methods themselves.
 
-**Overall trends.**  In the majority of cases, `eom` tends to be sandwiches between `qdpt` and `cc`.
+**Overall trends.**  In the majority of cases, `eom` tends to be sandwiched between `qdpt` and `cc`.
 
-**Outlier methods.**  Sometimes, one of the three methods becomes an "outlier", meaning that it is noticeably different from the other two.  In `\omega = 1.0` cases, the addition energy from `qdpt` is a bit of an outlier.  For all the removal energies, `cc` tends to be an outlier.
+**Outlier methods.**  Sometimes, one of the three methods becomes an "outlier", meaning that it is noticeably different from the other two.  In $\omega = 1.0$ cases, the addition energy from `qdpt` is a bit of an outlier.  For all the removal energies, `cc` tends to be an outlier.
 
 **Convergence.**  Convergence of all 3 methods is similar.  Convergence rate decreases with the number of particles as well as the frequency, as expected.  Convergence of removal energy is generally faster than that of addition energy.
 
-**Drifting.**  While the converge initially appears to be rapid, in reality there is a residual drift even after the initial rapid drop.  The drift is small, and tends to be downward for removal energies, and upward for addition energies.  In some situations, the drifts may not even be in the same direction for different methods (for example, addition energy for 12 particles, $ML = 0$, $\omega = 0.28$).
+**Drifting.**  While the converge initially appears to be rapid, in reality there is a residual drift even after the initial rapid drop.  The drift is small.  It is downward for removal energies, but for addition energies, it can be either down or up, and can vary by the method too.
 
-![](FigureFiles/fig-compare-6-0.28-add-1.pdf){width=100%}
-
-![](FigureFiles/fig-compare-12-0.28-add-0.pdf){width=100%}
-
-![](FigureFiles/fig-compare-20-0.28-add-1.pdf){width=100%}
-
-![](FigureFiles/fig-compare-6-1.0-add-1.pdf){width=100%}
-
-![](FigureFiles/fig-compare-12-1.0-add-0.pdf){width=100%}
-
-![](FigureFiles/fig-compare-20-1.0-add-1.pdf){width=100%}
-
-![](FigureFiles/fig-compare-6-0.28-rm-1.pdf){width=100%}
-
-![](FigureFiles/fig-compare-12-0.28-rm-0.pdf){width=100%}
-
-![](FigureFiles/fig-compare-20-0.28-rm-1.pdf){width=100%}
-
-![](FigureFiles/fig-compare-6-1.0-rm-1.pdf){width=100%}
-
-![](FigureFiles/fig-compare-12-1.0-rm-0.pdf){width=100%}
-
-![](FigureFiles/fig-compare-20-1.0-rm-1.pdf){width=100%}
+![](FigureFiles/fig-compare-6-0.28-add-0.pdf)
+![](FigureFiles/fig-compare-6-1.0-add-0.pdf)
+![](FigureFiles/fig-compare-6-0.28-rm-1.pdf)
+![](FigureFiles/fig-compare-6-1.0-rm-1.pdf)
+![](FigureFiles/fig-compare-12-0.28-add-1.pdf)
+![](FigureFiles/fig-compare-12-1.0-add-1.pdf)
+![](FigureFiles/fig-compare-12-0.28-rm-0.pdf)
+![](FigureFiles/fig-compare-12-1.0-rm-0.pdf)
+![](FigureFiles/fig-compare-20-0.28-add-0.pdf)
+![](FigureFiles/fig-compare-20-1.0-add-0.pdf)
+![](FigureFiles/fig-compare-20-0.28-rm-1.pdf)
+![](FigureFiles/fig-compare-20-1.0-rm-1.pdf)
 
 ## 2016-11-08: Altered Coulomb interaction
 
@@ -71,15 +60,35 @@ $$\frac{E_{\mathtt{num\_shells}{=}15} - E_{\mathtt{num\_shells}{=}14}}{E_{\matht
 
 it does appear to converge faster: the fractional change of the modified interaction is about 2 orders of magnitude smaller than that of the standard Coulomb interaction (usually, at least.  It varies from case to case).  Keep in mind that the precision of the ODE solver in my calculations is set to $10^{-6}$ anyway, so you can't really expect any better.
 
-![](FigureFiles/fig-compare-12-0.28-add-0_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
-![](FigureFiles/fig-compare-12-0.28-rm-0_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
-![](FigureFiles/fig-compare-12-1.0-add-0_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
-![](FigureFiles/fig-compare-12-1.0-rm-0_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
-![](FigureFiles/fig-compare-20-0.28-add-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
-![](FigureFiles/fig-compare-20-0.28-rm-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
-![](FigureFiles/fig-compare-20-1.0-add-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
-![](FigureFiles/fig-compare-20-1.0-rm-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
-![](FigureFiles/fig-compare-6-0.28-add-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
-![](FigureFiles/fig-compare-6-0.28-rm-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
-![](FigureFiles/fig-compare-6-1.0-add-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
-![](FigureFiles/fig-compare-6-1.0-rm-1_sigmaA=0.5_sigmaB=4.0.pdf){width=100%}
+![](FigureFiles/fig-compare-6-0.28-add-0_sigmaA=0.5_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-6-0.28-rm-1_sigmaA=0.5_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-6-1.0-add-0_sigmaA=0.5_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-6-1.0-rm-1_sigmaA=0.5_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-12-0.28-add-1_sigmaA=0.5_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-12-0.28-rm-0_sigmaA=0.5_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-12-1.0-add-1_sigmaA=0.5_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-12-1.0-rm-0_sigmaA=0.5_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-20-0.28-add-0_sigmaA=0.5_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-20-0.28-rm-1_sigmaA=0.5_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-20-1.0-add-0_sigmaA=0.5_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-20-1.0-rm-1_sigmaA=0.5_sigmaB=4.0.pdf)
+
+## 2016-11-11: Changes with respect to frequency
+
+(Author: Fei)
+
+Shown here are the plots against frequency from 0.1 to 1.0.  The changes are quite smooth and very roughly linear.  There is not a lot of interesting trends I see though.  Perhaps we should look at more frequencies beyond 1.0 or 0.1?
+
+Erratum: All of the previous plots displayed the addition energy with an incorrect $M_{\mathrm L}$.  This has been corrected.  The trends are a little different now: there are now more cases where the addition energy drift in different directions for different methods.
+
+I have also added a semilog-plot to show the absolute value of `rel_slope` (as defined previously) for different systems.  The x-axis is labeled by the system parameters: `(interaction, freq, num_particles)`.  The normal interaction is labeled `''` and the modified interaction is labeled `'_sigmaA=0.5_sigmaB=4.0'`.  From this plot we see that:
+
+  - The convergence rate between removal and addition energy is not as dramatically different as we thought.  Addition energy has more unusual behavior (bending and then drifting upward), but the absolute rate seems to be not so different from that of removal energy.
+  - For the normal interaction, the ordering of `rel_slope` for removal and addition energies depends on the frequency.
+  - The softened interaction clearly improves convergences: the plot makes it very obvious now.  Removal energy is almost always has a higher `rel_slope`.  (There is still that strange spike for 20 particles with 0.28 frequency, but that is also the most difficult case we have looked at so far with only 15 shells available, so it's likely that we have not reached the asymptotics yet.)
+
+![](FigureFiles/fig-by-freq-10.0-6-add-0.pdf)
+![](FigureFiles/fig-by-freq-10.0-6-rm-1.pdf)
+![](FigureFiles/fig-by-freq-10.0-6-add-0_sigmaA=0.5_sigmaB=4.0.pdf)
+![](FigureFiles/fig-by-freq-10.0-6-rm-1_sigmaA=0.5_sigmaB=4.0.pdf)
+![](FigureFiles/fig-rel-slopes.pdf)

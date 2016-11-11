@@ -6,86 +6,19 @@ import pandas as pd
 from numpy import sqrt
 import utils
 
-def parse_nathan_like_data(d, label):
-    if label == "add":
-        d["energy"] = d["E(N+1)-E(N)"]
-    elif label == "rm":
-        d["energy"] = -d["E(N-1)-E(N)"]
-    else:
-        raise ValueError("invalid value for label parameter")
-    d = d[["shells", "filled", "ML", "omega", "energy"]]
-    d = d.rename(columns={
-        "shells": "num_shells",
-        "filled": "num_filled",
-        "ML": "ml",
-        "omega": "freq",
-    })
-    d["method"] = "eom"
-    d["label"] = label
-    return d
-
 os.chdir(os.path.dirname(__file__))
 
-def plot_compare(suffix):
-    ds = []
-
-    d = utils.skip_comment_char(
-        functools.partial(pd.read_csv, delim_whitespace=True),
-        "imsrg-qdpt/dat_arenergy_by_ml{suffix}.txt".format(**locals()))
-    d = d[["num_shells", "num_filled", "freq", "ml", "label", "energy"]]
-    d["method"] = "qdpt"
-    ds.append(d)
-
-    if not suffix:
-
-        d = pd.read_csv("EOM_IMSRG_qd_attached.dat", delim_whitespace=True)
-        d = parse_nathan_like_data(d, "add")
-        d["method"] = "eom"
-        ds.append(d)
-
-        d = pd.read_csv("EOM_IMSRG_qd_removed.dat", delim_whitespace=True)
-        d = parse_nathan_like_data(d, "rm")
-        d["method"] = "eom"
-        ds.append(d)
-
-        d = pd.read_csv("EOM_IMSRG_FEI_HAM_particle_attached.dat", delim_whitespace=True)
-        d = parse_nathan_like_data(d, "add")
-        d["method"] = "eom_f"
-        d["energy"] *= sqrt(d["freq"])
-        ds.append(d)
-
-        d = pd.read_csv("EOM_IMSRG_FEI_HAM_particle_removed.dat", delim_whitespace=True)
-        d = parse_nathan_like_data(d, "rm")
-        d["method"] = "eom_f"
-        d["energy"] *= sqrt(d["freq"])
-        ds.append(d)
-
-        d = pd.read_csv("EOM_CCSD_qd_attached.dat", header=None,
-                        names=["shells", "filled", "ML", "MS", "omega",
-                               "E(N)", "E(N+1)-E(N)", "E(N+1)", "partialnorm(1p)"],
-                        delim_whitespace=True)
-        d = parse_nathan_like_data(d, "add")
-        d["method"] = "cc"
-        ds.append(d)
-
-        d = pd.read_csv("EOM_CCSD_qd_removed.dat", header=None,
-                        names=["shells", "filled", "ML", "MS", "omega",
-                               "E(N)", "E(N-1)-E(N)", "E(N+1)", "partialnorm(1p)"],
-                        delim_whitespace=True)
-        d = parse_nathan_like_data(d, "rm")
-        d["method"] = "cc"
-        ds.append(d)
-
-    d = pd.concat(ds)
-
-    print("Saving ...".format(**locals()), flush=True)
+def plot_compare(suffix, f):
+    d = pd.concat(utils.get_ar_energies_for_v(suffix))
+    sys.stderr.write("Saving ...\n".format(**locals()))
+    sys.stderr.flush()
     for freq in [0.28, 1.0]:
         for num_filled in [2, 3, 4]:
             num_particles = num_filled * (num_filled + 1)
             for label in ["add", "rm"]:
                 fig, axs = plt.subplots(2, 1)
                 fig.set_size_inches(8, 10)
-                ml = (num_filled + (2 != "add")) % 2
+                ml = (num_filled + (label != "add")) % 2
                 for zoomed in [False, True]:
                     ax = axs[int(zoomed)]
                     # zoom in to the part where it's nearly converged
@@ -129,6 +62,9 @@ def plot_compare(suffix):
                         if method == "qdpt":
                             slope = ((ys[-1] - ys[-2]) / (xs[-1] - xs[-2]) / ys[-1])
                     if not zoomed:
+                        f.write(
+                            "{num_particles}\t{freq}\t{label}\t{suffix!r}\t{slope}\n"
+                            .format(**locals()))
                         ax.set_title("{} energy for {} particles (ML = {}, omega = {})\n"
                                      "{} (rel_slope = {:.6f})"
                                      .format({"add": "addition",
@@ -140,9 +76,12 @@ def plot_compare(suffix):
                 fn = ("../FigureFiles/fig-compare-"
                       "{num_particles}-{freq}-{label}-{ml}{suffix}.svg"
                       .format(**locals()))
-                print(fn, flush=True)
+                sys.stderr.write(fn + "\n")
+                sys.stderr.flush()
                 fig.savefig(fn)
                 plt.close(fig)
 
-for suffix in ["", "_sigmaA=0.5_sigmaB=4.0"]:
-    plot_compare(suffix)
+with open("compare_rel_slopes.txt", "w") as f:
+    f.write("# num_particles\tfreq\tlabel\tinteraction\tslope\n")
+    for suffix in ["", "_sigmaA=0.5_sigmaB=4.0"]:
+        plot_compare(suffix, f)
