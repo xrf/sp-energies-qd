@@ -101,7 +101,7 @@ particular variational and diffusion Monte Carlo (VMC and DMC)
 \cite{PhysRevB.68.035304,%
   PhysRevB.62.8120,PhysRevB.84.115302,PhysRevB.54.4780}, large-scale
 diagonalization/full configuration interaction (FCI)
-\cite{JJAP.36.3924,PhysRevB.56.6428,Kvaalcode,rontani:124102} and coupled
+\cite{JJAP.36.3924,PhysRevB.56.6428,2008arXiv0810.2644K,rontani:124102} and coupled
 cluster (CC) theory \cite{PhysRevB.67.045320,heidari:114708,%
   PhysRevB.84.115302}.
 
@@ -136,7 +136,7 @@ particular, we compare the results obtained with five different \textit{ab
 \ref{sec:conclusions} concludes our work and gives perspectives for future
 work.
 
-The harmonic oscillator (HO) is a ubiquitous system in quantum physics. It is the basis for an extremely diverse set of many-body calculations -- in nuclear physics \cite{HJORTHJENSEN1995125}, quantum chemistry \cite{Helgaker2002} [[missing ref for Helgaker 2002]], and quantum dot calculations of solid state physics \cite{reimann2002}. In these calculations, one typically seeks a few of the lowest eigenvalues $E_k$ and eigenvectors of a many-body Hamiltonian $\hat{H}$ that describes the full system by solving the Schr\"odinger equation,
+The harmonic oscillator (HO) is a ubiquitous system in quantum physics. It is the basis for an extremely diverse set of many-body calculations -- in nuclear physics \cite{HJORTHJENSEN1995125}, quantum chemistry \cite{helgaker2000molecular}, and quantum dot calculations of solid state physics \cite{reimann2002}. In these calculations, one typically seeks a few of the lowest eigenvalues $E_k$ and eigenvectors of a many-body Hamiltonian $\hat{H}$ that describes the full system by solving the Schr\"odinger equation,
 \begin{equation*}
 \hat{H} \ket{\psi_k} = E_k \ket{\psi_k}, \quad k \in \{1, 2, \ldots, k_{\text{max}}\}.
 \end{equation*}
@@ -156,7 +156,7 @@ analysis and give practical convergence estimates of HO basis expansions. It
 generalizes and refines the findings of a recent study of one-dimensional
 systems.\cite{Kvaal2007}
 
-The HO eigenfunctions are popular for several reasons. Many quantum systems, such as the quantum dot model considered here, can be considered perturbed harmonic oscillators \textit{per se}, thus the true eigenstates should be perturbations of the HO eigenstates.  Moreover, the HO has many beautiful properties, such as separability, invariance under orthogonal coordinate changes, and easily computable eigenfunctions, so that computing matrix elements of relevant operators becomes relatively simple.  Since HO eigenfunctions are defined on the \emph{entire} space in which particles live, a truncation of the spatial domain is unnecessary.  This avoids one of the main problems with approaches such as finite difference or finite element methods.\cite{RamMohan2002} [[Unknown citation]]
+The HO eigenfunctions are popular for several reasons. Many quantum systems, such as the quantum dot model considered here, can be considered perturbed harmonic oscillators \textit{per se}, thus the true eigenstates should be perturbations of the HO eigenstates.  Moreover, the HO has many beautiful properties, such as separability, invariance under orthogonal coordinate changes, and easily computable eigenfunctions, so that computing matrix elements of relevant operators becomes relatively simple.  Since HO eigenfunctions are defined on the \emph{entire} space in which particles live, a truncation of the spatial domain is unnecessary.  This avoids one of the main problems with approaches such as finite difference or finite element methods.\cite{ram2002finite} [[Unknown citation]]
 
 
 \section{Formalism}
@@ -629,7 +629,7 @@ The commutator in the flow equations \eqref{eq:imsrgode} guarantees that the evo
 
 To determine the specific unitary transformation, one needs to specify the generator $\hat{\eta}$.  Through different choices, the SRG flow can be adapted to the features of a particular problem.
 
-The original choice suggested by Wegner \cite{PhysRepWegner0} reads
+The original choice suggested by Wegner \cite{Wegner200177} reads
 \begin{equation}
   \hat{\eta}^{\text{Wg}}
   = [\hat{H}^{\text{d}}, \hat{H} - \hat{H}^{\text{d}}]
@@ -1353,7 +1353,7 @@ Wegner's generator results in stiff equation systems, whereas White's
 generator has much better numerics and is computationally more
 efficient. Moreover, we found out that the use of an Hartree-Fock
 basis improves numerical stability enormously, whereas analogous to
-previous FCI \cite{Kvaalcode} and CCSD \cite{PhysRevB.84.115302}
+previous FCI \cite{2008arXiv0810.2644K} and CCSD \cite{PhysRevB.84.115302}
 calculations, the use of an effective interaction improves convergence
 of the ground state energy as function of the number of oscillator
 shells.  Our IM-SRG(2) results are in excellent agreement with other
