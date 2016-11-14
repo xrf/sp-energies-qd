@@ -92,3 +92,28 @@ I have also added a semilog-plot to show the absolute value of `rel_slope` (as d
 ![](FigureFiles/fig-by-freq-10.0-6-add-0_sigmaA=0.5_sigmaB=4.0.pdf)
 ![](FigureFiles/fig-by-freq-10.0-6-rm-1_sigmaA=0.5_sigmaB=4.0.pdf)
 ![](FigureFiles/fig-rel-slopes.pdf)
+
+## 2016-11-13: Model attempt #1
+
+(Author: Fei)
+
+A rough pre-Hartree-Fock approximation of the addition energy is given by
+
+$$\varepsilon \approx f_{u, u} = \hat H^{\text o}_{u, u} + \sum_i V_{u, i, u, i}$$
+
+where $u$ denotes the *harmonic oscillator* orbital that is being added.  If we assume the orbitals are harmonic oscillator ones, then we can dedimensionalize the Hamiltonian via the substitution $r' = \sqrt{\omega} r$ and $E' = E / \omega$.  Taking into account the form of the interaction $V \sim r^{-1}$, this results in
+
+$$\varepsilon \approx \omega \hat H^{\text o\prime}_{u, u} + \sqrt{\omega} \sum_i V'_{u, i, u, i}$$
+
+where the primed quantities are dedimensionalized and thus independent of $\omega$.  The linear coefficient $\hat H^{\text o\prime}_{u, u}$ is just the harmonic oscillator energy of $u$.  So if we have 6 particles and want to add another, this is just 3.
+
+To see how well this matches up with the results, we re-write the equation and plot $\varepsilon / \sqrt\omega - 3 \sqrt\omega$ against $\sqrt{\omega}$.
+
+The curve appears to approach a constant value as $\sqrt{\omega} \to \infty$, which is expected.  This value is $\sum_i V'_{u, i, u, i}$.  We can confirm this value by calculating it directly from the matrix elements:
+
+    0.86165 * 2 - 0.23500 + (0.72457 * 2 - 0.13702) * 2 = 4.1125
+
+This agrees with what is shown on the graph.
+
+![](FigureFiles/fig-by-freq-model1-10.0-6-add-0.pdf)
+![](FigureFiles/fig-by-freq-model1-zoomed-10.0-6-add-0.pdf)

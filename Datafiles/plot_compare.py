@@ -6,8 +6,6 @@ import pandas as pd
 from numpy import sqrt
 import utils
 
-os.chdir(os.path.dirname(__file__))
-
 def plot_compare(suffix, f):
     d = pd.concat(utils.get_ar_energies_for_v(suffix))
     sys.stderr.write("Saving ...\n".format(**locals()))
@@ -80,6 +78,8 @@ def plot_compare(suffix, f):
                 sys.stderr.flush()
                 fig.savefig(fn)
                 plt.close(fig)
+
+utils.init(__file__)
 
 with open("compare_rel_slopes.txt", "w") as f:
     f.write("# num_particles\tfreq\tlabel\tinteraction\tslope\n")

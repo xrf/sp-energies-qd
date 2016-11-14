@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 # Generates ../FigureFiles/fig-by-freq-*.svg from the data files.
 import itertools, os, sys
+import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 import utils
 
-os.chdir(os.path.dirname(__file__))
+utils.init(__file__)
 
 d = pd.concat(utils.get_ar_energies())
 print("Saving ...".format(**locals()), flush=True)
 num_shells = 10.0
 num_filled = 2
 d = d[(d["num_shells"] == num_shells) &
-      (d["num_filled"] == num_filled)]
+      (d["num_filled"] == num_filled) &
+      # filter out higher frequencies because they stretch the plot too much
+      (d["freq"] <= 1.0)]
 num_particles = num_filled * (num_filled + 1)
 for interaction, label in itertools.product(
         [utils.V0, utils.V2],

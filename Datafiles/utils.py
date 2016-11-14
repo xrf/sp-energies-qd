@@ -1,6 +1,21 @@
-import functools
+import functools, os, sys
+import matplotlib
 from numpy import sqrt
 import pandas as pd
+
+def matplotlib_try_enable_deterministic_svgs():
+    # we want deterministic SVGs, but this isn't supported until matplotlib 2.0
+    try:
+        matplotlib.rcParams["svg.hashsalt"] = ""
+    except KeyError:
+        sys.stderr.write("Warning: Your matplotlib is too old. "
+                         "SVG output will be nondeterministic.\n")
+        sys.stderr.flush()
+
+def init(filename):
+    os.chdir(os.path.dirname(filename))
+    matplotlib_try_enable_deterministic_svgs()
+    matplotlib.style.use("ggplot")
 
 def skip_comment_char(read_func, filename):
     with open(filename) as f:

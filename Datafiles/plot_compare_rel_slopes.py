@@ -5,8 +5,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import utils
 
-matplotlib.style.use("ggplot")
-os.chdir(os.path.dirname(__file__))
+utils.init(__file__)
 
 d = utils.parse_simple("compare_rel_slopes.txt")
 

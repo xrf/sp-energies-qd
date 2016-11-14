@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import utils
 
-os.chdir(os.getcwd())
+utils.init(__file__)
 
 d = utils.skip_comment_char(
     functools.partial(pd.read_csv, delim_whitespace=True),
