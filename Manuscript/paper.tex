@@ -661,30 +661,33 @@ where for any $x$, $y$, $z$, $w$, $f$ we define the antisymmetrizer
   \mathcal{A}_{(x, y), (z, w)} f(x, y, z, w) &\equiv \frac{1}{2} \bigl(f(x, y, z, w) - f(z, w, x, y)\bigr)
 \end{align*}
 
-\subsubsection{White's generator}
+\subsubsection{White generator}
 \label{subsec:White}
 
-Apart from Wegner's choice of the generator, there exist several other ones in literature. One choice, proposed by White \cite{White:cond-mat0201346}, makes numerical approaches much more efficient.  The problem with Wegner's generator is the widely varying decaying speeds of the Hamiltonian matrix elements.  Terms with large energy separations from the ground state are suppressed initially, followed by those with smaller energy separations.  This leads to stiffness in the flow equation, leading to numerical difficulties in solving the set of coupled differential equations.
+Apart from Wegner's choice of the generator, there exist several other ones in literature. One choice, proposed by White \cite{White:cond-mat0201346}, makes numerical approaches much more efficient.  The problem with the Wegner generator is the widely varying decaying speeds of the Hamiltonian matrix elements.  Terms with large energy separations from the ground state are suppressed initially, followed by those with smaller energy separations.  This leads to stiffness in the flow equation, leading to numerical difficulties in solving the set of coupled differential equations.
 
 White takes an alternative approach, which is especially suited for problems where one is interested in the ground state of a system.  Firstly, instead of driving all off-diagonal elements of the Hamiltonian to zero, he focuses solely on those ones that are connected to the reference state $\Phi$, aiming to decouple the reference state from the remaining Hamiltonian.  This reduces the amount of change performed on the Hamiltonian, which can reduce the accuracy loss resulting from the truncated higher-body terms.  Secondly, the rate of decay in Hamiltonian matrix elements are approximately normalized by dividing the generator matrix elements by an appropriate factor.  This reduces the stiffness of the flow equations.
 
 The generator is explicitly constructed the following way \cite{PhysRevLett.106.222502,White:cond-mat0201346}
-\begin{align}
+\begin{align*}
 \hat{\eta}^{\text{Wh}} &\equiv \hat{\eta}' - \hat{\eta}'{}^\dagger
-\end{align}
+\end{align*}
 where
-\begin{align}
-\eta^{\prime [1]}_{a, i} &\equiv \frac{\bar{n}_a n_i H^{[1]}_{a, i}}{H^{[1]}_{a, a} - H^{[1]}_{i, i} - H^{[2]}_{a, i, a, i}}
-\label{eq:WhiteFull1} \\
-\eta^{\prime [2]}_{a, b, i, j} &\equiv \frac{\bar{n}_a \bar{n}_b n_i n_j H^{[2]}_{a, b, i, j}}{H^{[1]}_{a, a} + H^{[1]}_{b, b} - H^{[1]}_{i, i} - H^{[1]}_{j, j} + X_{a, b, i, j}}
-\label{eq:WhiteFull2} \\
+\begin{align*}
+\eta^{\prime [1]}_{a, i} &\equiv \frac{\bar{n}_a n_i H^{[1]}_{a, i}}{\Delta^{[1]}_{a, i}} &
+\eta^{\prime [2]}_{a, b, i, j} &\equiv \frac{\bar{n}_a \bar{n}_b n_i n_j H^{[2]}_{a, b, i, j}}{\Delta^{[2]}_{a, b, i, j}}
+\end{align*}
+and the denominators $\Delta^{[1]}$ and $\Delta^{[2]}$ are
+\begin{align*}
+\Delta^{[1]}_{a, i} &\equiv H^{[1]}_{a, a} - H^{[1]}_{i, i} - H^{[2]}_{a, i, a, i} \\
+\Delta^{[2]}_{a, b, i, j} &\equiv H^{[1]}_{a, a} + H^{[1]}_{b, b} - H^{[1]}_{i, i} - H^{[1]}_{j, j} + X_{a, b, i, j} \\
 X_{a, b, i, j}
   &\equiv H^{[2]}_{a, b, a, b} - H^{[2]}_{a, i, a, i} - H^{[2]}_{b, i, b, i} \notag \\
   &\qquad + H^{[2]}_{i, j, i, j} - H^{[2]}_{a, j, a, j} - H^{[2]}_{b, j, b, j}
-\label{eq:White7}
-\end{align}
+\end{align*}
+These are the Epstein--Nesbet denominators.  Some literature use M\o eller--Plesset denominators, which omit the $X_{a, b, i, j}$ term, leading to a slightly different variant of the canonical White generator.
 
-Compared to Wegner's canonical generator, where the derivative of the final flow equations contain cubes of the Hamiltonian matrix elements (i.e.\ each term contains a product of 3 one-body and/or two-body matrix elements), the elements in White's generator contribute only linearly with White's generator.  This has reduces the stiffness in the differential equation, providing a net increase in computational efficiency since stiff ODE solvers tend to be slower and require more memory.
+Compared to the Wegner generator, where the derivative of the final flow equations contain cubes of the Hamiltonian matrix elements (i.e.\ each term contains a product of 3 one-body and/or two-body matrix elements), the elements in White generators contribute only linearly.  This has reduces the stiffness in the differential equation, providing a net increase in computational efficiency since stiff ODE solvers tend to be slower and require more memory.
 
 \subsection{Quasigenerate perturbation theory}
 \label{subsec:selfenergy}
@@ -1012,7 +1015,7 @@ preserved under differentiation.
       configuration interaction (FCI) and Hartree-Fock calculations
       (HF) as functions of the number of major oscillator shells
       $R$. A harmonic oscilaltor basis has been used, with an
-      unrenormalized Coulomb repulsion and White's generator. All
+      unrenormalized Coulomb repulsion and the White generator. All
       energies in atomic units.}
    \label{fig:N6}
 \end{figure}
@@ -1047,7 +1050,7 @@ preserved under differentiation.
       (CCSD), full configuration interaction (FCI) and Hartree-Fock
       calculations (HF) as functions of the number of major oscillator
       shells $R$. A harmonic oscilaltor basis has been used, with an
-      unrenormalized Coulomb repulsion and White's generator. All
+      unrenormalized Coulomb repulsion and the White generator. All
       energies in atomic units.}
    \label{fig:N12}
 \end{figure}
@@ -1080,7 +1083,7 @@ preserved under differentiation.
       (CCSD), full configuration interaction (FCI) and Hartree-Fock
       calculations (HF) as functions of the number of major oscillator
       shells $R$. A harmonic oscilaltor basis has been used, with an
-      unrenormalized Coulomb repulsion and White's generator. All
+      unrenormalized Coulomb repulsion and the White generator. All
       energies in atomic units.}
    \label{fig:N20}
 \end{figure}
@@ -1111,7 +1114,7 @@ preserved under differentiation.
       (CCSD), full configuration interaction (FCI) and Hartree-Fock
       calculations (HF) as functions of the number of major oscillator
       shells $R$. A harmonic oscilaltor basis has been used, with an
-      unrenormalized Coulomb repulsion and White's generator. All
+      unrenormalized Coulomb repulsion and the White generator. All
       energies in atomic units.}
    \label{fig:N30}
 \end{figure}
@@ -1142,7 +1145,7 @@ preserved under differentiation.
       (CCSD), full configuration interaction (FCI) and Hartree-Fock
       calculations (HF) as functions of the number of major oscillator
       shells $R$. A harmonic oscilaltor basis has been used, with an
-      unrenormalized Coulomb repulsion and White's generator. All
+      unrenormalized Coulomb repulsion and the White generator. All
       energies in atomic units.}
    \label{fig:N42}
 \end{figure}
@@ -1155,7 +1158,7 @@ preserved under differentiation.
   dot, with $N$ particles and oscillator frequency $\omega$. The
   IM-SRG(2) results are given for $R=20$ shells (except for the $N=56$
   results which are for $R=18$), employing a Hartree-Fock basis, a
-  bare Coulomb interaction and White's generator. For $N=42$ and
+  bare Coulomb interaction and the White generator. For $N=42$ and
   $\omega=0.1$ results are presented up to $R=22$ major shells. The
   results labelled IM-SRG(2)$_{R\rightarrow \infty}$ are obtained
   using the extrapolation formula of [[equation?]].}
@@ -1257,12 +1260,12 @@ cases where there are far too few unoccupied states.
 
 In this section, we discuss the IM-SRG results for the ground-state
 energies of closed-shell systems. In subsection \ref{subsec:Wegner},
-we start with Wegner's canonical generator. Numerical instabilities in
+we start with the Wegner generator. Numerical instabilities in
 the integration process, as well as a rather slow convergence as
 function of the number of oscillator shells, motivate the use of a
 Hartree-Fock basis and the Coulomb interaction. Since higher
 correlations still lead to stiff equation systems, we change in
-subsection \ref{subsec:White} to White's generator. In particular, we
+subsection \ref{subsec:White} to the White generator. In particular, we
 give an overview of the IM-SRG(2) ground state energies for
 closed-shell systems up to $N=42$ particles and compare with other
 \textit{ab initio} many-body methods.\\ In all our calculations, we
@@ -1348,8 +1351,8 @@ cost of the calculations, allowing larger systems to be studied.
 
 We have used IM-SRG to study the ground state energy of circular,
 two-dimensional quantum dots up to $N=42$ particles. We utilized two
-different generators, Wegner's and White's one, and realized that
-Wegner's generator results in stiff equation systems, whereas White's
+different generators, Wegner and White generators, and realized that
+the Wegner generator results in stiff equation systems, whereas the White
 generator has much better numerics and is computationally more
 efficient. Moreover, we found out that the use of an Hartree-Fock
 basis improves numerical stability enormously, whereas analogous to
