@@ -14,30 +14,31 @@ d = utils.parse_simple("compare_rel_slopes.txt")
 # so we have to use this awful hack
 x_labels = [
     "'_sigmaA=0.5_sigmaB=4.0', 1.0, 6",
-    "'_sigmaA=0.5_sigmaB=4.0', 1.0, 6",
-    "'_sigmaA=0.5_sigmaB=4.0', 1.0, 12",
     "'_sigmaA=0.5_sigmaB=4.0', 1.0, 12",
     "'_sigmaA=0.5_sigmaB=4.0', 1.0, 20",
-    "'_sigmaA=0.5_sigmaB=4.0', 1.0, 20",
-    "'_sigmaA=0.5_sigmaB=4.0', 0.28, 6",
     "'_sigmaA=0.5_sigmaB=4.0', 0.28, 6",
     "'_sigmaA=0.5_sigmaB=4.0', 0.28, 12",
-    "'_sigmaA=0.5_sigmaB=4.0', 0.28, 12",
     "'_sigmaA=0.5_sigmaB=4.0', 0.28, 20",
-    "'_sigmaA=0.5_sigmaB=4.0', 0.28, 20",
-    "'', 1.0, 6",
+    "'_sigmaA=0.5', 1.0, 6",
+    "'_sigmaA=0.5', 1.0, 12",
+    "'_sigmaA=0.5', 1.0, 20",
+    "'_sigmaA=0.5', 0.28, 6",
+    "'_sigmaA=0.5', 0.28, 12",
+    "'_sigmaA=0.5', 0.28, 20",
+    "'_sigmaB=4.0', 1.0, 6",
+    "'_sigmaB=4.0', 1.0, 12",
+    "'_sigmaB=4.0', 1.0, 20",
+    "'_sigmaB=4.0', 0.28, 6",
+    "'_sigmaB=4.0', 0.28, 12",
+    "'_sigmaB=4.0', 0.28, 20",
     "'', 1.0, 6",
     "'', 1.0, 12",
-    "'', 1.0, 12",
-    "'', 1.0, 20",
     "'', 1.0, 20",
     "'', 0.28, 6",
-    "'', 0.28, 6",
     "'', 0.28, 12",
-    "'', 0.28, 12",
-    "'', 0.28, 20",
     "'', 0.28, 20",
 ]
+x_labels_ = [l.replace("_", " ").replace("sigma", "σ") for l in x_labels]
 x_labels_lookup = dict((x, i) for i, x in enumerate(x_labels))
 d["x_id"] = functools.reduce(lambda x, y: x + ", " + y, [
     d["interaction"],
@@ -46,7 +47,7 @@ d["x_id"] = functools.reduce(lambda x, y: x + ", " + y, [
 ]).map(lambda x: x_labels_lookup[x])
 
 fig = plt.figure()
-ax = fig.add_axes([0.1, 0.3, 0.8, 0.6])
+ax = fig.add_axes([0.1, 0.45, 0.8, 0.5])
 for label, g in d.groupby(["label"]):
     ax.plot(g["x_id"],
             abs(g["slope"]),
@@ -56,7 +57,7 @@ for label, g in d.groupby(["label"]):
 ax.set_ylabel("|rel_slope|")
 ax.set_xlim(-1, len(x_labels))
 ax.set_xticks(range(len(x_labels)))
-ax.set_xticklabels(x_labels, rotation=90)
+ax.set_xticklabels(x_labels_, rotation=90)
 ax.set_yscale("log")
 ax.legend()
 fn = "../FigureFiles/fig-rel-slopes.svg"

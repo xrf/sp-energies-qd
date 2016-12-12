@@ -83,5 +83,5 @@ utils.init(__file__)
 
 with open("compare_rel_slopes.txt", "w") as f:
     f.write("# num_particles\tfreq\tlabel\tinteraction\tslope\n")
-    for suffix in ["", "_sigmaA=0.5_sigmaB=4.0"]:
+    for suffix in ["", "_sigmaA=0.5_sigmaB=4.0", "_sigmaA=0.5", "_sigmaB=4.0"]:
         plot_compare(suffix, f)

@@ -1,64 +1,44 @@
-\documentclass[amsmath, amssymb, aps, floatfix, nofootinbib, preprintnumbers,showpacs, superscriptaddress, twocolumn]{revtex4-1}
+\input{head_plain}
+\usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{bm}
-\usepackage[cmyk]{xcolor}
-\usepackage{dcolumn}
-\usepackage{epsfig}
-\usepackage{float}
+\usepackage{booktabs}
+\usepackage{color}
 \usepackage{graphicx}
-\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{siunitx}
 \usepackage{subfigure}
 
 \newcommand{\D}{\operatorname{d\!}}
-\newcommand{\ket}[1]{| #1 \rangle}
 \newcommand{\bra}[1]{\langle #1 |}
 \newcommand{\braket}[2]{\langle #1 | #2\rangle}
+\newcommand{\ket}[1]{| #1 \rangle}
 \newcommand{\normord}[1]{\mathopen: #1 \mathclose:}
 
 \begin{document}
-
 \title{Studies of quantum dots}
 
 \author{Fei Yuan}
-\affiliation{National Superconducting Cyclotron Laboratory and
-  Department of Physics and Astronomy,
-  Michigan State University,
-  East Lansing, MI 48824, USA}
+\email{yuan@nscl.msu.edu}
+\homepage{https://people.nscl.msu.edu/~yuan}
+\affiliation{National Superconducting Cyclotron Laboratory and Department of Physics and Astronomy, Michigan State University, East Lansing, MI 48824, USA}
 \author{J\o rgen H\o gberget}
 \affiliation{Department of Physics, University of Oslo, N-0316 Oslo, Norway}
 \author{Sam Novario}
-\affiliation{National Superconducting Cyclotron Laboratory and
-  Department of Physics and Astronomy,
-  Michigan State University,
-  East Lansing, MI 48824, USA}
+\affiliation{National Superconducting Cyclotron Laboratory and Department of Physics and Astronomy, Michigan State University, East Lansing, MI 48824, USA}
 \author{Nathan Parzuchowski}
-\affiliation{National Superconducting Cyclotron Laboratory and
-  Department of Physics and Astronomy,
-  Michigan State University,
-  East Lansing, MI 48824, USA}
+\affiliation{National Superconducting Cyclotron Laboratory and Department of Physics and Astronomy, Michigan State University, East Lansing, MI 48824, USA}
 \author{Sarah Reimann}
 \affiliation{Department of Chemistry and Center for Theoretical and Computational Chemistry, University of Oslo, N-0316 Oslo, Norway}
 \author{Scott Bogner}
-\affiliation{National Superconducting Cyclotron Laboratory and
-  Department of Physics and Astronomy,
-  Michigan State University,
-  East Lansing, MI 48824, USA}
+\affiliation{National Superconducting Cyclotron Laboratory and Department of Physics and Astronomy, Michigan State University, East Lansing, MI 48824, USA}
 \author{Morten Hjorth-Jensen}
-\affiliation{National Superconducting Cyclotron Laboratory and
-  Department of Physics and Astronomy,
-  Michigan State University,
-  East Lansing, MI 48824, USA}
+\affiliation{National Superconducting Cyclotron Laboratory and Department of Physics and Astronomy, Michigan State University, East Lansing, MI 48824, USA}
 \affiliation{Department of Physics, University of Oslo, N-0316 Oslo, Norway}
 
-
 \begin{abstract}
-  We present and compare several many-body methods used to study a quantum dot
-  system.  We calculate the approximate ground state energy of electrons in a
-  circularly symmetric potential well using a harmonic oscillator basis
-  optimized via Hartree-Fock (HF).  We further improve the ground state energy
-  using in-medium similarity renormalization group (IM-SRG).  Additionally, we
-  calculate the addition and removal energies using quasidegenerate
-  perturbation theory (QDPT).  Our results are benchmarked against quasi-exact
-  diffusion Monte Carlo (DMC) and coupled cluster (CC) calculations.
+  We present and compare several many-body methods used to study a quantum dot system.  We calculate the approximate ground state energy of electrons in a circularly symmetric potential well using a harmonic oscillator basis optimized via Hartree-Fock (HF).  We further improve the ground state energy using in-medium similarity renormalization group (IM-SRG).  Additionally, we calculate the addition and removal energies using quasidegenerate perturbation theory (QDPT).  Our results are benchmarked against quasi-exact diffusion Monte Carlo (DMC) and coupled cluster (CC) calculations.
 \end{abstract}
 
 \pacs{02.70.Ss, 31.15.A-, 31.15.bw, 71.15.-m, 73.21.La}
@@ -577,40 +557,38 @@ where
   \mathcal{A}_{x, y} f(x, y) &\equiv \frac{1}{2} \bigl(f(x, y) - f(y, x)\bigr) \text{ for any $x$, $y$, $f$}
 \end{align}
 and finally
-\begin{widetext}
-  \begin{align}
-    D^{[0]}(A, B)
-    &\equiv
-      \sum_{i, a} n_i \bar{n}_a A^{[1]}_{i, a} B^{[1]}_{a, i}
-      + \frac{1}{4} \sum_{i, j, a, b} n_i n_j \bar{n}_a \bar{n}_b A^{[2]}_{i, j, a, b} B^{[2]}_{a, b, i, j}
-      \label{eq:flow0} \\
-    D^{[1]}_{p, q}(A, B)
-    &\equiv
-      \sum_{r} A^{[1]}_{p, r} B^{[1]}_{r, q}
-      - \frac{1}{2} \sum_{i, j, a} n_i n_j \bar{n}_a A^{[2]}_{i, j, a, q} B^{[2]}_{a, p, i, j}
-      + \frac{1}{2} \sum_{i, a, b} n_i \bar{n}_a \bar{n}_b A^{[2]}_{i, p, a, b} B^{[2]}_{a, b, i, q}
-      \notag \\
-    &\hphantom{=}
-      + \sum_{i, a} n_i \bar{n}_a \left(
-        A^{[1]}_{i, a} B^{[2]}_{a, p, i, q}
-        + A^{[2]}_{i, p, a, q} B^{[1]}_{a, i}
-      \right)
-      \label{eq:flow1} \\
-    D^{[2]}_{p, q, r, s}(A, B)
-    &\equiv
-      \tilde{\mathcal{A}}_{p, q} \tilde{\mathcal{A}}_{r, s}
-        \sum_{i, a} n_i \bar{n}_a A^{[2]}_{i, p, a, r} B^{[2]}_{a, q, i, s}
-      + \frac{1}{2} \sum_{i, j} n_i n_j A^{[2]}_{i, j, r, s} B^{[2]}_{p, q, i, j}
-      + \frac{1}{2} \sum_{a, b} \bar{n}_a \bar{n}_b A^{[2]}_{p, q, a, b} B^{[2]}_{a, b, r, s}
-      \notag \\
-    &\hphantom{=}
-      + \sum_{t} \left(
-        \tilde{\mathcal{A}}_{p, q} A^{[1]}_{q, t} B^{[2]}_{p, t, r, s}
-        + \tilde{\mathcal{A}}_{r, s} A^{[2]}_{p, q, r, t} B^{[1]}_{t, s}
-      \right)
-      \label{eq:flow2}
+\begin{align}
+  D^{[0]}(A, B)
+  &\equiv
+    \sum_{i, a} n_i \bar{n}_a A^{[1]}_{i, a} B^{[1]}_{a, i}
+    + \frac{1}{4} \sum_{i, j, a, b} n_i n_j \bar{n}_a \bar{n}_b A^{[2]}_{i, j, a, b} B^{[2]}_{a, b, i, j}
+    \label{eq:flow0} \\
+  D^{[1]}_{p, q}(A, B)
+  &\equiv
+    \sum_{r} A^{[1]}_{p, r} B^{[1]}_{r, q}
+    - \frac{1}{2} \sum_{i, j, a} n_i n_j \bar{n}_a A^{[2]}_{i, j, a, q} B^{[2]}_{a, p, i, j}
+    + \frac{1}{2} \sum_{i, a, b} n_i \bar{n}_a \bar{n}_b A^{[2]}_{i, p, a, b} B^{[2]}_{a, b, i, q}
+    \notag \\
+  &\hphantom{=}
+    + \sum_{i, a} n_i \bar{n}_a \left(
+    A^{[1]}_{i, a} B^{[2]}_{a, p, i, q}
+    + A^{[2]}_{i, p, a, q} B^{[1]}_{a, i}
+    \right)
+    \label{eq:flow1} \\
+  D^{[2]}_{p, q, r, s}(A, B)
+  &\equiv
+    \tilde{\mathcal{A}}_{p, q} \tilde{\mathcal{A}}_{r, s}
+    \sum_{i, a} n_i \bar{n}_a A^{[2]}_{i, p, a, r} B^{[2]}_{a, q, i, s}
+    + \frac{1}{2} \sum_{i, j} n_i n_j A^{[2]}_{i, j, r, s} B^{[2]}_{p, q, i, j}
+    + \frac{1}{2} \sum_{a, b} \bar{n}_a \bar{n}_b A^{[2]}_{p, q, a, b} B^{[2]}_{a, b, r, s}
+    \notag \\
+  &\hphantom{=}
+    + \sum_{t} \left(
+    \tilde{\mathcal{A}}_{p, q} A^{[1]}_{q, t} B^{[2]}_{p, t, r, s}
+    + \tilde{\mathcal{A}}_{r, s} A^{[2]}_{p, q, r, t} B^{[1]}_{t, s}
+    \right)
+    \label{eq:flow2}
 \end{align}
-\end{widetext}
 \begin{figure}
 \includegraphics[width=.48\textwidth]{fig-diagrams-imsrg}
 \caption{Diagrammatic representation of $C^{[r]}(\circ, \bullet)$ in \eqref{eq:commutmxe} that forms part of the IM-SRG flow equation \eqref{eq:flowmxe}.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams \cite{HUGENHOLTZ1957481} as described in \cite{shavitt2009many} \S 4.4.3).}
@@ -1020,10 +998,6 @@ preserved under differentiation.
    \label{fig:N6}
 \end{figure}
 
-
-
-
-
 \begin{figure}%[hbtp]
      \begin{center}
         \subfigure[Results for $N=12$ and $\omega=1.0$ ]{
@@ -1055,10 +1029,6 @@ preserved under differentiation.
    \label{fig:N12}
 \end{figure}
 
-
-
-
-
 \begin{figure}%[hbtp]
      \begin{center}
         \subfigure[Results for $N=20$ and $\omega=1.0$ ]{
@@ -1087,8 +1057,6 @@ preserved under differentiation.
       energies in atomic units.}
    \label{fig:N20}
 \end{figure}
-
-
 
 \begin{figure}%[hbtp]
      \begin{center}
@@ -1119,8 +1087,6 @@ preserved under differentiation.
    \label{fig:N30}
 \end{figure}
 
-
-
 \begin{figure}%[hbtp]
      \begin{center}
         \subfigure[Results for $N=42$ and $\omega=1.0$ ]{
@@ -1150,55 +1116,54 @@ preserved under differentiation.
    \label{fig:N42}
 \end{figure}
 
-
-
 \begin{table}
 \begin{center}
-\caption{Ground state energy (in atomic units) of a circular quantum
-  dot, with $N$ particles and oscillator frequency $\omega$. The
-  IM-SRG(2) results are given for $R=20$ shells (except for the $N=56$
-  results which are for $R=18$), employing a Hartree-Fock basis, a
-  bare Coulomb interaction and the White generator. For $N=42$ and
-  $\omega=0.1$ results are presented up to $R=22$ major shells. The
-  results labelled IM-SRG(2)$_{R\rightarrow \infty}$ are obtained
-  using the extrapolation formula of [[equation?]].}
+  \caption{Ground state energy (in atomic units) of a circular quantum dot, with $N$ particles and oscillator frequency $\omega$. The IM-SRG(2) results are given for $R=20$ shells (except for the $N=56$ results which are for $R=18$), employing a Hartree-Fock basis, a bare Coulomb interaction and the White generator. For $N=42$ and $\omega=0.1$ results are presented up to $R=22$ major shells. The results labelled IM-SRG(2)$_{R\rightarrow \infty}$ are obtained using the extrapolation formula of [[equation?]].}
 \label{tab:SRGDMC-R20}
-\begin{tabular}{ccccc}
-\hline\hline
-$N$ & $\omega$ & IM-SRG(2) &IM-SRG(2)$_{R\rightarrow \infty}$ & DMC \\
-\hline
-6 & 1.0 & 20.1583 & 20.1468   & 20.1593(1) \\
-& 0.5&11.7690  & 11.7631 &11.7848(1) \\
-& 0.28& 7.5713 &   7.5695 &7.6002(1) \\
-& 0.1& 3.4962  &  3.4977 &3.5539(1)\\
-\hline
-12&1.0 & 65.7280 & 65.6990  & 65.7001(1) \\
-&0.5 &39.1631 &  39.1473 & 39.1596(1)\\
-&  0.28&25.6212 &  25.6140& 25.6358(1)\\
-&  0.1&12.2223 &  12.2234 & 12.2698(1)\\
-\hline
-20& 1.0&155.9737 & 155.9130  & 155.8822(1)\\
-&  0.5&93.9219 &   93.8853 &93.8752(1)\\
-&  0.28&61.94362 & 61.9240 &61.9268(1) \\
-&  0.1&29.95263 &29.9565  & 29.9779(1)\\
-\hline
-30& 1.0& 308.7673 & 308.6053 & 308.5627(2) \\
- & 0.5& 187.1671& 186.8340 &187.0426(2)\\
- & 0.28&124.0410 & 123.7171 & 123.9683(2) \\
- & 0.1& 60.4319& 60.1158 & 60.4205(2)\\
-\hline
-42& 1.0&543.3398 & 543.3304 & 542.9428(8) \\
- & 0.5&330.8885 & 330.8425 & 330.6306(2)\\
- & 0.28&220.0226 & 219.9534y &219.8426(2) \\
- & 0.1& 107.7851&  106.8074& 107.6389(2)\\
- \hline
-56& 1.0& 880.4159 &  & 879.3986(6) \\
- & 0.5& 538.8199 & & 537.353(2)\\
- & 0.28&360.83689  &  & 358.145(2) \\
-\hline
+\begin{tabular}{SSSSS}
+  \toprule
+  {$N$} & {$\omega$} & {IM-SRG(2)} & {IM-SRG(2)$_{R\rightarrow \infty}$} & {DMC} \\
+  \midrule
+  6 & 1.0 & 20.1583 & 20.1468   & 20.1593(1) \\
+      & 0.5&11.7690  & 11.7631 &11.7848(1) \\
+      & 0.28& 7.5713 &   7.5695 &7.6002(1) \\
+      & 0.1& 3.4962  &  3.4977 &3.5539(1)\\
+  \midrule
+  12&1.0 & 65.7280 & 65.6990  & 65.7001(1) \\
+      &0.5 &39.1631 &  39.1473 & 39.1596(1)\\
+      &  0.28&25.6212 &  25.6140& 25.6358(1)\\
+      &  0.1&12.2223 &  12.2234 & 12.2698(1)\\
+  \midrule
+  20& 1.0&155.9737 & 155.9130  & 155.8822(1)\\
+      &  0.5&93.9219 &   93.8853 &93.8752(1)\\
+      &  0.28&61.94362 & 61.9240 &61.9268(1) \\
+      &  0.1&29.95263 &29.9565  & 29.9779(1)\\
+  \midrule
+  30& 1.0& 308.7673 & 308.6053 & 308.5627(2) \\
+      & 0.5& 187.1671& 186.8340 &187.0426(2)\\
+      & 0.28&124.0410 & 123.7171 & 123.9683(2) \\
+      & 0.1& 60.4319& 60.1158 & 60.4205(2)\\
+  \midrule
+  42& 1.0&543.3398 & 543.3304 & 542.9428(8) \\
+      & 0.5&330.8885 & 330.8425 & 330.6306(2)\\
+      & 0.28&220.0226 & 219.9534y &219.8426(2) \\
+      & 0.1& 107.7851&  106.8074& 107.6389(2)\\
+  \midrule
+  56& 1.0& 880.4159 &  & 879.3986(6) \\
+      & 0.5& 538.8199 & & 537.353(2)\\
+      & 0.28&360.83689  &  & 358.145(2) \\
+  \bottomrule
 \end{tabular}
 \end{center}
 \end{table}
+
+[[begin unmerged]]
+
+In this section, we discuss the IM-SRG results for the ground-state energies of closed-shell systems. In subsection \ref{subsec:Wegner}, we start with the Wegner generator. Numerical instabilities in the integration process, as well as a rather slow convergence as function of the number of oscillator shells, motivate the use of a Hartree-Fock basis and the Coulomb interaction. Since higher correlations still lead to stiff equation systems, we change in subsection \ref{subsec:White} to the White generator. In particular, we give an overview of the IM-SRG(2) ground state energies for closed-shell systems up to $N=42$ particles and compare with other \textit{ab initio} many-body methods.
+
+In all our calculations, we perform the integration of the flow equations using the algorithm developed by Shampine and Gordon \cite{shampine1975computer}. This algorithm solves linear systems of differential equations based on the implicit Adams method, which is a multi-step method of variable order. Source code is freely available \cite{odesolver}.
+
+[[end unmerged]]
 
 
 
@@ -1256,155 +1221,42 @@ This seems to be a particular quirk associated with this specific system and
 does not usually occur in other systems except in a few extreme, isolated
 cases where there are far too few unoccupied states.
 
-[[begin unmerged]]
-
-In this section, we discuss the IM-SRG results for the ground-state
-energies of closed-shell systems. In subsection \ref{subsec:Wegner},
-we start with the Wegner generator. Numerical instabilities in
-the integration process, as well as a rather slow convergence as
-function of the number of oscillator shells, motivate the use of a
-Hartree-Fock basis and the Coulomb interaction. Since higher
-correlations still lead to stiff equation systems, we change in
-subsection \ref{subsec:White} to the White generator. In particular, we
-give an overview of the IM-SRG(2) ground state energies for
-closed-shell systems up to $N=42$ particles and compare with other
-\textit{ab initio} many-body methods.\\ In all our calculations, we
-perform the integration of the flow equations using the algorithm
-developed by Shampine and Gordon \cite{shampine1975computer}. This
-algorithm solves linear systems of differential equations based on the
-implicit Adams method, which is a multi-step method of variable
-order. Source code is freely available \cite{odesolver}.
-
-[[end unmerged]]
-
 \section{Conclusions}
 \label{sec:conclusions}
 
-We demonstrated the use various many-body theories, Hartree-Fock method, M\o
-eller-Plesset perturbation theory, IM-SRG, as well as quasidegenerate
-perturbation theory to calculate ground state as well as addition and removal
-energies of two-dimensional quantum dots.  We showed that these methods, when
-combined, can give a good approximate description of the systems at moderate
-cost compared to near-exact but much more expensive methods such as FCI and
-DMC.
+We have demonstrated the use of various many-body theories -- Hartree-Fock method, M\o eller-Plesset perturbation theory, in-medium similarity renormalization group, and quasidegenerate perturbation theory -- to calculate ground state as well as addition and removal energies of two-dimensional circular quantum dots up to 56 [[make sure the figure/data for 56 particles stays]] particles.  We showed that these methods, when combined, can provide a good, approximate description of the systems at moderate cost compared to near-exact but much more expensive methods such as FCI and DMC.
 
-For ground state energy, we showed that the convergence of IM-SRG is generally
-faster than that of MPPT, and the results are typically closer to the exact
-results.  Similarly, we found that IM-SRG improves the rate of convergence of
-the addition and removal energies, both as the order of perturbation theory
-increases and as the number of shells increases.
+Two different generators, Wegner and White generators, were used [[T/F?]] to perform the calculations.  It was observed that the Wegner generator results in stiff equation systems, whereas the White generator has much better numerics and is computationally more efficient.[[make sure this is this elaborated in the Results section]] Moreover, we found out that the use of an Hartree-Fock basis improves numerical stability enormously.
 
-There are several directions in which the calculations may be improved.  One
-can attempt to improve the IM-SRG approximation by incorporating some of the
-missing higher-body terms in the commutator.  This would also provide some
-insight into the rate of convergence with respect to the operator truncation.
-While some of the higher-body terms can be rather costly to compute --
-rendering a full 3-body IM-SRG quite expensive -- certain additional
-approximations may be made to alleviate this without incurring the full cost
-of evolving 3-body operators [[Ref?]].
+For ground state energy, we showed that the convergence of IM-SRG is generally faster than that of MPPT, and the results are typically closer to the the near-exact results.  Similar to previous FCI \cite{2008arXiv0810.2644K} and CCSD \cite{PhysRevB.84.115302} calculations, the use of an effective interaction improves convergence of the ground state energy as function of the number of oscillator shells.  [[delete or keep: For more than six particles, we lie in all cases closer to the DMC result than corresponding CCSD calculations do.]]
 
-[[As noted earlier [[haven't written that yet]], the application of IM-SRG
-removes a large portion of the QDPT diagrams, which is beneficial as it
-increases the efficiency of the QDPT calculations.  However, many of these
-diagrams can also be eliminated further through an infinite resummation scheme
-[[Any good refs for this?]], which would further reduce the number of diagrams
-in QDPT, especially those of lower order, whic would likely increase the
-accuracy of the result.]]
+For addition and removal energies, we found that IM-SRG improves their rate of convergence both as the order of perturbation theory increases and as the number of shells increases.
+
+There are several directions in which the calculations may be improved.  One can attempt to improve the IM-SRG approximation by incorporating some of the missing higher-body terms in the commutator.  This would also provide some insight into the rate of convergence with respect to the operator truncation, providing a sense of how large the truncation error is.  While a full 3-body treatment of IM-SRG would be extremely costly, it is possible implicitly track for a portion of the induced 3-body forces by computing certain diagrams that are either lower cost or could be approximated at lower cost [[Ref?]].
+
+As noted earlier [[not yet written]], the application of IM-SRG eliminates a large portion of the QDPT diagrams, which is beneficial as it increases the efficiency of the QDPT calculations.  However, many of these diagrams can also be eliminated further through an infinite resummation scheme [[Good refs for this?]], which would further reduce the number of diagrams in QDPT, especially those of lower order, whic would likely increase the accuracy of the result.
 
 It would also be useful to investigate how the results obtained with finite
 number of shells in the basis are related to those obtained with an infinite
-number of shells in the basis.  [[Ref: paper on IR/UV extrapolation]] With a
+number of shells in the basis.  [[Ref: IR/UV extrapolation]] With a
 good theoretical foundation, a model of how the observables converge with
 respect to the size of the basis may be used to extrapolate the results to
 infinite-basis limit.  This would also enable us to perform cheaper
 calculations with fewer shells and optimistically extrapolate results for
 large systems that would be otherwise infeasible to compute.
 
-We note that this calculation was done entirely using the traditional approach
-of using a high-order ODE solver to solve the flow equation.  A new technique
-developed by T. Morris [[Ref?]] uses an alternative approach that obviates the
-need for a high-order ODE solver, leading to much more efficient computations
-and also allowing operators of other observables to be evolved with greater
-ease.  Implementing this approach would be beneficial as it would allows us to
-study the accuracy and convergence of other observables beyond energy and
-energy differences.
+We note that this calculation was done entirely using the traditional approach of using a high-order ODE solver to solve the flow equation.  A new technique developed by T. Morris \cite{PhysRevC.92.034331} uses an alternative approach that obviates the need for a high-order ODE solver, leading to much more efficient computations and also allowing operators of other observables to be evolved with greater ease.  Implementing this approach would be beneficial as it would allows us to study the accuracy and convergence of other observables beyond energy and energy differences.
 
-Implementation-wise, our current code constructs the two-particle basis as
-simple Slater determinants without any angular momentum coupling.  This
-approach is often referred to as \textit{m-scheme} in nuclear physics.  This
-method is simple and works well for general systems, but it does not fully
-exploit the circular symmetry present in the quantum dot system.  A more
-efficient approach is to use angular momentum coupling to generate the
-two-particle basis, which is known as \textit{j-scheme} in nuclear physics.
-Combined with the symmetries of the Hamiltonian, this can significantly reduce
-the amount of computation required in this system, albeit at the cost of
-increasing the complexity of the implementation.
+Implementation-wise, our current code constructs the two-particle states as simple Slater determinants of their one-particle states.  This approach is often referred to as \textit{m-scheme} in nuclear physics.  It is a simple approach and works well for general systems, but it does not fully exploit the symmetries in the quantum dot system, since not only is spin projection $\hat S_z$ conserved, but squared spin $\hat S^2$ too.  A more efficient approach is to couple the spins of the single-particle states to form two-particle states with good $\hat S^2$, an approach analogous to \textit{j-scheme} in nuclear physics.  Combining this with the spherical tensor symmetries of the Hamiltonian, this can reduce the amount of computation required in this system via the Eckart-Wigner theoerem, albeit at the cost of increasing the implementation complexity.
 
-A more technical issue is its lack of parallelization: currently, the code
-makes very little use of parallelism and therefore does not scale well on
-modern clusters.  As the problem is not embarrassingly parallel, implementing
-parallelism does introduce additional complications that must be considered.
-Distributing the workload across multiple nodes can significantly reduce the
-cost of the calculations, allowing larger systems to be studied.
+A more technical issue is its lack of parallelization: currently, the code makes very little use of parallelism and therefore does not scale well on modern clusters.  Parallelism would allow the workload and memory resources to be divided over multiple computing nodes, allowing larger systems to be explored, but this must be weighed carefully against the costs of communication, which can be severe if the algorithm is chosen poorly.
 
-[[begin unmerged]]
-
-We have used IM-SRG to study the ground state energy of circular,
-two-dimensional quantum dots up to $N=42$ particles. We utilized two
-different generators, Wegner and White generators, and realized that
-the Wegner generator results in stiff equation systems, whereas the White
-generator has much better numerics and is computationally more
-efficient. Moreover, we found out that the use of an Hartree-Fock
-basis improves numerical stability enormously, whereas analogous to
-previous FCI \cite{2008arXiv0810.2644K} and CCSD \cite{PhysRevB.84.115302}
-calculations, the use of an effective interaction improves convergence
-of the ground state energy as function of the number of oscillator
-shells.  Our IM-SRG(2) results are in excellent agreement with other
-many-body methods, in particular DMC, which can be considered as more
-or less exact benchmark. For more than six particles, we lie in all
-cases closer to the DMC result than corresponding CCSD calculations
-do.
-
-Until now, we have applied the SRG flow equations in m-scheme only. A
-next step, which we are currently working on, is to perform the
-calculations in j-scheme. This allows for further simplifications of
-the flow equations, such that numerical calculations get even more
-efficient.  Moreover, one aspect of great interest is to extend
-IM-SRG(2) to IM-SRG(3), where all operators are truncated one a
-three-body instead of a two-body level. A comparison of both results
-would give insight into the significance of higher correlations and it
-would allow to analyse the convergence behavior of the IM-SRG
-hierarchy of truncation. However, since this is expected to be
-computationally highly expensive, a first alternative would be not to
-look at the whole IM-SRG(3) evolution, but to restrict oneself just to
-certain additional terms, in order to get an impression of how
-important excitations beyond the IM-SRG(2) level are. Since we use an
-initial two-body Hamiltonian, one particular possibility is not to
-save the induced three-body interactions explicitly, but to include
-their loop terms in the calculations for lower-body interaction
-terms. Work along these lines is in progress.\\ Furthermore, we plan
-to apply these improvements not only to quantum dots, but to extend
-our studies to nuclear and/or atomic systems, which opens up an even
-larger range of applications.
-
-[[end unmerged]]
+Eventually, we plan to apply these theoretical and technical enhancements not only to the study of quantum dots, but to the studies of nuclear and atomic systems, opening up an even larger range of applications.
 
 \begin{acknowledgments}
-  This work was supported by the
-  National Science Foundation Grant No.~PHY-1404159
-  (Michigan State University) and by the Research
-  Council of Norway under contract ISP-Fysikk/216699.
-
-  [[begin unmerged]]
-
-  We thank Christoffer Hirth, Simen Kvaal and Veronica Olsen for
-  several discussions. This work was supported by the Research Council
-  of Norway under contract ISP-Fysikk/216699. This research used
-  computational resources of the Notur project in Norway.
-
-  [[end unmerged]]
+  This work was supported by the National Science Foundation Grant No.~PHY-1404159 (Michigan State University) and by the Research Council of Norway under contract ISP-Fysikk/216699.  This research used computational resources of the Notur project in Norway.  We thank Christoffer Hirth, Simen Kvaal and Veronica Olsen for several discussions.
 \end{acknowledgments}
 
+\bibliographystyle{\mybibstyle}
 \bibliography{paper}
-\bibliographystyle{apsrev4-1}
 \end{document}

@@ -33,7 +33,7 @@ deploy: ../dist/gh-pages/.git/config build
 	pandoc -s -V fontsize=12pt -o $@ $<
 
 .tex.pdf:
-	latexmk -interaction=nonstopmode -pdf $*
+	./mklatex $*
 
 figures.dep: figures.md gen-deps
 	./gen-deps figures

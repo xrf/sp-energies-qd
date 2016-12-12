@@ -1,4 +1,7 @@
-# Figures
+---
+title: Figures
+toc: true
+---
 
 ## 2016-11-01: Comparison of different methods
 
@@ -117,3 +120,35 @@ This agrees with what is shown on the graph.
 
 ![](FigureFiles/fig-by-freq-model1-10.0-6-add-0.pdf)
 ![](FigureFiles/fig-by-freq-model1-zoomed-10.0-6-add-0.pdf)
+
+## 2016-12-08: More altered interactions
+
+Now we consider the cases where $(\sigma_{\mathrm{A}}, \sigma_{\mathrm{B}}) = (0.5, \infty)$ and $(\sigma_{\mathrm{A}}, \sigma_{\mathrm{B}}) = (0, 4.0)$.  The results are shown the figures below.
+
+The results are also included in `fig-rel-slopes` (last figure of 2016-11-11).  Looking at this figure, one can see that making $\sigma_{\mathrm{A}}$ nonzero had a huge effect on improving the convergence, whereas making $\sigma_{\mathrm{B}}$ finite had little effect.
+
+![](FigureFiles/fig-compare-6-0.28-add-0_sigmaA=0.5.pdf)
+![](FigureFiles/fig-compare-6-0.28-rm-1_sigmaA=0.5.pdf)
+![](FigureFiles/fig-compare-6-1.0-add-0_sigmaA=0.5.pdf)
+![](FigureFiles/fig-compare-6-1.0-rm-1_sigmaA=0.5.pdf)
+![](FigureFiles/fig-compare-12-0.28-add-1_sigmaA=0.5.pdf)
+![](FigureFiles/fig-compare-12-0.28-rm-0_sigmaA=0.5.pdf)
+![](FigureFiles/fig-compare-12-1.0-add-1_sigmaA=0.5.pdf)
+![](FigureFiles/fig-compare-12-1.0-rm-0_sigmaA=0.5.pdf)
+![](FigureFiles/fig-compare-20-0.28-add-0_sigmaA=0.5.pdf)
+![](FigureFiles/fig-compare-20-0.28-rm-1_sigmaA=0.5.pdf)
+![](FigureFiles/fig-compare-20-1.0-add-0_sigmaA=0.5.pdf)
+![](FigureFiles/fig-compare-20-1.0-rm-1_sigmaA=0.5.pdf)
+
+![](FigureFiles/fig-compare-6-0.28-add-0_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-6-0.28-rm-1_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-6-1.0-add-0_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-6-1.0-rm-1_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-12-0.28-add-1_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-12-0.28-rm-0_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-12-1.0-add-1_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-12-1.0-rm-0_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-20-0.28-add-0_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-20-0.28-rm-1_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-20-1.0-add-0_sigmaB=4.0.pdf)
+![](FigureFiles/fig-compare-20-1.0-rm-1_sigmaB=4.0.pdf)

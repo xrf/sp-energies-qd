@@ -1,0 +1,9 @@
+#!/bin/sh
+# shut up LaTeX
+set -eu
+rm -f "$1.log"
+latexmk -g -pdf -silent -interaction=nonstopmode "$1" || {
+    e=$?
+    grep --color -A8 '^!.*' "$1".log
+    exit $e
+}
