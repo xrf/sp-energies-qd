@@ -1,4 +1,4 @@
-\input{head_plain}
+\input{head_plain.tex}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{bm}
@@ -11,6 +11,7 @@
 \usepackage{subfigure}
 
 \newcommand{\D}{\operatorname{d\!}}
+\newcommand{\E}{\operatorname{e}}
 \newcommand{\bra}[1]{\langle #1 |}
 \newcommand{\braket}[2]{\langle #1 | #2\rangle}
 \newcommand{\ket}[1]{| #1 \rangle}
@@ -137,7 +138,6 @@ generalizes and refines the findings of a recent study of one-dimensional
 systems.\cite{Kvaal2007}
 
 The HO eigenfunctions are popular for several reasons. Many quantum systems, such as the quantum dot model considered here, can be considered perturbed harmonic oscillators \textit{per se}, thus the true eigenstates should be perturbations of the HO eigenstates.  Moreover, the HO has many beautiful properties, such as separability, invariance under orthogonal coordinate changes, and easily computable eigenfunctions, so that computing matrix elements of relevant operators becomes relatively simple.  Since HO eigenfunctions are defined on the \emph{entire} space in which particles live, a truncation of the spatial domain is unnecessary.  This avoids one of the main problems with approaches such as finite difference or finite element methods.\cite{ram2002finite} [[Unknown citation]]
-
 
 \section{Formalism}
 \label{sec:formalism}
@@ -596,11 +596,11 @@ and finally
 \end{figure}
 The equations can be derived directly from the anticommutation relations of the field operators, but it is more convenient to use Wick's theorem [[ref]] or, even more efficiently, diagrammatic techniques [[ref]] to arrive at the results.  In particular, the diagrammatic representation of antisymmetrized matrix elements are shown in Figure \ref{fig:diagrams-imsrg}.
 
-An accurate and robust ODE solver is required to solve \eqref{eq:imsrgode}.  In particular, the solver must be able to handle the stiffness that can often arise (even in the case of White generator).  For this, we use an accurate, high-order ODE solver implementation by Shampine and Gordon that uses the Adams predictor-corrector formulas [[Ref: Shampine and Gordon book]].
+An accurate and robust ODE solver is required to solve \eqref{eq:imsrgode}.  In particular, the solver must be able to handle the stiffness that can often arise (even in the case of White generator, which is designed to avoid some of the stiffness).  For our numerical experiments, we used a high-order ODE solver algorithm by L.\ F.\ Shampine and M.\ K.\ Gordon \cite{shampine1975computer}, which is a multistep method based on the implicit Adams predictor-corrector formulas.  Its source code is freely available \cite{odesolver}.
 
 Through the flow equation and with an appropriate choice of the generator $\hat{\eta}$, the evolved state $\hat U(s) \ket{\Phi}$ will gradually approach a more ``diagonal'' form.  If the ``diagonal'' form decouples the ground state from the excited states, then $\hat U(\infty) \ket{\Phi}$ would yield the exact ground state solution of the problem if no operator or basis truncations are made.  In particular, $H^{[0]}$ would approach the true ground state energy.
 
-The commutator in the flow equations \eqref{eq:imsrgode} guarantees that the evolved state $\hat U(s) \ket{\Phi}$ can be expanded in terms of \emph{linked diagrams} only \cite{shavitt2009many,ISI:A1981MN73700014}, which demonstrates that IM-SRG is size-extensive.  Regarding the quality of the SRG results, it means that the error introduced by truncating the many-body expansions scales linearly with the number of particles $N$.
+The commutator in the flow equations \eqref{eq:imsrgode} indicates that the evolved state $\hat U(s) \ket{\Phi}$ can be expanded in terms of \emph{linked diagrams} only \cite{shavitt2009many,ISI:A1981MN73700014}, which ensures the size-extensive property of IM-SRG by construction.  This holds even if the commutator is truncated.  Regarding the quality of the SRG results, this indicates that the error introduced by truncating the many-body expansions scales linearly with the number of particles $N$.
 
 \subsubsection{Wegner's canonical generator}
 \label{subsec:Wegner}
@@ -767,7 +767,11 @@ where $\hat{X}$ is in principle a linear combination of excitation and de-excita
   \label{eq:gen_removed}
   \hat{X}^{(N-1)}_u &= \sum_p n_p x_p^{[0,1]} \hat{a}_p + \frac{1}{2} \sum_{p, q, r} n_p n_q \bar{n}_r  x^{[1,2]}_{p, q, r} \hat{a}^\dagger_r \hat{a}_q \hat{a}_p  + \cdots.
 \end{align}
-Substitution of \eqref{eq:ladder_def} into the energy eigenvalue problem $\hat H \ket{\Psi_u^{(N \pm 1)}} = E^{(N\pm1)}_u \ket{\Psi_u^{(N \pm 1)}}$ gives
+Substitution of \eqref{eq:ladder_def} into the energy eigenvalue problem
+\begin{gather*}
+  \hat H \ket{\Psi_u^{(N \pm 1)}} = E^{(N\pm1)}_u \ket{\Psi_u^{(N \pm 1)}}
+\end{gather*}
+gives
 \begin{equation}\label{eq:EOM}
   [\hat{H}, \hat{X}^{(N \pm 1)}_u] \ket{\Psi^{(N)}_0} = \pm \epsilon^{(\pm)}_u \hat{X}^{(N \pm 1)}_u \ket{\Psi^{(N)}_0},
 \end{equation}
@@ -790,37 +794,21 @@ Large single particle partial norms indicate that the EOM truncation is valid fo
 \subsection{Diffusion Monte Carlo}
 \label{subsec:DMC}
 
-Diffusion Monte Carlo (DMC) is a method for calculating the ground state
-properties via a stochastic process akin to classical diffusion, refining an
-approximate ground state density towards that of the exact ground state.  The
-rules that govern the diffusion process are obtained by evolving the wave
-function using what can be formally be thought of as the time-dependent
-Schr\"odinger equation along imaginary time $\tau \equiv t / \mathrm{i}$:
+Diffusion Monte Carlo (DMC) is a method for calculating the ground state properties via a stochastic process akin to classical diffusion, refining an approximate ground state density towards that of the exact ground state.  The rules that govern the diffusion process are obtained by evolving the wave function using what can be formally be thought of as the time-dependent Schr\"odinger equation along imaginary time $\tau \equiv t / \mathrm{i}$:
 \begin{align} \label{eq:itse}
   \frac{\partial}{\partial \tau} |\Phi(\tau)\rangle = \hat H |\Phi(\tau)\rangle
 \end{align}
-The solutions to this equation are not unlike the ordinary Schr\"odinger
-equation with a slight but crucial difference in the exponent:
+The solutions to this equation are not unlike the ordinary Schr\"odinger equation with a slight but crucial difference in the exponent:
 \begin{align*}
   |\Phi(\tau)\rangle = \mathrm e^{-\hat H \tau} |\Phi(0)\rangle
 \end{align*}
-where $|\Phi(0)\rangle$ is the initial wave function at $\tau = 0$ -- not to
-be confused with the exact ground state of $\hat H$, which we denote
-$|\Psi_0\rangle$ here.  If we decompose the wave function into a sum over the
-eigenstates $|\Psi_n\rangle$,
+where $|\Phi(0)\rangle$ is the initial wave function at $\tau = 0$ -- not to be confused with the exact ground state of $\hat H$, which we denote $|\Psi_0\rangle$ here.  If we decompose the wave function into a sum over the eigenstates $|\Psi_n\rangle$,
 \begin{align*}
   |\Psi(\tau)\rangle
   = \mathrm e^{-\hat H \tau} \sum_n c_n |\Psi_n\rangle
   = \sum_n c_n \mathrm e^{-E_n \tau} |\Psi_n\rangle
 \end{align*}
-we find that components of the wave function that have negative energy will
-increase exponentially as $\tau \to \infty$, while those with positive energy
-will decrease exponentially.  This property can be exploited to filter out the
-undesirable components, leaving only the ground state energy.  To do this, we
-require a trial energy $E_{\text{T}}$ -- a guess of the ground state energy --
-and replace $\hat H$ in \eqref{eq:itse} with $(\hat H - E_{\text{T}})$ so
-that, if our trial energy is good, all states but the ground states will
-approximately vanish.
+we find that components of the wave function that have negative energy will increase exponentially as $\tau \to \infty$, while those with positive energy will decrease exponentially.  This property can be exploited to filter out the undesirable components, leaving only the ground state energy.  To do this, we require a trial energy $E_{\text{T}}$ -- a guess of the ground state energy -- and replace $\hat H$ in \eqref{eq:itse} with $(\hat H - E_{\text{T}})$ so that, if our trial energy is good, all states but the ground states will approximately vanish.
 
 Diffusion Monte-Carlo (DMC) is a method used for refining a crude estimate to the ground state density into a better approximation to the exact ground state. The basic idea is to move multiple random walkers in position space with sampling rules which ensures convergence to a behavior representing a walk guided by the exact ground state density. Once a satisfying level of convergence is reached, expectation values are calculated by accumulating local estimates along the path of the walkers.
 
@@ -961,8 +949,6 @@ We refer to Refs (cite optimization techniques) for more information.
 Moreover, the most costly part of evaluating the single-particle eigenstates, the exponentials, is independent of the quantum number $n$, and can thus be tabulated once
 for the entire calculation. This holds for the gradient and Laplacian needed in the quantum force and local energy, respectively, since the exponential shape is
 preserved under differentiation.
-
-
 
 \section{Results}
 \label{sec:results}
@@ -1157,69 +1143,73 @@ preserved under differentiation.
 \end{center}
 \end{table}
 
-[[begin unmerged]]
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{fig-gs}
+  \caption{Ground state energies.}
+  \label{fig:gs}
+\end{figure}
 
-In this section, we discuss the IM-SRG results for the ground-state energies of closed-shell systems. In subsection \ref{subsec:Wegner}, we start with the Wegner generator. Numerical instabilities in the integration process, as well as a rather slow convergence as function of the number of oscillator shells, motivate the use of a Hartree-Fock basis and the Coulomb interaction. Since higher correlations still lead to stiff equation systems, we change in subsection \ref{subsec:White} to the White generator. In particular, we give an overview of the IM-SRG(2) ground state energies for closed-shell systems up to $N=42$ particles and compare with other \textit{ab initio} many-body methods.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{fig-add}
+  \caption{Addition energies.}
+  \label{fig:add}
+\end{figure}
 
-In all our calculations, we perform the integration of the flow equations using the algorithm developed by Shampine and Gordon \cite{shampine1975computer}. This algorithm solves linear systems of differential equations based on the implicit Adams method, which is a multi-step method of variable order. Source code is freely available \cite{odesolver}.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{fig-rm}
+  \caption{Removal energies.}
+  \label{fig:rm}
+\end{figure}
 
-[[end unmerged]]
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{fig-rel-slopes}
+  \caption{Comparison of the rate of convergence for various modifications to the Coulomb interaction.  The key observation from this plot is that the short-range part of the interaction has a strong impact on the convergence, whereas the long-range tail has little effect.}
+  \label{fig:rel-slopes}
+\end{figure}
 
+In this section, we discuss the IM-SRG results for the ground-state energies of closed-shell systems . In subsection \ref{subsec:Wegner}, we start with the Wegner generator. Numerical instabilities in the integration process, as well as a rather slow convergence as function of the number of oscillator shells, motivate the use of a Hartree-Fock basis and the Coulomb interaction.  Since higher correlations still lead to stiff equation systems, we change in subsection \ref{subsec:White} to the White generator. In particular, we give an overview of the IM-SRG(2) ground state energies for closed-shell systems up to $N=42$ particles and compare with other \textit{ab initio} many-body methods.
 
+[[...]]
 
+In Figure \ref{fig:gs} we show the calculated ground state energies from Hartree-Fock, second-order (M\o ller-Plesset) perturbation theory (MPPT), and IM-SRG.  The exact result from diffusion Monte Carlo (DMC) is also shown as a dashed line in systems where it is known \cite{PhysRevB.84.115302}.
 
-In Figure [[fig:gs]] we show the calculated ground state energies from
-Hartree-Fock, second-order (M\o ller-Plesset) perturbation theory (MPPT), and
-IM-SRG.  The exact result from diffusion Monte Carlo (DMC) is also shown as a
-dashed line in systems where it is known \cite{PhysRevB.84.115302}.
+Both perturbation theory and IM-SRG add corrections in addition to the Hartree-Fock results to recover the correlation energy and they do quite well in recovering the correlation energy in the system.  Compared with MPPT, IM-SRG generally converges faster, although does not always converge to the DMC result.  Generally speaking, IM-SRG is closer to the DMC result as the number of particles increases.
 
-Both perturbation theory and IM-SRG add corrections in addition to the
-Hartree-Fock results to recover the correlation energy and they do quite well
-in recovering the correlation energy in the system.  Compared with MPPT, IM-SRG
-generally converges faster, although does not always converge to the DMC
-result.  Generally speaking, IM-SRG is closer to the DMC result as the number
-of particles increases.
+There are a few cases where the IM-SRG over-corrects the result, leading to a ground state energy that is lower than the exact result.  This is not unexpected given that, unlike Hartree-Fock, IM-SRG is non-variational in the presence of operator truncations that cause small unitarity violations.  Such behavior tends to occur when the number of particles is few, or the frequency is very low (high correlation).  However, MPPT does not do much better in the high frequency regimes as it often converges slower than IM-SRG.
 
-There are a few cases where the IM-SRG over-corrects the result, leading to a
-ground state energy that is lower than the exact result.  This is not
-unexpected given that, unlike Hartree-Fock, IM-SRG is non-variational.  These
-tend to occur when the number of particles is few, or the frequency is very
-low (high correlation).  However, MPPT does not do much better in the high
-frequency regimes as it often converges slower than IM-SRG.
+For our addition and removal energy calculations, the results are summarized in Figure \ref{fig:add} and Figure \ref{fig:rm} respectively.  The figures show the the addition/removal energies for Hartree-Fock, combined with IM-SRG and/or QDPT (Hartree-Fock is always included, as usual) [[better way to explain this? the figure labels are somewhat misleading too]].  The DMC results are also shown via dashed lines where they are known.
 
-[[Q: should we discuss the absolute/relative correction plots?]]
+From these results, we see that the QDPT corrections add a substantial contribution to the results of both Hartree-Fock with and without IM-SRG.  [[quantify ``substantial'' numerically]]
 
-For our addition and removal energy calculations, the results are summarized
-in Figure [[fig:add]] and Figure [[fig:rm]] respectively.  The figures
-show the the addition/removal energies for Hartree-Fock, combined with IM-SRG
-and/or QDPT (Hartree-Fock is always included, as usual) [[better way to
-explain this? the figure labels are somewhat misleading too]].  The DMC
-results are also shown via dashed lines where they are known.
+Interestingly, the addition energy of Hartree-Fock with second-order QDPT appears to surpass the accuracy of that of IM-SRG with second-order QDPT.  This is likely coincidental, as the third-order QDPT dramatically worsens the result.
 
-From these results, we see that the QDPT corrections add a substantial
-contribution to the results of both Hartree-Fock with and without IM-SRG.
-[[quantify ``substantial'' numerically]]
+Both Hartree-Fock and IM-SRG results worsen as the frequency decreases, which is not unexpected since the correlations become much more dominant.  The Hartree-Fock appears to perform much worse, however, as the results converge much more slowly as the number of shells increases.
 
-For the IM-SRG results, there is a small asymmetry between the behavior of our
-removal and addition energies: we find that removal energies tend to be more
-accurate and its behavior is relatively stable with respect to the number of
-shells. [[why]]
+We also note that IM-SRG with 2 particles and a frequency 0.1 generally fail to give any result as the ODE solver eventually leads to divergence [[Why?]]  This seems to be a quirk isolated to this particular system and does not usually occur in other systems.
 
-Interestingly, the addition energy of Hartree-Fock with second-order QDPT
-appears to surpass the accuracy of that of IM-SRG with second-order QDPT.
-This is likely coincidental, as the third-order QDPT dramatically worsens the
-result.
+[[---]]
 
-Both Hartree-Fock and IM-SRG results worsen as the frequency decreases, which
-is not unexpected since the correlations become much more dominant.  The
-Hartree-Fock appears to perform much worse, however, as the results converge
-much more slowly as the number of shells increases.
+To investigate the drifts, we tested our methods against a modified form of the Coulomb interaction, parametrized by two lengths $\sigma_{\mathrm{A}}$ and $\sigma_{\mathrm{B}}$ that characterize the range of the interaction:
+\begin{align}
+  V_{\sigma_{\mathrm{A}}, \sigma_{\mathrm{B}}}(r) \equiv \frac{(1 + c)^{1 - 1/c}}{c} \left(1 - \E^{-r^2 / (2 \sigma_{\mathrm{A}}^2)}\right) \E^{-r^2 / (2 \sigma_{\mathrm{B}}^2)} \frac{1}{r}
+\end{align}
+where $c \equiv \sqrt{\sigma_{\mathrm{B}} / \sigma_{\mathrm{A}}}$.  The coefficient is defined to ensure the peak of the envelope remains at unity.  By setting $\sigma_{\mathrm{A}} = 0$ and $\sigma_{\mathrm{B}} = \infty$ one recovers the original Coulomb interaction.  By increasing $\sigma_{\mathrm{A}}$ one can reduce the short-range part of the interaction, and analogously by increasing $\sigma_{\mathrm{B}}$ one can reduce the long-range part of the interaction.  For our numerical experiments we consider the following four combinations of $(\sigma_{\mathrm{A}}, \sigma_{\mathrm{B}})$: $(0, \infty)$, $(\frac{1}{2}, \infty)$, $(0, 4)$, $(\frac{1}{2}, 4)$.
 
-We also note that IM-SRG with 2 particles and frequency 0.1 generally fail to
-give any result as the ODE solver eventually leads to divergence [[Why?]]
-This seems to be a particular quirk associated with this specific system and
-does not usually occur in other systems except in a few extreme, isolated
-cases where there are far too few unoccupied states.
+To analyze the convergence as function of the number of shells $K$, we use a simple but approximate metric, the \textit{relative slope} at $K = 15$:
+\begin{align*}
+  \rho_{15}(\varepsilon) \equiv \frac{\varepsilon_{K = 15} - \varepsilon_{K = 14}}{\varepsilon_{K = 15}}
+\end{align*}
+For the systems we have selected, at $K = 15$ the addition and removal energies have essentially reached the asymptotic behavior (by visual inspection), thus $\rho_{15}$ gives a crude measure of the rate of convergence as a relative quantity independent of the energy unit, allowing it to be meaningfully compared between systems with different interactions and different particle numbers.  The results are plotted in Figure \ref{fig:rel-slopes}.
+
+Analyzing the figure, we observe that the reducing short-range part of the interaction improves the rate of convergence greatly -- the relative slope has saturated and reached the precision of the ODE solver -- whereas eliminating the long-range part of the interaction had very little effect.  This demonstrates that the main cause of the slow convergence lies in the highly repulsive, short-ranged part of the interaction, which leads to the presence of nondifferentiable cusps (the so-called \textit{Coulomb cusps}) in the exact wave functions that are difficult to reproduce exactly using linear combinations of the smooth harmonic oscillator wave functions.
+
+The figure also tells us that the convergence is negatively impacted at lower frequencies and, to a lesser extent, by the number of particles.  Both are expected: lower frequencies increase the correlation in the system, while higher number of particles naturally require more shells to converge.
+
+We also note that the behavior of addition energies versus removal energies tend to be similar, and which one converges faster fluctuates from system to system.
 
 \section{Conclusions}
 \label{sec:conclusions}
@@ -1245,7 +1235,7 @@ infinite-basis limit.  This would also enable us to perform cheaper
 calculations with fewer shells and optimistically extrapolate results for
 large systems that would be otherwise infeasible to compute.
 
-We note that this calculation was done entirely using the traditional approach of using a high-order ODE solver to solve the flow equation.  A new technique developed by T. Morris \cite{PhysRevC.92.034331} uses an alternative approach that obviates the need for a high-order ODE solver, leading to much more efficient computations and also allowing operators of other observables to be evolved with greater ease.  Implementing this approach would be beneficial as it would allows us to study the accuracy and convergence of other observables beyond energy and energy differences.
+We note that this calculation was done entirely using the traditional approach of using a high-order ODE solver to solve the flow equation.  A new technique developed by T. D. Morris \cite{PhysRevC.92.034331} uses an alternative approach that obviates the need for a high-order ODE solver, leading to much more efficient computations and also allowing operators of other observables to be evolved with greater ease.  Implementing this approach would be beneficial as it would allows us to study the accuracy and convergence of other observables beyond energy and energy differences.
 
 Implementation-wise, our current code constructs the two-particle states as simple Slater determinants of their one-particle states.  This approach is often referred to as \textit{m-scheme} in nuclear physics.  It is a simple approach and works well for general systems, but it does not fully exploit the symmetries in the quantum dot system, since not only is spin projection $\hat S_z$ conserved, but squared spin $\hat S^2$ too.  A more efficient approach is to couple the spins of the single-particle states to form two-particle states with good $\hat S^2$, an approach analogous to \textit{j-scheme} in nuclear physics.  Combining this with the spherical tensor symmetries of the Hamiltonian, this can reduce the amount of computation required in this system via the Eckart-Wigner theoerem, albeit at the cost of increasing the implementation complexity.
 

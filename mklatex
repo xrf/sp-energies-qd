@@ -2,8 +2,11 @@
 # shut up LaTeX
 set -eu
 rm -f "$1.log"
-latexmk -g -pdf -silent -interaction=nonstopmode "$1" || {
+dir=`dirname "$1"`
+base=`basename "$1"`
+cd "${dir}"     # LaTeX would otherwise dump things into the current directory
+latexmk -g -pdf -silent -interaction=nonstopmode "${base}" || {
     e=$?
-    grep --color -A8 '^!.*' "$1".log
+    grep --color -A8 '^!.*' "${base}".log
     exit $e
 }

@@ -3,18 +3,56 @@ import os, re, sys
 
 os.chdir(os.path.dirname(__file__))
 
+# FIMXE: use a more conservative version of normpath
+normpath = os.path.normpath
+
 def get_md_fig_deps(fn):
     with open(fn) as f:
         doc = f.read()
     for match in re.finditer("^!\[\]\(([^)]*)\)", doc, flags=re.MULTILINE):
-        yield match.group(1)
+        path = match.group(1)
+        yield normpath(os.path.join(os.path.dirname(fn), path))
 
-def save_md_fig_deps(name):
-    deps = sorted(get_md_fig_deps(fn=(name + ".md")))
-    with open(name + ".dep", "w") as f:
+def get_tex_fig_deps(fn):
+    with open(fn) as f:
+        doc = f.read()
+    for match in re.finditer(r"\\input\{([^}]+)\}", doc, flags=re.MULTILINE):
+        path = match.group(1)
+        if os.path.splitext(path)[1] == "":
+            path += ".tex"
+        yield normpath(os.path.join(os.path.dirname(fn), path))
+    for match in re.finditer(r"\\bibliography\{([^}]+)\}",
+                             doc, flags=re.MULTILINE):
+        path = match.group(1)
+        if os.path.splitext(path)[1] == "":
+            path += ".bib"
+        yield normpath(os.path.join(os.path.dirname(fn), path))
+    for match in re.finditer(r"\\includegraphics\[[^]]+\]\{([^}]+)\}",
+                             doc, flags=re.MULTILINE):
+        path = match.group(1)
+        if os.path.splitext(path)[1] == "":
+            path += ".pdf"
+        yield normpath(os.path.join(os.path.dirname(fn), path))
+
+def get_fig_deps(fn):
+    return {
+        ".md": get_md_fig_deps,
+        ".tex": get_tex_fig_deps,
+    }[os.path.splitext(fn)[1]](fn)
+
+def save_fig_deps(fn, out_fn, target_fn):
+    deps = sorted(get_fig_deps(fn))
+    with open(out_fn, "w") as f:
         f.write("{}:{}\n".format(
-            name + ".pdf",
+            target_fn,
             "".join(" " + x for x in deps),
         ))
 
-save_md_fig_deps(sys.argv[1])
+fn = sys.argv[1]
+out_fn = os.path.splitext(fn)[0] + ".dep"
+if len(sys.argv) >= 3:
+    out_fn = sys.argv[2]
+target_fn = os.path.splitext(fn)[0] + ".pdf"
+if len(sys.argv) >= 4:
+    target_fn = sys.argv[3]
+save_fig_deps(fn, out_fn, target_fn)
