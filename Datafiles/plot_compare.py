@@ -51,6 +51,9 @@ def plot_compare(suffix, f):
                                 "color": "#c6cc26",
                                 "linestyle": "--",
                             },
+                            "eom_quads": {
+                                "color": "#a825bc",
+                            },
                             "cc": {
                                 "color": "#1351c4",
                             },

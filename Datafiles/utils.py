@@ -109,6 +109,22 @@ def get_ar_energies_for_v(v):
         d["interaction"] = v
         yield d
 
+        # eom_quads: Nathan's EOM using Magnus method with quadruples
+
+        d = pd.read_csv("EOM_magnus_quads_attached.dat",
+                        delim_whitespace=True)
+        d = parse_nathan_like_data(d, "add")
+        d["method"] = "eom_quads"
+        d["interaction"] = v
+        yield d
+
+        d = pd.read_csv("EOM_magnus_quads_removed.dat",
+                        delim_whitespace=True)
+        d = parse_nathan_like_data(d, "rm")
+        d["method"] = "eom_quads"
+        d["interaction"] = v
+        yield d
+
         # cc: Sam's coupled cluster
 
         d = pd.read_csv("EOM_CCSD_qd_attached.dat", header=None,
