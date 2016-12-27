@@ -1,7 +1,14 @@
-import functools, os, sys
+import functools, json, os, sys
 import matplotlib
 from numpy import sqrt
 import pandas as pd
+
+JSON_PRETTY = {
+    "ensure_ascii": False,
+    "indent": 4,
+    "separators": (",", ": "),
+    "sort_keys": True,
+}
 
 def matplotlib_try_enable_deterministic_svgs():
     # we want deterministic SVGs, but this isn't supported until matplotlib 2.0
@@ -22,6 +29,11 @@ def skip_comment_char(read_func, filename):
         s = f.read(2)
         assert s == "# "
         return read_func(f)
+
+def load_json_records(fn):
+    with open(fn) as f:
+        return pd.DataFrame.from_records([
+            json.loads(s) for s in f.read().split("\n\n") if s])
 
 def parse_simple(fn):
     return skip_comment_char(
@@ -54,6 +66,7 @@ def get_ar_energies():
     yield from get_ar_energies_for_v(V2)
 
 def get_ar_energies_for_v(v):
+    '''["num_shells", "num_filled", "freq", "ml", "label", "energy"]'''
 
     # qdpt: Fei's QDPT on Fei's IMSRG matrix elements
 

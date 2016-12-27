@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # Generates ../FigureFiles/fig-compare-*.svg from the data files.
-import functools, os, sys
+import sys
 import matplotlib.pyplot as plt
 import pandas as pd
-from numpy import sqrt
 import utils
 
 def plot_compare(suffix, f):
