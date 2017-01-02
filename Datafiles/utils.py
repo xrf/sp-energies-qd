@@ -1,13 +1,27 @@
 import functools, json, os, sys
 import matplotlib
-from numpy import sqrt
+import numpy as np
 import pandas as pd
+import scipy.optimize
 
 JSON_PRETTY = {
     "ensure_ascii": False,
     "indent": 4,
     "separators": (",", ": "),
     "sort_keys": True,
+}
+
+GS_METHOD_COLOR = {
+    "hf": "#841a0b",
+    "mp2": "#39b237",
+    "imsrg": "#1351c4",
+}
+
+METHOD_COLOR = {
+    "qdpt": "#39b237",
+    "eom": "#841a0b",
+    "eom_quads": "#a825bc",
+    "cc": "#1351c4",
 }
 
 def matplotlib_try_enable_deterministic_svgs():
@@ -34,6 +48,20 @@ def load_json_records(fn):
     with open(fn) as f:
         return pd.DataFrame.from_records([
             json.loads(s) for s in f.read().split("\n\n") if s])
+
+def sanitize_json(j):
+    if isinstance(j, dict):
+        return dict((k, sanitize_json(v)) for k, v in j.items())
+    if isinstance(j, list) or isinstance(j, np.ndarray):
+        return [sanitize_json(x) for x in j]
+    if isinstance(j, float) or isinstance(j, int) or isinstance(j, str):
+        return j
+    if isinstance(j, np.float64):
+        return float(j)
+    if isinstance(j, np.int64):
+        return int(j)
+    raise TypeError("can't convert to JSON: {!r} ({})"
+                    .format(j, type(j)))
 
 def parse_simple(fn):
     return skip_comment_char(
@@ -110,7 +138,7 @@ def get_ar_energies_for_v(v):
                         delim_whitespace=True)
         d = parse_nathan_like_data(d, "add")
         d["method"] = "eom_f"
-        d["energy"] *= sqrt(d["freq"])
+        d["energy"] *= d["freq"] ** 0.5
         d["interaction"] = v
         yield d
 
@@ -118,7 +146,7 @@ def get_ar_energies_for_v(v):
                         delim_whitespace=True)
         d = parse_nathan_like_data(d, "rm")
         d["method"] = "eom_f"
-        d["energy"] *= sqrt(d["freq"])
+        d["energy"] *= d["freq"] ** 0.5
         d["interaction"] = v
         yield d
 
@@ -157,3 +185,53 @@ def get_ar_energies_for_v(v):
         d["method"] = "cc"
         d["interaction"] = v
         yield d
+
+def fit_change(fit_type, fit_points, x, y, **params):
+    x_in = x[-fit_points:]
+    y_in = y[-fit_points:]
+    if fit_type == "loglog":
+        def f(x, m, c):
+            return np.exp(c) * x ** m
+        p0 = np.polyfit(np.log(x_in), np.log(y_in), 1)
+    else:
+        def f(x, m, c):
+            return np.exp(m * x + c)
+        p0 = np.polyfit(x_in, np.log(y_in), 1)
+    p, var_p = scipy.optimize.curve_fit(f, x_in, y_in, p0=p0)
+    # chi-squared value per degree of freedom (using weight = 1)
+    # normalized by
+    badness = (np.sum((f(x_in, *p) - y_in) ** 2) / (len(x_in) - len(p)))
+    r = {
+        "fit_type": fit_type,
+        "badness": float(badness),
+        "params": p.tolist(),
+        "cov_params": var_p,
+    }
+    r.update(params)
+    if fit_type == "loglog":
+        b = p[0] + 1.0
+        a = np.exp(p[1]) / b
+        jac_ba_mc = np.array([
+            [1, 0],
+            [-a / b, a],
+        ])
+        var_ba = jac_ba_mc.dot(var_p.dot(jac_ba_mc.transpose()))
+        r["exponent"] = b
+        r["exponent_err"] = var_ba[0, 0] ** 0.5
+        r["coefficient"] = a
+        r["coefficient_err"] = var_ba[1, 1] ** 0.5
+        r["cov_exponent_coefficient"] = var_ba[0, 1]
+    else:
+        b = -1.0 / p[0]
+        a = b * np.exp(p[1])
+        jac_ba_mc = np.array([
+            [b ** 2, 0],
+            [b * a, a],
+        ])
+        var_ba = jac_ba_mc.dot(var_p.dot(jac_ba_mc.transpose()))
+        r["lifetime"] = b
+        r["lifetime_err"] = var_ba[0, 0] ** 0.5
+        r["coefficient"] = a
+        r["coefficient_err"] = var_ba[1, 1] ** 0.5
+        r["cov_lifetime_coefficient"] = var_ba[0, 1]
+    return {"x": x, "y": f(x, *p), "extra": r, "guess": p0}

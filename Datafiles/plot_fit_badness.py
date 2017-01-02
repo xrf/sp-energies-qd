@@ -34,7 +34,6 @@ def plot(interactive):
     fig.set_size_inches(8, 10)
 
     x_ticks = sorted(d["title"].unique())
-    print(x_ticks)
     x_indices = range(len(x_ticks))
     for [fit_type, method], g in d.groupby(["fit_type", "method"]):
         s = g.groupby("title")
