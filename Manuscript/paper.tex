@@ -812,143 +812,120 @@ we find that components of the wave function that have negative energy will incr
 
 Diffusion Monte-Carlo (DMC) is a method used for refining a crude estimate to the ground state density into a better approximation to the exact ground state. The basic idea is to move multiple random walkers in position space with sampling rules which ensures convergence to a behavior representing a walk guided by the exact ground state density. Once a satisfying level of convergence is reached, expectation values are calculated by accumulating local estimates along the path of the walkers.
 
-The equations representing the DMC algorithm is obtained by applying the projection operator $\hat{P}(\tau)$ on the crude trial state $\ket{\Psi_T}$
+The equations representing the DMC algorithm is obtained by applying the projection operator $\hat{P}(\tau)$ on the crude trial state $\ket{\Psi_{\mathrm{T}}}$
 \begin{equation}
- \hat{P}(\tau)\ket{\Psi_T} \equiv \exp\left({-(\hat{H} - E_0)\tau}\right)\ket{\Psi_T}
+ \hat{P}(\tau)\ket{\Psi_{\mathrm{T}}} \equiv \E^{-(\hat{H} - E_0)\tau} \ket{\Psi_{\mathrm{T}}}
 \end{equation}
-\noindent
 where $\tau$ is a constant often described as imaginary time, and $E_0=\bra{\Psi_0}\hat{H}\ket{\Psi_0}$ is the ground state of the Hamiltonian $\hat{H}$. By expanding the trial state in the eigenfunctions of $\hat{H}$, the ground state is obtained up to a constant factor
-
 \begin{equation}
  \label{eq:DMC_ExactProjection}
- \lim_{\tau\to\infty} \bra{\mathbf{r}}  \hat{P}(\tau) \ket{\Psi_T} = \braket{\Psi_0}{\Psi_T}\Psi_0(\mathbf{r}).
+ \lim_{\tau\to\infty} \bra{\bm{r}}  \hat{P}(\tau) \ket{\Psi_{\mathrm{T}}} = \braket{\Psi_0}{\Psi_{\mathrm{T}}}\Psi_0(\bm{r}).
 \end{equation}
 
-Defining $\Phi(\mathbf{r}, \tau) \equiv \bra{\mathbf{r}}\hat{P}(\tau)\ket{\Psi_T}$, we obtain the state at a later time $\tau + \delta\tau$ through projection
-
+Defining $\Phi(\bm{r}, \tau) \equiv \bra{\bm{r}}\hat{P}(\tau)\ket{\Psi_{\mathrm{T}}}$, we obtain the state at a later time $\tau + \delta\tau$ through projection
 \begin{align}
- \Phi(\mathbf{r}, \tau + \delta\tau) &= \bra{\mathbf{r}} P(\tau + \delta\tau) \ket{\Psi_T} \notag\\
- &= \bra{\mathbf{r}} \exp\left({-(\hat{H} - E_0)\delta\tau}\right) \hat{P}(\tau) \ket{\Psi_T} \notag\\
- &= \bra{\mathbf{r}} \exp\left({-(\hat{H} - E_0)\delta\tau}\right) \ket{\Phi(\tau)} \notag\\
- &= \int \D\mathbf{r}' \bra{\mathbf{r}} \exp\left({-(\hat{H} - E_0)\delta\tau}\right)\ket{\mathbf{r}'} \Phi(\mathbf{r}', \tau)\notag \\
- &\equiv \int \D\mathbf{r}' G(\mathbf{r}, \mathbf{r}'; \delta\tau) \Phi(\mathbf{r}', \tau). \label{eq:DMC_GreenFuncRevealed}
+ \Phi(\bm{r}, \tau + \delta\tau) &= \bra{\bm{r}} P(\tau + \delta\tau) \ket{\Psi_{\mathrm{T}}} \notag\\
+ &= \bra{\bm{r}} \E^{-(\hat{H} - E_0)\delta\tau} \hat{P}(\tau) \ket{\Psi_{\mathrm{T}}} \notag\\
+ &= \bra{\bm{r}} \E^{-(\hat{H} - E_0)\delta\tau} \ket{\Phi(\tau)} \notag\\
+ &= \int \D\bm{r}' \bra{\bm{r}} \E^{-(\hat{H} - E_0)\delta\tau} \ket{\bm{r}'} \Phi(\bm{r}', \tau)\notag \\
+ &\equiv \int \D\bm{r}' G(\bm{r}, \bm{r}'; \delta\tau) \Phi(\bm{r}', \tau). \label{eq:DMC_GreenFuncRevealed}
 \end{align}
+which defines the Green's function $G$.
 
 In practice, the ground state energy is a priori unknown, hence a trailing averaged value obtained from the converging DMC density is used. This energy is often referred to as the trial energy, and it is believed that with a sufficiently good trial state, the error due to this approximation is small.
 
 The Green's function introduced in \eqref{eq:DMC_GreenFuncRevealed} has singularities due to the the Coulomb interaction term in $\hat{H}$. Due to Pauli exclusion these are not physical, nevertheless, in numerical implementations they are unpredictable and undesirable, hence we want to avoid them.
 
-For evaluation of the local energy, the trial state is designed to cancel the Coulomb singularities by containing so-called correlation factors, however, this cancellation does not apply to the terms in the Green's function. In order to transfer this behavior to apply to the Green's function, a change to the formalism is introduced by iterating on a mixed density $f(\mathbf{r}, \tau) \equiv \Phi(\mathbf{r}, \tau)\Psi_T(\mathbf{r})$. Note that all previous arguments regarding convergence to the true ground state still applies for the new distribution.
+For evaluation of the local energy, the trial state is designed to cancel the Coulomb singularities by containing so-called correlation factors, however, this cancellation does not apply to the terms in the Green's function. In order to transfer this behavior to apply to the Green's function, a change to the formalism is introduced by iterating on a mixed density $f(\bm{r}, \tau) \equiv \Phi(\bm{r}, \tau)\Psi_{\mathrm{T}}(\bm{r})$. Note that all previous arguments regarding convergence to the true ground state still applies for the new distribution.
 
-Methods exist for transforming the mixed density into the pure density $|\Phi(\mathbf{r}, \tau)|^2$ \cite{abInitioMC}, but unless the pure density is explicitly needed (e.g.~for comparisons with other methods), this is strictly not necessary.
+Methods exist for transforming the mixed density into the pure density $|\Phi(\bm{r}, \tau)|^2$ \cite{abInitioMC}, but unless the pure density is explicitly needed (e.g.~for comparisons with other methods), this is strictly not necessary.
 
 Additionally, to avoid issues regarding the positive definiteness of the mixed distribution, the nodes of the mixed density is fixed to those of the wave function of the trial state. This is known as the \textit{fixed node approximation} \cite{umrigar:2865, abInitioMC}. Again, given a sufficiently good trial state, the errors should be small.
 
 The Green's function for the mixed density is given as \cite{umrigar:2865}
 
 \begin{align}
-  G(\mathbf{r}, \mathbf{r}'; \delta\tau)_f &= \bra{\mathbf{r}} \exp\left({\frac{1}{2}\nabla\cdot \left[\left(\nabla - \mathbf{F}(\mathbf{r})\right)\right] - \left(E_L(\mathbf{r}) - E_T\right)}\right)\ket{\mathbf{r}'} \label{eq:DMC_IS_GF_raw}\\
-  &\propto e^{-\left[|\mathbf{r} - \mathbf{r}' - \frac{1}{2}\delta\tau\mathbf{F}(\mathbf{r})|^2/2\delta\tau\right]} \label{eq:DMC_IS_GF}\\
-  &\qquad\times e^{-\left[\frac{1}{2}\left[E_L(\mathbf{r'}) + E_L(\mathbf{r})\right] - E_T\right]\delta\tau} + \mathcal{O}(\delta\tau^2), \notag
+  G(\bm{r}, \bm{r}'; \delta\tau)_f &= \bra{\bm{r}} \E^{\frac{1}{2} \hat{\bm{\nabla}} \cdot \left(\hat{\bm{\nabla}} - \bm{F}(\bm{r})\right) - \left(E_{\mathrm{L}}(\bm{r}) - E_{\mathrm{T}}\right)} \ket{\bm{r}'} \label{eq:DMC_IS_GF_raw}\\
+  &\propto \E^{-\left(|\bm{r} - \bm{r}' - \frac{1}{2}\delta\tau\bm{F}(\bm{r})|^2/(2\delta\tau)\right)} \label{eq:DMC_IS_GF}\\
+  &\qquad\times \E^{-\left(\frac{1}{2}\left(E_{\mathrm{L}}(\bm{r'}) + E_{\mathrm{L}}(\bm{r})\right) - E_{\mathrm{T}}\right) \delta\tau} + \mathcal{O}\bigl((\delta\tau)^2\bigr), \notag
 \end{align}
 where
 \begin{equation}
-  \mathbf{F}(\mathbf{r}) = 2\Psi_T(\mathbf{r})^{-1} \nabla \Psi_T(\mathbf{r})
+  \bm{F}(\bm{r}) = \frac{2 \hat{\bm{\nabla}} \Psi_{\mathrm{T}}(\bm{r})}{\Psi_{\mathrm{T}}(\bm{r})}
 \end{equation}
-
-\noindent
 is the drift vector commonly referred to as the \textit{quantum force}.
 
 The local energy
 \begin{equation}
-E_L(\mathbf{r}) = \Psi_T(\mathbf{r})^{-1}\hat{H} \Psi_T(\mathbf{r})
+E_{\mathrm{L}}(\bm{r}) \equiv \frac{\hat{H} \Psi_{\mathrm{T}}(\bm{r})}{\Psi_{\mathrm{T}}(\bm{r})}
 \end{equation}
-is necessarily sampled from $|\Psi_T(\mathbf{r})|^2$ (ensured by using the Metropolis Algorithm \cite{abInitioMC}) to avoid undefined energies when sampling close to the nodes of $\Psi_T(\mathbf{r})$.
+is necessarily sampled from $|\Psi_{\mathrm{T}}(\bm{r})|^2$ (ensured by using the Metropolis Algorithm \cite{abInitioMC}) to avoid undefined energies when sampling close to the nodes of $\Psi_{\mathrm{T}}(\bm{r})$.
 
 The Green's function from \eqref{eq:DMC_IS_GF_raw} has been split into two for practical reasons; one part containing the kinetic terms, more specifically this represents a Fokker-Planck diffusion process, and a second part which is commonly referred to as a \textit{branching function}, which is an effective reweighing of a positions contribution to the overall density. Excluding branching we will simply sample from the density of the trial state.
 
 In order dampen the errors introduced by splitting the Green's function, the time step $\delta\tau$ should be small. A value in the range of $10^{-3}$ to $10^{-4}$ is used in this work. High variance in energy samples requires a smaller time step to keep the branching controlled, since the fluctuations of the two are connected by \eqref{eq:DMC_IS_GF}.
 
-The name branching arise from the fact that in DMC, the weights are implemented as a probability of a given walker to copy or delete itself $n$ times, where $\langle n \rangle$ equals the branching term of \eqref{eq:DMC_IS_GF}. Let $G_b$ denote the value of the branching function at a given position. Correct weighting is then ensured by guaranteeing $m = \max\left(\mathrm{floor}\left(G_b\right)-1, 0\right)$ branches with a probability $G_b - m$ of getting an additional branch. A branch is an identical copy of the corresponding walker, with an identical past but with a different future. When the number of requested branches is zero, the walker is removed from the simulation.
+The name branching arise from the fact that in DMC, the weights are implemented as a probability of a given walker to copy or delete itself $n$ times, where $\langle n \rangle$ equals the branching term of \eqref{eq:DMC_IS_GF}. Let $G_{\mathrm{b}}$ denote the value of the branching function at a given position. Correct weighting is then ensured by guaranteeing $m = \max\{0, \lfloor G_{\mathrm{b}} \rfloor - 1\}$ branches\footnote{$\lfloor x \rfloor$ denotes the floor of $x$, namely the largest integer $n$ such that $n \le x$.} with a probability $G_{\mathrm{b}} - m$ of getting an additional branch.  A branch is an identical copy of the corresponding walker, with an identical past but with a different future. When the number of requested branches is zero, the walker is removed from the simulation.
 
 
-Initially, $N_w$ walkers are initialized to span $|\Psi_T(\mathbf{r})|^2$. This is ensured by using the Metropolis Algorithm. Moreover, importance sampling is ensured by sampling according to the kinetic term of \eqref{eq:DMC_IS_GF_raw} [[cite solution langevin]]
+Initially, $N_{\mathrm{w}}$ walkers are initialized to span $|\Psi_{\mathrm{T}}(\bm{r})|^2$. This is ensured by using the Metropolis Algorithm. Moreover, importance sampling is ensured by sampling according to the kinetic term of \eqref{eq:DMC_IS_GF_raw} [[cite solution langevin]]
 
 \begin{equation}
-x_{i+1} = x_i + \frac{1}{2}\delta\tau F(\mathbf{r})_x + \xi,
+x_{i+1} = x_i + \frac{1}{2} \delta \tau F(\bm{r})_x + \xi,
 \end{equation}
-\noindent
-where $\xi$ is a uniform distributed random number with variance $\mathrm{Var}(\xi) = 2D\delta\tau$. A typical value of $N_w$ in this work is 250\,000.
+where $\xi$ is a uniform distributed random number with variance $\operatorname{Var}(\xi) = 2D\delta\tau$. A typical value of $N_{\mathrm{w}}$ in this work is \num{250000}.
 
-For each time step, diffusion and branching repeats a given number of blocks $N_b$ for each walker. New branches are not active until the next time step, and if a walker hits zero branches the block repetition stops. During these block loops, the trial energy $E_T$ is sampled for use in the next time step $k+1$
-
+For each time step, diffusion and branching repeats a given number of blocks $N_{\mathrm{b}}$ for each walker. New branches are not active until the next time step, and if a walker hits zero branches the block repetition stops. During these block loops, the trial energy $E_{\mathrm{T}}$ is sampled for use in the next time step $k+1$
 \begin{equation}
- E_T^{k+1} = \frac{1}{M^{(k)}}\sum_{i=1}^{M^{(k)}} G_b(\mathbf{r}^{(k)}_i)E_L(\mathbf{r}^{(k)}_i),
+ E_{\mathrm{T}}^{k+1} = \frac{1}{M_k}\sum_{i=1}^{M_k} G_{\mathrm{b}}(\bm{r}^{(k)}_i)E_{\mathrm{L}}(\bm{r}^{(k)}_i),
 \end{equation}
-\noindent
-where $M^{(k)}$ is the total number of samples obtained in cycle $k$. For this work we have found a value of $N_b = 100$ to be sufficient.
+where $M_k$ is the total number of samples obtained in cycle $k$. For this work we have found a value of $N_{\mathrm{b}} = 100$ to be sufficient.
 
-Several methods for estimating $E_0$ exist in the literature, one of which is simply an average of all $N_c$ trial energies calculated after $N_t$ thermalization cycles
+Several methods for estimating $E_0$ exist in the literature, one of which is simply an average of all $N_{\mathrm{c}}$ trial energies calculated after $N_{\mathrm{t}}$ thermalization cycles
 \begin{equation}
- E_0 = \frac{1}{N_c-N_t}\sum\limits_{k=N_t}^{N_c} E_T^{(k)}.
+ E_0 = \frac{1}{N_{\mathrm{c}}-N_{\mathrm{t}}} \sum_{k=N_{\mathrm{t}}}^{N_{\mathrm{c}}} E_{\mathrm{T}}^{(k)}.
 \end{equation}
 This is the relation we use in this work to obtain the DMC energies.
 
-In this work, the trial state has been chosen to consist of a single Slater determinant (cite)
-together with a single variational parameter Padé-Jastrow correlation function (cite).
+In this work, the trial state has been chosen to consist of a single Slater determinant [[cite]] together with a single variational parameter Pad\'e-Jastrow correlation function [[cite]].
 
-The Slater determinant contains eigenstates $\phi_n(\mathbf{r})$ of the 2-dimensional harmonic oscillator
+The Slater determinant contains eigenstates $\phi_n(\bm{r})$ of the 2-dimensional harmonic oscillator
 with a variational parameter $\alpha$ scaling the oscillator frequency $\omega$
 such that $\omega\to\alpha\omega$ in all solutions:
-
 \begin{equation}
- \phi_n(\mathbf{r}) = H_n(\sqrt{\alpha\omega}x)H_n(\sqrt{\alpha\omega}y)\exp(-\alpha\omega r^2),
+ \phi_n(\bm{r}) = H_n(\sqrt{\alpha\omega}x)H_n(\sqrt{\alpha\omega}y)\E^{-\alpha\omega r^2}.
 \end{equation}
-
-\noindent
-where $H_n$ is the $n$'th level Hermite polynomial.
-
+where $H_n$ is the $n$th level Hermite polynomial.
 
 The eigenstates are selected such that the $N$ lowest lying energy eigenstates are selected (counting spin-degeneracy). Due to the Hamiltonian being spin independent we may split the Slater determinant into two equal parts -
-one for each spin level (cite). The overall form of the trial state is as follows:
-
+one for each spin level [[cite]]. The overall form of the trial state is as follows:
 \begin{equation}
- \Psi_T(\mathbf{r}) = S(\mathbf{r}^\uparrow) S(\mathbf{r}^\downarrow) \prod_{i<j}^{N} J(r_{ij}),
+ \Psi_{\mathrm{T}}(\bm{r}) \equiv S(\bm{r}^\uparrow) S(\bm{r}^\downarrow) \prod_{i<j}^{N} J(r_{i,j}),
 \end{equation}
-
 with
-
 \begin{equation}
- S(\mathbf{r}^s) =  \left| \begin{array}{cccc}
-\phi_1(\mathbf{r}^s_1) & \phi_2(\mathbf{r}^s_1)& \cdots & \phi_\frac{N}{2}(\mathbf{r}^s_1) \\
-\phi_1(\mathbf{r}^s_2) & \phi_2(\mathbf{r}^s_2)& \cdots & \phi_\frac{N}{2}(\mathbf{r}^s_2) \\
+ S(\bm{r}^s) \equiv \begin{vmatrix}
+\phi_1(\bm{r}^s_1) & \phi_2(\bm{r}^s_1)& \cdots & \phi_{N/2}(\bm{r}^s_1) \\
+\phi_1(\bm{r}^s_2) & \phi_2(\bm{r}^s_2)& \cdots & \phi_{N/2}(\bm{r}^s_2) \\
 \vdots & \vdots& \ddots & \vdots \\
-\phi_1(\mathbf{r}^s_\frac{N}{2}) & \phi_2(\mathbf{r}^s_\frac{N}{2})& \cdots & \phi_\frac{N}{2}(\mathbf{r}^s_\frac{N}{2}) \\
- \end{array} \right|,
+\phi_1(\bm{r}^s_{N/2}) & \phi_2(\bm{r}^s_{N/2})& \cdots & \phi_{N/2}(\bm{r}^s_{N/2}) \\
+ \end{vmatrix},
 \end{equation}
-
 and
-
 \begin{equation}
- J(r_{ij}) = \exp\left(\frac{r_{ij}}{1 + \beta r_{ij}}\right),
+ J(r_{i, j}) \equiv \exp\left(\frac{r_{i, j}}{1 + \beta r_{i, j}}\right),
 \end{equation}
-
-where $\mathbf{r}^s_i$ denotes $i$'th particle with spin $s$, and $r_{ij}$ is the relative distance between two electrons.
+where $\bm{r}^s_i$ denotes $i$'th particle with spin $s$, and $r_{ij}$ is the relative distance between two electrons.
 Since Metropolis Monte-Carlo only involves ratios of density functions, all normalization factors are skipped.
 
-As a consequence of the variational principle, the optimal numeric values for $\alpha$ and $\beta$ can be found by minimizing the energy in the variational parameter space.
-For this we have used the adaptive step gradient descent method (cite ASGD).
+As a consequence of the variational principle, the optimal numeric values for $\alpha$ and $\beta$ can be found by minimizing the energy in the variational parameter space.  For this we have used the adaptive step gradient descent method [[cite ASGD]].
 
 Using a single Slater determinant and a single variational parameter in the correlation function might at first glance seem insufficient,
 however, the strength and robustness of DMC greatly succeeds at transforming this naive approximation into a very good estimate to the ground
 state density. It should be mentioned that for systems where the single-particle Hamiltonian does not have analytical solutions, this approach
 will indeed be insufficient due to low overlap between the initial and exact state.
 
-A single Slater determinant and a simple correlation function opens up numerous optimization schemes which trivializes the CPU-time of most calculations.
-We refer to Refs (cite optimization techniques) for more information.
-Moreover, the most costly part of evaluating the single-particle eigenstates, the exponentials, is independent of the quantum number $n$, and can thus be tabulated once
-for the entire calculation. This holds for the gradient and Laplacian needed in the quantum force and local energy, respectively, since the exponential shape is
-preserved under differentiation.
+A single Slater determinant and a simple correlation function opens up numerous optimization schemes which trivializes the computation time of most calculations.  We refer to Refs [[cite optimization techniques]] for more information.  Moreover, the most costly part of evaluating the single-particle eigenstates, the exponentials, is independent of the quantum number $n$, and can thus be tabulated once for the entire calculation. This holds for the gradient and Laplacian needed in the quantum force and local energy, respectively, since the exponential shape is preserved under differentiation.
 
 \section{Results}
 \label{sec:results}
@@ -1171,11 +1148,14 @@ preserved under differentiation.
   \label{fig:rel-slopes}
 \end{figure}
 
-In this section, we discuss the IM-SRG results for the ground-state energies of closed-shell systems . In subsection \ref{subsec:Wegner}, we start with the Wegner generator. Numerical instabilities in the integration process, as well as a rather slow convergence as function of the number of oscillator shells, motivate the use of a Hartree-Fock basis and the Coulomb interaction.  Since higher correlations still lead to stiff equation systems, we change in subsection \ref{subsec:White} to the White generator. In particular, we give an overview of the IM-SRG(2) ground state energies for closed-shell systems up to $N=42$ particles and compare with other \textit{ab initio} many-body methods.
+[[Sarah's discussions on ground state energy are absent :(]]
+In this section, we discuss the IM-SRG results for the ground-state energies of closed-shell systems.  We start with the Wegner generator in subsection [[??]].  Numerical instabilities in the integration process, as well as a rather slow convergence as function of the number of oscillator shells, favors the use of a Hartree-Fock basis and the Coulomb interaction.  Since higher correlations still lead to stiff equation systems, we change in subsection [[??]] to the White generator. In particular, we give an overview of the IM-SRG(2) ground state energies for closed-shell systems up to $N=42$ particles and compare with other \textit{ab initio} many-body methods.
 
 [[...]]
 
-In Figure \ref{fig:gs} we show the calculated ground state energies from Hartree-Fock, second-order (M\o ller-Plesset) perturbation theory (MPPT), and IM-SRG.  The exact result from diffusion Monte Carlo (DMC) is also shown as a dashed line in systems where it is known \cite{PhysRevB.84.115302}.
+\subsection{Extrapolation}
+
+In Figure \ref{fig:gs} we display a selection of ground state energies calculated using the Hartree-Fock method, second-order (M\o ller-Plesset) perturbation theory (MPPT), and IM-SRG.  The exact result from diffusion Monte Carlo (DMC) is also shown as a dashed line \cite{PhysRevB.84.115302}.
 
 Both perturbation theory and IM-SRG add corrections in addition to the Hartree-Fock results to recover the correlation energy and they do quite well in recovering the correlation energy in the system.  Compared with MPPT, IM-SRG generally converges faster, although does not always converge to the DMC result.  Generally speaking, IM-SRG is closer to the DMC result as the number of particles increases.
 
@@ -1193,7 +1173,11 @@ We also note that IM-SRG with 2 particles and a frequency 0.1 generally fail to 
 
 [[---]]
 
-To investigate the drifts, we tested our methods against a modified form of the Coulomb interaction, parametrized by two lengths $\sigma_{\mathrm{A}}$ and $\sigma_{\mathrm{B}}$ that characterize the range of the interaction:
+\subsection{Slow convergence}
+
+When the tail part of the convergence plots are magnified about a factor of ten or so [[double-check this number]], we noticed that the addition and removal energies are still drifting somewhat [[quantify how much]], hinting that the convergence rate is probably not exponential.
+
+To investigate the rate of convergence, we tested our methods against a modified form of the Coulomb interaction, parametrized by two lengths $\sigma_{\mathrm{A}}$ and $\sigma_{\mathrm{B}}$ that characterize the range of the interaction:
 \begin{align}
   V_{\sigma_{\mathrm{A}}, \sigma_{\mathrm{B}}}(r) \equiv \frac{(1 + c)^{1 - 1/c}}{c} \left(1 - \E^{-r^2 / (2 \sigma_{\mathrm{A}}^2)}\right) \E^{-r^2 / (2 \sigma_{\mathrm{B}}^2)} \frac{1}{r}
 \end{align}
@@ -1210,6 +1194,24 @@ Analyzing the figure, we observe that the reducing short-range part of the inter
 The figure also tells us that the convergence is negatively impacted at lower frequencies and, to a lesser extent, by the number of particles.  Both are expected: lower frequencies increase the correlation in the system, while higher number of particles naturally require more shells to converge.
 
 We also note that the behavior of addition energies versus removal energies tend to be similar, and which one converges faster fluctuates from system to system.
+
+\subsection{Extrapolation}
+
+As suggested by Kvaal in \cite{PhysRevB.80.045321}, the asymptotic convergence of the wave function can be approximately described by a power law model: [[assuming I understood his paper correctly]]
+\begin{align*}
+  \Delta E \propto K^{-\beta}
+\end{align*}
+where $\Delta E$ is the error in the energy, $K$ is the number of shells in the single-particle basis, and $\beta$ is some positive real exponent.  Essentially, the \textit{smoothness} of the exact wave function determines the rate of the convergence: the more times the exact wave function can be differentiated, the higher the exponent $\beta$.
+
+It is difficult to ascertain what $\beta$ is \textit{a priori}, but based on Kvaal's results $\beta$ is expected to be below $5$ for quantum dot systems.  To determine this from our numerical calculations, we perform a curve using the following power-law model:
+\begin{align} \label{eq:power_law_model}
+  E = \alpha K^{-\beta} + \gamma
+\end{align}
+As with most nonlinear curve fits, it is often fairly sensitive to the initial parameters.  To extract the initial parameters, we first do a linear fit on the logarithm of the \emph{derivative} $\partial E / \partial K$ against the logarithm of $K$:
+\begin{align*}
+  \ln \left(\frac{\partial E}{\partial K}\right) = \ln(\alpha) - \beta \ln(K)
+\end{align*}
+The derivative is computed numerically using finite differences of adjacent data points.  This amplifies the noise but linear fits do have the advantage of being very reliable to fit, hence the results are useful as guesses for the more accurate power-law fit.  This does not give us a guess for the infinite-basis energy $\gamma$, but we can estimate it by solving \label{eq:power_law_model} given a single data point and the (estimated) model paramters $\alpha$ and $\beta$.
 
 \section{Conclusions}
 \label{sec:conclusions}
