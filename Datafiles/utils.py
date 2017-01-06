@@ -1,5 +1,6 @@
-import functools, json, os, sys
+import contextlib, functools, json, os, sys
 import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy.optimize
@@ -34,9 +35,40 @@ def matplotlib_try_enable_deterministic_svgs():
         sys.stderr.flush()
 
 def init(filename):
+    plot(filename, interactive=False).__enter__()
+
+@contextlib.contextmanager
+def plot(filename, interactive):
     os.chdir(os.path.dirname(filename))
     matplotlib_try_enable_deterministic_svgs()
     matplotlib.style.use("ggplot")
+    if interactive:
+        plt.ion()
+    yield
+    if interactive:
+        plt.show(block=True)
+
+def savefig(fig, interactive, name):
+    if not interactive:
+        fn = "../FigureFiles/fig-{name}.svg".format(**locals())
+        fig.savefig(fn)
+        plt.close(fig)
+        sys.stderr.write("// Figure saved to: {}\n\n".format(fn))
+        sys.stderr.flush()
+
+def update_range(r, x):
+    for x in np.array(x).flatten():
+        # make sure NaN gets handled correctly
+        if r[0] == None or not (x >= r[0]):
+            r[0] = x
+        if r[1] == None or not (x <= r[1]):
+            r[1] = x
+
+def expand_range(r, factor):
+    return np.array([
+        r[0] - factor * (r[1] - r[0]),
+        r[1] + factor * (r[1] - r[0]),
+    ])
 
 def skip_comment_char(read_func, filename):
     with open(filename) as f:
@@ -62,6 +94,9 @@ def sanitize_json(j):
         return int(j)
     raise TypeError("can't convert to JSON: {!r} ({})"
                     .format(j, type(j)))
+
+def json_pretty(j):
+    return json.dumps(sanitize_json(j), **JSON_PRETTY)
 
 def parse_simple(fn):
     return skip_comment_char(
@@ -187,51 +222,47 @@ def get_ar_energies_for_v(v):
         yield d
 
 def fit_change(fit_type, fit_points, x, y, **params):
+    # note: y here is the derivative
     x_in = x[-fit_points:]
     y_in = y[-fit_points:]
+    sign = np.sign(np.mean(y_in))
     if fit_type == "loglog":
-        def f(x, m, c):
-            return np.exp(c) * x ** m
-        p0 = np.polyfit(np.log(x_in), np.log(y_in), 1)
+        def f(x, b, a):
+            return a * b * x ** (b - 1)
+        mc0 = np.polyfit(np.log(x_in), np.log(abs(y_in)), 1)
+        ba0 = [mc0[0] + 1.0, sign * np.exp(mc0[1]) / (mc0[0] + 1.0)]
+        names = ["exponent", "coefficient"]
+    elif fit_type == "semilog":
+        def f(x, b, a):
+            return -a * np.exp(-x / b) / b
+        mc0 = np.polyfit(x_in, np.log(abs(y_in)), 1)
+        ba0 = [-1.0 / mc0[0], sign * -np.exp(mc0[1]) / mc0[0]]
+        names = ["lifetime", "coefficient"]
     else:
-        def f(x, m, c):
-            return np.exp(m * x + c)
-        p0 = np.polyfit(x_in, np.log(y_in), 1)
-    p, var_p = scipy.optimize.curve_fit(f, x_in, y_in, p0=p0)
+        assert False
+    r0 = {
+        "fit_type": fit_type + "0",
+        "loglog_params": mc0,
+    }
+    for i, name in enumerate(names):
+        r0[name] = ba0[i]
+
+    # now try to do a nonlinear fit
+    try:
+        ba, var_ba = scipy.optimize.curve_fit(f, x_in, y_in, p0=ba0)
+    except RuntimeError: # minimization failure
+        return {"extra0": r0}
     # chi-squared value per degree of freedom (using weight = 1)
-    # normalized by
-    badness = (np.sum((f(x_in, *p) - y_in) ** 2) / (len(x_in) - len(p)))
+    badness = (np.sum((f(x_in, *ba) - y_in) ** 2) / (len(x_in) - len(ba)))
     r = {
         "fit_type": fit_type,
-        "badness": float(badness),
-        "params": p.tolist(),
-        "cov_params": var_p,
+        "badness": badness,
     }
     r.update(params)
-    if fit_type == "loglog":
-        b = p[0] + 1.0
-        a = np.exp(p[1]) / b
-        jac_ba_mc = np.array([
-            [1, 0],
-            [-a / b, a],
-        ])
-        var_ba = jac_ba_mc.dot(var_p.dot(jac_ba_mc.transpose()))
-        r["exponent"] = b
-        r["exponent_err"] = var_ba[0, 0] ** 0.5
-        r["coefficient"] = a
-        r["coefficient_err"] = var_ba[1, 1] ** 0.5
-        r["cov_exponent_coefficient"] = var_ba[0, 1]
-    else:
-        b = -1.0 / p[0]
-        a = b * np.exp(p[1])
-        jac_ba_mc = np.array([
-            [b ** 2, 0],
-            [b * a, a],
-        ])
-        var_ba = jac_ba_mc.dot(var_p.dot(jac_ba_mc.transpose()))
-        r["lifetime"] = b
-        r["lifetime_err"] = var_ba[0, 0] ** 0.5
-        r["coefficient"] = a
-        r["coefficient_err"] = var_ba[1, 1] ** 0.5
-        r["cov_lifetime_coefficient"] = var_ba[0, 1]
-    return {"x": x, "y": f(x, *p), "extra": r, "guess": p0}
+    for i, name in enumerate(names):
+        r[name] = ba[i]
+        r[name + "_err"] = var_ba[i, i] ** 0.5
+        for j, name2 in enumerate(names[(i + 1):]):
+            r["cov_{}_{}".format(name, name2)] = var_ba[i, j]
+
+    return {"x": x, "y": f(x, *ba), "extra0": r0, "extra": r}

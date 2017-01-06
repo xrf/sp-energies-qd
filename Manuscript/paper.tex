@@ -1207,11 +1207,21 @@ It is difficult to ascertain what $\beta$ is \textit{a priori}, but based on Kva
 \begin{align} \label{eq:power_law_model}
   E = \alpha K^{-\beta} + \gamma
 \end{align}
-As with most nonlinear curve fits, it is often fairly sensitive to the initial parameters.  To extract the initial parameters, we first do a linear fit on the logarithm of the \emph{derivative} $\partial E / \partial K$ against the logarithm of $K$:
+As with most nonlinear curve fits, it is often fairly sensitive to the initial parameters.  To extract the initial parameters, we first do a linear fit on $\ln (\partial E / \partial K)$ against $\ln (K)$:
 \begin{align*}
   \ln \left(\frac{\partial E}{\partial K}\right) = \ln(\alpha) - \beta \ln(K)
 \end{align*}
-The derivative is computed numerically using finite differences of adjacent data points.  This amplifies the noise but linear fits do have the advantage of being very reliable to fit, hence the results are useful as guesses for the more accurate power-law fit.  This does not give us a guess for the infinite-basis energy $\gamma$, but we can estimate it by solving \label{eq:power_law_model} given a single data point and the (estimated) model paramters $\alpha$ and $\beta$.
+The derivative is approximated using finite differences of adjacent data points:
+\begin{align*}
+  \frac{\partial E}{\partial K} \approx E\left(K + \frac{1}{2}\right) - E\left(K - \frac{1}{2}\right)
+\end{align*}
+The process of calculating a derivative amplifies the noise, but linear fits do have the strong advantage of being very reliable to fit -- there is little concern about being stuck in a local minimum -- as well as making the results easy to judge by visually.  Of course, linear fits do not weigh the individual contributions equally, thus a more accurate nonlinear curve fit is required afterward.  One could in principle do a power-law fit on $\partial E/\partial K$ against $K$, but numerical experiments show that as the noise level becomes large this fitting tends to produce abnormal results.
+
+Instead, we use the results as inputs for a power-law fit of $E$ against $K$, which is not as sensitive to noise.  We do require a guess for the infinite-basis energy $\gamma$, which we estimate by fitting \eqref{eq:power_law_model} while the parameters $\alpha$ and $\beta$ are fixed to the initial guesses.  Finally, we do a fit with all three parameters free to vary.
+
+There is still one additional tuning knob for this model that is not explicitly shown in \eqref{eq:power_law_model}: the number of data points taken into consideration.  Since the model describes the \emph{asymptotic} behavior, we do not expect the fit to produce good results when the energy is still far from convergence.  To remedy this, we restrict ourselves to fitting only the last $n_{\mathrm{f}}$ data points.  If $n_{\mathrm{f}}$ is too high, then the non-asymptotic behavior would perturb the result too much, whereas if $n_{\mathrm{f}}$ is too small, the noise will obscure the result.  [[Find ideal number]] [[Maybe it's better to use an explicit K range, rather than using the number of points]]
+
+[[Hypothesis for the poor HF fits: either it's decaying so fast that it quickly becomes dominated by the precision of the calculation, or it's exponential.]]
 
 \section{Conclusions}
 \label{sec:conclusions}

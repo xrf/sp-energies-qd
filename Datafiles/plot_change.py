@@ -8,9 +8,6 @@ import utils
 FIT_TYPES = ["loglog", "semilog"]
 
 def plot(interactive, fit_type):
-    if interactive:
-        plt.ion()
-
     suffix = ""
     fit_points = 4
 
@@ -58,7 +55,7 @@ def plot(interactive, fit_type):
                              fit_points=fit_points,
                              **kwargs)
         sys.stdout.write("{}\n\n".format(
-            json.dumps(r["extra"], **utils.JSON_PRETTY)))
+            json.dumps(utils.sanitize_json(r["extra"]), **utils.JSON_PRETTY)))
         sys.stdout.flush()
         return r["x"], r["y"]
 
@@ -91,15 +88,12 @@ def plot(interactive, fit_type):
             sys.stderr.write("// Figure saved to: {}\n\n".format(fn))
             sys.stderr.flush()
 
-    if interactive:
-        plt.show(block=True)
-
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("-i", "--interactive", action="store_true")
     kwargs = vars(p.parse_args())
-    utils.init(__file__)
-    for fit_type in FIT_TYPES:
-        plot(fit_type=fit_type, **kwargs)
+    with utils.plot(__file__, interactive=kwargs["interactive"]):
+        for fit_type in FIT_TYPES:
+            plot(fit_type=fit_type, **kwargs)
 
 main()
