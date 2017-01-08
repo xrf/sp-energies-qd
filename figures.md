@@ -152,3 +152,55 @@ The results are also included in `fig-rel-slopes` (last figure of 2016-11-11).  
 ![](FigureFiles/fig-compare-20-0.28-rm-1_sigmaB=4.0.pdf)
 ![](FigureFiles/fig-compare-20-1.0-add-0_sigmaB=4.0.pdf)
 ![](FigureFiles/fig-compare-20-1.0-rm-1_sigmaB=4.0.pdf)
+
+## 2016-01-07: Extrapolations
+
+Here, we are using a power law model:
+
+$$E(K) = \alpha K^b + \gamma$$
+
+where $K$ is the total number of shells.  Note: In the draft paper I used $-\beta \equiv b$ as the exponent.
+
+If we plot the derivative of energy on a loglog plot, then it should show up as a straight line.  The draft paper goes into some more detail.
+
+There are two horizontal dotted lines for each method in the plots.  These two represent the infinite-basis limit extrapolated using the fit.  The reason there are two is because I did the fits using 4 slightly different approaches:
+
+  - `logderiv` is just a linear fit to the loglog energy derivative plot; this provides us with a good initial estimate for the exponent and coefficient;
+  - `deriv` is a nonlinear power law fit to the energy derivative plot (not shown explicitly), using `logderiv` as a starting guess;
+  - `fixedab` is a nonlinear power law fit to the energy plot, using `logderiv` as the parameters, but the coefficient and exponent are both *fixed* and only the constant term (i.e. the infinite basis limit) is allowed to vary;
+  - `full` is like the above, but with all three parameters allowed to vary; it uses `fixedab` as the starting point.
+
+Of these four methods, the last two give us the infinite basis limit, and the results are slightly different due to the difference in fitting strategy.  This actually gives us a *diagnostic*: discrepancy between the two strategies is a hint to the goodness of fit.
+
+### Ground state energy
+
+It seems that the extrapolated IMSRG energy is generally closer to DMC than MP2 for ground state energy.  However, for larger (`num_filled >= 6`) cases it is not sure if this holds.  More data is required for these cases we are not yet close to convergence.
+
+HF has a hard time following the trend: the derivative data is very noisy, and moreover the derivative just seems to hit zero very quickly.  Its convergence *may* be exponential.  I removed them from the plots as a result.
+
+### Addition/removal energy
+
+The data here is similar, but there is a lot more stuff to look at.  Some interesting things:
+
+  - Extrapolated QDPT results appear to disagree significantly in some cases: (add, 2, 0.28), (add, 6, 0.28), (add, 12, 0.28), and (add, 2, 1.0).  In these cases, QDPT energies sometimes *increase* rather than decrease wrt number of shells.  The turning of the curve can screw up the fit, since the loglog fit only sees the absolute value of the derivative, so the extrapolated result is probably not very trustworthy.  So what exactly causes these results to deviate so much?  Why does it seem to affect the *few particle* cases more?
+  - In other cases, extrapolated QDPT is quite close to EOM, but further from CC.
+  - In the few places where IMSRG-EOM with quadruples (`eom_quad`) data is available, it is closer to CC.
+  - The agreement between DMC and all other methods is noticeably worse than for ground state energy.
+
+![](FigureFiles/fig-fit-add-1-0.28.pdf)
+![](FigureFiles/fig-fit-add-1-1.0.pdf)
+![](FigureFiles/fig-fit-add-2-0.28.pdf)
+![](FigureFiles/fig-fit-add-2-1.0.pdf)
+![](FigureFiles/fig-fit-add-3-0.28.pdf)
+![](FigureFiles/fig-fit-add-3-1.0.pdf)
+![](FigureFiles/fig-fit-add-4-1.0.pdf)
+![](FigureFiles/fig-fit-ground-1-0.28.pdf)
+![](FigureFiles/fig-fit-ground-1-1.0.pdf)
+![](FigureFiles/fig-fit-ground-2-0.28.pdf)
+![](FigureFiles/fig-fit-ground-2-1.0.pdf)
+![](FigureFiles/fig-fit-ground-3-0.28.pdf)
+![](FigureFiles/fig-fit-ground-3-1.0.pdf)
+![](FigureFiles/fig-fit-ground-4-1.0.pdf)
+![](FigureFiles/fig-fit-ground-5-0.28.pdf)
+![](FigureFiles/fig-fit-ground-5-1.0.pdf)
+![](FigureFiles/fig-fit-ground-6-1.0.pdf)

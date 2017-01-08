@@ -39,13 +39,13 @@ def init(filename):
     plot(filename).__enter__()
 
 @contextlib.contextmanager
-def plot(filename):
+def plot(filename, block=True):
     os.chdir(os.path.dirname(filename))
     matplotlib_try_enable_deterministic_svgs()
     matplotlib.style.use("ggplot")
     yield
     if matplotlib.rcParams["interactive"]:
-        plt.show(block=True)
+        plt.show(block=block)
 
 def savefig(fig, name):
     if not matplotlib.rcParams["interactive"]:
@@ -93,7 +93,7 @@ def load_json_records(fn):
 def sanitize_json(j):
     if isinstance(j, dict):
         return dict((k, sanitize_json(v)) for k, v in j.items())
-    if isinstance(j, list) or isinstance(j, np.ndarray):
+    if isinstance(j, list) or isinstance(j, tuple) or isinstance(j, np.ndarray):
         return [sanitize_json(x) for x in j]
     if isinstance(j, float) or isinstance(j, int) or isinstance(j, str):
         return j
@@ -106,6 +106,33 @@ def sanitize_json(j):
 
 def json_pretty(j):
     return json.dumps(sanitize_json(j), **JSON_PRETTY)
+
+def load_json(fn, fallback=None):
+    if os.path.exists(fn):
+        with open(fn) as f:
+            return json.load(f)
+    return fallback
+
+def save_json(fn, j):
+    with open(fn + ".tmp", "w") as f:
+        f.write(json_pretty(j))
+    os.rename(fn + ".tmp", fn)
+
+def sync_axes_lims(ax, settings, save):
+    setting = settings.get("xlim")
+    if setting:
+        ax.set_xlim(setting)
+    setting = settings.get("ylim")
+    if setting:
+        ax.set_ylim(setting)
+    def on_xlims_changed(ax):
+        settings["xlim"] = ax.get_xlim()
+        save()
+    def on_ylims_changed(ax):
+        settings["ylim"] = ax.get_ylim()
+        save()
+    ax.callbacks.connect("xlim_changed", on_xlims_changed)
+    ax.callbacks.connect("ylim_changed", on_ylims_changed)
 
 def parse_simple(fn):
     return skip_comment_char(

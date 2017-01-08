@@ -48,8 +48,7 @@ def save_fig_deps(fn, out_fn, target_fn):
             "".join(" " + x for x in deps),
         ))
 
-fn = sys.argv[1]
-out_fn = os.path.splitext(fn)[0] + ".dep"
+_, fn, out_fn = sys.argv
 if len(sys.argv) >= 3:
     out_fn = sys.argv[2]
 target_fn = os.path.splitext(fn)[0] + ".pdf"

@@ -8,4 +8,5 @@ FigureFiles/*.pdf
 *.dep
 *.fdb_latexmk
 *.fls
+*.md_dep
 *Notes.bib

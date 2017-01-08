@@ -30,7 +30,7 @@ deploy: ../dist/gh-pages/.git/config all
 	mkdir -p $(@D)
 	cp Manuscript/paper.pdf $@
 
-.SUFFIXES: .md .pdf .svg .tex
+.SUFFIXES: .dep .md .md_dep .pdf .svg .tex
 
 .svg.pdf:
 	svg2pdf $<
@@ -38,15 +38,15 @@ deploy: ../dist/gh-pages/.git/config all
 .md.tex:
 	pandoc -s -V fontsize=12pt -o $@ $<
 
-.md.dep:
-	./gen-deps $<
+.md.md_dep:
+	./gen-deps $< $@
 
 .tex.pdf:
 	./mklatex $*
 
 .tex.dep:
-	./gen-deps $<
+	./gen-deps $< $@
 
--include figures.dep Manuscript/paper.dep
+-include figures.md_dep Manuscript/paper.dep
 
 .SECONDARY:

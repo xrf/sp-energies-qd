@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import argparse, json, os, scipy, sys
+import argparse, json, os, scipy, sys, traceback
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -112,6 +112,7 @@ def plot_fits(data,
     x_c = np.linspace(data[x_col].min(), data[x_col].max(), 250) # continuous x
     for title_key, gg in utils.groupby(data, title_cols):
         fig, [ax1, ax2] = plt.subplots(2)
+        fig.set_size_inches(8, 10) # otherwise the text will get obscured
         y_range = np.array([np.nan, np.nan])
         for color_key, g in utils.groupby(gg, color_cols):
             color = get_color(**color_key)
@@ -119,30 +120,33 @@ def plot_fits(data,
             g = g.sort_values([x_col])
             d = g.rename(columns={x_col: "x", y_col: "y"})
             deriv_d = differentiate(d, "x", "y", "dydx")
-            fit = do_fit(
-                d[d["x"].between(*fit_range)],
-                deriv_d[deriv_d["x"].between(*fit_range)])
+            x = deriv_d["x"]
+            dydx = deriv_d["dydx"]
+            ax1.plot(x, abs(dydx), "x", label=label, color=color)
+
+            d_subset = d[d["x"].between(*fit_range)]
+            deriv_subset = deriv_d[deriv_d["x"].between(*fit_range)]
+            if len(deriv_subset) < 2:
+                continue
+            fit = do_fit(d_subset, deriv_subset)
             sys.stdout.write(utils.json_pretty(fit) + "\n\n")
             sys.stdout.flush()
 
-            x = deriv_d["x"]
-            dydx = deriv_d["dydx"]
-            ax1.plot(x, abs(dydx), "o", label=label, color=color)
             for stage, result in fit.items():
                 if stage == "fixedab":
                     continue # fixedab yields the same plot here as logderiv
                 a = result["coefficient"]
                 b = result["exponent"]
                 b_err = result.get("exponent_err", None)
-                dydx = a * b * x ** (b - 1.0)
+                dydx_c = a * b * x_c ** (b - 1.0)
                 ax1.plot(
-                    x, abs(dydx), linestyle=STAGE_TO_LINESTYLE[stage],
+                    x_c, abs(dydx_c), linestyle=STAGE_TO_LINESTYLE[stage],
                     label=label + " " + fit_label(stage, b, b_err),
                     color=color)
 
             x = d["x"]
             y = d["y"]
-            ax2.plot(x, y, "o", label=label, color=color)
+            ax2.plot(x, y, "x", label=label, color=color)
             utils.update_range(y_range, y)
             for stage, result in fit.items():
                 if "constant" not in result:
@@ -172,20 +176,33 @@ def plot_fits(data,
             utils.update_range(y_range, [y])
 
         ax1.axvspan(fit_range[0], fit_range[1], alpha=0.15, color="#d6a528")
-        ax1.legend()
         ax1.set_xlabel(x_label)
         ax1.set_ylabel(absdydx_label)
         ax1.set_xscale("log")
         ax1.set_yscale("log")
         ax1.set_title(get_title(**title_key))
+        box = ax1.get_position()
+        ax1.set_position([box.x0, box.y0, box.width * 0.6, box.height])
+        ax1.legend(bbox_to_anchor=(1, 1.0))
 
         ax2.axvspan(fit_range[0], fit_range[1], alpha=0.15, color="#d6a528")
         ax2.legend()
         ax2.set_xlabel(x_label)
         ax2.set_ylabel(y_label)
         ax2.set_ylim(*utils.expand_range(y_range, 0.05))
+        box = ax2.get_position()
+        ax2.set_position([box.x0, box.y0, box.width * 0.6, box.height])
+        ax2.legend(bbox_to_anchor=(1, 1.0))
 
-        utils.savefig(fig, get_fn(**title_key))
+        fn = get_fn(**title_key)
+        settings_fn = fn + ".settings"
+        settings = utils.load_json(settings_fn) or {"ax1": {}, "ax2": {}}
+        def save_settings():
+            utils.save_json(settings_fn, settings)
+        utils.sync_axes_lims(ax1, settings["ax1"], save_settings)
+        utils.sync_axes_lims(ax2, settings["ax2"], save_settings)
+        utils.savefig(fig, fn)
+        break
 
 def plot_addrm(label, num_filled, freq, fit_start, fit_stop, **kwargs):
     d_dmc = pd.read_csv("dat-qdsfe.jEYRh-4ptC1Dr5nlBcz0tg/dat-addrm-dmc.txt",
