@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 # Generates ../FigureFiles/fig-change-*.svg from the data files.
 import argparse, json, os, sys
+import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 import utils
 
 FIT_TYPES = ["loglog", "semilog"]
 
-def plot(interactive, fit_type):
+def plot(fit_type, **kwargs):
     suffix = ""
     fit_points = 4
 
@@ -80,7 +81,7 @@ def plot(interactive, fit_type):
         ax.set_yscale("log")
         ax.set_title(title)
 
-        if not interactive:
+        if not matplotlib.rcParams["interactive"]:
             # FIXME: not elegant
             fn, = fig_data["filename"].unique()
             fig.savefig(fn)
@@ -92,7 +93,8 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("-i", "--interactive", action="store_true")
     kwargs = vars(p.parse_args())
-    with utils.plot(__file__, interactive=kwargs["interactive"]):
+    plt.rcParams["interactive"] = kwargs["interactive"]
+    with utils.plot(__file__):
         for fit_type in FIT_TYPES:
             plot(fit_type=fit_type, **kwargs)
 

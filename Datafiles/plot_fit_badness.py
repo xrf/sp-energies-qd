@@ -23,10 +23,7 @@ def markersize(marker):
         "*": 1.2,
     }.get(marker, 1.0)
 
-def plot(interactive):
-    if interactive:
-        plt.ion()
-
+def plot(**kwargs):
     d = utils.load_json_records("fits.txt")
 
     fig = plt.figure()
@@ -61,21 +58,19 @@ def plot(interactive):
     ax.set_ylabel("badness")
     ax.set_yscale("log")
 
-    if not interactive:
+    if not matplotlib.rcParams["interactive"]:
         fn = "fig-fit-badness.svg"
         fig.savefig(fn)
         plt.close(fig)
         sys.stderr.write("// Figure saved to: {}\n\n".format(fn))
         sys.stderr.flush()
 
-    if interactive:
-        plt.show(block=True)
-
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("-i", "--interactive", action="store_true")
     kwargs = vars(p.parse_args())
-    utils.init(__file__)
-    plot(**kwargs)
+    plt.rcParams["interactive"] = kwargs["interactive"]
+    with utils.plot(__file__):
+        plot(**kwargs)
 
 main()

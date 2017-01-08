@@ -1,4 +1,4 @@
-import contextlib, functools, json, os, sys
+import collections, contextlib, functools, json, os, sys
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -22,6 +22,7 @@ METHOD_COLOR = {
     "qdpt": "#39b237",
     "eom": "#841a0b",
     "eom_quads": "#a825bc",
+    "eom_f": "#f4ad42",
     "cc": "#1351c4",
 }
 
@@ -35,26 +36,34 @@ def matplotlib_try_enable_deterministic_svgs():
         sys.stderr.flush()
 
 def init(filename):
-    plot(filename, interactive=False).__enter__()
+    plot(filename).__enter__()
 
 @contextlib.contextmanager
-def plot(filename, interactive):
+def plot(filename):
     os.chdir(os.path.dirname(filename))
     matplotlib_try_enable_deterministic_svgs()
     matplotlib.style.use("ggplot")
-    if interactive:
-        plt.ion()
     yield
-    if interactive:
+    if matplotlib.rcParams["interactive"]:
         plt.show(block=True)
 
-def savefig(fig, interactive, name):
-    if not interactive:
+def savefig(fig, name):
+    if not matplotlib.rcParams["interactive"]:
         fn = "../FigureFiles/fig-{name}.svg".format(**locals())
         fig.savefig(fn)
         plt.close(fig)
         sys.stderr.write("// Figure saved to: {}\n\n".format(fn))
         sys.stderr.flush()
+
+def groupby(d, cols):
+    '''Like DataFrame.groupby but converts the key into an OrderedDict.'''
+    for key, g in d.groupby(cols):
+        # pandas inconsistently returns either a tuple or the object itself
+        # depending on how many cols were used
+        if len(cols) == 1:
+            yield collections.OrderedDict([(cols[0], key)]), g
+        else:
+            yield collections.OrderedDict(zip(cols, key)), g
 
 def update_range(r, x):
     for x in np.array(x).flatten():
