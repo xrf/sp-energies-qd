@@ -32,20 +32,20 @@ deploy: ../dist/gh-pages/.git/config all
 
 .SUFFIXES: .dep .md .md_dep .pdf .svg .tex
 
-.svg.pdf:
-	svg2pdf $<
+.md.md_dep:
+	./gen-deps $< $@
 
 .md.tex:
 	pandoc -s -V fontsize=12pt -o $@ $<
 
-.md.md_dep:
+.svg.pdf:
+	inkscape --without-gui --export-pdf=$@ $<
+
+.tex.dep:
 	./gen-deps $< $@
 
 .tex.pdf:
 	./mklatex $*
-
-.tex.dep:
-	./gen-deps $< $@
 
 -include figures.md_dep Manuscript/paper.dep
 
