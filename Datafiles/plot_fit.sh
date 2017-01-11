@@ -24,3 +24,11 @@ i=${PLOTFLAGS-} # use -i for interactive
 ./plot_fit.py $i --num-filled=3 --freq=1.0 --fit-start=13 add
 ./plot_fit.py $i --num-filled=3 --freq=0.28 --fit-start=13 add
 ./plot_fit.py $i --num-filled=4 --freq=1.0 --fit-start=13 add
+
+./plot_fit.py $i --num-filled=1 --freq=1.0 --fit-start=7 rm
+./plot_fit.py $i --num-filled=1 --freq=0.28 --fit-start=7 rm
+./plot_fit.py $i --num-filled=2 --freq=1.0 --fit-start=10 rm
+./plot_fit.py $i --num-filled=2 --freq=0.28 --fit-start=10 rm
+./plot_fit.py $i --num-filled=3 --freq=1.0 --fit-start=13 rm
+./plot_fit.py $i --num-filled=3 --freq=0.28 --fit-start=13 rm
+./plot_fit.py $i --num-filled=4 --freq=1.0 --fit-start=13 rm
