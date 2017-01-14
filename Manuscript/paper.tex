@@ -145,51 +145,41 @@ The HO eigenfunctions are popular for several reasons. Many quantum systems, suc
 \subsection{The model Hamiltonian}
 \label{subsec:modelHamiltonian}
 
-We model the quantum dot as a collection of $N$ electrons trapped in an
-external harmonic-oscillator potential.\footnote{In this paper, we use atomic
-  units where $\hbar$, $m$, $e$, and $4 \pi \epsilon$ are set to 1.  Here,
-  $\epsilon$ denotes the permittivity and $m$ denotes the mass, which could be
-  an effective mass rather than the true electron mass.  In effect, the unit
-  of energy in this article is
-  $E_{\text h} (m / m_{\text e}) / (\epsilon / \epsilon_0)^2$ where
-  $E_{\text h} \equiv m_{\text e} (\alpha c)^2$, the hartree unit of energy.}
-Each electron possesses kinetic energy $t(\bm p) \equiv \bm p^2 / 2$ and
-experiences an external potential $u(\bm r) \equiv \omega^2 \bm r^2 / 2$,
-where $\omega$ is the angular frequency of the oscillator, $\bm r$ is the
-2-dimensional position vector of an electron, and $\bm p$ is its linear
-momentum.  Each pair of electrons experience a Coulomb repulsion
-$v(\bm r, \bm r') \equiv |\bm r - \bm r'|^{-1}$ where $\bm r$ and $\bm r'$ are
-their positions.  The full many-body problem is described by the
-nonrelativistic Hamiltonian
-\begin{align*}
-  \hat H \equiv \hat H^{\text o} + \hat V = \sum_j \bigl(
-    t(\hat{\bm p}_j) + u(\hat{\bm r}_j)
-  \bigr) + \sum_{j_1 < j_2} v(\hat{\bm r}_{j_1}, \hat{\bm r}_{j_2})
-\end{align*}
-where $\hat{\bm p}_j$ and $\hat{\bm r}_j$ respectively denote the momentum and
-position operators of a particle $j$.  The first summation is performed over
-every particle, while the the second summation is performed over every
-unordered pair of distinct particles (the ordering of the particle labels $j$ is arbitrary).
+We shall model the circular quantum dot system as a collection of $N$ nonrelativistic electrons of mass $m$ in 2-dimensional space, trapped by an external harmonic-oscillator potential of the form $m \omega^2 r^2 / 2$, where $\omega$ is the angular frequency of the oscillator trap and $r$ is the distance from the center of the trap.  The electrons interact with each other through the standard Coulomb interaction $e^2 / (4 \pi \epsilon R)$, where $e$ is the charge of each electron, $\epsilon$ is the permittivity of the medium, and $R$ is the distance between the two interacting electrons.
 
-The full problem is not a trivial one.  We shall first consider a much simpler problem: the noninteracting part of the Hamiltonian, $\hat H^{\text o}$, which does not contain the Coulomb interaction $v$:
-\begin{align} \label{eq:onebodyhamiltonian}
-  \hat H^{\text o} \equiv \sum_p \hat h^{\text o}_p
-  \equiv \sum_{p} \bigl(
-  t(\hat{\bm p}_p) + u(\hat{\bm r}_p)
-  \bigr)
-\end{align}
-In this case, the many-body Hamiltonian reduces to $N$ independent
-single-particle Hamiltonians, each of the form:
+Even though the model system contains 5 parameters $(N, m, \omega, e, \epsilon)$, many of them are redundant.  With an appropriate choice of units, the number of parameters in the system can be reduced to just two.  For rest of this paper, we shall use atomic units\footnote{Here, ``atomic unit'' is used in an \emph{abstract} sense: we do not assume (nor care) whether $m$, $e$, $\epsilon$ correspond to true values in vacuum, or some effective value in medium.} where $\hbar$, $m$, $e$ and $4 \pi \epsilon$ all have a value of one.  This implies that the units of energy are hartrees $E_{\mathrm{h}}$ and the units of length are Bohr radii $a$:
 \begin{align*}
-  \hat h^{\text o} \equiv
-  \frac{\hat{\bm p}^2 + \omega^2 \hat{\bm r}^2}{2}
+  E_{\mathrm{h}} &\equiv m \left(\frac{e^2}{4 \pi \epsilon \hbar}\right)^2 &
+  a &\equiv \frac{4 \pi \epsilon \hbar^2}{m e^2}
 \end{align*}
-This is a 2-dimensional harmonic oscillator problem for a single particle,
-whose solutions are well known.  There are various ways to construct the set
-of eigenfunctions: we shall use the Fock-Darwin states that conserve angular
-momentum $\hat{L}_{\text{z}}$ about the $z$-axis (perpendicular to the 2D
-plane).  The eigenfunctions have the following analytic form in polar
-coordinates:\citep[Appx.\ A]{lohne2010coupled}
+This leaves us with $(N, \omega)$ as the only necessary parameters to specify the quantum dot system, with $\omega$ in units of $E_{\mathrm{h}} / \hbar$.
+
+The behavior of each electron in isolation is described by its kinetic energy $t(\bm{r})$ and the potential energy due to the trap $u(\bm{r})$, which combine to form the standard harmonic oscillator Hamiltonian $h(\bm{p}, \bm{r})$:
+\begin{align*}
+  t(\bm{p}) &\equiv \frac{1}{2} \bm{p}^2 &
+  u(\bm{r}) &\equiv \frac{1}{2} \omega^2 \bm{r}^2 &
+  h(\bm{p}, \bm{r}) &\equiv t(\bm{p}) + t(\bm{r})
+\end{align*}
+Here, $\bm{p}$ is the linear momentum of the electron and $\bm{r}$ is its position relative to the center of the trap.  The pairwise interaction between two electrons at positions $\bm{r}$ and $\bm{r}'$ is simply the Coulomb interaction:
+\begin{align*}
+  v(\bm{r}, \bm{r}') \equiv \frac{1}{\left|\bm{r} - \bm{r}'\right|}
+\end{align*}
+Then, the full many-body problem is described by the Hamiltonian
+\begin{align*}
+  \hat H \equiv \hat H^{[1]} + \hat H^{[2]}
+\end{align*}
+where $\hat{H}^{[1]}$ and $\hat{H}^{[2]}$ are the one- and two-body parts of the Hamiltonian,
+\begin{align} \label{eq:onetwobodyhamiltonian}
+\hat{H}^{[1]} &\equiv \sum_{j = 1}^N h(\hat{\bm p}_j, \hat{\bm r}_j) &
+\hat{H}^{[2]} &\equiv \sum_{j_1 = 1}^N \sum_{j_2 = 1}^{j_1 - 1} v(\hat{\bm r}_{j_1}, \hat{\bm r}_{j_2})
+\end{align}
+The operators $\hat{\bm p}_j$ and $\hat{\bm r}_j$ respectively denote momentum and position of the $j$-th particle.\footnote{The order in which particles are labeled is unimportant; it is used only for bookkeeping.}
+
+The first step towards a solution is to solve \emph{just} the noninteracting part $\hat{H}^{[1]}$.  In this case, the many-body Hamiltonian reduces to $N$ independent single-particle Hamiltonians $\hat{h}$, each of the form:
+\begin{align*}
+  \hat{h} = \frac{1}{2} \hat{\bm{\nabla}}^2 + \frac{1}{2} \omega^2 \hat{\bm{r}}^2
+\end{align*}
+This is a 2-dimensional harmonic oscillator problem for a single particle with known analytic solutions.  There are various ways to construct the set of eigenfunctions: we shall use the Fock-Darwin states, which conserve the angular momentum $\hat{L}_{\mathrm{z}}$. In polar coordinates, they are given by\citep[Appx.\ A]{lohne2010coupled}
 \begin{gather*}
   \phi^{\text{FD}}_{n, m_\ell}(\rho, \varphi)
   \equiv \sqrt\omega
@@ -225,16 +215,16 @@ with the spin projection $m_{\text s} \in \bigl\{-\frac12, +\frac12\bigr\}$.
   single-particle state, and the arrows denote the spin of the states.}
 \label{fig:shell-structure}
 \end{figure}
-The eigenvalues of the single-particle Hamiltonian $\hat h^{\text o}$ are
+The eigenvalues of the single-particle Hamiltonian $\hat{h}$ are
 given by
 \begin{align*}
   \varepsilon_{n, m_\ell, m_{\text s}} \equiv (2 n + |m_\ell| + 1) \omega
 \end{align*}
 which satisfies
-$\hat{h}^{\text o} \ket{\phi_{n, m_\ell, m_{\text s}}} = \varepsilon_{n,
+$\hat{h} \ket{\phi_{n, m_\ell, m_{\text s}}} = \varepsilon_{n,
   m_\ell, m_{\text s}} \ket{\phi_{n, m_\ell, m_{\text s}}}$.  Note that the
 states are degenerate with respect to the spin projection $m_{\text s}$ since
-our Hamiltonian $\hat h^{\text o}$ does not distinguish between them.  From
+our Hamiltonian $\hat{h}$ does not distinguish between them.  From
 this equation, we can deduce the shell structure as shown in Figure
 \ref{fig:shell-structure}.  It is notable that there are degeneracies beyond
 that of the spin pairs: each shell contains a set of states that satisfy the
@@ -242,12 +232,12 @@ equation $2 n + |m_\ell| = k$ for some nonnegative integer $k$, which we
 conveniently call the \textit{shell index}.  The shells are equidistant from
 each other, with a spacing equal to the frequency $\omega$.
 
-The many-body Hamiltonian $\hat H^{\text o}$ is the sum of the single-particle
-Hamiltonians $\hat h^{\text o}_p$ over all particles $p$, where $p$ may now be
+The many-body Hamiltonian $\hat{H}^{[1]}$ is the sum of the single-particle
+Hamiltonians $\hat{h}_p$ over all particles $p$, where $p$ may now be
 treated as a tuple of all three single-particle quantum numbers:
 $(n, m_\ell, m_{\text s})$.  From the states $\phi$ in
 \eqref{eq:singleparticlestate} we can construct the an eigenstate of the
-many-body Hamiltonian $\hat H^{\text o}$ in the form of a Slater determinant
+many-body Hamiltonian $\hat{H}^{[1]}$ in the form of a Slater determinant
 $\varnothing_{p_1, \ldots, p_N}$:
 \begin{align*}
   \varnothing_{p_1, \ldots, p_N}(\bm r_1, \ldots, \bm r_N) \equiv
@@ -263,19 +253,9 @@ This automatically satisfies the Pauli exclusion principle, ensuring that the
 Fermi statistics are satisfied.  The energy of these states is given by the
 sum of the single-particle energies:
 \begin{align*}
-  E^{\text o}_{p_1, \ldots, p_N} =
-  \varepsilon_{p_1} + \cdots + \varepsilon_{p_N},
+  E^{[1]}_{p_1, \ldots, p_N} = \varepsilon_{p_1} + \cdots + \varepsilon_{p_N},
 \end{align*}
-which satisfies
-$\hat{H}^{\text o} \ket{\varnothing_{p_1, \ldots, p_N}} = E^{\text o}_{p_1, \ldots,
-  p_N} \ket{\varnothing_{p_1, \ldots, p_N}}$.  For ground states, we may have
-degeneracies due to the shell structure of the single-particle basis.
-However, if $N = k_{\text F} (k_{\text F} + 1)$ for some nonnegative integer
-$k_{\text F}$, there are just enough particles to form a closed-shell system.
-In this case, there is a unique, well-isolated ground state.  The values of
-$N$ for which this occurs are typically referred to as \textit{magic numbers}
-and we call $k_{\text F}$ the \textit{number of filled shells} (or ``Fermi
-level'').  This completes the solution of the noninteracting problem.
+which satisfies $\hat{H}^{[1]} \ket{\varnothing_{p_1, \ldots, p_N}} = E^{[1]}_{p_1, \ldots, p_N} \ket{\varnothing_{p_1, \ldots, p_N}}$.  For ground states, we may have degeneracies due to the shell structure of the single-particle basis.  However, if $N = k_{\text F} (k_{\text F} + 1)$ for some nonnegative integer $k_{\text F}$, there are just enough particles to form a closed-shell system.  In this case, there is a unique, well-isolated ground state.  The values of $N$ for which this occurs are typically referred to as \textit{magic numbers} and we call $k_{\text F}$ the \textit{number of filled shells} (or ``Fermi level'').  This completes the solution of the noninteracting problem.
 
 The difficulty in solving the full Hamiltonian $\hat H$ stems from the fact
 that the exact solution cannot be expressed in terms of a single Slater
@@ -309,23 +289,23 @@ and $\hat a_p^\dagger$ satisfy the essential anticommutation relations,
 where $\delta_{p, q}$ denotes the Kronecker delta.
 
 Operators can be rewritten in this formalism as well.  The one-body
-Hamiltonian $H^{\text o}$ defined by \eqref{eq:onebodyhamiltonian} can be
+Hamiltonian $H^{[1]}$ defined by \eqref{eq:onetwobodyhamiltonian} can be
 rewritten in second quantization as
 \begin{align} \label{eq:second_quantized_one_body_hamiltonian}
-  \hat H^{\text o} = \sum_{p, q} H_{p, q}^{\text o} \hat a_p^\dagger \hat a_q^{}
+  \hat H^{[1]} = \sum_{p, q} H_{p, q}^{[1]} \hat a_p^\dagger \hat a_q^{}
 \end{align}
 where the \textit{matrix element}
-$H_{p, q}^{\text o} \equiv \bra{\varnothing_p} \hat H^{\text o} \ket{\varnothing_q}$.  This
-can likewise be extended to $\hat V$,
+$H_{p, q}^{[1]} \equiv \bra{\varnothing_p} \hat{H}^{[1]} \ket{\varnothing_q}$.  This
+can likewise be extended to $\hat{H}^{[2]}$,
 \begin{align} \label{eq:second_quantized_two_body_hamiltonian}
-  \hat V = \frac{1}{4} \sum_{p, q, r, s} V_{p, q, r, s}^{}
+  \hat{H}^{[2]} = \frac{1}{4} \sum_{p, q, r, s} V_{p, q, r, s}^{}
   \hat a_p^\dagger \hat a_q^\dagger \hat a_s^{} \hat a_r^{}
 \end{align}
 where $U_{p, q} \equiv \langle \varnothing_p | \hat U | \varnothing_q \rangle$ and
-$V_{p, q, r, s} \equiv \langle \varnothing_{p, q} | \hat V | \varnothing_{r, s} \rangle$.
+$V_{p, q, r, s} \equiv \langle \varnothing_{p, q} | \hat{H}^{[2]} | \varnothing_{r, s} \rangle$.
 The complete Hamiltonian is given by their sum:
 \begin{align}
-  \hat{H} = \sum_{p, q} H^{\text o}_{p, q} \hat{a}_p^\dagger \hat{a}_q + \frac{1}{4} \sum_{p, q, r, s} V_{p, q, r, s} \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_r \hat{a}_s  \label{eq:vacuumhamiltonian}
+  \hat{H} = \sum_{p, q} H^{[1]}_{p, q} \hat{a}_p^\dagger \hat{a}_q + \frac{1}{4} \sum_{p, q, r, s} V_{p, q, r, s} \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_r \hat{a}_s  \label{eq:vacuumhamiltonian}
 \end{align}
 Note that due to the antisymmetry present in the Slater determinants, we have
 the property that exchanging either $p$ with $q$ or $r$ with $s$ causes
@@ -385,11 +365,11 @@ To ensure the orthonormality of the states, we assume the set of unknown states 
 
 Since the coefficient matrix uniquely determines the unknown states, the variational problem has been reduced to that of solving of the coefficients $\bm C$ that minimize the energy $E_{\Phi}$, which is given by
 \begin{align}
-  E_{\Phi} &= \sum_{j} n_j H^{\text{o} \prime}_{j, j} + \sum_{j, k} n_j n_k V'_{j, k, j, k} \label{eq:hfenergy}
+  E_{\Phi} &= \sum_{j} n_j H^{[1] \prime}_{j, j} + \sum_{j, k} n_j n_k V'_{j, k, j, k} \label{eq:hfenergy}
 \end{align}
 where the transformed operators are defined as
 \begin{align}
-  H^{\text{o} \prime}_{p, q} &\equiv \sum_{r, s} C_{r, p}^* H_{r, s}^{\text o} C_{s, q}^{} \label{eq:hftransform1} \\
+  H^{[1] \prime}_{p, q} &\equiv \sum_{r, s} C_{r, p}^* H_{r, s}^{[1]} C_{s, q}^{} \label{eq:hftransform1} \\
   V'_{p, q, r, s} &\equiv \sum_{t, u, v, w} C_{t, p}^* C_{u, q}^* V_{t, u, v, w}^{} C_{v, r}^{} C_{w, s}^{} \label{eq:hftransform2}
 \end{align}
 and the occupancy number $n_p$ is defined as
@@ -407,7 +387,7 @@ With the method of Lagrange multipliers, the minimization problem can be reduced
 \end{align}
 where the \textit{Fock matrix} $\bm F$ is defined as
 \begin{align} \label{eq:fock}
-  F_{p, q} \equiv H_{p, q}^{\text o} + \sum_{r, s, j} n_j C_{r, j}^* V_{p, r, q, s}^{} C_{s, j}^{}
+  F_{p, q} \equiv H_{p, q}^{[1]} + \sum_{r, s, j} n_j C_{r, j}^* V_{p, r, q, s}^{} C_{s, j}^{}
 \end{align}
 and $\bm \epsilon$ is a vector of Lagrange multipliers with each element $\epsilon_q$ associated with a particular state $\phi'_q$.
 
@@ -421,7 +401,7 @@ state energy is thus by definition known as the \textit{correlation energy}.
 The focus of post-HF methods such as IM-SRG is to improve on the HF results,
 thus recovering parts of this missing energy.
 
-To make use of the HF solution as the reference state for future calculations, we transform the operators via \eqref{eq:hftransform1} and \eqref{eq:hftransform2}.  Therefore, the post-HF methods described in the next few sections generally use the transformed operators $\hat H^{\text{o} \prime}$ and $\hat V'$ as inputs.  However, for generality, we omit the prime symbols as the methods do not necessitate a state optimized by HF.
+To make use of the HF solution as the reference state for future calculations, we transform the operators via \eqref{eq:hftransform1} and \eqref{eq:hftransform2}.  Therefore, the post-HF methods described in the next few sections generally use the transformed operators $\hat{H}^{[1] \prime}$ and $\hat{H}^{[2] \prime}$ as inputs.  However, for generality, we omit the prime symbols as the methods do not necessitate a state optimized by HF.
 
 \subsection{The IM-SRG method}
 \label{subsec:imsrgmethod}
@@ -519,15 +499,15 @@ The normal ordering of the quasiparticle field operators are straightforward to 
   \normord{\hat{a}_p^\dagger \hat{a}_q} &=
   \hat{a}_p^\dagger \hat{a}_q - n_p \delta_{p, q}
 \end{align*}
-The normal ordering notation thus provides a concise way of expressing the right-hand side.  In this new notation, we can rewrite the Hamiltonian $\hat H = \hat H^{\text o} + \hat V$ in its \emph{normal-ordered representation}:
+The normal ordering notation thus provides a concise way of expressing the right-hand side.  In this new notation, we can rewrite the Hamiltonian $\hat H = \hat{H}^{[1]} + \hat{H}^{[2]}$ in its \emph{normal-ordered representation}:
 \begin{align}
   \hat{H} = H^{[0]} + \sum_{p, q} H^{[1]}_{p, q} \normord{\hat{a}_p^\dagger \hat{a}_q} + \frac{1}{4} \sum_{p, q, r, s} H^{[2]}_{p, q, r, s} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_r \hat{a}_s}
   \label{eq:normordhamiltonian}
 \end{align}
 where
 \begin{align*}
-  H^{[0]} &\equiv \sum_{i} n_i H^{\text o}_{i, i} + \frac{1}{2} \sum_{i, j} n_i n_j V_{i, j, i, j} \\
-  H^{[1]}_{p, q} &\equiv H^{\text o}_{p, q} + \sum_{i} n_i V_{p, i, q, i} \\
+  H^{[0]} &\equiv \sum_{i} n_i H^{[1]}_{i, i} + \frac{1}{2} \sum_{i, j} n_i n_j V_{i, j, i, j} \\
+  H^{[1]}_{p, q} &\equiv H^{[1]}_{p, q} + \sum_{i} n_i V_{p, i, q, i} \\
   H^{[2]}_{p, q, r, s} &\equiv V_{p, q, r, s} \\
 \end{align*}
 If $\Phi$ is a state optimized by the HF method, then $H^{[0]}$ is simply the HF energy $E_\Phi$ and $H^{[1]}_{p, q}$ is the Fock matrix $F_{p, q}$.  The normal-ordered representation of $\hat H$ in \eqref{eq:normordhamiltonian} is completely equivalent to that of $\hat H$ in \eqref{eq:vacuumhamiltonian}.  The only difference is that it rearranges the matrix elements so as to emphasize the reference state $\Phi$ rather than vacuum state $\ket{\varnothing}$.  This makes a critical difference when the expressions containing 3-body or higher terms are \emph{truncated} to only 2-body.  If the reference state $\Phi$ is good approximation of the true solution $\Psi$, then the importance of the higher-body parts of the Hamiltonian are greatly reduced.
@@ -677,12 +657,12 @@ IM-SRG, in the approach described, provides a means to calculate the ground stat
 \end{align}
 where the meaning of $\Phi_p$ is defined in \eqref{eq:quasisd}, $i$ is restricted to labels of occupied states, and $a$ is restricted to labels of unoccupied states.
 
-In QDPT, the solutions of the approximate Hamiltonian $\hat H^{\text o}$ are used as the basis of the model space.  One then assumes the existence of an operator $\hat \Omega$, known as the \textit{wave operator}, that maps some set of states $\tilde \Psi^{\text o}_u$ within the model space to the exact ground state $\Psi_u$:
+In QDPT, the solutions of the approximate Hamiltonian $\hat{H}^{[1]}$ are used as the basis of the model space.  One then assumes the existence of an operator $\hat \Omega$, known as the \textit{wave operator}, that maps some set of states $\tilde \Psi^{\mathrm{o}}_u$ within the model space to the exact ground state $\Psi_u$:
 \begin{align} \label{eq:omega-condition1}
-  \Psi_u = \hat \Omega \tilde \Psi^{\text o}_u
+  \Psi_u = \hat \Omega \tilde \Psi^{\mathrm{o}}_u
 \end{align}
-The states $\tilde \Psi^{\text o}_u$ consist of some mixture of the eigenstates
-$\Psi^{\text o}_{u'}$ of the approximate Hamiltonian $\hat H^{\text o}$.
+The states $\tilde \Psi^{\mathrm{o}}_u$ consist of some mixture of the eigenstates
+$\Psi^{\mathrm{o}}_{u'}$ of the approximate Hamiltonian $\hat{H}^{[1]}$.
 
 There is some freedom in the choice of the wave operator $\hat \Omega$.  We
 assume it has the following form:
@@ -692,21 +672,21 @@ assume it has the following form:
 where $\hat P$ projects any state into the model space and $\hat Q$ is the
 complement of $\hat P$.  This entails that the exact states $\Psi_u$ is no
 longer normalized but instead satisfies the typical intermediate
-normalization: $\langle \Psi_u | \tilde \Psi^{\text o}_u \rangle = 1$.
+normalization: $\langle \Psi_u | \tilde \Psi^{\mathrm{o}}_u \rangle = 1$.
 
 Making use of the assumptions in  \eqref{eq:omega-condition1} and \eqref{eq:omega-condition2}, one can derive from the Schr\"odinger equation the generalized Bloch equation, the principal equation of QDPT:
 \begin{gather*}
-  [\hat \Omega, \hat H^{\text o}] =
+  [\hat \Omega, \hat{H}^{[1]}] =
   (1 - \hat \Omega) \hat V \Omega
 \end{gather*}
-where $\hat V \equiv \hat H - \hat H^{\text o}$ is the perturbation.  The
+where $\hat V \equiv \hat H - \hat{H}^{[1]}$ is the perturbation.  The
 commutator on the left may be ``inverted'' using the resolvent approach
 (\cite{shavitt2009many}, p.\ 50), resulting in:
 \begin{align*}
   \hat Q \Omega \hat P_u =
   \hat R_u (1 - \hat \Omega) \hat V \Omega \hat P_u
 \end{align*}
-where $\hat R_u \equiv \hat Q (E_u - \hat Q \hat H^{\text o} \hat Q)^{-1} \hat Q$ is the resolvent and $\hat P_u$ is the projection operator that projects any state onto $\Psi^{\text o}_u$.  As is typical in perturbation theory, we assume $\hat \Omega$ can be expanded as a series of the increasing order as measured by the ``power'' of the perturbation $\hat V$:
+where $\hat R_u \equiv \hat Q (E_u - \hat Q \hat{H}^{[1]} \hat Q)^{-1} \hat Q$ is the resolvent and $\hat P_u$ is the projection operator that projects any state onto $\Psi^{\mathrm{o}}_u$.  As is typical in perturbation theory, we assume $\hat \Omega$ can be expanded as a series of the increasing order as measured by the ``power'' of the perturbation $\hat V$:
 \begin{align*}
   \hat \Omega = \hat P +
   \hat Q\bigl(\hat \Omega_1 + \hat \Omega_2 + \cdots\bigr) \hat P
@@ -730,7 +710,7 @@ This leads to a recursion relation of $\hat \Omega$ that enables $\hat \Omega$ t
     + \sum_v \hat R_v \sum_w \hat R_w \hat V \hat P_w \hat V \hat P_v
     \biggr) \hat V \hat P_u
 \end{align*}
-Until now, the solution is described purely in terms of abstract operators in Hilbert space.  To make this concrete and relevant for many-body physics, we must make some additional assumptions.  First, we make use of the single-particle basis as we have for HF and IM-SRG.  Secondly, we assume the set of reference states $\Psi^{\text o}_u$ are Slater determinants of the single-particle states.
+Until now, the solution is described purely in terms of abstract operators in Hilbert space.  To make this concrete and relevant for many-body physics, we must make some additional assumptions.  First, we make use of the single-particle basis as we have for HF and IM-SRG.  Secondly, we assume the set of reference states $\Psi^{\mathrm{o}}_u$ are Slater determinants of the single-particle states.
 
 \begin{figure}
 \includegraphics[width=.48\textwidth]{fig-diagrams-sfe}
