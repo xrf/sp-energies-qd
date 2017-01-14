@@ -147,14 +147,14 @@ The HO eigenfunctions are popular for several reasons. Many quantum systems, suc
 
 We shall model the circular quantum dot system as a collection of $N$ nonrelativistic electrons of mass $m$ in 2-dimensional space, trapped by an external harmonic-oscillator potential of the form $m \omega^2 r^2 / 2$, where $\omega$ is the angular frequency of the oscillator trap and $r$ is the distance from the center of the trap.  The electrons interact with each other through the standard Coulomb interaction $e^2 / (4 \pi \epsilon R)$, where $e$ is the charge of each electron, $\epsilon$ is the permittivity of the medium, and $R$ is the distance between the two interacting electrons.
 
-Even though the model system contains 5 parameters $(N, m, \omega, e, \epsilon)$, many of them are redundant.  With an appropriate choice of units, the number of parameters in the system can be reduced to just two.  For rest of this paper, we shall use atomic units\footnote{Here, ``atomic unit'' is used in an \emph{abstract} sense: we do not assume (nor care) whether $m$, $e$, $\epsilon$ correspond to true values in vacuum, or some effective value in medium.} where $\hbar$, $m$, $e$ and $4 \pi \epsilon$ all have a value of one.  This implies that the units of energy are hartrees $E_{\mathrm{h}}$ and the units of length are Bohr radii $a$:
+Even though the model system contains 5 parameters $(N, m, \omega, e, \epsilon)$, many of them are redundant.  With an appropriate choice of units, the number of parameters in the system can be reduced to just two.  For rest of this paper, we shall use atomic units\footnote{Here, ``atomic unit'' is used in an \emph{abstract} sense: we do not assume (nor care) whether $m$, $e$, $\epsilon$ correspond to true values in vacuum, or some effective value in medium.} where $\hbar$, $m$, $e$ and $4 \pi \epsilon$ all have a value of one.  Hartree $E_{\mathrm{h}}$ becomes the unit of energy and the Bohr radius $a$ becomes the unit of length:
 \begin{align*}
   E_{\mathrm{h}} &\equiv m \left(\frac{e^2}{4 \pi \epsilon \hbar}\right)^2 &
   a &\equiv \frac{4 \pi \epsilon \hbar^2}{m e^2}
 \end{align*}
-This leaves us with $(N, \omega)$ as the only necessary parameters to specify the quantum dot system, with $\omega$ in units of $E_{\mathrm{h}} / \hbar$.
+This leaves us with $(N, \omega)$ as the only parameters necessary to specify the quantum dot system, with $\omega$ in units of $E_{\mathrm{h}} / \hbar$.
 
-The behavior of each electron in isolation is described by its kinetic energy $t(\bm{r})$ and the potential energy due to the trap $u(\bm{r})$, which combine to form the standard harmonic oscillator Hamiltonian $h(\bm{p}, \bm{r})$:
+The behavior of each electron in isolation is described by the kinetic energy $t(\bm{r})$ and the potential energy due to the trap $u(\bm{r})$, which combine to form the standard harmonic oscillator Hamiltonian $h(\bm{p}, \bm{r})$:
 \begin{align*}
   t(\bm{p}) &\equiv \frac{1}{2} \bm{p}^2 &
   u(\bm{r}) &\equiv \frac{1}{2} \omega^2 \bm{r}^2 &
@@ -173,40 +173,31 @@ where $\hat{H}^{[1]}$ and $\hat{H}^{[2]}$ are the one- and two-body parts of the
 \hat{H}^{[1]} &\equiv \sum_{j = 1}^N h(\hat{\bm p}_j, \hat{\bm r}_j) &
 \hat{H}^{[2]} &\equiv \sum_{j_1 = 1}^N \sum_{j_2 = 1}^{j_1 - 1} v(\hat{\bm r}_{j_1}, \hat{\bm r}_{j_2})
 \end{align}
-The operators $\hat{\bm p}_j$ and $\hat{\bm r}_j$ respectively denote momentum and position of the $j$-th particle.\footnote{The order in which particles are labeled is unimportant; it is used only for bookkeeping.}
+The operator $\hat{\bm r}_j$ is the position operator of the $j$-th particle,\footnote{The choice and ordering of the particle labels $j$ is unimportant; they only exist for the purposes of bookkeeping.} and $\hat{\bm p}_j \equiv -\mathrm{i} \hat{\bm{\nabla}}_{\bm{r}_j}$ is its momentum operator.
 
-The first step towards a solution is to solve \emph{just} the noninteracting part $\hat{H}^{[1]}$.  In this case, the many-body Hamiltonian reduces to $N$ independent single-particle Hamiltonians $\hat{h}$, each of the form:
+The first step towards a solution is to solve \emph{just} the noninteracting part of the many-body Hamiltonian $\hat{H}^{[1]}$, which reduces to $N$ independent single-particle Hamiltonians $\hat{h}$ each of the form:
 \begin{align*}
   \hat{h} = \frac{1}{2} \hat{\bm{\nabla}}^2 + \frac{1}{2} \omega^2 \hat{\bm{r}}^2
 \end{align*}
-This is a 2-dimensional harmonic oscillator problem for a single particle with known analytic solutions.  There are various ways to construct the set of eigenfunctions: we shall use the Fock-Darwin states, which conserve the angular momentum $\hat{L}_{\mathrm{z}}$. In polar coordinates, they are given by\citep[Appx.\ A]{lohne2010coupled}
-\begin{gather*}
-  \phi^{\text{FD}}_{n, m_\ell}(\rho, \varphi)
-  \equiv \sqrt\omega
-  \phi^{\text{FDr}}_{n, |m_\ell|}(\sqrt \omega \rho)
-  \phi^{\text{Lz}}_{m_\ell}(\varphi)
-\end{gather*}
-where $\rho$ denotes the radial coordinate, $\varphi$ denotes the angular coordinate,
+This is a 2-dimensional harmonic oscillator problem for a single particle, of which analytic solutions are known.  There are various equivalent ways to construct the solutions.  For our purposes, we shall use the Fock-Darwin states, which can be conveniently described polar coordinates $(\rho, \varphi)$ and have the elegant property of conserving the orbital angular momentum $\hat{L}_{\mathrm{z}} \equiv -\mathrm{i} \partial / (\partial \varphi)$.  The wave functions can be factorized into radial and angular components,\citep[Appx.\ A]{lohne2010coupled}
+\begin{align}
+  \phi^{\text{FD}}_{n, m_\ell}(\rho, \varphi) &\equiv \sqrt\omega \phi^{\text{FDr}}_{n, |m_\ell|}(\sqrt \omega \rho) \phi^{\text{Lz}}_{m_\ell}(\varphi) \label{eq:fockdarwin} \\
+  \phi^{\text{FDr}}_{n, m}(\varrho) &\equiv \sqrt{\frac{2 \cdot n!}{(n + m)!}} \mathrm{e}^{-\varrho^2 / 2} \varrho^m L_n^{(m)}(\varrho^2) \notag \\
+  \phi^{\text{Lz}}_{m_\ell}(\varphi) &\equiv \frac{1}{\sqrt{2 \pi}} \mathrm{e}^{\mathrm{i} m_\ell \varphi} \notag
+\end{align}
+and $L_n^{(m)}$ denotes the generalized Laguerre polynomial of degree $n$
+with parameter $\mu$,
 \begin{align*}
-  \phi^{\text{FDr}}_{n, m}(r) &\equiv
-  \sqrt{\frac{2 \cdot n!}{(n + m)!}}
-  {\mathrm e}^{-r^2 / 2} r^m L_n^{(m)}(r^2) \\
-  \phi^{\text{Lz}}_{m_\ell}(\varphi) &\equiv
-  \frac{1}{\sqrt{2 \pi}} {\mathrm e}^{i m_\ell \varphi}
+  L_n^{(m)}(u) = \frac{1}{n!} u^{-m} \mathrm{e}^u \frac{\mathrm{d}^n}{\mathrm{d} u^n} (\mathrm{e}^{-u} u^{m + n})
 \end{align*}
-and $L_n^{(\mu)}$ denotes the generalized Laguerre polynomial of degree $n$
-with parameter $\mu$.  The states are labeled by two quantum numbers: the
-principal quantum number $n \in \{0, 1, \ldots\}$ and the angular momentum
-projection $m_\ell \in \mathbb Z$.
+The states are labeled by two quantum numbers: the principal quantum number $n \in \{0, 1, \ldots\}$ and the orbital angular momentum projection $m_\ell \in \mathbb Z$.
 
-Additionally, since electrons are spin-$1/2$ fermions, they can occupy either
-of the two spin states $\chi_{-\frac12}$ or $\chi_{+\frac12}$.  Thus, the
-single-particle basis states can be constructed as
+Additionally, since electrons are spin-$1/2$ fermions, they can occupy either of the two spin states $\chi_{-1/2}$ or $\chi_{+1/2}$.  For an electron in isolation, the choice is immaterial, but in a multi-electron system, this becomes crucial.  Thus for a many-body problem a single-particle basis state must contain both the spatial component \eqref{eq:fockdarwin} and the spin component,
 \begin{align} \label{eq:singleparticlestate}
   \phi_{n, m_\ell, m_{\text s}}(\rho, \varphi) \equiv
   \phi^{\text{FD}}_{n, m_\ell}(\rho, \varphi) \chi_{m_{\text s}}
 \end{align}
-with the spin projection $m_{\text s} \in \bigl\{-\frac12, +\frac12\bigr\}$.
+where we have introduced a third quantum number: the spin projection $m_{\text s} \in \bigl\{-1/2, +1/2\bigr\}$.
 
 \begin{figure}
 \includegraphics[width=.48\textwidth]{fig-shell-structure}
