@@ -302,8 +302,8 @@ Since the coefficient matrix uniquely determines the unknown states, the variati
 \end{align}
 where the transformed operators are defined as
 \begin{align}
-  H^{[1] \prime}_{p, q} &\equiv \sum_{r, s} C_{r, p}^* \langle r | H^{[1]} | s \rangle C_{s, q}^{} \label{eq:hftransform1} \\
-  H^{[2] \prime}_{p, q, r, s} &\equiv \sum_{t, u, v, w} C_{t, p}^* C_{u, q}^* \langle t, u | H^{[2]} | v, w \rangle C_{v, r}^{} C_{w, s}^{} \label{eq:hftransform2}
+  H^{[1] \prime}_{p, q} &\equiv \sum_{r, s} C_{r, p}^* \langle r | \hat{H}^{[1]} | s \rangle C_{s, q}^{} \label{eq:hftransform1} \\
+  H^{[2] \prime}_{p, q, r, s} &\equiv \sum_{t, u, v, w} C_{t, p}^* C_{u, q}^* \langle t, u | \hat{H}^{[2]} | v, w \rangle C_{v, r}^{} C_{w, s}^{} \label{eq:hftransform2}
 \end{align}
 and the occupancy number $n_p$ is defined as
 \begin{align}
@@ -316,23 +316,19 @@ and further define $\bar n_p \equiv 1 - n_p$ as the complement.
 
 With the method of Lagrange multipliers, the minimization problem can be reduced to the solving of a nonlinear equation -- the \textit{Hartree-Fock equation}:
 \begin{align} \label{eq:hartreefock}
-  \bm F \bm C = \bm C \bm \epsilon
+  \bm{F} \bm{C} = \bm{C} \bm{\varepsilon}
 \end{align}
 where the \textit{Fock matrix} $\bm F$ is defined as
 \begin{align} \label{eq:fock}
-  F_{p, q} \equiv H_{p, q}^{[1]} + \sum_{r, s, j} n_j C_{r, j}^* V_{p, r, q, s}^{} C_{s, j}^{}
+  F_{p, q} \equiv \langle p | \hat{H}^{[1]} | q \rangle + \sum_{r, s, j} n_j C_{r, j}^* \langle p, r | \hat{H}^{[2]} | q, s \rangle C_{s, j}^{}
 \end{align}
-and $\bm \epsilon$ is a vector of Lagrange multipliers with each element $\epsilon_q$ associated with a particular state $|q'\rangle$.
+and $\bm{\varepsilon}$ is a vector of Lagrange multipliers with each element $\varepsilon_{q'}$ associated with a particular state $|q'\rangle$.
 
-The HF equation can be solved by an iterative technique: a solution $\bm C$ can be fed into \eqref{eq:fock} and new solution can then obtained by solving the eigenvalue problem in \eqref{eq:hartreefock} using the Fock matrix obtained.  For the initial guess, we use the ground state of our noninteracting Hamiltonian, thus $\bm C$ is initially the identity matrix.  After dozens of iterations, perhaps with the aid of a convergence acceleration technique (such as DIIS [[cite??] or Broyden's method [[cite?]]), one would usually reach a state of self-consistency where the solution converges to a fixed value.  This is the Hartree-Fock solution.
+The HF equation can be solved iteratively: given a guess for the solution $\bm{C}$, it can be fed into \eqref{eq:fock} and new potential solution may be obtained by solving the eigenvalue problem in \eqref{eq:hartreefock} with the Fock matrix obtained from $\bm{C}$.  While in theory it is possible for the solution to never reach a fixed point, or that it may require a large number of iterations, in practice this naive approach can adequately provide solutions for many cases.  In cases where it is insufficient, methods such as DIIS, Broyden's method, or even linear mixing can accelerate convergence greatly to the point where the possibility of nonconvergence is not a practical concern.
 
-Since HF restricts the ground state to a Slater determinant of single-particle
-states, it cannot provide an exact solution to a problem where correlations
-are present even if the single-particle basis is not truncated (infinite in size).  The
-energy difference between the best Hartree-Fock energy and the exact ground
-state energy is thus by definition known as the \textit{correlation energy}.
-The focus of post-HF methods such as IM-SRG is to improve on the HF results,
-thus recovering parts of this missing energy.
+For the initial guess, we simply use the ground state of our noninteracting Hamiltonian, thus $\bm{C}$ is initially the identity matrix.  At each iteration, we calculate the sum of the Lagrange multiplers $\bm{\varepsilon}$ as a diagnostic for convergence: as the iteration approaches convergence, the change in the sum per iteration will decrease rapidly.
+
+Since HF restricts the ground state to a Slater determinant of single-particle states, it cannot provide an exact solution to a problem where multi-particle correlations are present even if the single-particle basis is not truncated (infinite in size).  The energy difference between the best Hartree-Fock energy and the exact ground state energy is thus known as the \textit{correlation energy} (by definition).  The focus of post-HF methods such as IM-SRG or coupled cluster is to improve on the HF results, recovering parts of this missing energy.
 
 To make use of the HF solution as the reference state for future calculations, we transform the operators via \eqref{eq:hftransform1} and \eqref{eq:hftransform2}.  Therefore, the post-HF methods described in the next few sections generally use the transformed operators $\hat{H}^{[1] \prime}$ and $\hat{H}^{[2] \prime}$ as inputs.  However, for generality, we omit the prime symbols as the methods do not necessitate a state optimized by HF.
 
@@ -355,41 +351,38 @@ the beginning of the sequence, and thus the evolving Hamiltonian $\hat H(s)$
 at $s = 0$ is set to the original Hamiltonian.  Upon reaching $s$, the
 transformed Hamiltonian is given by
 \begin{align*}
-  \hat H(s) \equiv \hat U(s) \hat H(0) \hat U^\dagger(s)
+  \hat{H}(s) \equiv \hat{U}(s) \hat{H}(0) \hat{U}^\dagger(s)
 \end{align*}
 where $U(s)$ is a unitary operator that describes the product of all such
 transformations since $s = 0$.  Taking the derivative with respect to $s$, we obtain:
 \begin{align*}
-  \frac{\D}{\D s} H(s) =
-  \left(\frac{\D}{\D s} \hat{U}(s)\right) \hat{H}(0) \hat{U}^\dagger(s) +
-  \hat{U}(s) \hat{H}(0) \frac{\D}{\D s} \hat{U}^\dagger(s)
+  \frac{\D}{\D s} \hat{H}(s) = \frac{\D \hat{U}(s)}{\D s} \hat{H}(0) \hat{U}^\dagger(s) + \hat{U}(s) \hat{H}(0) \frac{\D \hat{U}^\dagger (s)}{\D s}
 \end{align*}
-If we define an operator $\eta(s)$ as
+If we define an operator $\hat{\eta}(s)$ as
 \begin{align*}
-  \eta(s) \equiv \left(\frac{\D}{\D s} \hat{U}(s)\right) \hat{U}^\dagger(s)
+  \hat{\eta}(s) \equiv \frac{\D \hat{U}(s)}{\D s} \hat{U}^\dagger(s)
 \end{align*}
 we find that it is antihermitian as a result of the unitarity of $\hat{U}(s)$:
 \begin{align*}
-  \eta(s) + \eta^\dagger(s)
+  \hat{\eta}(s) + \hat{\eta}^\dagger(s)
   = \frac{\D}{\D s} \left(\hat{U}(s) \hat{U}^\dagger(s)\right)
   = 0
 \end{align*}
 From this property we can derive a differential equation known as the
 \textit{SRG flow equation}:
 \begin{align} \label{eq:imsrgode}
-  \frac{\D}{\D s} H(s) = [\eta(s), \hat{H}(s)]
+  \frac{\D \hat{H}(s)}{\D s} = [\hat{\eta}(s), \hat{H}(s)]
 \end{align}
 The equation allows $\hat{H}(s)$ to be evaluated without explicitly
 constructing the full transformation $\hat U(s)$.  The operator $\hat \eta(s)$
 is known as the \textit{generator} of the transformation.  When ``integrated''
-as a product, the full transformation $\hat U(s)$ is recovered:
+as a product, the full transformation $\hat U(s)$ is recovered.  Formally,
 \begin{align*}
   \hat U(s')
-  = \mathcal T_s \left\{ \mathrm{e}^{\int_0^{s'} \hat{\eta}(s) \D s} \right\}
-  \equiv \lim_{\Delta s \to 0} \prod_{s = 0, \Delta s, \ldots}^{s = s'}
-  \mathrm{e}^{\hat \eta(s) \Delta s}
+  = \mathcal{T}_s \mathrm{e}^{\int_0^{s'} \hat{\eta}(s) \D s}
+  \equiv \lim_{\Delta s \to 0}\left(\mathrm{e}^{\hat{\eta}(s_n) \Delta s} \mathrm{e}^{\hat{\eta}(s_{n - 1}) \Delta s} \cdots \mathrm{e}^{\hat{\eta}(s_1) \Delta s}\right)
 \end{align*}
-Here $\mathcal T_s$ is a notational device that denotes $s$-ordering: a reordering of the $\hat{\eta}(s)$ operator products expanded from the exponential with respect to $s$ in ascending order \cite[\S 6.1]{reimann2013quantum}.  This is analogous to the usual time-ordering from quantum field theory.
+where $s_i \equiv i \Delta s$, $n \equiv \lfloor s' / \Delta s \rfloor$, and $\lfloor x \rfloor$ denotes the \textit{floor} of $x$.  The symbol $\mathcal{T}_s \mathrm{e}$ is a notational device to indicate \textit{$s$-ordering} of its contents: every product of $\hat{\eta}(s)$ expanded from the exponential are to be reordered in descending order with respect to $s$ \cite[\S 6.1]{reimann2013quantum}.  This is analogous to the time-ordering notation from quantum field theory.
 
 The operator $\hat{\eta}$ can be chosen to suppress certain undesirable parts of the Hamiltonian matrix, which can be considered the ``off-diagonal'' parts in a loose sense.  The ``off-diagonal'' parts could be elements far away from the matrix diagonal, in which case the evolution drives the matrix towards a band-diagonal form.  Or, the ``off-diagonal'' parts could be elements that couple the ground state from the excited state, in which case the evolution drives the matrix towards a block-diagonal form that isolates the ground state.  Or, the ``off-diagonal'' could be literally the elements that do not lie on the diagonal, in which case the evolution would simply diagonalize the Hamiltonian.  Through different choices of $\hat{\eta}$, the SRG evolution can be controlled and adapted to the features of a particular problem.
 
@@ -397,53 +390,53 @@ The operator $\hat{\eta}$ can be chosen to suppress certain undesirable parts of
 
 The SRG flow equation \eqref{eq:imsrgode} can be solved in the second quantization formalism described in Section \ref{subsec:modelHamiltonian}, where field operators are defined with respect to the physical vacuum state.  However, since the size of the problem grows enormously with the number of particles and the size of the model space, the applicability of this free-space SRG method is restricted to comparatively small systems.  Alternatively, the evolution can be done at finite density, i.e.\ directly in an $N$-particle system defined by a reference state \cite{kehrein2006flow}.  This gives rise to the IM-SRG method.
 
-The second-quantized operators in \eqref{eq:second_quantized_hamiltonian} are constructed with respect to the vacuum state.  That is, the operator strings $\hat{a}_p^\dagger \hat{a}_q$ and $\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r$ both have a vacuum expectation value of zero:
+The second-quantized operators in \eqref{eq:second_quantized_hamiltonian} are constructed with respect to the vacuum state in the sense that their operator strings $\hat{a}_p^\dagger \hat{a}_q$ and $\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r$ both have a vacuum expectation value of zero:
 \begin{align*}
-&\bra{\varnothing} \hat{a}_p^\dagger \hat{a}_q \ket{\varnothing} = 0 &
-&\bra{\varnothing} \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r \ket{\varnothing} = 0
+&\bra{} \hat{a}_p^\dagger \hat{a}_q \ket{} = 0 &
+&\bra{} \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r \ket{} = 0
 \end{align*}
-They are said to be \emph{normal-ordered} with respect to the vacuum state $\varnothing$.  It is possible to be normal-ordered with respect to a non-vacuum state, however.  Consider a Slater determinant $\Phi$ with $N_{\mathrm{F}}$ occupied states:
+They are said to be \emph{normal-ordered} with respect to the vacuum state $\ket{}$.  It is possible to be normal-ordered with respect to a different state, however.  Suppose we have a Slater determinant $\Phi$ with $N$ occupied states:
 \begin{align*}
-  \ket{\Phi} \equiv \ket{\varnothing_{i_1, i_2, \ldots, i_{N_{\mathrm{F}}}}}
+  \ket{\Phi} \equiv \ket{i_1, i_2, \ldots, i_N}
 \end{align*}
-where $\{i_1, i_2, \ldots, i_{N_{\mathrm{F}}}\}$ is a set of $N_{\mathrm{F}}$ indices that label the occupied states.  One can define a set of \textit{quasiparticle field operators} $\hat b$ and $\hat b^\dagger$ that obey the same anticommutation relations as the $\hat a$ operators:
+where $\{i_1, i_2, \ldots, i_N\}$ is a set of $N$ indices that label the occupied states.  One can define a set of \textit{quasiparticle field operators} $\hat b$ and $\hat b^\dagger$ that obey the same anticommutation relations as the $\hat a$ operators:
 \begin{align*}
   \hat b_p \equiv \bar n_p \hat a_{p} + n_p \hat a_{p}^\dagger
 \end{align*}
-The quasiparticle field operators treat $\ket{\Phi}$ as their ``vacuum state'' (sometimes called ``Fermi vaccuum'' in an abstract sense), despite not being the physical vacuum state.  As before, it is possible to construct arbitrary Slater determinants by applying quasiparticle operators to the reference state:
+The quasiparticle field operators treat the \textit{reference state} $\ket{\Phi}$ as their ``vacuum'' state (sometimes called a \textit{Fermi vaccuum}), even though it is not the true \emph{physical} vacuum state.  As before, it is possible to construct arbitrary Slater determinants by applying quasiparticle operators to the reference state:
 \begin{align}
   \ket{\Phi_{p_1, \ldots, p_k}} \equiv \hat{b}^\dagger_{p_1} \cdots \hat{b}^\dagger_{p_k} \ket{\Phi}
   \label{eq:quasisd}
 \end{align}
-If $p$ is an unoccupied state, then applying $\hat{b}_p^\dagger$ creates a particle exactly like $\hat{a}_p^\dagger$.  However, if $p$ is an occupied state, then applying $\hat{b}_p^\dagger$ destroys an existing particle in $\Phi$ or, equivalently, creates a \textit{hole} state.  The set of labels $\{p_1, \ldots, p_k\}$ may contain up to $N$ hole states and a potentially infinite number of particle states.  It is typical to classify the state $\Phi_{p_1, \ldots, p_k}$ as an $N_{\text{p}}$-particle-$N_{\text{h}}$-hole state, meaning that it contains $N_{\text{p}}$ labels that denote unoccupied states and $N_{\text{h}}$ labels that denote occupied states.  If $N_{\text{p}} = N_{\text{h}}$, the Slater determinant represents a system containing the same number of physical particles.
+If $p$ is an unoccupied state, then applying $\hat{b}_p^\dagger$ creates a particle exactly like $\hat{a}_p^\dagger$.  However, if $p$ is an occupied state, then applying $\hat{b}_p^\dagger$ destroys an existing particle in $\Phi$ or, equivalently, creates a \textit{hole} state.  The set of labels $\{p_1, \ldots, p_k\}$ may contain up to $N$ hole states and as many particle states as the basis allows for (minus the ones that are already hole states).  One classify the state $\Phi_{p_1, \ldots, p_k}$ as an $N_{\text{p}}$-particle-$N_{\text{h}}$-hole state, meaning that it contains $N_{\text{p}}$ labels that denote unoccupied states and $N_{\text{h}}$ labels that denote occupied states.  If $N_{\text{p}} = N_{\text{h}}$, the Slater determinant contains the same number of physical particles as the reference state.  The ``$N_{\text{p}}$-particle-$N_{\text{h}}$-hole'' classification gives a crude sense of how distant a state is from the reference state, which can be exploited by many-body theories.
 
-We may then define \emph{normal ordering with respect to the reference state} $\Phi$, a notational device that rearranges a string of operators such that every quasiparticle creation operator appears before a quasiparticle annihilation operator by repeatedly exchanging neighboring operators, with each exchange incurring a change in sign.  A simple example would be the normal ordering of a pair of field operators such as:
+We may then define \emph{normal ordering with respect to the reference state} $\Phi$, a notational device that reorders a string of operators such that every quasiparticle creation operator appears before a quasiparticle annihilation operator, while also accounting for the sign.  Each exchange of operators must incur a change in sign -- mathematically this is just the \textit{sign} of the permutation that reorders the operators.  A simple example would be the normal ordering of a pair of field operators such as:
 \begin{align*}
-  \normord{\hat{b}_p \hat{b}_q^\dagger} =
-  -\hat{b}_q^\dagger \hat{b}_p
+  \normord{\hat{b}_p^{} \hat{b}_q^\dagger} =
+  -\hat{b}_q^\dagger \hat{b}_p^{}
 \end{align*}
-Here, we denote normal ordering of an operator string with respect to $\Phi$ by a pair of colons.  The expectation value of a normal ordered string of operators with respect to $\Phi$ is guaranteed to vanish:
+Here, we denote normal ordering of an operator string with respect to $\Phi$ by a enclosing pair of colons.  The expectation value of a normal ordered string of operators with respect to $\Phi$ is guaranteed to vanish:
 \begin{align*}
-&\bra{\Phi} \hat{b}_p^\dagger \hat{b}_q \ket{\Phi} = 0 &
-&\bra{\Phi} \hat{b}_p^\dagger \hat{b}_q^\dagger \hat{b}_s \hat{b}_r \ket{\Phi} = 0
+&\bra{\Phi} \hat{b}_p^\dagger \hat{b}_q^{} \ket{\Phi} = 0 &
+&\bra{\Phi} \hat{b}_p^\dagger \hat{b}_q^\dagger \hat{b}_s^{} \hat{b}_r^{} \ket{\Phi} = 0
 \end{align*}
-The normal ordering of the quasiparticle field operators are straightforward to compute, but what is more interesting is the normal ordering of the physical field operators $\hat a$ and $\hat a^\dagger$ with respect to $\Phi$:
+The normal ordering of the quasiparticle field operators is straightforward to compute.  What is more interesting is the normal ordering of the physical field operators $\hat a$ and $\hat a^\dagger$ with respect to $|\Phi\rangle$:
 \begin{align*}
-  \normord{\hat{a}_p^\dagger \hat{a}_q} &=
-  \hat{a}_p^\dagger \hat{a}_q - n_p \delta_{p, q}
+  \normord{\hat{a}_p^\dagger \hat{a}_q^{}} &=
+  \hat{a}_p^\dagger \hat{a}_q^{} - n_p^{} \delta_{p, q}^{}
 \end{align*}
 The normal ordering notation thus provides a concise way of expressing the right-hand side.  In this new notation, we can rewrite the Hamiltonian $\hat H = \hat{H}^{[1]} + \hat{H}^{[2]}$ in its \emph{normal-ordered representation}:
 \begin{align}
-  \hat{H} = H^{[0]} + \sum_{p, q} H^{[1]}_{p, q} \normord{\hat{a}_p^\dagger \hat{a}_q} + \frac{1}{4} \sum_{p, q, r, s} H^{[2]}_{p, q, r, s} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_r \hat{a}_s}
+  \hat{H} = H^{[0]} + \sum_{p, q} H^{[1]}_{p, q} \normord{\hat{a}_p^\dagger \hat{a}_q^{}} + \frac{1}{4} \sum_{p, q, r, s} H^{[2]}_{p, q, r, s} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_r^{} \hat{a}_s^{}}
   \label{eq:normordhamiltonian}
 \end{align}
 where
 \begin{align*}
-  H^{[0]} &\equiv \sum_{i} n_i H^{[1]}_{i, i} + \frac{1}{2} \sum_{i, j} n_i n_j V_{i, j, i, j} \\
-  H^{[1]}_{p, q} &\equiv H^{[1]}_{p, q} + \sum_{i} n_i V_{p, i, q, i} \\
-  H^{[2]}_{p, q, r, s} &\equiv V_{p, q, r, s} \\
+  H^{[0]} &\equiv \sum_{i} n_i \langle i | \hat{H}^{[1]} | i \rangle + \frac{1}{2} \sum_{i, j} n_i n_j \langle i, j | \hat{H}^{[2]} | i , j \rangle \\
+  H^{[1]}_{p, q} &\equiv \langle p | \hat{H}^{[1]} | q \rangle + \sum_{i} n_i \langle p, i | \hat{H}^{[2]} | q, i \rangle \\
+  H^{[2]}_{p, q, r, s} &\equiv \langle p, q | \hat{H}^{[2]} | r, s \rangle \\
 \end{align*}
-If $\Phi$ is a state optimized by the HF method, then $H^{[0]}$ is simply the HF energy $E_\Phi$ and $H^{[1]}_{p, q}$ is the Fock matrix $F_{p, q}$.  The normal-ordered representation of $\hat H$ in \eqref{eq:normordhamiltonian} is completely equivalent to that of $\hat H$ in \eqref{eq:vacuumhamiltonian}.  The only difference is that it rearranges the matrix elements so as to emphasize the reference state $\Phi$ rather than vacuum state $\ket{\varnothing}$.  This makes a critical difference when the expressions containing 3-body or higher terms are \emph{truncated} to only 2-body.  If the reference state $\Phi$ is good approximation of the true solution $\Psi$, then the importance of the higher-body parts of the Hamiltonian are greatly reduced.
+If $\Phi$ is a state optimized by the HF method, then $H^{[0]}$ is simply the HF energy $E_\Phi$ and $H^{[1]}_{p, q}$ is the Fock matrix $F_{p, q}$.  The normal-ordered representation of $\hat H$ in \eqref{eq:normordhamiltonian} is completely equivalent to that of $\hat H$ in \eqref{eq:vacuumhamiltonian}.  The only difference is that it rearranges the matrix elements so as to emphasize the reference state $\Phi$ rather than vacuum state $\ket{}$.  This makes a critical difference when the expressions containing 3-body or higher terms are \emph{truncated} to only 2-body.  If the reference state $\Phi$ is good approximation of the true solution $\Psi$, then the importance of the higher-body parts of the Hamiltonian are greatly reduced.
 
 Higher-body operators arise from integrating the flow equations (\ref{eq:imsrgode}), which is one of the major challenges of the SRG method.  With each evaluation of the commutator, the Hamiltonian gains terms of higher order, and these induced contributions will in subsequent integration steps feed back into terms of lower order.  Thus, the higher-body contributions are not irrelevant to the final solution even if only the ground state energy is of interest.
 
@@ -778,7 +771,7 @@ The Green's function from \eqref{eq:DMC_IS_GF_raw} has been split into two for p
 
 In order dampen the errors introduced by splitting the Green's function, the time step $\delta\tau$ should be small. A value in the range of $10^{-3}$ to $10^{-4}$ is used in this work. High variance in energy samples requires a smaller time step to keep the branching controlled, since the fluctuations of the two are connected by \eqref{eq:DMC_IS_GF}.
 
-The name branching arise from the fact that in DMC, the weights are implemented as a probability of a given walker to copy or delete itself $n$ times, where $\langle n \rangle$ equals the branching term of \eqref{eq:DMC_IS_GF}. Let $G_{\mathrm{b}}$ denote the value of the branching function at a given position. Correct weighting is then ensured by guaranteeing $m = \max\{0, \lfloor G_{\mathrm{b}} \rfloor - 1\}$ branches\footnote{$\lfloor x \rfloor$ denotes the floor of $x$, namely the largest integer $n$ such that $n \le x$.} with a probability $G_{\mathrm{b}} - m$ of getting an additional branch.  A branch is an identical copy of the corresponding walker, with an identical past but with a different future. When the number of requested branches is zero, the walker is removed from the simulation.
+The name branching arise from the fact that in DMC, the weights are implemented as a probability of a given walker to copy or delete itself $n$ times, where $\langle n \rangle$ equals the branching term of \eqref{eq:DMC_IS_GF}. Let $G_{\mathrm{b}}$ denote the value of the branching function at a given position. Correct weighting is then ensured by guaranteeing $m = \max\{0, \lfloor G_{\mathrm{b}} \rfloor - 1\}$ branches with a probability $G_{\mathrm{b}} - m$ of getting an additional branch.  A branch is an identical copy of the corresponding walker, with an identical past but with a different future. When the number of requested branches is zero, the walker is removed from the simulation.
 
 
 Initially, $N_{\mathrm{w}}$ walkers are initialized to span $|\Psi_{\mathrm{T}}(\bm{r})|^2$. This is ensured by using the Metropolis Algorithm. Moreover, importance sampling is ensured by sampling according to the kinetic term of \eqref{eq:DMC_IS_GF_raw} [[cite solution langevin]]
