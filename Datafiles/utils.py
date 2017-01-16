@@ -248,7 +248,7 @@ def load_gs_energies():
 
     # agreement between Fei's IMSRG and Sarah's IMSRG ~ 1e-3
     # agreement between Nathan's IMSRG and Sarah's IMSRG ~ 1e-3
-    d = pd.read_csv("../compWithOtherMethods/data_formatted.txt",
+    d = pd.read_csv("gs-sarah.txt",
                     float_precision=PRECISION,
                     index_col=False, delim_whitespace=True, comment="#")
     # this data point does not agree with Fei's results and just seems wrong
@@ -262,6 +262,12 @@ def load_gs_energies():
             (d["num_particles"] == 30) &
             (d["num_shells"] == 11) &
             (d["method"] == "imsrg"))]
+    # this data point disagrees with Sam's results
+    # I'm not sure which one is right, but hiding Sarah's results for now
+    d = d[~((d["freq"] == 0.1) &
+            (d["num_particles"] == 12) &
+            (d["num_shells"] == 14) &
+            (d["method"] == "ccsd"))]
     d["num_filled"] = get_num_filled(d["num_particles"])
     d["priority"] = -2
     del d["num_particles"]
@@ -285,7 +291,7 @@ def load_gs_energies():
                      float_precision=PRECISION,
                      header=None, names=SAM_ATTACHED_COLS,
                      delim_whitespace=True)
-    d2["method"] = "cc"
+    d2["method"] = "ccsd"
     d = pd.concat([d1, d2], ignore_index=True)
     d = d[["shells", "filled", "omega", "E(N)", "method"]]
     d = d.rename(columns={

@@ -1,3 +1,7 @@
+# Addition and removal energies using IMSRG
+#
+# is_hole: 0 => addition energy, 1 => removal energy
+#
 num_shells	num_filled	freq	method	is_hole	energy
 2	1	0.28	HF	1	0.9431915043956544
 2	1	0.28	HF	0	1.388989380494568

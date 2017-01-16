@@ -1,0 +1,13 @@
+# Addition and removal energies using DMC
+# transcribed from Pedersen Lohne's paper:
+#
+#     https://doi.org/10.1103/PhysRevB.84.115302
+#
+# is_hole: 0 => addition, 1 => removal
+#
+freq num_filled is_hole energy energy_err
+0.28 1 0 1.2123 0.0001
+0.28 2 0 2.4341 0.0001
+0.28 3 0 3.8582 0.0001
+0.28 2 1 2.0663 0.0001
+0.28 3 1 3.5618 0.0001

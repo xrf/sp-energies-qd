@@ -195,7 +195,7 @@ def plot_fits(data,
         ax2.legend(bbox_to_anchor=(1, 1.0))
 
         fn = get_fn(**title_key)
-        settings_fn = fn + ".settings"
+        settings_fn = os.path.join("plot_settings", fn + ".json")
         settings = utils.load_json(settings_fn) or {"ax1": {}, "ax2": {}}
         def save_settings():
             utils.save_json(settings_fn, settings)
@@ -205,7 +205,7 @@ def plot_fits(data,
         break
 
 def plot_addrm(label, num_filled, freq, fit_start, fit_stop, **kwargs):
-    d_dmc = pd.read_csv("dat-qdsfe.jEYRh-4ptC1Dr5nlBcz0tg/dat-addrm-dmc.txt",
+    d_dmc = pd.read_csv("addrm-dmc-pedersen.txt",
                         float_precision=utils.PRECISION,
                         header=0, index_col=False,
                         delim_whitespace=True, comment="#")
@@ -239,6 +239,7 @@ def plot_addrm(label, num_filled, freq, fit_start, fit_stop, **kwargs):
             (d_dmc["num_filled"] == k["num_filled"]) &
             (d_dmc["freq"] == k["freq"])],
         dmc_label="DMC",
+        dmc_yerr_col="energy_err",
     )
 
 def plot_ground(num_filled, freq, fit_start, fit_stop, **kwargs):
