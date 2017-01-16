@@ -206,6 +206,7 @@ def plot_fits(data,
 
 def plot_addrm(label, num_filled, freq, fit_start, fit_stop, **kwargs):
     d_dmc = pd.read_csv("dat-qdsfe.jEYRh-4ptC1Dr5nlBcz0tg/dat-addrm-dmc.txt",
+                        float_precision=utils.PRECISION,
                         header=0, index_col=False,
                         delim_whitespace=True, comment="#")
     d = pd.concat(utils.get_ar_energies_for_v(v=""), ignore_index=True)
@@ -241,10 +242,13 @@ def plot_addrm(label, num_filled, freq, fit_start, fit_stop, **kwargs):
     )
 
 def plot_ground(num_filled, freq, fit_start, fit_stop, **kwargs):
-    d_dmc = pd.read_csv("dat-qdsfe.jEYRh-4ptC1Dr5nlBcz0tg/dat-gs-dmc.txt",
+    d_dmc = pd.read_csv("gs-dmc-joergen.txt",
+                        float_precision=utils.PRECISION,
                         header=0, index_col=False,
                         delim_whitespace=True, comment="#")
+    d_dmc["num_filled"] = utils.get_num_filled(d_dmc["num_particles"])
     d = pd.read_csv("imsrg-qdpt/dat_gsenergy.txt",
+                    float_precision=utils.PRECISION,
                     header=0, index_col=False,
                     delim_whitespace=True)
     for data in [d, d_dmc]:
@@ -275,7 +279,7 @@ def plot_ground(num_filled, freq, fit_start, fit_stop, **kwargs):
         get_dmc=lambda **k: d_dmc[
             (d_dmc["num_filled"] == k["num_filled"]) &
             (d_dmc["freq"] == k["freq"])],
-        dmc_label="DMC/exact",
+        dmc_label="DMC",
         dmc_yerr_col="energy_per_particle_err",
     )
 

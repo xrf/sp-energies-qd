@@ -1,9 +1,16 @@
-import collections, contextlib, functools, json, os, sys
+import collections, contextlib, decimal, functools, json, os, re, sys
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy.optimize
+
+import time
+
+# used for the 'float_precision' argument in pandas.read_csv
+# I would rather use "round_trip", but it causes segfaults :/
+PRECISION = "high"
+PRECISION = "round_trip"
 
 JSON_PRETTY = {
     "ensure_ascii": False,
@@ -79,12 +86,6 @@ def expand_range(r, factor):
         r[1] + factor * (r[1] - r[0]),
     ])
 
-def skip_comment_char(read_func, filename):
-    with open(filename) as f:
-        s = f.read(2)
-        assert s == "# "
-        return read_func(f)
-
 def load_json_records(fn):
     with open(fn) as f:
         return pd.DataFrame.from_records([
@@ -134,9 +135,15 @@ def sync_axes_lims(ax, settings, save):
     ax.callbacks.connect("xlim_changed", on_xlims_changed)
     ax.callbacks.connect("ylim_changed", on_ylims_changed)
 
+def parse_uncertainty(s):
+    '''Parse a numeric string of the form "<number>(<uncertainty>)".'''
+    value, uncertainty = re.match(r"([^(]+)\((\d+)\)$", s).groups()
+    exponent = decimal.Decimal(value).as_tuple().exponent
+    uncertainty =  decimal.Decimal((0, list(map(int, uncertainty)), exponent))
+    return value, uncertainty
+
 def parse_simple(fn):
-    return skip_comment_char(
-        functools.partial(pd.read_csv, delim_whitespace=True), fn)
+    return pd.read_csv(fn, delim_whitespace=True, float_precision=PRECISION)
 
 def parse_nathan_like_data(d, label):
     if label == "add":
@@ -160,6 +167,149 @@ def parse_nathan_like_data(d, label):
 V0 = ""                                 # normal Coulomb
 V2 = "_sigmaA=0.5_sigmaB=4.0"           # softened Coulomb (see figures.md)
 
+@np.vectorize
+def get_num_filled(num_particles, max_shells=100):
+    for k in range(max_shells):
+        if num_particles == k * (k + 1):
+            return k
+    raise ValueError("could not find num_filled for num_particles={}"
+                     .format(num_particles))
+
+class FunDepViolationError(Exception):
+    def __init__(self, in_cols, out_cols, violations, *args):
+        self.in_cols = in_cols
+        self.out_cols = out_cols
+        self.violations = violations
+        super().__init__(self, in_cols, out_cols, violations, *args)
+
+    def __str__(self):
+        return "Functional dependency does not hold: {!r} -> {!r}\n{!r}".format(
+            self.in_cols, self.out_cols, self.violations)
+
+def check_fun_dep(d, cols, tolers, combiner=lambda x: x):
+    '''Check if a functional dependency constraint holds in the data.  That
+    is, check if the output columns are unique (up to some tolerance) for each
+    combination of input columns.  Then, a combined version is returned based
+    on the `combiner` function, which by default is the identity function and
+    therefore does nothing.  Raises `FunDepViolationError` when violations are
+    found.
+
+    For example, `check_fundep(d, ["x", "y"], {"z": 0.1, "w": 0.2}, combiner)`
+    checks whether each `(z, w)` pair is uniquely determined by `(x, y)` with
+    an allowable tolerance of `0.1` for `z` and `0.2` for `w`.
+
+    `combiner` is a function `(DataFrame) -> DataFrame` that is fed to
+    `GroupBy.apply` to combine duplicated data.
+    '''
+    tolers = collections.OrderedDict(tolers.items())
+    cols = list(cols)
+    out_cols = list(tolers.keys())
+    gs = d.groupby(cols)
+
+    # force NaN into errors using dropna(axis=1);
+    # also, reset_index apparently modifies the GroupBy object
+    std = d.groupby(cols).std(ddof=0).reset_index()
+    mask = std.dropna(axis=1)[out_cols] > list(tolers.values())
+    if mask.any().any():
+        reduced_mask = functools.reduce(
+            lambda x, y: x | y, map(lambda x: mask[x], out_cols))
+        violations = pd.concat([gs.get_group(tuple(k))
+                                for _, k in std[reduced_mask][cols].iterrows()])
+        raise FunDepViolationError(cols, out_cols, violations)
+
+    return gs.apply(combiner).reset_index(drop=True)
+
+def load_gs_dmc_energies():
+    '''["freq", "num_filled", "method", "energy"]'''
+    d = pd.read_csv("gs-dmc-joergen.txt",
+                    float_precision=PRECISION,
+                    header=0, index_col=False,
+                    delim_whitespace=True, comment="#")
+    d["num_filled"] = get_num_filled(d["num_particles"])
+    del d["num_particles"]
+    return d
+
+def priority_combiner(d):
+    d = d.drop_duplicates()
+    d = d[d["priority"] == d["priority"].max()]
+    if len(d) > 1:
+        raise Exception("cannot resolve data with equal priority")
+    return d
+
+SAM_ATTACHED_COLS = ["shells", "filled", "ML", "MS", "omega", "E(N)",
+                     "E(N+1)-E(N)", "E(N+1)", "partialnorm(1p)"]
+
+SAM_REMOVED_COLS = ["shells", "filled", "ML", "MS", "omega", "E(N)",
+                    "E(N-1)-E(N)", "E(N+1)", "partialnorm(1p)"]
+
+def load_gs_energies():
+    '''["freq", "num_filled", "num_shells", "method", "energy"]'''
+    ds = []
+
+    # agreement between Fei's IMSRG and Sarah's IMSRG ~ 1e-3
+    # agreement between Nathan's IMSRG and Sarah's IMSRG ~ 1e-3
+    d = pd.read_csv("../compWithOtherMethods/data_formatted.txt",
+                    float_precision=PRECISION,
+                    index_col=False, delim_whitespace=True, comment="#")
+    # this data point does not agree with Fei's results and just seems wrong
+    # (it breaks the monotonically decreasing behavior of HF)
+    d = d[~((d["freq"] == 0.1) &
+            (d["num_particles"] == 30) &
+            (d["num_shells"] == 16) &
+            (d["method"] == "hf"))]
+    # this data point disagrees with both Fei and Nathan's results
+    d = d[~((d["freq"] == 0.5) &
+            (d["num_particles"] == 30) &
+            (d["num_shells"] == 11) &
+            (d["method"] == "imsrg"))]
+    d["num_filled"] = get_num_filled(d["num_particles"])
+    d["priority"] = -2
+    del d["num_particles"]
+    d = d.dropna()
+    ds.append(d)
+
+    d = pd.read_csv("imsrg-qdpt/dat_gsenergy.txt",
+                    float_precision=PRECISION,
+                    header=0, index_col=False,
+                    delim_whitespace=True, comment="#")
+    d["priority"] = 0
+    del d["time"]
+    ds.append(d)
+
+    # agreement between Fei's IMSRG and Nathan's IMSRG ~ 1e-4
+    d1 = pd.read_csv("EOM_IMSRG_qd_attached.dat",
+                     float_precision=PRECISION,
+                     delim_whitespace=True)
+    d1["method"] = "imsrg"
+    d2 = pd.read_csv("EOM_CCSD_qd_attached.dat",
+                     float_precision=PRECISION,
+                     header=None, names=SAM_ATTACHED_COLS,
+                     delim_whitespace=True)
+    d2["method"] = "cc"
+    d = pd.concat([d1, d2], ignore_index=True)
+    d = d[["shells", "filled", "omega", "E(N)", "method"]]
+    d = d.rename(columns={
+        "shells": "num_shells",
+        "filled": "num_filled",
+        "omega": "freq",
+        "E(N)": "energy",
+    })
+    d["priority"] = -1
+    d = d.drop_duplicates()
+    ds.append(d)
+
+    d = pd.concat(ds, ignore_index=True)
+    try:
+        d = check_fun_dep(d, ["freq", "num_filled", "num_shells", "method"],
+                          {"energy": 6e-4}, combiner=priority_combiner)
+    except FunDepViolationError as e:
+        with open("fun_dep_violations.out", "w") as f:
+            e.violations.to_csv(f, sep=" ", index=False)
+        raise e
+
+    del d["priority"]
+    return d
+
 def get_ar_energies():
     yield from get_ar_energies_for_v(V0)
     yield from get_ar_energies_for_v(V2)
@@ -179,25 +329,29 @@ def get_ar_energies_for_v(v):
 
         # eom: Nathan's EOM on Nathan's IMSRG matrix elements
 
-        d = pd.read_csv("EOM_IMSRG_qd_attached.dat", delim_whitespace=True)
+        d = pd.read_csv("EOM_IMSRG_qd_attached.dat",
+                        float_precision=PRECISION, delim_whitespace=True)
         d = parse_nathan_like_data(d, "add")
         d["method"] = "eom"
         d["interaction"] = v
         yield d
 
-        d = pd.read_csv("EOM_IMSRG_qd_removed.dat", delim_whitespace=True)
+        d = pd.read_csv("EOM_IMSRG_qd_removed.dat",
+                        float_precision=PRECISION, delim_whitespace=True)
         d = parse_nathan_like_data(d, "rm")
         d["method"] = "eom"
         d["interaction"] = v
         yield d
 
-        d = pd.read_csv("freq_sweep_N6_R10_attached.dat", delim_whitespace=True)
+        d = pd.read_csv("freq_sweep_N6_R10_attached.dat",
+                        float_precision=PRECISION, delim_whitespace=True)
         d = parse_nathan_like_data(d, "add")
         d["method"] = "eom"
         d["interaction"] = v
         yield d
 
-        d = pd.read_csv("freq_sweep_N6_R10_removed.dat", delim_whitespace=True)
+        d = pd.read_csv("freq_sweep_N6_R10_removed.dat",
+                        float_precision=PRECISION, delim_whitespace=True)
         d = parse_nathan_like_data(d, "rm")
         d["method"] = "eom"
         d["interaction"] = v
@@ -206,7 +360,7 @@ def get_ar_energies_for_v(v):
         # eom_f: Nathan's EOM on Fei's IMSRG matrix elements
 
         d = pd.read_csv("EOM_IMSRG_FEI_HAM_particle_attached.dat",
-                        delim_whitespace=True)
+                        float_precision=PRECISION, delim_whitespace=True)
         d = parse_nathan_like_data(d, "add")
         d["method"] = "eom_f"
         d["energy"] *= d["freq"] ** 0.5
@@ -214,7 +368,7 @@ def get_ar_energies_for_v(v):
         yield d
 
         d = pd.read_csv("EOM_IMSRG_FEI_HAM_particle_removed.dat",
-                        delim_whitespace=True)
+                        float_precision=PRECISION, delim_whitespace=True)
         d = parse_nathan_like_data(d, "rm")
         d["method"] = "eom_f"
         d["energy"] *= d["freq"] ** 0.5
@@ -224,14 +378,14 @@ def get_ar_energies_for_v(v):
         # eom_quads: Nathan's EOM using Magnus method with quadruples
 
         d = pd.read_csv("EOM_magnus_quads_attached.dat",
-                        delim_whitespace=True)
+                        float_precision=PRECISION, delim_whitespace=True)
         d = parse_nathan_like_data(d, "add")
         d["method"] = "eom_quads"
         d["interaction"] = v
         yield d
 
         d = pd.read_csv("EOM_magnus_quads_removed.dat",
-                        delim_whitespace=True)
+                        float_precision=PRECISION, delim_whitespace=True)
         d = parse_nathan_like_data(d, "rm")
         d["method"] = "eom_quads"
         d["interaction"] = v
@@ -239,18 +393,20 @@ def get_ar_energies_for_v(v):
 
         # cc: Sam's coupled cluster
 
-        d = pd.read_csv("EOM_CCSD_qd_attached.dat", header=None,
-                        names=["shells", "filled", "ML", "MS", "omega", "E(N)",
-                               "E(N+1)-E(N)", "E(N+1)", "partialnorm(1p)"],
+        d = pd.read_csv("EOM_CCSD_qd_attached.dat",
+                        float_precision=PRECISION,
+                        header=None,
+                        names=NATHAN_ATTACHED_COLS,
                         delim_whitespace=True)
         d = parse_nathan_like_data(d, "add")
         d["method"] = "cc"
         d["interaction"] = v
         yield d
 
-        d = pd.read_csv("EOM_CCSD_qd_removed.dat", header=None,
-                        names=["shells", "filled", "ML", "MS", "omega", "E(N)",
-                               "E(N-1)-E(N)", "E(N+1)", "partialnorm(1p)"],
+        d = pd.read_csv("EOM_CCSD_qd_removed.dat",
+                        float_precision=PRECISION,
+                        header=None,
+                        names=NATHAN_REMOVED_COLS,
                         delim_whitespace=True)
         d = parse_nathan_like_data(d, "rm")
         d["method"] = "cc"

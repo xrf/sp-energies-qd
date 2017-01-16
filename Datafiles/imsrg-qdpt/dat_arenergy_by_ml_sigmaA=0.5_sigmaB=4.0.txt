@@ -1,4 +1,4 @@
-# num_shells num_filled freq ml p   label energy
+num_shells num_filled freq ml p   label energy
           10          2 0.28  0   8 add   2.085678574353676
           10          2 0.28  0   1 rm    1.5158406687223787
           10          2 0.28  1  14 add   2.271999231754881
