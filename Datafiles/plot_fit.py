@@ -242,16 +242,9 @@ def plot_addrm(label, num_filled, freq, fit_start, fit_stop, **kwargs):
         dmc_yerr_col="energy_err",
     )
 
-def plot_ground(num_filled, freq, fit_start, fit_stop, **kwargs):
-    d_dmc = pd.read_csv("gs-dmc-joergen.txt",
-                        float_precision=utils.PRECISION,
-                        header=0, index_col=False,
-                        delim_whitespace=True, comment="#")
-    d_dmc["num_filled"] = utils.get_num_filled(d_dmc["num_particles"])
-    d = pd.read_csv("imsrg-qdpt/dat_gsenergy.txt",
-                    float_precision=utils.PRECISION,
-                    header=0, index_col=False,
-                    delim_whitespace=True)
+def plot_ground(num_filled, freq, fit_start, fit_stop, hartree_fock, **kwargs):
+    d_dmc = utils.load_gs_dmc_energies()
+    d = utils.load_gs_energies()
     for data in [d, d_dmc]:
         data["num_particles"] = data["num_filled"] * (data["num_filled"] + 1)
         data["energy_per_particle"] = data["energy"] / data["num_particles"]
@@ -261,7 +254,8 @@ def plot_ground(num_filled, freq, fit_start, fit_stop, **kwargs):
     # filters
     d = d[d["num_filled"] == num_filled]
     d = d[d["freq"] == freq]
-    d = d[d["method"] != "hf"]
+    if not hartree_fock:
+        d = d[d["method"] != "hf"]
 
     plot_fits(
         data=d,
@@ -291,6 +285,7 @@ def main():
     p.add_argument("-kf", "--num-filled", type=int, required=True)
     p.add_argument("-k1", "--fit-start", type=float, required=True)
     p.add_argument("-k2", "--fit-stop", type=float, default=np.inf)
+    p.add_argument("-hf", "--hartree-fock", action="store_true")
     p.add_argument("label", metavar="type", help="ground, add, or rm")
     kwargs = vars(p.parse_args())
     plt.rcParams["interactive"] = kwargs["interactive"]

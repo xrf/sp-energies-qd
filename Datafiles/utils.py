@@ -20,17 +20,31 @@ JSON_PRETTY = {
 }
 
 GS_METHOD_COLOR = {
-    "hf": "#841a0b",
-    "mp2": "#39b237",
-    "imsrg": "#1351c4",
+    "hf": "#d39402",
+    "mp2": "#841a0b",
+    "imsrg": "#39b237",
+    "ccsd": "#1351c4",
 }
 
 METHOD_COLOR = {
-    "qdpt": "#39b237",
-    "eom": "#841a0b",
-    "eom_quads": "#a825bc",
-    "eom_f": "#f4ad42",
-    "cc": "#1351c4",
+    "imsrg_qdpt3": "#39b237",
+    "imsrg_eom": "#841a0b",
+    "imsrg_quads_eom": "#a825bc",
+    "imsrg_f_eom": "#d39402",
+    "ccsd_eom": "#1351c4",
+}
+
+METHOD_LABEL = {
+    "hf": "HF only",
+    "hf_qdpt2": "HF only + QDPT2",
+    "hf_qdpt3": "HF only + QDPT3",
+    "imsrg": "IMSRG(2)",
+    "imsrg_qdpt2": "IMSRG(2) + QDPT2",
+    "imsrg_qdpt3": "IMSRG(2) + QDPT3",
+    "imsrg_eom": "IMSRG(2) + EOM",
+    "imsrg_quads_eom": "Magnus(2*) + EOM",
+    "imsrg_f_eom": "IMSRG(2)[F] + EOM[N]",
+    "ccsd_eom": "CCSD+EOM",
 }
 
 def matplotlib_try_enable_deterministic_svgs():
@@ -242,7 +256,7 @@ SAM_ATTACHED_COLS = ["shells", "filled", "ML", "MS", "omega", "E(N)",
 SAM_REMOVED_COLS = ["shells", "filled", "ML", "MS", "omega", "E(N)",
                     "E(N-1)-E(N)", "E(N+1)", "partialnorm(1p)"]
 
-def load_gs_energies():
+def load_gs_energies(drop_priority=True, toler=6e-4):
     '''["freq", "num_filled", "num_shells", "method", "energy"]'''
     ds = []
 
@@ -305,15 +319,19 @@ def load_gs_energies():
     ds.append(d)
 
     d = pd.concat(ds, ignore_index=True)
+    combiner = lambda x: x
+    if drop_priority:
+        combiner = priority_combiner
     try:
         d = check_fun_dep(d, ["freq", "num_filled", "num_shells", "method"],
-                          {"energy": 6e-4}, combiner=priority_combiner)
+                          {"energy": toler}, combiner=combiner)
     except FunDepViolationError as e:
         with open("fun_dep_violations.out", "w") as f:
             e.violations.to_csv(f, sep=" ", index=False)
         raise e
 
-    del d["priority"]
+    if drop_priority:
+        del d["priority"]
     return d
 
 def get_ar_energies():

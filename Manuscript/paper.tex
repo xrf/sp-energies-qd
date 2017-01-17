@@ -176,8 +176,7 @@ where $\hat{H}^{[1]}$ and $\hat{H}^{[2]}$ are the one- and two-body parts of the
 The operator $\hat{\bm r}_j$ is the position operator of the $j$-th particle,\footnote{The ordering of the particle labels $j$ is unimportant as they exist only for the purpose of bookkeeping.} and $\hat{\bm p}_j \equiv -\mathrm{i} \hat{\bm{\nabla}}_{\bm{r}_j}$ is its momentum operator.
 
 \begin{figure}
-  % [width=.48\textwidth]
-  \includegraphics[width=\textwidth]{figures/fig-shell-structure-v2}
+  \includegraphics[width=\linewidth]{figures/fig-shell-structure-v2}
   \caption{Visualization of the 20 lowest single-particle states in the 2D harmonic oscillator basis.  Each box represents a single-particle state arranged by $m_\ell$, $m_{\mathrm{s}}$, and energy, and the up/down arrows indicate the spin of the states.  The $n$ quantum number increases upward vertically, starting at zero for the lowest state within a each column.}
   \label{fig:shell-structure}
 \end{figure}
@@ -496,7 +495,7 @@ and finally
     \label{eq:flow2}
 \end{align}
 \begin{figure}
-\includegraphics[width=.48\textwidth]{fig-diagrams-imsrg}
+\includegraphics[width=.48\linewidth]{fig-diagrams-imsrg}
 \caption{Diagrammatic representation of $C^{[r]}(\circ, \bullet)$ in \eqref{eq:commutmxe} that forms part of the IM-SRG flow equation \eqref{eq:flowmxe}.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams \cite{HUGENHOLTZ1957481} as described in \cite{shavitt2009many} \S 4.4.3).}
 \label{fig:diagrams-imsrg}
 \end{figure}
@@ -639,7 +638,7 @@ This leads to a recursion relation of $\hat \Omega$ that enables $\hat \Omega$ t
 Until now, the solution is described purely in terms of abstract operators in Hilbert space.  To make this concrete and relevant for many-body physics, we must make some additional assumptions.  First, we make use of the single-particle basis as we have for HF and IM-SRG.  Secondly, we assume the set of reference states $\Psi^{\mathrm{o}}_u$ are Slater determinants of the single-particle states.
 
 \begin{figure}
-\includegraphics[width=.48\textwidth]{fig-diagrams-sfe}
+\includegraphics[width=.48\linewidth]{fig-diagrams-sfe}
 \caption{Diagrammatic form of the second- and third-order QDPT corrections.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams), but also have implicit denominators as with many-body perturbation theory.}
 \label{fig:diagrams-sfe}
 \end{figure}
@@ -840,120 +839,22 @@ A single Slater determinant and a simple correlation function opens up numerous 
   \centering
   \subfigure[Results for $N=6$ and $\omega=1.0$]{
     \label{fig:N6hw1}
-    \includegraphics[width=0.38\textwidth]{figures/6parthw1.pdf}
+    \includegraphics[width=0.38\linewidth]{figures/6parthw1.pdf}
   }
   \subfigure[Results for $N=6$ and $\omega=0.5$]{
     \label{fig:N6hw05}
-    \includegraphics[width=0.38\textwidth]{figures/6parthw05.pdf}
+    \includegraphics[width=0.38\linewidth]{figures/6parthw05.pdf}
   } \\
   \subfigure[Results for $N=6$ and $\omega=0.28$]{
     \label{fig:N6hw028}
-    \includegraphics[width=0.38\textwidth]{figures/6parthw028.pdf}
+    \includegraphics[width=0.38\linewidth]{figures/6parthw028.pdf}
   }
   \subfigure[Results for $N=6$ and $\omega=0.1$]{
     \label{fig:N6hw01}
-    \includegraphics[width=0.38\textwidth]{figures/6parthw01.pdf}
+    \includegraphics[width=0.38\linewidth]{figures/6parthw01.pdf}
   }
   \caption{Comparison of our IM-SRG(2) ground state energies (SRG) for circular quantum dots for $N=6$ and $\omega=1.0$ The results are compared with diffusion Monte Carlo (DMC), coupled cluster at the level of singles and doubles (CCSD), full configuration interaction (FCI) and Hartree-Fock calculations (HF) as functions of the number of major oscillator shells $R$. A harmonic oscilaltor basis has been used, with an unrenormalized Coulomb repulsion and the White generator. All energies in atomic units.}
   \label{fig:N6}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \subfigure[Results for $N=12$ and $\omega=1.0$]{
-    \label{fig:N12hw1}
-    \includegraphics[width=0.38\textwidth]{figures/12parthw1.pdf}
-  }
-  \subfigure[Results for $N=12$ and $\omega=0.5$]{
-    \label{fig:N12hw05}
-    \includegraphics[width=0.38\textwidth]{figures/12parthw05.pdf}
-  } \\
-  \subfigure[Results for $N=12$ and $\omega=0.28$]{
-    \label{fig:N12hw028}
-    \includegraphics[width=0.38\textwidth]{figures/12parthw028.pdf}
-  }
-  \subfigure[Results for $N=12$ and $\omega=0.1$]{
-    \label{fig:N12hw01}
-    \includegraphics[width=0.38\textwidth]{figures/12parthw01.pdf}
-  }
-  \caption{Comparison of our IM-SRG(2) ground state energies (SRG) for circular quantum dots for $N=12$ and different values of $\omega$. The results are compared with diffusion Monte Carlo (DMC), coupled cluster at the level of singles and doubles (CCSD), full configuration interaction (FCI) and Hartree-Fock calculations (HF) as functions of the number of major oscillator shells $R$. A harmonic oscilaltor basis has been used, with an unrenormalized Coulomb repulsion and the White generator. All energies in atomic units.}
-  \label{fig:N12}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \subfigure[Results for $N=20$ and $\omega=1.0$]{
-    \label{fig:N20hw1}
-    \includegraphics[width=0.38\textwidth]{figures/20parthw1.pdf}
-  } \subfigure[Results for $N=20$ and $\omega=0.5$]{
-    \label{fig:N20hw05}
-    \includegraphics[width=0.38\textwidth]{figures/20parthw05.pdf}
-  } \\
-  \subfigure[Results for $N=20$ and $\omega=0.28$]{
-    \label{fig:N20hw028}
-    \includegraphics[width=0.38\textwidth]{figures/20parthw028.pdf}
-  } \subfigure[Results for $N=20$ and $\omega=0.1$]{
-    \label{fig:N20hw01}
-    \includegraphics[width=0.38\textwidth]{figures/20parthw01.pdf}
-  }
-  \caption{Comparison of our IM-SRG(2) ground state energies (SRG)
-    for circular quantum dots for $N=20$ and different values of
-    $\omega$. The results are compared with diffusion Monte
-    Carlo (DMC), coupled cluster at the level of singles and doubles
-    (CCSD), full configuration interaction (FCI) and Hartree-Fock
-    calculations (HF) as functions of the number of major oscillator
-    shells $R$. A harmonic oscilaltor basis has been used, with an
-    unrenormalized Coulomb repulsion and the White generator. All
-    energies in atomic units.}
-  \label{fig:N20}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \subfigure[Results for $N=30$ and $\omega=1.0$]{
-    \label{fig:N30hw1}
-    \includegraphics[width=0.38\textwidth]{figures/30parthw1.pdf}
-  } \subfigure[Results for $N=30$ and $\omega=0.5$]{
-    \label{fig:N30hw05}
-    \includegraphics[width=0.38\textwidth]{figures/30parthw05.pdf}
-  } \\
-  \subfigure[Results for $N=30$ and $\omega=0.28$]{
-    \label{fig:N30hw028}
-    \includegraphics[width=0.38\textwidth]{figures/30parthw028.pdf}
-  } \subfigure[Results for $N=30$ and $\omega=0.1$]{
-    \label{fig:N30hw01}
-    \includegraphics[width=0.38\textwidth]{figures/30parthw01.pdf}
-  }
-  \caption{Comparison of our IM-SRG(2) ground state energies (SRG)
-    for circular quantum dots for $N=30$ and different values of
-    $\omega$. The results are compared with diffusion Monte
-    Carlo (DMC), coupled cluster at the level of singles and doubles
-    (CCSD), full configuration interaction (FCI) and Hartree-Fock
-    calculations (HF) as functions of the number of major oscillator
-    shells $R$. A harmonic oscilaltor basis has been used, with an
-    unrenormalized Coulomb repulsion and the White generator. All
-    energies in atomic units.}
-  \label{fig:N30}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \subfigure[Results for $N=42$ and $\omega=1.0$]{
-    \label{fig:N42hw1}
-    \includegraphics[width=0.38\textwidth]{figures/42parthw1.pdf}
-  } \subfigure[Results for $N=42$ and $\omega=0.5$]{
-    \label{fig:N42hw05}
-    \includegraphics[width=0.38\textwidth]{figures/42parthw05.pdf}
-  } \\
-  \subfigure[Results for $N=42$ and $\omega=0.28$]{
-    \label{fig:N42hw028}
-    \includegraphics[width=0.38\textwidth]{figures/42parthw028.pdf}
-  } \subfigure[Results for $N=42$ and $\omega=0.1$]{
-    \label{fig:N42hw01}
-    \includegraphics[width=0.38\textwidth]{figures/42parthw01.pdf}
-  }
-  \caption{Comparison of our IM-SRG(2) ground state energies (SRG) for circular quantum dots for $N=42$ and different values of $\omega$. The results are compared with diffusion Monte Carlo (DMC), coupled cluster at the level of singles and doubles (CCSD), full configuration interaction (FCI) and Hartree-Fock calculations (HF) as functions of the number of major oscillator shells $R$. A harmonic oscilaltor basis has been used, with an unrenormalized Coulomb repulsion and the White generator. All energies in atomic units.}
-  \label{fig:N42}
 \end{figure}
 
 \begin{table}
@@ -998,28 +899,28 @@ A single Slater determinant and a simple correlation function opens up numerous 
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\textwidth]{fig-gs}
+  \includegraphics[width=0.8\linewidth]{fig-gs}
   \caption{Ground state energies.}
   \label{fig:gs}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\textwidth]{fig-add}
+  \includegraphics[width=0.8\linewidth]{fig-add}
   \caption{Addition energies.}
   \label{fig:add}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\textwidth]{fig-rm}
+  \includegraphics[width=0.8\linewidth]{fig-rm}
   \caption{Removal energies.}
   \label{fig:rm}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\textwidth]{fig-rel-slopes}
+  \includegraphics[width=0.8\linewidth]{fig-rel-slopes}
   \caption{Comparison of the rate of convergence for various modifications to the Coulomb interaction.  The key observation from this plot is that the short-range part of the interaction has a strong impact on the convergence, whereas the long-range tail has little effect.}
   \label{fig:rel-slopes}
 \end{figure}
@@ -1036,6 +937,17 @@ The former can be reduced by increasing the number of shells, and can be further
 Both IM-SRG and MP2 improve the accuracy the result dramatically over the more primitive HF.  (It may help to add plots *without* HF.)
 
 [[TODO: add FCI, CCSD results to GS energy plots]]
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/fig-methods}
+  \caption{A high-level view of the ways in which many-body methods in this paper can be combined to calculate ground state, addition, and removal energies, shown as a directed acyclic graph.}
+  \label{fig:methods}
+\end{figure}
+
+Figure \ref{fig:methods} shows high-level view of the ways in which many-body methods in this paper can be combined to to compute the energy observables.  There are many possible paths through which one can walk in this directed graph to obtain the output observables.  For example, one can do HF to get an initial rough estimate, followed by IM-SRG to refine the ground state, and then EOM to refine the addition and removal energies.  This is in fact one of the approaches benchmarked in this paper.
+
+It is possible to omit some of the methods, bypassing some of the steps.  For example, one can do an IM-SRG calculation \emph{without} doing HF.  There are few good reasons to do so, as it typically worsens the result and increases the numerical cost of IM-SRG, but it can be done.  Similarly, one can do both HF and IM-SRG, but omit QDPT, yet still obtain \emph{addition and removal} energies.  The result would be poor, but it may be useful for the purpose of assessing difficulty of the problem.  For example, if the omission of QDPT leads to a large change, then it may indicate the presence of strong correlations.
 
 \subsection{Comparison between methods}
 
