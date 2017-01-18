@@ -659,7 +659,7 @@ Taking into account the perturbation corrections, one can obtain reasonably accu
   \epsilon_p = H^{[1]}_{p, p} + \epsilon_p^{(2)} + \epsilon_p^{(3)}
 \end{align*}
 
-\subsection{Equations of Motion Methods}
+\subsection{Equations of motion methods}
 
 Particle attached and particle removed equations of motion (EOM) methods can be coupled with either IM-SRG or coupled cluster calculations. The principal idea is that one may construct a ladder operator $\hat{X}$ that promotes the $N$-particle ground state to any state in the $N + 1$ or $N - 1$ spectrum,
 \begin{equation}\label{eq:ladder_def}
@@ -695,6 +695,14 @@ Despite these gains, the EOM calculation is still a partial diagonalization meth
   n_{\text{1-hole}} &= \sqrt{\sum_p n_p | \bar{x}^{[0,1]}_p |^2}.
 \end{align}
 Large single particle partial norms indicate that the EOM truncation is valid for the relevant state. States with lower single particle norms should be treated by with a higher EOM approximation, which can be accomplished directly or perturbatively. {\color{red} My paper talks about this a bit more, and we have some plots. Of course it only concerns the A-body stuff}.
+
+\subsection{Coupled cluster theory}
+
+[[?]]
+
+\subsubsection{EOM-CC}
+
+[[?]]
 
 \subsection{Diffusion Monte Carlo}
 \label{subsec:DMC}
@@ -743,7 +751,7 @@ The Green's function introduced in \eqref{eq:DMC_GreenFuncRevealed} has singular
 
 For evaluation of the local energy, the trial state is designed to cancel the Coulomb singularities by containing so-called correlation factors, however, this cancellation does not apply to the terms in the Green's function. In order to transfer this behavior to apply to the Green's function, a change to the formalism is introduced by iterating on a mixed density $f(\bm{r}, \tau) \equiv \Phi(\bm{r}, \tau)\Psi_{\mathrm{T}}(\bm{r})$. Note that all previous arguments regarding convergence to the true ground state still applies for the new distribution.
 
-Methods exist for transforming the mixed density into the pure density $|\Phi(\bm{r}, \tau)|^2$ \cite{abInitioMC}, but unless the pure density is explicitly needed (e.g.~for comparisons with other methods), this is strictly not necessary.
+Methods exist for transforming the mixed density into the pure density $|\Phi(\bm{r}, \tau)|^2$ \cite{abInitioMC}, but unless the pure density is explicitly needed (e.g.\ for comparisons with other methods), this is strictly not necessary.
 
 Additionally, to avoid issues regarding the positive definiteness of the mixed distribution, the nodes of the mixed density is fixed to those of the wave function of the trial state. This is known as the \textit{fixed node approximation} \cite{umrigar:2865, abInitioMC}. Again, given a sufficiently good trial state, the errors should be small.
 
@@ -1062,7 +1070,7 @@ A more technical issue is its lack of parallelization: currently, the code makes
 Eventually, we plan to apply these theoretical and technical enhancements not only to the study of quantum dots, but to the studies of nuclear and atomic systems, opening up an even larger range of applications.
 
 \begin{acknowledgments}
-  This work was supported by the National Science Foundation Grant No.~PHY-1404159 (Michigan State University) and by the Research Council of Norway under contract ISP-Fysikk/216699.  This research used computational resources of the Notur project in Norway.  We thank Christoffer Hirth, Simen Kvaal and Veronica Olsen for several discussions.
+  This work was supported by the National Science Foundation Grant No.\ PHY-1404159 (Michigan State University) and by the Research Council of Norway under contract ISP-Fysikk/216699.  This research used computational resources of the Notur project in Norway.  We thank Christoffer Hirth, Simen Kvaal and Veronica Olsen for several discussions.
 \end{acknowledgments}
 
 \bibliographystyle{\mybibstyle}
