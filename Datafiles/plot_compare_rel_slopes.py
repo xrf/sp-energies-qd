@@ -7,7 +7,7 @@ import utils
 
 utils.init(__file__)
 
-d = utils.parse_simple("compare_rel_slopes.txt")
+d = utils.load_table("compare_rel_slopes.txt")
 
 # we want to use (interaction, freq, num_particles) as an axis
 # but matplotlib doesn't let us do that

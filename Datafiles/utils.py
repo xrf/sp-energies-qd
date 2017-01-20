@@ -1,16 +1,21 @@
-import collections, contextlib, decimal, functools, json, os, re, sys
+import base64, collections, contextlib, decimal, functools
+import hashlib, io, json, os, pickle, re, sys
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy.optimize
 
-import time
-
 # used for the 'float_precision' argument in pandas.read_csv
-# I would rather use "round_trip", but it causes segfaults :/
-PRECISION = "high"
-PRECISION = "round_trip"
+# "round_trip" is preferable but it segfaults on some versions of Pandas:
+# https://github.com/pandas-dev/pandas/issues/15140
+if "+" in pd.__version__ or pd.__version__.split() >= (0, 20, 0):
+    PRECISION = "round_trip"
+else:
+    PRECISION = "high"
+    sys.stderr.write("Warning: Your Pandas is too old. "
+                     "Data read from files may lose accuracy.\n")
+    sys.stderr.flush()
 
 JSON_PRETTY = {
     "ensure_ascii": False,
@@ -19,32 +24,36 @@ JSON_PRETTY = {
     "sort_keys": True,
 }
 
-GS_METHOD_COLOR = {
-    "hf": "#d39402",
-    "mp2": "#841a0b",
-    "imsrg": "#39b237",
-    "ccsd": "#1351c4",
+GROUND_METHOD_COLOR = {
+    "hf": "#e07b1d",
+    "mp2": "#a81e4c",
+    "imsrg": "#21a54f",
+    "ccsd": "#1c5aa5",
+    "fci": "#2e2360",
 }
 
 METHOD_COLOR = {
-    "imsrg_qdpt3": "#39b237",
-    "imsrg_eom": "#841a0b",
-    "imsrg_quads_eom": "#a825bc",
-    "imsrg_f_eom": "#d39402",
-    "ccsd_eom": "#1351c4",
+    "hf": "#e0cc18",
+    "hf+qdpt3": "#e28522",
+    "imsrg": "#92e057",
+    "imsrg+qdpt3": "#39b237",
+    "imsrg+eom": "#841a0b",
+    "imsrg[f]+eom[n]": "#8e2544",
+    "magnus_quads+eom": "#a825bc",
+    "ccsd+eom": "#1351c4",
 }
 
 METHOD_LABEL = {
     "hf": "HF only",
-    "hf_qdpt2": "HF only + QDPT2",
-    "hf_qdpt3": "HF only + QDPT3",
+    "hf+qdpt2": "HF only + QDPT2",
+    "hf+qdpt3": "HF only + QDPT3",
     "imsrg": "IMSRG(2)",
-    "imsrg_qdpt2": "IMSRG(2) + QDPT2",
-    "imsrg_qdpt3": "IMSRG(2) + QDPT3",
-    "imsrg_eom": "IMSRG(2) + EOM",
-    "imsrg_quads_eom": "Magnus(2*) + EOM",
-    "imsrg_f_eom": "IMSRG(2)[F] + EOM[N]",
-    "ccsd_eom": "CCSD+EOM",
+    "imsrg+qdpt2": "IMSRG(2) + QDPT2",
+    "imsrg+qdpt3": "IMSRG(2) + QDPT3",
+    "imsrg+eom": "IMSRG(2) + EOM",
+    "imsrg[f]+eom[f]": "IMSRG(2)[F] + EOM[N]",
+    "magnus_quads+eom": "Magnus(2*) + EOM",
+    "ccsd+eom": "CCSD+EOM",
 }
 
 def matplotlib_try_enable_deterministic_svgs():
@@ -64,6 +73,7 @@ def plot(filename, block=True):
     os.chdir(os.path.dirname(filename))
     matplotlib_try_enable_deterministic_svgs()
     matplotlib.style.use("ggplot")
+    matplotlib.rcParams["font.sans-serif"] = ["Roboto"]
     yield
     if matplotlib.rcParams["interactive"]:
         plt.show(block=block)
@@ -75,6 +85,20 @@ def savefig(fig, name):
         plt.close(fig)
         sys.stderr.write("// Figure saved to: {}\n\n".format(fn))
         sys.stderr.flush()
+
+def filter_eq(d, keys, check_unused_kwargs=True):
+    empty = d.head(0)
+    gs = d.groupby(keys)
+    def filter_eq_inner(**kwargs):
+        args = tuple(kwargs.pop(key) for key in keys)
+        if check_unused_kwargs and kwargs:
+            raise TypeError("unused keyword argument: {!r}".
+                            format(next(iter(kwargs))))
+        try:
+            return gs.get_group(args)
+        except KeyError:
+            return empty
+    return filter_eq_inner
 
 def groupby(d, cols):
     '''Like DataFrame.groupby but converts the key into an OrderedDict.'''
@@ -105,33 +129,96 @@ def load_json_records(fn):
         return pd.DataFrame.from_records([
             json.loads(s) for s in f.read().split("\n\n") if s])
 
+sanitize_json_handlers = [
+    (pd.DataFrame, lambda self: sanitize_json(self.to_dict())),
+    (pd.Series, lambda self: sanitize_json(self.to_dict())),
+    (dict, lambda self: dict((k, sanitize_json(v)) for k, v in self.items())),
+    (list, lambda self: [sanitize_json(x) for x in self]),
+    (tuple, lambda self: [sanitize_json(x) for x in self]),
+    (np.ndarray, lambda self: [sanitize_json(x) for x in self]),
+    (float, lambda self: self),
+    (int, lambda self: self),
+    (str, lambda self: self),
+    (np.float64, float),
+    (np.int64, int),
+]
+
 def sanitize_json(j):
-    if isinstance(j, dict):
-        return dict((k, sanitize_json(v)) for k, v in j.items())
-    if isinstance(j, list) or isinstance(j, tuple) or isinstance(j, np.ndarray):
-        return [sanitize_json(x) for x in j]
-    if isinstance(j, float) or isinstance(j, int) or isinstance(j, str):
-        return j
-    if isinstance(j, np.float64):
-        return float(j)
-    if isinstance(j, np.int64):
-        return int(j)
-    raise TypeError("can't convert to JSON: {!r} ({})"
+    for type, handler in sanitize_json_handlers:
+        if isinstance(j, type):
+            return handler(j)
+    raise TypeError("no known conversion to JSON: {!r} ({})"
                     .format(j, type(j)))
 
 def json_pretty(j):
-    return json.dumps(sanitize_json(j), **JSON_PRETTY)
+    f = io.StringIO()
+    write_json(f, j)
+    return f.getvalue()
+
+def read_json(f):
+    return json.load(f)
+
+def write_json(f, j):
+    json.dump(sanitize_json(j), f, **JSON_PRETTY)
 
 def load_json(fn, fallback=None):
     if os.path.exists(fn):
         with open(fn) as f:
-            return json.load(f)
+            return read_json(f)
     return fallback
 
 def save_json(fn, j):
     with open(fn + ".tmp", "w") as f:
-        f.write(json_pretty(j))
+        write_json(f, j)
     os.rename(fn + ".tmp", fn)
+
+def sha1_json(x):
+    return hashlib.sha1(json_pretty(x).encode("utf-8")).digest()
+
+class FileDeps:
+    '''Represents a set of existing, read-only files, used as an argument for
+    cacheable functions.'''
+
+    def __init__(self, *paths):
+        self._paths = frozenset(paths)
+
+    def __getitem__(self, path):
+        if path not in self._paths:
+            raise ValueError("undeclared dependency: {}".format(path))
+        return path
+
+    def _hash(self):
+        '''The hash is computed on demand so that the file is only checked in
+        the correct context (e.g. if the working directory needs to be changed
+        before calling a function)..'''
+        return sha1_json([(path, os.path.getmtime(path))
+                          for path in sorted(paths)])
+
+sanitize_json_handlers.append((FileDeps, lambda self: self._hash()))
+
+def cached(hash=sha1_json, dump=pickle.dump, load=pickle.load):
+    def make_cached(func):
+        dir = ".cache"
+        func_path = func.__code__.co_filename
+        mtime = os.path.getmtime(func_path)
+        name = "".join(re.findall(r"[-_.a-zA-Z0-9]+", func.__qualname__))
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            inputs = (func_path, mtime, func.__qualname__, args, kwargs)
+            arg_hash = base64.urlsafe_b64encode(hash(inputs)).decode("ascii")
+            path = os.path.join(dir, "{}_{}.cache~".format(name, arg_hash))
+            try:
+                with open(path, "rb") as f:
+                    return load(f)
+            except (OSError, pickle.UnpicklingError):
+                pass
+            result = func(*args, **kwargs)
+            os.makedirs(dir, exist_ok=True)
+            with open(path, "wb") as f:
+                dump(result, f)
+            return result
+        return wrapper
+    return make_cached
 
 def sync_axes_lims(ax, settings, save):
     setting = settings.get("xlim")
@@ -156,8 +243,20 @@ def parse_uncertainty(s):
     uncertainty =  decimal.Decimal((0, list(map(int, uncertainty)), exponent))
     return value, uncertainty
 
-def parse_simple(fn):
-    return pd.read_csv(fn, delim_whitespace=True, float_precision=PRECISION)
+def load_table(f, sep=r"\s+", names=None):
+    kwargs = {
+        "sep": sep,
+        "names": names,
+        "quotechar": "'",
+        "comment": "#",
+        "float_precision": PRECISION,
+    }
+    if names is not None:
+        kwargs["header"] = None
+    return pd.read_csv(f, **kwargs)
+
+def save_table(f, df):
+    df.to_csv(f, sep=" ", index=False)
 
 def parse_nathan_like_data(d, label):
     if label == "add":
@@ -200,7 +299,7 @@ class FunDepViolationError(Exception):
         return "Functional dependency does not hold: {!r} -> {!r}\n{!r}".format(
             self.in_cols, self.out_cols, self.violations)
 
-def check_fun_dep(d, cols, tolers, combiner=lambda x: x):
+def check_fun_dep(d, cols, tolers, combiner=None):
     '''Check if a functional dependency constraint holds in the data.  That
     is, check if the output columns are unique (up to some tolerance) for each
     combination of input columns.  Then, a combined version is returned based
@@ -215,32 +314,79 @@ def check_fun_dep(d, cols, tolers, combiner=lambda x: x):
     `combiner` is a function `(DataFrame) -> DataFrame` that is fed to
     `GroupBy.apply` to combine duplicated data.
     '''
-    tolers = collections.OrderedDict(tolers.items())
+
+    tolers = collections.OrderedDict(tolers)
     cols = list(cols)
     out_cols = list(tolers.keys())
     gs = d.groupby(cols)
 
-    # force NaN into errors using dropna(axis=1);
-    # also, reset_index apparently modifies the GroupBy object
-    std = d.groupby(cols).std(ddof=0).reset_index()
-    mask = std.dropna(axis=1)[out_cols] > list(tolers.values())
-    if mask.any().any():
-        reduced_mask = functools.reduce(
-            lambda x, y: x | y, map(lambda x: mask[x], out_cols))
-        violations = pd.concat([gs.get_group(tuple(k))
-                                for _, k in std[reduced_mask][cols].iterrows()])
+    if len(d) == 0:
+        return d
+    if d[cols + out_cols].isnull().any().any():
+        # sanity check to prevent confusing errors later on
+        # (or worse: it could lead to false positives)
+        raise ValueError("input columns must not contain NaN")
+
+    # TODO: can we reuse the same d.groupby from earlier?
+    std = d.groupby(cols).std(ddof=0)
+    mask = functools.reduce(
+        lambda x, y: x | y,
+        (std[out_col] > tolers[out_col] for out_col in out_cols))
+    if mask.any():
+        violations = pd.concat([gs.get_group(k)
+                                for k, v in mask.iteritems() if v])
         raise FunDepViolationError(cols, out_cols, violations)
 
-    return gs.apply(combiner).reset_index(drop=True)
+    if combiner is None:
+        return d
+    else:
+        return gs.apply(combiner).reset_index(drop=True)
 
-def load_gs_dmc_energies():
-    '''["freq", "num_filled", "method", "energy"]'''
-    d = pd.read_csv("gs-dmc-joergen.txt",
-                    float_precision=PRECISION,
-                    header=0, index_col=False,
-                    delim_whitespace=True, comment="#")
-    d["num_filled"] = get_num_filled(d["num_particles"])
-    del d["num_particles"]
+def n_ml_tms_to_p(n, ml, tms):
+    assert n >= 0
+    assert tms in [-1, 1]
+    k = 2 * n + abs(ml)
+    # the convention of tms here uses 0 for +1/2 and 1 for -1/2
+    # of course, it's completely arbitrary
+    return (1 - tms) // 2 + k * (k + 2) + ml
+
+def p_to_n_ml_tms(p):
+    assert p >= 0
+    # the convention of tms here uses 0 for +1/2 and 1 for -1/2
+    # of course, it's completely arbitrary
+    tms = 1 - p % 2 * 2
+    k = int((4 * p + 1) ** 0.5 - 1) // 2
+    ml = p // 2 * 2 - k * (k + 2)
+    n = (k - abs(ml)) // 2
+    return n, ml, tms
+
+def p_to_ml(p):
+    _, ml, _ = p_to_n_ml_tms(p)
+    return ml
+
+def p_num_filled_to_label(p, num_filled):
+    if p >= num_filled * (num_filled + 1):
+        return "add"
+    else:
+        return "rm"
+
+def canonicalize_p(p):
+    '''The addition/removal energies use p to label the state that is being
+    added or removed.  However it does so inconsistently since some states are
+    equivalent to others (e.g. states that only differ by spin).'''
+    # k = 2 n + abs(ml)
+    n, ml, _ = p_to_n_ml_tms(p)
+    return n_ml_tms_to_p(n, abs(ml), 1)
+
+def leftmost_combiner(d):
+    return d.iloc[[0]]
+
+def rightmost_combiner(d):
+    return d.iloc[[-1]]
+
+def unique_combiner(d):
+    if len(d) != 1:
+        raise Exception("this group is not unique:\n{}".format(d))
     return d
 
 def priority_combiner(d):
@@ -250,21 +396,55 @@ def priority_combiner(d):
         raise Exception("cannot resolve data with equal priority")
     return d
 
+def superset_combiner(d):
+    '''Used as the combiner function for check_fun_dep.  The purpose of this
+    function is to detect if there is at least one row where 'origin' is
+    'NEW'.  If not, it will simply fail with an error.  This can be used to
+    check if two datasets ('OLD' and 'NEW') are consistent and whether the
+    'NEW' dataset is a superset of the 'OLD' one.'''
+    if (d["origin"] != "NEW").all():
+        raise Exception("Not a superset:", d)
+    return d
+
 SAM_ATTACHED_COLS = ["shells", "filled", "ML", "MS", "omega", "E(N)",
                      "E(N+1)-E(N)", "E(N+1)", "partialnorm(1p)"]
 
 SAM_REMOVED_COLS = ["shells", "filled", "ML", "MS", "omega", "E(N)",
                     "E(N-1)-E(N)", "E(N+1)", "partialnorm(1p)"]
 
-def load_gs_energies(drop_priority=True, toler=6e-4):
-    '''["freq", "num_filled", "num_shells", "method", "energy"]'''
+def load_ground_dmc():
+    '''Similar to load_ground, but without num_shells nor priority and has
+    extra columns: energy_err, energy_per_particle_err.'''
+    d = load_table("ground-dmc-joergen.txt")
+    d["num_filled"] = get_num_filled(d["num_particles"])
+    d["energy_per_particle"] = d["energy"] / d["num_particles"]
+    d["energy_per_particle_err"] = d["energy_err"] / d["num_particles"]
+    return d
+
+def load_ground(with_priority=False, toler=6e-4):
+    '''
+    Read ground state energy data from various sources.  Columns (order is
+    unspecified):
+
+        [priority,] freq, num_particles, num_filled,
+        num_shells, method, energy, energy_per_particle
+
+    If 'with_priority' is specified, then there is an additional column
+    "priority", and the data is *not* deduplicated.  'toler' specifies the
+    threshold below which the functional dependency check would not fail.
+
+    The data satisfies the following functional dependencies:
+
+        ([priority,] freq, num_filled, num_shells, method) -> energy
+        num_particles = num_particles * (num_particles + 1)
+        energy_per_particle = energy / num_particles
+
+    '''
     ds = []
 
     # agreement between Fei's IMSRG and Sarah's IMSRG ~ 1e-3
     # agreement between Nathan's IMSRG and Sarah's IMSRG ~ 1e-3
-    d = pd.read_csv("gs-sarah.txt",
-                    float_precision=PRECISION,
-                    index_col=False, delim_whitespace=True, comment="#")
+    d = load_table("ground-sarah.txt")
     # this data point does not agree with Fei's results and just seems wrong
     # (it breaks the monotonically decreasing behavior of HF)
     d = d[~((d["freq"] == 0.1) &
@@ -276,35 +456,23 @@ def load_gs_energies(drop_priority=True, toler=6e-4):
             (d["num_particles"] == 30) &
             (d["num_shells"] == 11) &
             (d["method"] == "imsrg"))]
-    # this data point disagrees with Sam's results
-    # I'm not sure which one is right, but hiding Sarah's results for now
-    d = d[~((d["freq"] == 0.1) &
-            (d["num_particles"] == 12) &
-            (d["num_shells"] == 14) &
-            (d["method"] == "ccsd"))]
     d["num_filled"] = get_num_filled(d["num_particles"])
-    d["priority"] = -2
     del d["num_particles"]
+    d["priority"] = -2
     d = d.dropna()
     ds.append(d)
 
-    d = pd.read_csv("imsrg-qdpt/dat_gsenergy.txt",
-                    float_precision=PRECISION,
-                    header=0, index_col=False,
-                    delim_whitespace=True, comment="#")
+    d = load_table("imsrg-qdpt/ground.txt")
+    d = d[d["interaction"] == "normal"]
+    del d["interaction"]
     d["priority"] = 0
-    del d["time"]
     ds.append(d)
 
     # agreement between Fei's IMSRG and Nathan's IMSRG ~ 1e-4
-    d1 = pd.read_csv("EOM_IMSRG_qd_attached.dat",
-                     float_precision=PRECISION,
-                     delim_whitespace=True)
+    d1 = load_table("EOM_IMSRG_qd_attached.dat")
     d1["method"] = "imsrg"
-    d2 = pd.read_csv("EOM_CCSD_qd_attached.dat",
-                     float_precision=PRECISION,
-                     header=None, names=SAM_ATTACHED_COLS,
-                     delim_whitespace=True)
+    d2 = load_table("EOM_CCSD_qd_attached.dat",
+                    names=SAM_ATTACHED_COLS)
     d2["method"] = "ccsd"
     d = pd.concat([d1, d2], ignore_index=True)
     d = d[["shells", "filled", "omega", "E(N)", "method"]]
@@ -314,128 +482,140 @@ def load_gs_energies(drop_priority=True, toler=6e-4):
         "omega": "freq",
         "E(N)": "energy",
     })
+    # this data point disagrees with Sarah's results
+    # I'm not sure which one is right, but hiding Sam's results for now
+    # because the graph of his results has a weird kink in it
+    d = d[~((d["freq"] == 0.1) &
+            (d["num_particles"] == 12) &
+            (d["num_shells"] == 14) &
+            (d["method"] == "ccsd"))]
     d["priority"] = -1
     d = d.drop_duplicates()
     ds.append(d)
 
     d = pd.concat(ds, ignore_index=True)
-    combiner = lambda x: x
-    if drop_priority:
+    if with_priority:
+        combiner = lambda x: x
+    else:
         combiner = priority_combiner
-    try:
-        d = check_fun_dep(d, ["freq", "num_filled", "num_shells", "method"],
-                          {"energy": toler}, combiner=combiner)
-    except FunDepViolationError as e:
-        with open("fun_dep_violations.out", "w") as f:
-            e.violations.to_csv(f, sep=" ", index=False)
-        raise e
-
-    if drop_priority:
+    d = check_fun_dep(d, ["freq", "num_filled", "num_shells", "method"],
+                      {"energy": toler}, combiner=combiner)
+    if not with_priority:
         del d["priority"]
+    d["num_particles"] = d["num_filled"] * (d["num_filled"] + 1)
+    d["energy_per_particle"] = d["energy"] / d["num_particles"]
     return d
 
-def get_ar_energies():
-    yield from get_ar_energies_for_v(V0)
-    yield from get_ar_energies_for_v(V2)
+def load_addrm_dmc():
+    '''Similar to load_addrm, but without num_shells and has an
+    extra column: energy_err.'''
+    d = load_table("addrm-dmc-pedersen.txt")
+    d["interaction"] = "normal"
+    d["label"] = d["is_hole"].map(lambda is_hole: "rm" if is_hole else "add")
+    del d["is_hole"]
+    d["num_particles"] = d["num_filled"] * (d["num_filled"] + 1)
+    return d
 
-def get_ar_energies_for_v(v):
-    '''["num_shells", "num_filled", "freq", "ml", "label", "energy"]'''
+@cached()
+def load_addrm(toler=3e-7,
+               files=FileDeps(
+                   "imsrg-qdpt/addrm.txt",
+                   "EOM_IMSRG_qd_attached.dat",
+                   "EOM_IMSRG_qd_removed.dat",
+                   "freq_sweep_N6_R10_attached.dat",
+                   "freq_sweep_N6_R10_removed.dat",
+                   "EOM_IMSRG_FEI_HAM_particle_attached.dat",
+                   "EOM_IMSRG_FEI_HAM_particle_removed.dat",
+                   "EOM_magnus_quads_attached.dat",
+                   "EOM_magnus_quads_removed.dat",
+                   "EOM_CCSD_qd_attached.dat",
+                   "EOM_CCSD_qd_removed.dat",
+               )):
+    '''
+    Get the addition and removal energies.  Columns:
 
-    # qdpt: Fei's QDPT on Fei's IMSRG matrix elements
+        label, ml, interaction, freq, num_particles, num_filled,
+        method, num_shells, energy
 
-    d = parse_simple("imsrg-qdpt/dat_arenergy_by_ml{v}.txt".format(**locals()))
-    d = d[["num_shells", "num_filled", "freq", "ml", "label", "energy"]]
-    d["method"] = "qdpt"
-    d["interaction"] = v
-    yield d
+    '''
+    ds = []
 
-    if v == V0:
+    # Fei's QDPT on Fei's IMSRG matrix elements
+    d = load_table(files["imsrg-qdpt/addrm.txt"])
+    d["method"] += d["iter"].map(lambda iter: "+qdpt3" if iter else "")
+    del d["iter"]
+    d["label"] = d[["p", "num_filled"]].apply(
+        lambda r: p_num_filled_to_label(**r), axis=1)
+    d["ml"] = d["p"].map(p_to_ml)
+    del d["p"]
+    ds.append(d)
 
-        # eom: Nathan's EOM on Nathan's IMSRG matrix elements
+    # Nathan's EOM on Nathan's IMSRG matrix elements
+    d = load_table(files["EOM_IMSRG_qd_attached.dat"])
+    d = parse_nathan_like_data(d, "add")
+    d["method"] = "imsrg+eom"
+    d["interaction"] = "normal"
+    ds.append(d)
+    d = load_table(files["EOM_IMSRG_qd_removed.dat"])
+    d = parse_nathan_like_data(d, "rm")
+    d["method"] = "imsrg+eom"
+    d["interaction"] = "normal"
+    ds.append(d)
+    d = load_table(files["freq_sweep_N6_R10_attached.dat"])
+    d = parse_nathan_like_data(d, "add")
+    d["method"] = "imsrg+eom"
+    d["interaction"] = "normal"
+    ds.append(d)
+    d = load_table(files["freq_sweep_N6_R10_removed.dat"])
+    d = parse_nathan_like_data(d, "rm")
+    d["method"] = "imsrg+eom"
+    d["interaction"] = "normal"
+    ds.append(d)
 
-        d = pd.read_csv("EOM_IMSRG_qd_attached.dat",
-                        float_precision=PRECISION, delim_whitespace=True)
-        d = parse_nathan_like_data(d, "add")
-        d["method"] = "eom"
-        d["interaction"] = v
-        yield d
+    # Nathan's EOM on Fei's IMSRG matrix elements
+    d = load_table(files["EOM_IMSRG_FEI_HAM_particle_attached.dat"])
+    d = parse_nathan_like_data(d, "add")
+    d["method"] = "imsrg[f]+eom[n]"
+    d["energy"] *= d["freq"] ** 0.5
+    d["interaction"] = "normal"
+    ds.append(d)
+    d = load_table(files["EOM_IMSRG_FEI_HAM_particle_removed.dat"])
+    d = parse_nathan_like_data(d, "rm")
+    d["method"] = "imsrg[f]+eom[n]"
+    d["energy"] *= d["freq"] ** 0.5
+    d["interaction"] = "normal"
+    ds.append(d)
 
-        d = pd.read_csv("EOM_IMSRG_qd_removed.dat",
-                        float_precision=PRECISION, delim_whitespace=True)
-        d = parse_nathan_like_data(d, "rm")
-        d["method"] = "eom"
-        d["interaction"] = v
-        yield d
+    # Nathan's EOM using Magnus method with quadruples
+    d = load_table(files["EOM_magnus_quads_attached.dat"])
+    d = parse_nathan_like_data(d, "add")
+    d["method"] = "magnus_quads+eom"
+    d["interaction"] = "normal"
+    ds.append(d)
+    d = load_table(files["EOM_magnus_quads_removed.dat"])
+    d = parse_nathan_like_data(d, "rm")
+    d["method"] = "magnus_quads+eom"
+    d["interaction"] = "normal"
+    ds.append(d)
 
-        d = pd.read_csv("freq_sweep_N6_R10_attached.dat",
-                        float_precision=PRECISION, delim_whitespace=True)
-        d = parse_nathan_like_data(d, "add")
-        d["method"] = "eom"
-        d["interaction"] = v
-        yield d
+    # Sam's coupled cluster singles and doubles
+    d = load_table(files["EOM_CCSD_qd_attached.dat"], names=SAM_ATTACHED_COLS)
+    d = parse_nathan_like_data(d, "add")
+    d["method"] = "ccsd+eom"
+    d["interaction"] = "normal"
+    ds.append(d)
+    d = load_table(files["EOM_CCSD_qd_removed.dat"], names=SAM_REMOVED_COLS)
+    d = parse_nathan_like_data(d, "rm")
+    d["method"] = "ccsd+eom"
+    d["interaction"] = "normal"
+    ds.append(d)
 
-        d = pd.read_csv("freq_sweep_N6_R10_removed.dat",
-                        float_precision=PRECISION, delim_whitespace=True)
-        d = parse_nathan_like_data(d, "rm")
-        d["method"] = "eom"
-        d["interaction"] = v
-        yield d
-
-        # eom_f: Nathan's EOM on Fei's IMSRG matrix elements
-
-        d = pd.read_csv("EOM_IMSRG_FEI_HAM_particle_attached.dat",
-                        float_precision=PRECISION, delim_whitespace=True)
-        d = parse_nathan_like_data(d, "add")
-        d["method"] = "eom_f"
-        d["energy"] *= d["freq"] ** 0.5
-        d["interaction"] = v
-        yield d
-
-        d = pd.read_csv("EOM_IMSRG_FEI_HAM_particle_removed.dat",
-                        float_precision=PRECISION, delim_whitespace=True)
-        d = parse_nathan_like_data(d, "rm")
-        d["method"] = "eom_f"
-        d["energy"] *= d["freq"] ** 0.5
-        d["interaction"] = v
-        yield d
-
-        # eom_quads: Nathan's EOM using Magnus method with quadruples
-
-        d = pd.read_csv("EOM_magnus_quads_attached.dat",
-                        float_precision=PRECISION, delim_whitespace=True)
-        d = parse_nathan_like_data(d, "add")
-        d["method"] = "eom_quads"
-        d["interaction"] = v
-        yield d
-
-        d = pd.read_csv("EOM_magnus_quads_removed.dat",
-                        float_precision=PRECISION, delim_whitespace=True)
-        d = parse_nathan_like_data(d, "rm")
-        d["method"] = "eom_quads"
-        d["interaction"] = v
-        yield d
-
-        # cc: Sam's coupled cluster
-
-        d = pd.read_csv("EOM_CCSD_qd_attached.dat",
-                        float_precision=PRECISION,
-                        header=None,
-                        names=NATHAN_ATTACHED_COLS,
-                        delim_whitespace=True)
-        d = parse_nathan_like_data(d, "add")
-        d["method"] = "cc"
-        d["interaction"] = v
-        yield d
-
-        d = pd.read_csv("EOM_CCSD_qd_removed.dat",
-                        float_precision=PRECISION,
-                        header=None,
-                        names=NATHAN_REMOVED_COLS,
-                        delim_whitespace=True)
-        d = parse_nathan_like_data(d, "rm")
-        d["method"] = "cc"
-        d["interaction"] = v
-        yield d
+    d = pd.concat(ds, ignore_index=True)
+    check_fun_dep(d, ["label", "ml", "interaction", "freq", "num_filled",
+                      "num_shells", "method"],
+                  {"energy": toler}, combiner=leftmost_combiner)
+    d["num_particles"] = d["num_filled"] * (d["num_filled"] + 1)
+    return d
 
 def fit_change(fit_type, fit_points, x, y, **params):
     # note: y here is the derivative

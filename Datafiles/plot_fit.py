@@ -109,9 +109,10 @@ def plot_fits(data,
     if fit_range[1] == np.inf:
         fit_range[1] = np.max(data[x_col])
     fit_range = fit_range + np.array([-0.2, 0.2]) # make it look less ambiguous
-    x_c = np.linspace(data[x_col].min(), data[x_col].max(), 250) # continuous x
+    # continuous x range for plotting continuous functions
+    x_c = np.linspace(data[x_col].min() - 1, data[x_col].max() + 1, 250)
     for title_key, gg in utils.groupby(data, title_cols):
-        fig, [ax1, ax2] = plt.subplots(2)
+        fig, ax = plt.subplots(2)
         fig.set_size_inches(8, 10) # otherwise the text will get obscured
         y_range = np.array([np.nan, np.nan])
         for color_key, g in utils.groupby(gg, color_cols):
@@ -122,7 +123,9 @@ def plot_fits(data,
             deriv_d = differentiate(d, "x", "y", "dydx")
             x = deriv_d["x"]
             dydx = deriv_d["dydx"]
-            ax1.plot(x, abs(dydx), "x", label=label, color=color)
+            ax[0].plot(x, abs(dydx), "x", label=label, color=color)
+            ax[1].plot(d["x"], d["y"], "x", label=label, color=color)
+            utils.update_range(y_range, d["y"])
 
             d_subset = d[d["x"].between(*fit_range)]
             deriv_subset = deriv_d[deriv_d["x"].between(*fit_range)]
@@ -139,15 +142,11 @@ def plot_fits(data,
                 b = result["exponent"]
                 b_err = result.get("exponent_err", None)
                 dydx_c = a * b * x_c ** (b - 1.0)
-                ax1.plot(
+                ax[0].plot(
                     x_c, abs(dydx_c), linestyle=STAGE_TO_LINESTYLE[stage],
                     label=label + " " + fit_label(stage, b, b_err),
                     color=color)
 
-            x = d["x"]
-            y = d["y"]
-            ax2.plot(x, y, "x", label=label, color=color)
-            utils.update_range(y_range, y)
             for stage, result in fit.items():
                 if "constant" not in result:
                     continue
@@ -156,11 +155,11 @@ def plot_fits(data,
                 c = result["constant"]
                 b_err = result.get("exponent_err", None)
                 y_c = a * x_c ** b + c
-                ax2.plot(
+                ax[1].plot(
                     x_c, y_c, linestyle=STAGE_TO_LINESTYLE[stage],
                     label=label + " " + fit_label(stage, b, b_err),
                     color=color)
-                ax2.axhline(c, linestyle=":", color=color)
+                ax[1].axhline(c, linestyle=":", color=color)
                 utils.update_range(y_range, c)
 
         g = get_dmc(**title_key)
@@ -168,58 +167,57 @@ def plot_fits(data,
             y = g[y_col].iloc[0]
             if dmc_yerr_col is not None:
                 y_err = g[dmc_yerr_col].iloc[0]
-                ax2.axhspan(y - y_err, y + y_err, alpha=0.4,
+                ax[1].axhspan(y - y_err, y + y_err, alpha=0.4,
                             color="black", label=dmc_label)
                 utils.update_range(y_range, [y - y_err, y + y_err])
             # add an extra line to make sure it's visible
-            ax2.axhline(y, alpha=0.4, color="black")
+            ax[1].axhline(y, alpha=0.4, color="black")
             utils.update_range(y_range, [y])
 
-        ax1.axvspan(fit_range[0], fit_range[1], alpha=0.15, color="#d6a528")
-        ax1.set_xlabel(x_label)
-        ax1.set_ylabel(absdydx_label)
-        ax1.set_xscale("log")
-        ax1.set_yscale("log")
-        ax1.set_title(get_title(**title_key))
-        box = ax1.get_position()
-        ax1.set_position([box.x0, box.y0, box.width * 0.6, box.height])
-        ax1.legend(bbox_to_anchor=(1, 1.0))
+        ax[0].axvspan(fit_range[0], fit_range[1], alpha=0.15, color="#d6a528")
+        ax[0].set_xlabel(x_label)
+        ax[0].set_ylabel(absdydx_label)
+        ax[0].set_xscale("log")
+        ax[0].set_yscale("log")
+        ax[0].set_title(get_title(**title_key))
+        box = ax[0].get_position()
+        ax[0].set_position([box.x0, box.y0, box.width * 0.6, box.height])
+        ax[0].legend(bbox_to_anchor=(1, 1.0))
 
-        ax2.axvspan(fit_range[0], fit_range[1], alpha=0.15, color="#d6a528")
-        ax2.legend()
-        ax2.set_xlabel(x_label)
-        ax2.set_ylabel(y_label)
-        ax2.set_ylim(*utils.expand_range(y_range, 0.05))
-        box = ax2.get_position()
-        ax2.set_position([box.x0, box.y0, box.width * 0.6, box.height])
-        ax2.legend(bbox_to_anchor=(1, 1.0))
+        ax[1].axvspan(fit_range[0], fit_range[1], alpha=0.15, color="#d6a528")
+        ax[1].legend()
+        ax[1].set_xlabel(x_label)
+        ax[1].set_ylabel(y_label)
+        ax[1].set_ylim(*utils.expand_range(y_range, 0.05))
+        box = ax[1].get_position()
+        ax[1].set_position([box.x0, box.y0, box.width * 0.6, box.height])
+        ax[1].legend(bbox_to_anchor=(1, 1.0))
 
         fn = get_fn(**title_key)
         settings_fn = os.path.join("plot_settings", fn + ".json")
         settings = utils.load_json(settings_fn) or {"ax1": {}, "ax2": {}}
         def save_settings():
             utils.save_json(settings_fn, settings)
-        utils.sync_axes_lims(ax1, settings["ax1"], save_settings)
-        utils.sync_axes_lims(ax2, settings["ax2"], save_settings)
+        utils.sync_axes_lims(ax[0], settings["ax1"], save_settings)
+        utils.sync_axes_lims(ax[1], settings["ax2"], save_settings)
         utils.savefig(fig, fn)
         break
 
-def plot_addrm(label, num_filled, freq, fit_start, fit_stop, **kwargs):
-    d_dmc = pd.read_csv("addrm-dmc-pedersen.txt",
-                        float_precision=utils.PRECISION,
-                        header=0, index_col=False,
-                        delim_whitespace=True, comment="#")
-    d = pd.concat(utils.get_ar_energies_for_v(v=""), ignore_index=True)
-    # d = d[d["method"] != "eom_f"]
+def plot_addrm(label, interaction, freq, num_filled,
+               fit_start, fit_stop, **kwargs):
+    d_dmc = utils.load_addrm_dmc()
+    d = utils.load_addrm()
+    # d = d[d["method"] != "imsrg[f]+eom[n]"]
     # use the ml closest to shell closure
     d = d[d["ml"] == (d["num_filled"] + (d["label"] != "add")) % 2]
-    d["num_particles"] = d["num_filled"] * (d["num_filled"] + 1)
 
     # filters
+    d = d[d["interaction"] == interaction]
     d = d[d["num_filled"] == num_filled]
     d = d[d["freq"] == freq]
     d = d[d["label"] == label]
 
+    d.to_csv("/tmp/test.dat")
     plot_fits(
         data=d,
         fit_range=[fit_start, fit_stop],
@@ -234,28 +232,25 @@ def plot_addrm(label, num_filled, freq, fit_start, fit_stop, **kwargs):
         color_cols=["method"],
         get_color=lambda method: utils.METHOD_COLOR[method],
         get_color_label=lambda method: method,
-        get_dmc=lambda **k: d_dmc[
-            (d_dmc["is_hole"] == (k["label"] == 0)) &
-            (d_dmc["num_filled"] == k["num_filled"]) &
-            (d_dmc["freq"] == k["freq"])],
+        get_dmc=utils.filter_eq(d_dmc, ["label", "num_filled", "freq"],
+                                check_unused_kwargs=False),
         dmc_label="DMC",
         dmc_yerr_col="energy_err",
     )
 
-def plot_ground(num_filled, freq, fit_start, fit_stop, hartree_fock, **kwargs):
-    d_dmc = utils.load_gs_dmc_energies()
-    d = utils.load_gs_energies()
-    for data in [d, d_dmc]:
-        data["num_particles"] = data["num_filled"] * (data["num_filled"] + 1)
-        data["energy_per_particle"] = data["energy"] / data["num_particles"]
-    d_dmc["energy_per_particle_err"] = (d_dmc["energy_err"] /
-                                        d_dmc["num_particles"])
+def plot_ground(interaction, freq, num_filled,
+                fit_start, fit_stop, hartree_fock, **kwargs):
+    d_dmc = utils.load_ground_dmc()
+    d = utils.load_ground()
 
     # filters
+    d = d[d["interaction"] == interaction]
     d = d[d["num_filled"] == num_filled]
     d = d[d["freq"] == freq]
     if not hartree_fock:
         d = d[d["method"] != "hf"]
+
+    print(d)
 
     plot_fits(
         data=d,
@@ -263,17 +258,16 @@ def plot_ground(num_filled, freq, fit_start, fit_stop, hartree_fock, **kwargs):
         x_col="num_shells",
         x_label="K (number of shells)",
         y_col="energy_per_particle",
-        y_label="E/n (energy per particle)",
-        absdydx_label="|∂(E/n)/∂K|",
+        y_label="E/N (energy per particle)",
+        absdydx_label="|∂(E/N)/∂K|",
         title_cols=["num_filled", "num_particles", "freq"],
-        get_title="ground, n={num_particles}, ω={freq}".format,
+        get_title="ground, N={num_particles}, ω={freq}".format,
         get_fn="fit-ground-{num_filled}-{freq}".format,
         color_cols=["method"],
-        get_color=lambda method: utils.GS_METHOD_COLOR[method],
+        get_color=lambda method: utils.GROUND_METHOD_COLOR[method],
         get_color_label=lambda method: method,
-        get_dmc=lambda **k: d_dmc[
-            (d_dmc["num_filled"] == k["num_filled"]) &
-            (d_dmc["freq"] == k["freq"])],
+        get_dmc=utils.filter_eq(["num_filled", "freq"],
+                                check_unused_kwargs=False),
         dmc_label="DMC",
         dmc_yerr_col="energy_per_particle_err",
     )
@@ -281,6 +275,7 @@ def plot_ground(num_filled, freq, fit_start, fit_stop, hartree_fock, **kwargs):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("-i", "--interactive", action="store_true")
+    p.add_argument("-int", "--interaction", default="normal")
     p.add_argument("-fq", "--freq", type=float, required=True)
     p.add_argument("-kf", "--num-filled", type=int, required=True)
     p.add_argument("-k1", "--fit-start", type=float, required=True)

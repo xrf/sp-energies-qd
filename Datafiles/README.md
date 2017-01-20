@@ -3,8 +3,8 @@ Data files
 
 Abbreviation for observables:
 
-  - **AR** = addition and removal energies
-  - **GS** = ground state energy
+  - **addrm** = addition and removal energies
+  - **ground** = ground state energy
 
 Abbreviation for methods:
 
@@ -17,18 +17,19 @@ Abbreviation for methods:
   - **IMSRG** = in-medium similarity renormalization group method truncated to
     two-body level (so-called “IM-SRG(2)”) using White generator with
     Epstein-Nesbet denominators
+  - **MagnusQuads** = Magnus method with quadruples.
   - **QDPT⟨n⟩** = quasidegenerate perturbation theory of level `⟨n⟩` (if `⟨n⟩`
     is omitted, it defaults to 3)
 
 ## Directory contents
 
-  - `addrm-dmc-pedersen.txt`: AR (DMC) by Pedersen Lohne
+  - `addrm-dmc-pedersen.txt`: addrm (DMC) by Pedersen Lohne
 
-  - `gs-sarah.txt`: GS (CCSD, FCI, HF, IMSRG) by Sarah Reimann
+  - `ground-sarah.txt`: ground (CCSD, FCI, HF, IMSRG) by Sarah Reimann
 
-  - `EOM_CCSD_qd_*.dat`: GS (CCSD) + AR (CC+EOM) by Sam
+  - `EOM_CCSD_qd_*.dat`: ground (CCSD) + addrm (CC+EOM) by Sam
 
-  - `EOM_IMSRG_qd_*.dat`: GS (IMSRG) + AR (IMSRG+EOM) by Nathan
+  - `EOM_IMSRG_qd_*.dat`: ground (IMSRG) + addrm (IMSRG+EOM) by Nathan
 
   - `EOM_IMSRG_FEI_HAM_particle_*.dat`: similar to `EOM_IMSRG_qd_*.dat`.  EOM
     was calculated using Nathan's code with matrix elements from Fei's IM-SRG
@@ -36,7 +37,10 @@ Abbreviation for methods:
     Nathan's IM-SRG code.  The difference was insignificant and could be
     attributed to differences in ODE solver precision.
 
-  - `imsrg-qdpt/`: GS (IMSRG) + AR (IMSRG+QDPT) data contributed by Fei
+  - `EOM_magnus_quads_*.dat`: ground (MagnusQuad) + addrm(MagnusQuad+EOM) by
+    Nathan
+
+  - `imsrg-qdpt/`: ground (IMSRG) + addrm (IMSRG+QDPT) data contributed by Fei
 
   - `plot_*.py`: various plotting scripts
 

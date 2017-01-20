@@ -6,14 +6,12 @@ import utils
 
 utils.init(__file__)
 
-d = pd.read_csv("imsrg-qdpt/dat_arenergy_by_ml.txt",
-                float_precision=utils.PRECISION, delim_whitespace=True)
+d = utils.load_table("imsrg-qdpt/dat_arenergy_by_ml.txt")
 d = d[["num_shells", "num_filled", "freq", "ml", "label", "energy"]]
 d["method"] = "qdpt"
 dq = d
 
-d = pd.read_csv("EOM_IMSRG_qd_attached.dat",
-                float_precision=utils.PRECISION, delim_whitespace=True)
+d = utils.load_table("EOM_IMSRG_qd_attached.dat")
 d["energy"] = d["E(N+1)-E(N)"]
 d = d[["shells", "filled", "ML", "omega", "energy"]]
 d = d.rename(columns={
@@ -26,8 +24,7 @@ d["label"] = "add"
 d["method"] = "eom"
 dea = d
 
-d = pd.read_csv("EOM_IMSRG_qd_removed.dat",
-                float_precision=utils.PRECISION, delim_whitespace=True)
+d = utils.load_table("EOM_IMSRG_qd_removed.dat")
 d["energy"] = -d["E(N-1)-E(N)"]
 d = d[["shells", "filled", "ML", "omega", "energy"]]
 d = d.rename(columns={
