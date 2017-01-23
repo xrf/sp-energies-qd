@@ -250,8 +250,6 @@ def plot_ground(interaction, freq, num_filled,
     if not hartree_fock:
         d = d[d["method"] != "hf"]
 
-    print(d)
-
     plot_fits(
         data=d,
         fit_range=[fit_start, fit_stop],
@@ -264,7 +262,7 @@ def plot_ground(interaction, freq, num_filled,
         get_title="ground, N={num_particles}, ω={freq}".format,
         get_fn="fit-ground-{num_filled}-{freq}".format,
         color_cols=["method"],
-        get_color=lambda method: utils.GROUND_METHOD_COLOR[method],
+        get_color=lambda method: utils.METHOD_COLOR[method],
         get_color_label=lambda method: method,
         get_dmc=utils.filter_eq(["num_filled", "freq"],
                                 check_unused_kwargs=False),

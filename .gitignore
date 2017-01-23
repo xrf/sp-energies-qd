@@ -3,6 +3,7 @@ figures.pdf
 Manuscript/paper.pdf
 
 FigureFiles/*.pdf
+Manuscript/fig-*.pdf
 Manuscript/figures/*.pdf
 
 *.bbl

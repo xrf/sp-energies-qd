@@ -8,7 +8,7 @@
 \usepackage{hyperref}
 \usepackage{natbib}
 \usepackage{siunitx}
-\usepackage{subfigure}
+\usepackage{subcaption}
 
 \newcommand{\D}{\operatorname{d\!}}
 \newcommand{\E}{\operatorname{e}}
@@ -842,31 +842,34 @@ A single Slater determinant and a simple correlation function opens up numerous 
 \section{Results}
 \label{sec:results}
 
+\subsection{Methodology}
+
 \begin{figure}
   \centering
-  \subfigure[Results for $N=6$ and $\omega=1.0$]{
-    \label{fig:N6hw1}
-    \includegraphics[width=0.38\linewidth]{figures/6parthw1.pdf}
-  }
-  \subfigure[Results for $N=6$ and $\omega=0.5$]{
-    \label{fig:N6hw05}
-    \includegraphics[width=0.38\linewidth]{figures/6parthw05.pdf}
-  } \\
-  \subfigure[Results for $N=6$ and $\omega=0.28$]{
-    \label{fig:N6hw028}
-    \includegraphics[width=0.38\linewidth]{figures/6parthw028.pdf}
-  }
-  \subfigure[Results for $N=6$ and $\omega=0.1$]{
-    \label{fig:N6hw01}
-    \includegraphics[width=0.38\linewidth]{figures/6parthw01.pdf}
-  }
-  \caption{Comparison of our IM-SRG(2) ground state energies (SRG) for circular quantum dots for $N=6$ and $\omega=1.0$ The results are compared with diffusion Monte Carlo (DMC), coupled cluster at the level of singles and doubles (CCSD), full configuration interaction (FCI) and Hartree-Fock calculations (HF) as functions of the number of major oscillator shells $R$. A harmonic oscilaltor basis has been used, with an unrenormalized Coulomb repulsion and the White generator. All energies in atomic units.}
-  \label{fig:N6}
+  \includegraphics[width=0.8\linewidth]{figures/fig-methods}
+  \caption{A schematic view of the various ways in which many-body methods in this paper could be combined to calculate ground state, addition, and removal energies.}
+  \label{fig:methods}
 \end{figure}
+
+Before we discuss the results, let us briefly outline the concrete methodology used by our numerical experiments.  There is a some degree of flexibility in which many-body methods can be applied, which is not evident from reading the description of each method alone.
+
+The typical approach is to apply them in the order shown in Figure \ref{fig:methods}.  Such an ordering maximizes the benefits of each method: Hartree-Fock acts as an initial, crude procedure to \textit{soften} the Hamiltonian, followed by IM-SRG or CC to refine the ground state energy, and then finally QDPT or EOM to refine the addition and removal energies.
+
+The arrows in the diagram designate the flow of numerical data, which are generally matrix elements of some operator.  For HF and IM-SRG, these are simply (evolved) Hamiltonian matrix elements.  For CC, they would be elements of the cluster operator $\hat{T}$.
+
+There are several paths through which one can traverse in this diagram to obtain the output observables.  Among these possibilities, there exist (a) HF + IM-SRG + QDPT, (b) HF + IM-SRG + EOM, and (c) HF + CC + EOM.  All three paths are explored in this paper.  There are, of course, other paths, but we will not consider every single possibility here.
+
+Moreover, there is also the possibility of omitting one or more of these steps in the process.  For example, one can omit HF, but continue with the remaining two steps.  While this is possible, our experience indicate that the HF plays a strong role in increasing the rate of convergence of the post-HF methods, and thereby increasing the accuracy and efficiency as well.  Hence, there is very little reason to omit HF.
+
+All results in this paper shall discuss results in which HF is included as the first step of the calculation, and thus we will not explicitly state ``HF'' unless there is no post-HF method used, in which case we write ``HF only''.
+
+Unlike ground state energy, whose systems are characterized only by the number of particles $N$ and the oscillator frequency $\omega$, the addition (or removal) energy depend on an additional quantity: the total orbital angular momentum $M_\ell$, defined as the sum of the $m_\ell$ of each particle.  This is because there can be multiple states with $N + 1$ particles with near-degenerate energy.  For our numerical results, we will study exclusively the addition energies such that $|M_\ell|$ is as small as possible subject to the constraint that the particle added lies within the next shell.  This means the $N + 1$ states we are interested in are those with $|M_\ell| = K_{\mathrm{F}} \bmod 2$, while the $N - 1$ states are those with $|M_\ell| = 1 - K_{\mathrm{F}} \bmod 2$, where $K_{\mathrm{F}}$ is the number of occupied shells.
+
+\subsection{Tables and figures}
 
 \begin{table}
   \centering
-  \caption{Ground state energy (in atomic units) of a circular quantum dot, with $N$ particles and oscillator frequency $\omega$. The IM-SRG(2) results are given for $R=20$ shells (except for the $N=56$ results which are for $R=18$), employing a Hartree-Fock basis, a bare Coulomb interaction and the White generator. For $N=42$ and $\omega=0.1$ results are presented up to $R=22$ major shells. The results labelled IM-SRG(2)$_{R\rightarrow \infty}$ are obtained using the extrapolation formula of [[equation?]].}
+  \caption{Ground state energy with $N$ particles and oscillator frequency $\omega$. The IM-SRG(2) results are given for $R=20$ shells (except for the $N=56$ results which are for $R=18$), employing a Hartree-Fock basis, a bare Coulomb interaction and the White generator. For $N=42$ and $\omega=0.1$ results are presented up to $R=22$ major shells. The results labelled IM-SRG(2)$_{R\rightarrow \infty}$ are obtained using the extrapolation formula of [[equation? TODO: redo the extrapolations]].}
   \label{tab:SRGDMC-R20}
   \begin{tabular}{SSSSS}
     \toprule
@@ -904,6 +907,8 @@ A single Slater determinant and a simple correlation function opens up numerous 
   \end{tabular}
 \end{table}
 
+[[TODO: table for addrm]]
+
 \begin{figure}
   \centering
   \includegraphics[width=0.8\linewidth]{fig-gs}
@@ -932,8 +937,42 @@ A single Slater determinant and a simple correlation function opens up numerous 
   \label{fig:rel-slopes}
 \end{figure}
 
-[[Sarah's discussions on ground state energy are absent :(]]
-In this section, we discuss the IM-SRG results for the ground-state energies of closed-shell systems.  We start with the Wegner generator in subsection [[??]].  Numerical instabilities in the integration process, as well as a rather slow convergence as function of the number of oscillator shells, favors the use of a Hartree-Fock basis and the Coulomb interaction.  Since higher correlations still lead to stiff equation systems, we change in subsection [[??]] to the White generator. In particular, we give an overview of the IM-SRG(2) ground state energies for closed-shell systems up to $N=42$ particles and compare with other \textit{ab initio} many-body methods.
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{fig-by-num-shells-6-2-ground-0-normal}
+  \caption{[[...]]}
+  \label{fig:by-num-shells-6-2-ground-0-normal}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{fig-by-freq-10-6-ground-0-normal}
+  \caption{The behavior of ground state energy as a function of the oscillator frequency $\omega$.  The energy is normalized with respect to the Hartree-Fock values to make plot easier to see.  Lower frequency leads to stronger correlations and thereby a more difficult problem. [[the fact that CCSD and MP2 are really close may be just a coincidence, since they cross around 12 shells but then diverge again]]}
+  \label{fig:by-freq-10-6-gs-0-normal}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{subfigure}{0.5\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig-by-freq-10-6-add-0-normal}
+    \caption{Addition energy}
+    \label{fig:by-freq-10-6-add-0-normal}
+  \end{subfigure}%
+  \begin{subfigure}{0.5\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{fig-by-freq-10-6-rm-1-normal}
+    \caption{Removal energy}
+    \label{fig:by-freq-10-6-rm-1-normal}
+  \end{subfigure}
+  \caption{The behavior of addition and removal energy as a function of the oscillator frequency $\omega$.  Like Figure \ref{fig:by-freq-10-6-gs-0-normal}, the energy is normalized with respect to the Hartree-Fock values.}
+\end{figure}
+
+In this section, we discuss the numerical results for the ground state, addition, and removal energies of closed-shell systems for a selection of methods.
+
+For the IM-SRG results
+
+As foreshadowed, we find the Wegner generator described in subsection [[??]].  Numerical instabilities in the integration process, as well as a rather slow convergence as function of the number of oscillator shells, favors the use of a Hartree-Fock basis and the Coulomb interaction.  Since higher correlations still lead to stiff equation systems, we change in subsection [[??]] to the White generator. In particular, we give an overview of the IM-SRG(2) ground state energies for closed-shell systems up to $N=42$ particles and compare with other \textit{ab initio} many-body methods.
 
 [[...]]
 
@@ -944,15 +983,6 @@ The former can be reduced by increasing the number of shells, and can be further
 Both IM-SRG and MP2 improve the accuracy the result dramatically over the more primitive HF.  (It may help to add plots *without* HF.)
 
 [[TODO: add FCI, CCSD results to GS energy plots]]
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\linewidth]{figures/fig-methods}
-  \caption{A high-level view of the ways in which many-body methods in this paper can be combined to calculate ground state, addition, and removal energies, shown as a directed acyclic graph.}
-  \label{fig:methods}
-\end{figure}
-
-Figure \ref{fig:methods} shows high-level view of the ways in which many-body methods in this paper can be combined to to compute the energy observables.  There are many possible paths through which one can walk in this directed graph to obtain the output observables.  For example, one can do HF to get an initial rough estimate, followed by IM-SRG to refine the ground state, and then EOM to refine the addition and removal energies.  This is in fact one of the approaches benchmarked in this paper.
 
 It is possible to omit some of the methods, bypassing some of the steps.  For example, one can do an IM-SRG calculation \emph{without} doing HF.  There are few good reasons to do so, as it typically worsens the result and increases the numerical cost of IM-SRG, but it can be done.  Similarly, one can do both HF and IM-SRG, but omit QDPT, yet still obtain \emph{addition and removal} energies.  The result would be poor, but it may be useful for the purpose of assessing difficulty of the problem.  For example, if the omission of QDPT leads to a large change, then it may indicate the presence of strong correlations.
 

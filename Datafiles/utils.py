@@ -24,36 +24,34 @@ JSON_PRETTY = {
     "sort_keys": True,
 }
 
-GROUND_METHOD_COLOR = {
-    "hf": "#e07b1d",
-    "mp2": "#a81e4c",
-    "imsrg": "#21a54f",
-    "ccsd": "#1c5aa5",
-    "fci": "#2e2360",
-}
-
 METHOD_COLOR = {
+    "ccsd": "#1c5aa5",
+    "ccsd+eom": "#1351c4",
+    "fci": "#2e2360",
     "hf": "#e0cc18",
     "hf+qdpt3": "#e28522",
     "imsrg": "#92e057",
-    "imsrg+qdpt3": "#39b237",
     "imsrg+eom": "#841a0b",
+    "imsrg+qdpt3": "#39b237",
     "imsrg[f]+eom[n]": "#8e2544",
     "magnus_quads+eom": "#a825bc",
-    "ccsd+eom": "#1351c4",
+    "mp2": "#a81e4c",
 }
 
 METHOD_LABEL = {
+    "ccsd": "CCSD",
+    "ccsd+eom": "CCSD+EOM",
+    "fci": "FCI",
     "hf": "HF only",
     "hf+qdpt2": "HF only + QDPT2",
     "hf+qdpt3": "HF only + QDPT3",
     "imsrg": "IMSRG(2)",
+    "imsrg+eom": "IMSRG(2) + EOM",
     "imsrg+qdpt2": "IMSRG(2) + QDPT2",
     "imsrg+qdpt3": "IMSRG(2) + QDPT3",
-    "imsrg+eom": "IMSRG(2) + EOM",
     "imsrg[f]+eom[f]": "IMSRG(2)[F] + EOM[N]",
     "magnus_quads+eom": "Magnus(2*) + EOM",
-    "ccsd+eom": "CCSD+EOM",
+    "mp2": "MP2",
 }
 
 def matplotlib_try_enable_deterministic_svgs():
@@ -276,10 +274,6 @@ def parse_nathan_like_data(d, label):
     d["label"] = label
     return d
 
-# interactions
-V0 = ""                                 # normal Coulomb
-V2 = "_sigmaA=0.5_sigmaB=4.0"           # softened Coulomb (see figures.md)
-
 @np.vectorize
 def get_num_filled(num_particles, max_shells=100):
     for k in range(max_shells):
@@ -370,6 +364,9 @@ def p_num_filled_to_label(p, num_filled):
     else:
         return "rm"
 
+def label_num_filled_to_ml(label, num_filled):
+    return 0 if label == "ground" else (num_filled + (label != "add")) % 2
+
 def canonicalize_p(p):
     '''The addition/removal energies use p to label the state that is being
     added or removed.  However it does so inconsistently since some states are
@@ -416,17 +413,21 @@ def load_ground_dmc():
     '''Similar to load_ground, but without num_shells nor priority and has
     extra columns: energy_err, energy_per_particle_err.'''
     d = load_table("ground-dmc-joergen.txt")
+    d["interaction"] = "normal"
+    d["label"] = "ground"
+    d["ml"] = 0
     d["num_filled"] = get_num_filled(d["num_particles"])
     d["energy_per_particle"] = d["energy"] / d["num_particles"]
     d["energy_per_particle_err"] = d["energy_err"] / d["num_particles"]
     return d
 
+@cached()
 def load_ground(with_priority=False, toler=6e-4):
     '''
     Read ground state energy data from various sources.  Columns (order is
     unspecified):
 
-        [priority,] freq, num_particles, num_filled,
+        [priority,] interaction, label, ml, freq, num_particles, num_filled,
         num_shells, method, energy, energy_per_particle
 
     If 'with_priority' is specified, then there is an additional column
@@ -486,7 +487,7 @@ def load_ground(with_priority=False, toler=6e-4):
     # I'm not sure which one is right, but hiding Sam's results for now
     # because the graph of his results has a weird kink in it
     d = d[~((d["freq"] == 0.1) &
-            (d["num_particles"] == 12) &
+            (d["num_filled"] == 3) &
             (d["num_shells"] == 14) &
             (d["method"] == "ccsd"))]
     d["priority"] = -1
@@ -502,6 +503,9 @@ def load_ground(with_priority=False, toler=6e-4):
                       {"energy": toler}, combiner=combiner)
     if not with_priority:
         del d["priority"]
+    d["interaction"] = "normal"
+    d["label"] = "ground"
+    d["ml"] = 0
     d["num_particles"] = d["num_filled"] * (d["num_filled"] + 1)
     d["energy_per_particle"] = d["energy"] / d["num_particles"]
     return d
@@ -616,6 +620,11 @@ def load_addrm(toler=3e-7,
                   {"energy": toler}, combiner=leftmost_combiner)
     d["num_particles"] = d["num_filled"] * (d["num_filled"] + 1)
     return d
+
+def load_all():
+    d = load_ground()
+    del d["energy_per_particle"]
+    return pd.concat([d, load_addrm()], ignore_index=True)
 
 def fit_change(fit_type, fit_points, x, y, **params):
     # note: y here is the derivative
