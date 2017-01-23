@@ -1,5 +1,5 @@
-import base64, collections, contextlib, decimal, functools
-import hashlib, io, json, os, pickle, re, sys
+import argparse, base64, collections, contextlib, decimal
+import functools, hashlib, io, json, os, pickle, re, sys
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,7 +9,8 @@ import scipy.optimize
 # used for the 'float_precision' argument in pandas.read_csv
 # "round_trip" is preferable but it segfaults on some versions of Pandas:
 # https://github.com/pandas-dev/pandas/issues/15140
-if "+" in pd.__version__ or pd.__version__.split() >= (0, 20, 0):
+if ("+" in pd.__version__ or
+        tuple(map(int, pd.__version__.split("."))) >= (0, 20, 0)):
     PRECISION = "round_trip"
 else:
     PRECISION = "high"
@@ -66,13 +67,60 @@ def matplotlib_try_enable_deterministic_svgs():
 def init(filename):
     plot(filename).__enter__()
 
+def parse_arg(s):
+    s = s.strip()
+    try:
+        return json.loads(s)
+    except ValueError:
+        pass
+    if "," in s:
+        return [parse_arg(s) for s in s.split(",")]
+    return s
+
+def parse_kwarg(s):
+    key = ""
+    s = s.strip()
+    m = re.match(r"(\w+)\s*[=]\s*(.*)", s)
+    if m:
+        key, s = m.groups()
+    return key, parse_arg(s)
+
 @contextlib.contextmanager
-def plot(filename, block=True):
+def plot(filename, call=None, block=True):
+    if call:
+        p = argparse.ArgumentParser()
+        p.add_argument("cmd_args", metavar="interactive_arg", nargs="*",
+                       help=("arguments passed to the main function "
+                             "(in Python function call syntax; "
+                             "only the part inside the parentheses)"))
+        cmd_args = p.parse_args().cmd_args
+        matplotlib.rcParams["interactive"] = bool(cmd_args)
+    else:
+        cmd_args = []
     os.chdir(os.path.dirname(filename))
     matplotlib_try_enable_deterministic_svgs()
     matplotlib.style.use("ggplot")
     matplotlib.rcParams["font.sans-serif"] = ["Roboto"]
-    yield
+    if cmd_args:
+        args = []
+        kwargs = {}
+        for cmd_arg in cmd_args:
+            key, value = parse_kwarg(cmd_arg)
+            if key:
+                kwargs[key] = value
+            else:
+                args.append(value)
+        script = "{}({})\n".format(
+            call.__name__,
+            ", ".join("{!r}".format(arg) for arg in args),
+            ", ".join("{}={!r}".format(key, value)
+                      for key, value in sorted(kwargs)))
+        sys.stderr.write(script)
+        sys.stderr.flush()
+        call(*args, **kwargs)
+        yield True
+    else:
+        yield False
     if matplotlib.rcParams["interactive"]:
         plt.show(block=block)
 
@@ -364,8 +412,14 @@ def p_num_filled_to_label(p, num_filled):
     else:
         return "rm"
 
-def label_num_filled_to_ml(label, num_filled):
+def preferred_ml(label, num_filled):
+    '''Use the ml closest to shell closure, closest to zero.'''
     return 0 if label == "ground" else (num_filled + (label != "add")) % 2
+
+def filter_preferred_ml(d):
+    return d.apply(lambda r:
+                   r["ml"] == preferred_ml(r["label"], r["num_filled"]),
+                   axis=1)
 
 def canonicalize_p(p):
     '''The addition/removal energies use p to label the state that is being

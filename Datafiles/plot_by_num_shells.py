@@ -10,7 +10,7 @@ import utils
 def plot(label, num_filled, freq,
          num_shells_range, interaction="normal"):
     d = utils.load_all()
-    ml = utils.label_num_filled_to_ml(label, num_filled)
+    d = utils.filter_preferred_ml(d)
     d = d[(d["method"] != "imsrg[f]+eom[n]") &
           (d["method"] != "magnus_quads+eom") &
           (d["interaction"] == interaction) &
@@ -18,8 +18,7 @@ def plot(label, num_filled, freq,
           (d["num_filled"] == num_filled) &
           (d["num_shells"] >= num_shells_range[0]) &
           (d["num_shells"] <= num_shells_range[1]) &
-          (d["freq"] == 1.0) &
-          (d["ml"] == ml)]
+          (d["freq"] == 1.0)]
     num_particles = num_filled * (num_filled + 1)
     energy_type = {"ground": "ground state",
                    "add": "addition",
@@ -43,12 +42,6 @@ def plot(label, num_filled, freq,
                   "{label}-{ml}-{interaction}"
                   .format(**locals()))
 
-p = argparse.ArgumentParser()
-p.add_argument("-i", "--interactive")
-args = p.parse_args()
-plt.rcParams["interactive"] = args.interactive is not None
-with utils.plot(__file__):
-    if args.interactive is not None:
-        eval("plot({})".format(args.interactive))
-    else:
+with utils.plot(__file__, call=plot) as interactive:
+    if not interactive:
         plot("ground", freq=1.0, num_filled=2, num_shells_range=[4, 15])
