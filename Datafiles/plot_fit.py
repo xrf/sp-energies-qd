@@ -197,13 +197,15 @@ def plot_fits(data,
     settings_fn = os.path.join("plot_settings", fn + ".json")
     settings = utils.load_json(settings_fn) or {"ax1": {}, "ax2": {}}
     fit_results_fn = os.path.join("fit_results", fn + ".json")
-    os.makedirs("fit_results", exist_ok=True)
-    utils.save_json(fit_results_fn, fit_results)
     def save_settings():
         utils.save_json(settings_fn, settings)
     utils.sync_axes_lims(ax[0], settings["ax1"], save_settings)
     utils.sync_axes_lims(ax[1], settings["ax2"], save_settings)
     utils.savefig(fig, fn)
+    os.makedirs("fit_results", exist_ok=True)
+    utils.save_json(fit_results_fn, fit_results)
+    sys.stderr.write("// Fit results saved to: {}\n\n".format(fn))
+    sys.stderr.flush()
 
 def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
          interaction="normal", hartree_fock=False):

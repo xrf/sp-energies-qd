@@ -92,7 +92,7 @@ def plot(filename, call=None, block=True, main_name="main"):
     if call:
         call_name = call.__qualname__
         p = argparse.ArgumentParser(
-            description=("The plotting script can be either run with no "
+            description=("The plotting script may be run without "
                          f"arguments, in which case it runs the '{main_name}' "
                          "function (which usually saves a set of predefined "
                          "plots to disk).  Otherwise, if the script is called "
@@ -145,7 +145,7 @@ def savefig(fig, name):
         fn = "../FigureFiles/fig-{name}.svg".format(**locals())
         fig.savefig(fn)
         plt.close(fig)
-        sys.stderr.write("// Figure saved to: {}\n\n".format(fn))
+        sys.stderr.write("//Figure saved to: {}\n\n".format(fn))
         sys.stderr.flush()
 
 def filter_eq(d, keys, check_unused_kwargs=True):
