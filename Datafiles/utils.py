@@ -65,6 +65,7 @@ def matplotlib_try_enable_deterministic_svgs():
         sys.stderr.flush()
 
 def init(filename):
+    '''(Obsolete)'''
     plot(filename).__enter__()
 
 def parse_arg(s):
@@ -87,13 +88,20 @@ def parse_kwarg(s):
     return key, parse_arg(s)
 
 @contextlib.contextmanager
-def plot(filename, call=None, block=True):
+def plot(filename, call=None, block=True, main_name="main"):
     if call:
-        p = argparse.ArgumentParser()
+        call_name = call.__qualname__
+        p = argparse.ArgumentParser(
+            description=("The plotting script can be either run with no "
+                         f"arguments, in which case it runs the '{main_name}' "
+                         "function (which usually saves a set of predefined "
+                         "plots to disk).  Otherwise, if the script is called "
+                         "with arguments in Python syntax, they will be "
+                         f"passed to '{call_name}'."))
         p.add_argument("cmd_args", metavar="interactive_arg", nargs="*",
-                       help=("arguments passed to the main function "
+                       help=(f"arguments passed to the '{call_name}' function "
                              "(in Python function call syntax; "
-                             "only the part inside the parentheses)"))
+                             "just the part inside the parentheses)"))
         cmd_args = p.parse_args().cmd_args
         matplotlib.rcParams["interactive"] = bool(cmd_args)
     else:
@@ -111,7 +119,6 @@ def plot(filename, call=None, block=True):
                 kwargs[key] = value
             else:
                 args.append(value)
-        print(kwargs)
         sys.stderr.write("{}({})\n".format(
             call.__name__,
             ", ".join(["{!r}".format(arg) for arg in args] +
@@ -124,6 +131,14 @@ def plot(filename, call=None, block=True):
         yield False
     if matplotlib.rcParams["interactive"]:
         plt.show(block=block)
+
+def plot_main(filename, call, main):
+    '''Run 'call' if interactive arguments are provided, or just call 'main'
+    if the script is run in non-interactive mode.'''
+    main_name = main.__qualname__
+    with plot(__file__, call=call, main_name=main_name) as interactive:
+        if not interactive:
+            main()
 
 def savefig(fig, name):
     if not matplotlib.rcParams["interactive"]:

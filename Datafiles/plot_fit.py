@@ -111,97 +111,99 @@ def plot_fits(data,
     fit_range = fit_range + np.array([-0.2, 0.2]) # make it look less ambiguous
     # continuous x range for plotting continuous functions
     x_c = np.linspace(data[x_col].min() - 1, data[x_col].max() + 1, 250)
-    for title_key, gg in utils.groupby(data, title_cols):
-        fig, ax = plt.subplots(2)
-        fig.set_size_inches(8, 10) # otherwise the text will get obscured
-        y_range = np.array([np.nan, np.nan])
-        for color_key, g in utils.groupby(gg, color_cols):
-            color = get_color(color_key["method"])
-            label = get_color_label(color_key["method"])
-            g = g.sort_values([x_col])
-            d = g.rename(columns={x_col: "x", y_col: "y"})
-            deriv_d = differentiate(d, "x", "y", "dydx")
-            x = deriv_d["x"]
-            dydx = deriv_d["dydx"]
-            ax[0].plot(x, abs(dydx), "x", label=label, color=color)
-            ax[1].plot(d["x"], d["y"], "x", label=label, color=color)
-            utils.update_range(y_range, d["y"])
+    [(title_key, gg)] = utils.groupby(data, title_cols)
+    fig, ax = plt.subplots(2)
+    fig.set_size_inches(8, 10) # otherwise the text will get obscured
+    y_range = np.array([np.nan, np.nan])
+    fit_results = {}
+    for color_key, g in utils.groupby(gg, color_cols):
+        color = get_color(color_key["method"])
+        label = get_color_label(color_key["method"])
+        g = g.sort_values([x_col])
+        d = g.rename(columns={x_col: "x", y_col: "y"})
+        deriv_d = differentiate(d, "x", "y", "dydx")
+        x = deriv_d["x"]
+        dydx = deriv_d["dydx"]
+        ax[0].plot(x, abs(dydx), "x", label=label, color=color)
+        ax[1].plot(d["x"], d["y"], "x", label=label, color=color)
+        utils.update_range(y_range, d["y"])
 
-            d_subset = d[d["x"].between(*fit_range)]
-            deriv_subset = deriv_d[deriv_d["x"].between(*fit_range)]
-            if len(deriv_subset) < 2:
+        d_subset = d[d["x"].between(*fit_range)]
+        deriv_subset = deriv_d[deriv_d["x"].between(*fit_range)]
+        if len(deriv_subset) < 2:
+            continue
+        fit = do_fit(d_subset, deriv_subset)
+        fit_results[color_key["method"]] = fit
+
+        for stage, result in fit.items():
+            if stage == "fixedab":
+                continue # fixedab yields the same plot here as logderiv
+            a = result["coefficient"]
+            b = result["exponent"]
+            b_err = result.get("exponent_err", None)
+            dydx_c = a * b * x_c ** (b - 1.0)
+            ax[0].plot(
+                x_c, abs(dydx_c), linestyle=STAGE_TO_LINESTYLE[stage],
+                label=label + " " + fit_label(stage, b, b_err),
+                color=color)
+
+        for stage, result in fit.items():
+            if "constant" not in result:
                 continue
-            fit = do_fit(d_subset, deriv_subset)
-            sys.stdout.write(utils.json_pretty(fit) + "\n\n")
-            sys.stdout.flush()
+            a = result["coefficient"]
+            b = result["exponent"]
+            c = result["constant"]
+            b_err = result.get("exponent_err", None)
+            y_c = a * x_c ** b + c
+            ax[1].plot(
+                x_c, y_c, linestyle=STAGE_TO_LINESTYLE[stage],
+                label=label + " " + fit_label(stage, b, b_err),
+                color=color)
+            ax[1].axhline(c, linestyle=":", color=color)
+            utils.update_range(y_range, c)
 
-            for stage, result in fit.items():
-                if stage == "fixedab":
-                    continue # fixedab yields the same plot here as logderiv
-                a = result["coefficient"]
-                b = result["exponent"]
-                b_err = result.get("exponent_err", None)
-                dydx_c = a * b * x_c ** (b - 1.0)
-                ax[0].plot(
-                    x_c, abs(dydx_c), linestyle=STAGE_TO_LINESTYLE[stage],
-                    label=label + " " + fit_label(stage, b, b_err),
-                    color=color)
+    g = get_dmc(**title_key)
+    if len(g):
+        y = g[y_col].iloc[0]
+        if dmc_yerr_col is not None:
+            y_err = g[dmc_yerr_col].iloc[0]
+            ax[1].axhspan(y - y_err, y + y_err, alpha=0.4,
+                        color="black", label=dmc_label)
+            utils.update_range(y_range, [y - y_err, y + y_err])
+        # add an extra line to make sure it's visible
+        ax[1].axhline(y, alpha=0.4, color="black")
+        utils.update_range(y_range, [y])
 
-            for stage, result in fit.items():
-                if "constant" not in result:
-                    continue
-                a = result["coefficient"]
-                b = result["exponent"]
-                c = result["constant"]
-                b_err = result.get("exponent_err", None)
-                y_c = a * x_c ** b + c
-                ax[1].plot(
-                    x_c, y_c, linestyle=STAGE_TO_LINESTYLE[stage],
-                    label=label + " " + fit_label(stage, b, b_err),
-                    color=color)
-                ax[1].axhline(c, linestyle=":", color=color)
-                utils.update_range(y_range, c)
+    ax[0].axvspan(fit_range[0], fit_range[1], alpha=0.15, color="#d6a528")
+    ax[0].set_xlabel(x_label)
+    ax[0].set_ylabel(absdydx_label)
+    ax[0].set_xscale("log")
+    ax[0].set_yscale("log")
+    ax[0].set_title(get_title(**title_key))
+    box = ax[0].get_position()
+    ax[0].set_position([box.x0, box.y0, box.width * 0.6, box.height])
+    ax[0].legend(bbox_to_anchor=(1, 1.0))
 
-        g = get_dmc(**title_key)
-        if len(g):
-            y = g[y_col].iloc[0]
-            if dmc_yerr_col is not None:
-                y_err = g[dmc_yerr_col].iloc[0]
-                ax[1].axhspan(y - y_err, y + y_err, alpha=0.4,
-                            color="black", label=dmc_label)
-                utils.update_range(y_range, [y - y_err, y + y_err])
-            # add an extra line to make sure it's visible
-            ax[1].axhline(y, alpha=0.4, color="black")
-            utils.update_range(y_range, [y])
+    ax[1].axvspan(fit_range[0], fit_range[1], alpha=0.15, color="#d6a528")
+    ax[1].legend()
+    ax[1].set_xlabel(x_label)
+    ax[1].set_ylabel(y_label)
+    ax[1].set_ylim(*utils.expand_range(y_range, 0.05))
+    box = ax[1].get_position()
+    ax[1].set_position([box.x0, box.y0, box.width * 0.6, box.height])
+    ax[1].legend(bbox_to_anchor=(1, 1.0))
 
-        ax[0].axvspan(fit_range[0], fit_range[1], alpha=0.15, color="#d6a528")
-        ax[0].set_xlabel(x_label)
-        ax[0].set_ylabel(absdydx_label)
-        ax[0].set_xscale("log")
-        ax[0].set_yscale("log")
-        ax[0].set_title(get_title(**title_key))
-        box = ax[0].get_position()
-        ax[0].set_position([box.x0, box.y0, box.width * 0.6, box.height])
-        ax[0].legend(bbox_to_anchor=(1, 1.0))
-
-        ax[1].axvspan(fit_range[0], fit_range[1], alpha=0.15, color="#d6a528")
-        ax[1].legend()
-        ax[1].set_xlabel(x_label)
-        ax[1].set_ylabel(y_label)
-        ax[1].set_ylim(*utils.expand_range(y_range, 0.05))
-        box = ax[1].get_position()
-        ax[1].set_position([box.x0, box.y0, box.width * 0.6, box.height])
-        ax[1].legend(bbox_to_anchor=(1, 1.0))
-
-        fn = get_fn(**title_key)
-        settings_fn = os.path.join("plot_settings", fn + ".json")
-        settings = utils.load_json(settings_fn) or {"ax1": {}, "ax2": {}}
-        def save_settings():
-            utils.save_json(settings_fn, settings)
-        utils.sync_axes_lims(ax[0], settings["ax1"], save_settings)
-        utils.sync_axes_lims(ax[1], settings["ax2"], save_settings)
-        utils.savefig(fig, fn)
-        break
+    fn = get_fn(**title_key)
+    settings_fn = os.path.join("plot_settings", fn + ".json")
+    settings = utils.load_json(settings_fn) or {"ax1": {}, "ax2": {}}
+    fit_results_fn = os.path.join("fit_results", fn + ".json")
+    os.makedirs("fit_results", exist_ok=True)
+    utils.save_json(fit_results_fn, fit_results)
+    def save_settings():
+        utils.save_json(settings_fn, settings)
+    utils.sync_axes_lims(ax[0], settings["ax1"], save_settings)
+    utils.sync_axes_lims(ax[1], settings["ax2"], save_settings)
+    utils.savefig(fig, fn)
 
 def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
          interaction="normal", hartree_fock=False):
@@ -247,32 +249,33 @@ def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
         dmc_yerr_col="energy_err",
     )
 
-with utils.plot(__file__, call=plot) as interactive:
-    if not interactive:
-        plot("ground", num_filled=1, freq=1.0, fit_start=6)
-        plot("ground", num_filled=1, freq=0.28, fit_start=6)
-        plot("ground", num_filled=2, freq=1.0, fit_start=6)
-        plot("ground", num_filled=2, freq=0.28, fit_start=6)
-        plot("ground", num_filled=3, freq=1.0, fit_start=9)
-        plot("ground", num_filled=3, freq=0.28, fit_start=9)
-        plot("ground", num_filled=4, freq=1.0, fit_start=10)
-        plot("ground", num_filled=4, freq=0.28, fit_start=14)
-        plot("ground", num_filled=5, freq=1.0, fit_start=15)
-        plot("ground", num_filled=5, freq=0.28, fit_start=17)
-        plot("ground", num_filled=6, freq=1.0, fit_start=16)
+def main():
+    plot("ground", num_filled=1, freq=1.0, fit_start=6)
+    plot("ground", num_filled=1, freq=0.28, fit_start=6)
+    plot("ground", num_filled=2, freq=1.0, fit_start=6)
+    plot("ground", num_filled=2, freq=0.28, fit_start=6)
+    plot("ground", num_filled=3, freq=1.0, fit_start=9)
+    plot("ground", num_filled=3, freq=0.28, fit_start=9)
+    plot("ground", num_filled=4, freq=1.0, fit_start=10)
+    plot("ground", num_filled=4, freq=0.28, fit_start=14)
+    plot("ground", num_filled=5, freq=1.0, fit_start=15)
+    plot("ground", num_filled=5, freq=0.28, fit_start=17)
+    plot("ground", num_filled=6, freq=1.0, fit_start=16)
 
-        plot("add", num_filled=1, freq=1.0, fit_start=7)
-        plot("add", num_filled=1, freq=0.28, fit_start=7)
-        plot("add", num_filled=2, freq=1.0, fit_start=10)
-        plot("add", num_filled=2, freq=0.28, fit_start=10)
-        plot("add", num_filled=3, freq=1.0, fit_start=13)
-        plot("add", num_filled=3, freq=0.28, fit_start=13)
-        plot("add", num_filled=4, freq=1.0, fit_start=13)
+    plot("add", num_filled=1, freq=1.0, fit_start=7)
+    plot("add", num_filled=1, freq=0.28, fit_start=7)
+    plot("add", num_filled=2, freq=1.0, fit_start=10)
+    plot("add", num_filled=2, freq=0.28, fit_start=10)
+    plot("add", num_filled=3, freq=1.0, fit_start=13)
+    plot("add", num_filled=3, freq=0.28, fit_start=13)
+    plot("add", num_filled=4, freq=1.0, fit_start=13)
 
-        plot("rm", num_filled=1, freq=1.0, fit_start=7)
-        plot("rm", num_filled=1, freq=0.28, fit_start=7)
-        plot("rm", num_filled=2, freq=1.0, fit_start=10)
-        plot("rm", num_filled=2, freq=0.28, fit_start=10)
-        plot("rm", num_filled=3, freq=1.0, fit_start=13)
-        plot("rm", num_filled=3, freq=0.28, fit_start=13)
-        plot("rm", num_filled=4, freq=1.0, fit_start=13)
+    plot("rm", num_filled=1, freq=1.0, fit_start=7)
+    plot("rm", num_filled=1, freq=0.28, fit_start=7)
+    plot("rm", num_filled=2, freq=1.0, fit_start=10)
+    plot("rm", num_filled=2, freq=0.28, fit_start=10)
+    plot("rm", num_filled=3, freq=1.0, fit_start=13)
+    plot("rm", num_filled=3, freq=0.28, fit_start=13)
+    plot("rm", num_filled=4, freq=1.0, fit_start=13)
+
+utils.plot_main(__file__, plot, main)
