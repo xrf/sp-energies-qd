@@ -116,8 +116,8 @@ def plot_fits(data,
         fig.set_size_inches(8, 10) # otherwise the text will get obscured
         y_range = np.array([np.nan, np.nan])
         for color_key, g in utils.groupby(gg, color_cols):
-            color = get_color(**color_key)
-            label = get_color_label(**color_key)
+            color = get_color(color_key["method"])
+            label = get_color_label(color_key["method"])
             g = g.sort_values([x_col])
             d = g.rename(columns={x_col: "x", y_col: "y"})
             deriv_d = differentiate(d, "x", "y", "dydx")
@@ -203,91 +203,76 @@ def plot_fits(data,
         utils.savefig(fig, fn)
         break
 
-def plot_addrm(label, interaction, freq, num_filled,
-               fit_start, fit_stop, **kwargs):
-    d_dmc = utils.load_addrm_dmc()
-    d = utils.load_addrm()
-    # d = d[d["method"] != "imsrg[f]+eom[n]"]
-    # use the ml closest to shell closure
-    d = d[d["ml"] == (d["num_filled"] + (d["label"] != "add")) % 2]
+def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
+         interaction="normal", hartree_fock=False):
+    d_dmc = utils.load_all_dmc()
+    d = utils.load_all()
+    d = utils.filter_preferred_ml(d)
+    d = d[d["method"] != "imsrg[f]+eom[n]"]
 
     # filters
     d = d[d["interaction"] == interaction]
     d = d[d["num_filled"] == num_filled]
     d = d[d["freq"] == freq]
     d = d[d["label"] == label]
+    if hartree_fock:
+        d = d[d["method"] != "hf"]
 
-    d.to_csv("/tmp/test.dat")
+    if label == "ground":
+        e_sym = "E/N"
+        e_text = "energy per particle"
+        d["energy"] /= d["num_particles"]
+        d_dmc["energy"] /= d_dmc["num_particles"]
+        d_dmc["energy_err"] /= d_dmc["num_particles"]
+    else:
+        e_sym = "ε"
+        e_text = "energy"
     plot_fits(
         data=d,
         fit_range=[fit_start, fit_stop],
         x_col="num_shells",
         x_label="K (number of shells)",
         y_col="energy",
-        y_label="E (energy)",
-        absdydx_label="|∂E/∂K|",
+        y_label=f"{e_sym} ({e_text})",
+        absdydx_label=f"|∂{e_sym}/∂K|",
         title_cols=["label", "num_filled", "num_particles", "freq"],
-        get_title="{label}, n={num_particles}, ω={freq}".format,
+        get_title="{label}, N={num_particles}, ω={freq}".format,
         get_fn="fit-{label}-{num_filled}-{freq}".format,
         color_cols=["method"],
-        get_color=lambda method: utils.METHOD_COLOR[method],
-        get_color_label=lambda method: method,
+        get_color=utils.METHOD_COLOR.get,
+        get_color_label=utils.METHOD_LABEL.get,
         get_dmc=utils.filter_eq(d_dmc, ["label", "num_filled", "freq"],
                                 check_unused_kwargs=False),
         dmc_label="DMC",
         dmc_yerr_col="energy_err",
     )
 
-def plot_ground(interaction, freq, num_filled,
-                fit_start, fit_stop, hartree_fock, **kwargs):
-    d_dmc = utils.load_ground_dmc()
-    d = utils.load_ground()
+with utils.plot(__file__, call=plot) as interactive:
+    if not interactive:
+        plot("ground", num_filled=1, freq=1.0, fit_start=6)
+        plot("ground", num_filled=1, freq=0.28, fit_start=6)
+        plot("ground", num_filled=2, freq=1.0, fit_start=6)
+        plot("ground", num_filled=2, freq=0.28, fit_start=6)
+        plot("ground", num_filled=3, freq=1.0, fit_start=9)
+        plot("ground", num_filled=3, freq=0.28, fit_start=9)
+        plot("ground", num_filled=4, freq=1.0, fit_start=10)
+        plot("ground", num_filled=4, freq=0.28, fit_start=14)
+        plot("ground", num_filled=5, freq=1.0, fit_start=15)
+        plot("ground", num_filled=5, freq=0.28, fit_start=17)
+        plot("ground", num_filled=6, freq=1.0, fit_start=16)
 
-    # filters
-    d = d[d["interaction"] == interaction]
-    d = d[d["num_filled"] == num_filled]
-    d = d[d["freq"] == freq]
-    if not hartree_fock:
-        d = d[d["method"] != "hf"]
+        plot("add", num_filled=1, freq=1.0, fit_start=7)
+        plot("add", num_filled=1, freq=0.28, fit_start=7)
+        plot("add", num_filled=2, freq=1.0, fit_start=10)
+        plot("add", num_filled=2, freq=0.28, fit_start=10)
+        plot("add", num_filled=3, freq=1.0, fit_start=13)
+        plot("add", num_filled=3, freq=0.28, fit_start=13)
+        plot("add", num_filled=4, freq=1.0, fit_start=13)
 
-    plot_fits(
-        data=d,
-        fit_range=[fit_start, fit_stop],
-        x_col="num_shells",
-        x_label="K (number of shells)",
-        y_col="energy_per_particle",
-        y_label="E/N (energy per particle)",
-        absdydx_label="|∂(E/N)/∂K|",
-        title_cols=["num_filled", "num_particles", "freq"],
-        get_title="ground, N={num_particles}, ω={freq}".format,
-        get_fn="fit-ground-{num_filled}-{freq}".format,
-        color_cols=["method"],
-        get_color=lambda method: utils.METHOD_COLOR[method],
-        get_color_label=lambda method: method,
-        get_dmc=utils.filter_eq(["num_filled", "freq"],
-                                check_unused_kwargs=False),
-        dmc_label="DMC",
-        dmc_yerr_col="energy_per_particle_err",
-    )
-
-def main():
-    p = argparse.ArgumentParser()
-    p.add_argument("-i", "--interactive", action="store_true")
-    p.add_argument("-int", "--interaction", default="normal")
-    p.add_argument("-fq", "--freq", type=float, required=True)
-    p.add_argument("-kf", "--num-filled", type=int, required=True)
-    p.add_argument("-k1", "--fit-start", type=float, required=True)
-    p.add_argument("-k2", "--fit-stop", type=float, default=np.inf)
-    p.add_argument("-hf", "--hartree-fock", action="store_true")
-    p.add_argument("label", metavar="type", help="ground, add, or rm")
-    kwargs = vars(p.parse_args())
-    plt.rcParams["interactive"] = kwargs["interactive"]
-    with utils.plot(__file__):
-        if kwargs["label"] == "ground":
-            plot_ground(**kwargs)
-        elif kwargs["label"] in ["add", "rm"]:
-            plot_addrm(**kwargs)
-        else:
-            raise ValueError("<type> argument is invalid")
-
-main()
+        plot("rm", num_filled=1, freq=1.0, fit_start=7)
+        plot("rm", num_filled=1, freq=0.28, fit_start=7)
+        plot("rm", num_filled=2, freq=1.0, fit_start=10)
+        plot("rm", num_filled=2, freq=0.28, fit_start=10)
+        plot("rm", num_filled=3, freq=1.0, fit_start=13)
+        plot("rm", num_filled=3, freq=0.28, fit_start=13)
+        plot("rm", num_filled=4, freq=1.0, fit_start=13)

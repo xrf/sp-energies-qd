@@ -80,9 +80,10 @@ def parse_arg(s):
 def parse_kwarg(s):
     key = ""
     s = s.strip()
-    m = re.match(r"(\w+)\s*[=]\s*(.*)", s)
+    m = re.match(r"(\w+)\s*[=]\s*(.*)$", s)
     if m:
         key, s = m.groups()
+    s = re.match(r"(.*?),?$", s).group(1)
     return key, parse_arg(s)
 
 @contextlib.contextmanager
@@ -110,12 +111,12 @@ def plot(filename, call=None, block=True):
                 kwargs[key] = value
             else:
                 args.append(value)
-        script = "{}({})\n".format(
+        print(kwargs)
+        sys.stderr.write("{}({})\n".format(
             call.__name__,
-            ", ".join("{!r}".format(arg) for arg in args),
-            ", ".join("{}={!r}".format(key, value)
-                      for key, value in sorted(kwargs)))
-        sys.stderr.write(script)
+            ", ".join(["{!r}".format(arg) for arg in args] +
+                      ["{}={!r}".format(k, v)
+                       for k, v in sorted(kwargs.items())])))
         sys.stderr.flush()
         call(*args, **kwargs)
         yield True
@@ -417,9 +418,9 @@ def preferred_ml(label, num_filled):
     return 0 if label == "ground" else (num_filled + (label != "add")) % 2
 
 def filter_preferred_ml(d):
-    return d.apply(lambda r:
-                   r["ml"] == preferred_ml(r["label"], r["num_filled"]),
-                   axis=1)
+    return d[d.apply(lambda r:
+                     r["ml"] == preferred_ml(r["label"], r["num_filled"]),
+                     axis=1)]
 
 def canonicalize_p(p):
     '''The addition/removal energies use p to label the state that is being
@@ -675,10 +676,28 @@ def load_addrm(toler=3e-7,
     d["num_particles"] = d["num_filled"] * (d["num_filled"] + 1)
     return d
 
+def load_all_dmc():
+    ds = []
+
+    d = load_ground_dmc()
+    del d["energy_per_particle"]
+    del d["energy_per_particle_err"]
+    ds.append(d)
+
+    ds.append(load_addrm_dmc())
+
+    return pd.concat(ds, ignore_index=True)
+
 def load_all():
+    ds = []
+
     d = load_ground()
     del d["energy_per_particle"]
-    return pd.concat([d, load_addrm()], ignore_index=True)
+    ds.append(d)
+
+    ds.append(load_addrm())
+
+    return pd.concat(ds, ignore_index=True)
 
 def fit_change(fit_type, fit_points, x, y, **params):
     # note: y here is the derivative
