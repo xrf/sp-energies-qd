@@ -1,5 +1,5 @@
 import argparse, base64, collections, contextlib, decimal
-import functools, hashlib, io, json, os, pickle, re, sys
+import functools, hashlib, io, json, logging, os, pickle, re, sys
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -102,7 +102,11 @@ def plot(filename, call=None, block=True, main_name="main"):
                        help=(f"arguments passed to the '{call_name}' function "
                              "(in Python function call syntax; "
                              "just the part inside the parentheses)"))
-        cmd_args = p.parse_args().cmd_args
+        p.add_argument("-v", "--verbose", action="store_true")
+        args = p.parse_args()
+        if args.verbose:
+            logging.basicConfig(level=logging.INFO)
+        cmd_args = args.cmd_args
         matplotlib.rcParams["interactive"] = bool(cmd_args)
     else:
         cmd_args = []
@@ -334,7 +338,6 @@ def parse_nathan_like_data(d, label):
         "ML": "ml",
         "omega": "freq",
     })
-    d["method"] = "eom"
     d["label"] = label
     return d
 
@@ -473,11 +476,11 @@ def superset_combiner(d):
         raise Exception("Not a superset:", d)
     return d
 
-SAM_ATTACHED_COLS = ["shells", "filled", "ML", "MS", "omega", "E(N)",
-                     "E(N+1)-E(N)", "E(N+1)", "partialnorm(1p)"]
+NATHAN_ATTACHED_COLS = ["shells", "filled", "ML", "MS", "omega", "E(N)",
+                        "E(N+1)-E(N)", "E(N+1)", "partialnorm(1p)"]
 
-SAM_REMOVED_COLS = ["shells", "filled", "ML", "MS", "omega", "E(N)",
-                    "E(N-1)-E(N)", "E(N+1)", "partialnorm(1p)"]
+NATHAN_REMOVED_COLS = ["shells", "filled", "ML", "MS", "omega", "E(N)",
+                       "E(N-1)-E(N)", "E(N+1)", "partialnorm(1p)"]
 
 def load_ground_dmc():
     '''Similar to load_ground, but without num_shells nor priority and has
@@ -543,7 +546,7 @@ def load_ground(with_priority=False, toler=6e-4):
     d1 = load_table("EOM_IMSRG_qd_attached.dat")
     d1["method"] = "imsrg"
     d2 = load_table("EOM_CCSD_qd_attached.dat",
-                    names=SAM_ATTACHED_COLS)
+                    names=NATHAN_ATTACHED_COLS)
     d2["method"] = "ccsd"
     d = pd.concat([d1, d2], ignore_index=True)
     d = d[["shells", "filled", "omega", "E(N)", "method"]]
@@ -590,6 +593,7 @@ def load_addrm_dmc():
     d["num_particles"] = d["num_filled"] * (d["num_filled"] + 1)
     return d
 
+
 @cached()
 def load_addrm(toler=3e-7,
                files=FileDeps(
@@ -598,6 +602,10 @@ def load_addrm(toler=3e-7,
                    "EOM_IMSRG_qd_removed.dat",
                    "freq_sweep_N6_R10_attached.dat",
                    "freq_sweep_N6_R10_removed.dat",
+                   "EOM-IMSRG_freq_sweep_6part_ml1_attached.dat",
+                   "EOM-IMSRG_freq_sweep_6part_ml1_removed.dat",
+                   "EOM_IMSRG_softened_attached.dat",
+                   "EOM_IMSRG_softened_removed.dat",
                    "EOM_IMSRG_FEI_HAM_particle_attached.dat",
                    "EOM_IMSRG_FEI_HAM_particle_removed.dat",
                    "EOM_magnus_quads_attached.dat",
@@ -644,6 +652,27 @@ def load_addrm(toler=3e-7,
     d = parse_nathan_like_data(d, "rm")
     d["method"] = "imsrg+eom"
     d["interaction"] = "normal"
+    d = load_table(files["EOM-IMSRG_freq_sweep_6part_ml1_attached.dat"],
+                   names=NATHAN_ATTACHED_COLS)
+    d = parse_nathan_like_data(d, "add")
+    d["method"] = "imsrg+eom"
+    d["interaction"] = "normal"
+    ds.append(d)
+    d = load_table(files["EOM-IMSRG_freq_sweep_6part_ml1_removed.dat"],
+                   names=NATHAN_REMOVED_COLS)
+    d = parse_nathan_like_data(d, "rm")
+    d["method"] = "imsrg+eom"
+    d["interaction"] = "normal"
+    ds.append(d)
+    d = load_table(files["EOM_IMSRG_softened_attached.dat"])
+    d = parse_nathan_like_data(d, "add")
+    d["method"] = "imsrg+eom"
+    d["interaction"] = "sigmaA=0.5,sigmaB=4.0"
+    ds.append(d)
+    d = load_table(files["EOM_IMSRG_softened_removed.dat"])
+    d = parse_nathan_like_data(d, "rm")
+    d["method"] = "imsrg+eom"
+    d["interaction"] = "sigmaA=0.5,sigmaB=4.0"
     ds.append(d)
 
     # Nathan's EOM on Fei's IMSRG matrix elements
@@ -673,12 +702,14 @@ def load_addrm(toler=3e-7,
     ds.append(d)
 
     # Sam's coupled cluster singles and doubles
-    d = load_table(files["EOM_CCSD_qd_attached.dat"], names=SAM_ATTACHED_COLS)
+    d = load_table(files["EOM_CCSD_qd_attached.dat"],
+                   names=NATHAN_ATTACHED_COLS)
     d = parse_nathan_like_data(d, "add")
     d["method"] = "ccsd+eom"
     d["interaction"] = "normal"
     ds.append(d)
-    d = load_table(files["EOM_CCSD_qd_removed.dat"], names=SAM_REMOVED_COLS)
+    d = load_table(files["EOM_CCSD_qd_removed.dat"],
+                   names=NATHAN_REMOVED_COLS)
     d = parse_nathan_like_data(d, "rm")
     d["method"] = "ccsd+eom"
     d["interaction"] = "normal"

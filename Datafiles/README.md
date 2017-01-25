@@ -29,7 +29,8 @@ Abbreviation for methods:
 
   - `EOM_CCSD_qd_*.dat`: ground (CCSD) + addrm (CC+EOM) by Sam
 
-  - `EOM_IMSRG_qd_*.dat`: ground (IMSRG) + addrm (IMSRG+EOM) by Nathan
+  - `EOM_IMSRG_qd_*.dat`, `EOM-IMSRG_freq_sweep_*.dat`, `freq_sweep_*.dat`:
+    ground (IMSRG) + addrm (IMSRG+EOM) by Nathan
 
   - `EOM_IMSRG_FEI_HAM_particle_*.dat`: similar to `EOM_IMSRG_qd_*.dat`.  EOM
     was calculated using Nathan's code with matrix elements from Fei's IM-SRG
