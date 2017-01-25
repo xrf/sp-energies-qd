@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import argparse, json, os, scipy, sys, traceback
+import argparse, itertools, json, os, scipy, sys, traceback, warnings
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -9,10 +9,46 @@ DUPLICATE_THRESHOLD = 1e-6
 
 STAGE_TO_LINESTYLE = {
     "logderiv": ":",
-    "deriv": "-.",
     "fixedab": "--",
     "full": "-",
 }
+
+def default_fit_condition(cov, **kwargs):
+    return np.isfinite(cov).all()
+
+def default_fit_compare(cov1, cov2, **kwargs):
+    # dimensionally this is valid and has the advantage of not being dependent
+    # on the parameter values, but I'm not sure if there is a rigorous
+    # justification to its sensibleness
+    return -np.sign(np.linalg.norm(cov1 / cov2) - cov1.shape[0] ** 2)
+
+class FittingError(Exception):
+    pass
+
+def try_curve_fit(f, x, y, p0,
+                  max_num_outliers=2,
+                  fit_compare=default_fit_compare):
+    '''Like scipy.optimize.curve_fit, but tries to drop some of the points to
+    find the most satisfactory fit.  The quality of the fit is compared using
+    'fit_compare'.'''
+    max_num_outliers = min(max_num_outliers, len(x) - len(p0))
+    best_outliers = None
+    for num_outliers in range(max_num_outliers + 1):
+        for outliers in itertools.combinations(list(x.index), num_outliers):
+            outliers = list(outliers)
+            new_x = x.drop(outliers)
+            new_y = y.drop(outliers)
+            p, cov = scipy.optimize.curve_fit(f, new_x, new_y, p0=p0)
+            if (best_outliers is None or
+                    fit_compare(p1=best_p, cov1=best_cov,
+                                outliers1=best_outliers,
+                                p2=p, cov2=cov, outliers2=outliers) < 0):
+                best_outliers = outliers
+                best_p = p
+                best_cov = cov
+    if best_outliers is not None:
+        return best_outliers, best_p, best_cov
+    raise FittingError("unable to get a satisfying fit")
 
 def do_fit(data, deriv_data):
     '''Perform a fit using a power law model:
@@ -22,22 +58,27 @@ def do_fit(data, deriv_data):
     data: DataFrameish{"x", "y"}
     deriv_data: DataFrameish{"x", "dydx"}
     '''
+
     result = {}
 
-    r = utils.fit_change(
-        fit_type="loglog",
-        fit_points=0,
-        x=deriv_data["x"],
-        y=deriv_data["dydx"],
-    )
-    result["logderiv"] = r["extra0"]    # linear fit on log|dy/dx|-log(x)
-    try:
-        result["deriv"] = r["extra"]    # power fit on dy/dx-x
-    except KeyError:
-        pass
+    # linear fit on log|dy/dx|-log(x)
+    sign = np.sign(np.mean(deriv_data["dydx"]))
+    outliers0 = deriv_data[deriv_data["dydx"] == 0.0].index
+    outliers, mc0, cov = try_curve_fit(
+        lambda x, m, c: m * x + c,
+        np.log(deriv_data["x"].drop(outliers0)),
+        np.log(abs(deriv_data["dydx"].drop(outliers0))),
+        p0=[1.0, 1.0])
+    b0 = mc0[0] + 1.0
+    a0 = sign * np.exp(mc0[1]) / (mc0[0] + 1.0)
+    result["logderiv"] = {
+        "loglog_params": mc0,
+        "loglog_cov": cov,
+        "exponent": b0,
+        "coefficient": a0,
+        "outliers": list(outliers0) + list(outliers),
+    }
 
-    b0 = result["logderiv"]["exponent"]
-    a0 = result["logderiv"]["coefficient"]
     c0, var_c0 = scipy.optimize.curve_fit(
         lambda x, c: a0 * x ** b0 + c,
         data["x"], data["y"], p0=[0.0])
@@ -132,9 +173,19 @@ def plot_fits(data,
         deriv_subset = deriv_d[deriv_d["x"].between(*fit_range)]
         if len(deriv_subset) < 2:
             continue
-        fit = do_fit(d_subset, deriv_subset)
+        try:
+            fit = do_fit(d_subset, deriv_subset)
+        except FittingError as e:
+            sys.stderr.write(f"could not fit {color_key['method']}: {e}\n")
+            sys.stderr.flush()
+            continue
+
         fit_results[color_key["method"]] = fit
 
+        outliers = deriv_subset.loc[fit["logderiv"]["outliers"]]
+        ax[0].plot(outliers["x"], abs(outliers["dydx"]), "o",
+                   markerfacecolor="none",
+                   label="", color="red")
         for stage, result in fit.items():
             if stage == "fixedab":
                 continue # fixedab yields the same plot here as logderiv
@@ -202,10 +253,7 @@ def plot_fits(data,
     utils.sync_axes_lims(ax[0], settings["ax1"], save_settings)
     utils.sync_axes_lims(ax[1], settings["ax2"], save_settings)
     utils.savefig(fig, fn)
-    os.makedirs("fit_results", exist_ok=True)
-    utils.save_json(fit_results_fn, fit_results)
-    sys.stderr.write("// Fit results saved to: {}\n\n".format(fn))
-    sys.stderr.flush()
+    return fit_results
 
 def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
          interaction="normal", hartree_fock=False):
@@ -231,7 +279,7 @@ def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
     else:
         e_sym = "ε"
         e_text = "energy"
-    plot_fits(
+    fit_results = plot_fits(
         data=d,
         fit_range=[fit_start, fit_stop],
         x_col="num_shells",
@@ -250,34 +298,50 @@ def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
         dmc_label="DMC",
         dmc_yerr_col="energy_err",
     )
+    results = []
+    for method, fit_result in sorted(fit_results.items()):
+        results.append({
+            "interaction": interaction,
+            "label": label,
+            "freq": freq,
+            "num_filled": num_filled,
+            "method": method,
+            "fit_result": fit_result,
+        })
+    return results
 
 def main():
-    plot("ground", num_filled=1, freq=1.0, fit_start=6)
-    plot("ground", num_filled=1, freq=0.28, fit_start=6)
-    plot("ground", num_filled=2, freq=1.0, fit_start=6)
-    plot("ground", num_filled=2, freq=0.28, fit_start=6)
-    plot("ground", num_filled=3, freq=1.0, fit_start=9)
-    plot("ground", num_filled=3, freq=0.28, fit_start=9)
-    plot("ground", num_filled=4, freq=1.0, fit_start=10)
-    plot("ground", num_filled=4, freq=0.28, fit_start=14)
-    plot("ground", num_filled=5, freq=1.0, fit_start=15)
-    plot("ground", num_filled=5, freq=0.28, fit_start=17)
-    plot("ground", num_filled=6, freq=1.0, fit_start=16)
+    r = []
 
-    plot("add", num_filled=1, freq=1.0, fit_start=7)
-    plot("add", num_filled=1, freq=0.28, fit_start=7)
-    plot("add", num_filled=2, freq=1.0, fit_start=10)
-    plot("add", num_filled=2, freq=0.28, fit_start=10)
-    plot("add", num_filled=3, freq=1.0, fit_start=13)
-    plot("add", num_filled=3, freq=0.28, fit_start=13)
-    plot("add", num_filled=4, freq=1.0, fit_start=13)
+    r.extend(plot("ground", num_filled=1, freq=1.0, fit_start=6))
+    r.extend(plot("ground", num_filled=1, freq=0.28, fit_start=6))
+    r.extend(plot("ground", num_filled=2, freq=1.0, fit_start=6))
+    r.extend(plot("ground", num_filled=2, freq=0.28, fit_start=6))
+    r.extend(plot("ground", num_filled=3, freq=1.0, fit_start=9))
+    r.extend(plot("ground", num_filled=3, freq=0.28, fit_start=9))
+    r.extend(plot("ground", num_filled=4, freq=1.0, fit_start=10))
+    r.extend(plot("ground", num_filled=4, freq=0.28, fit_start=14))
+    r.extend(plot("ground", num_filled=5, freq=1.0, fit_start=15))
+    r.extend(plot("ground", num_filled=5, freq=0.28, fit_start=17))
+    r.extend(plot("ground", num_filled=6, freq=1.0, fit_start=16))
 
-    plot("rm", num_filled=1, freq=1.0, fit_start=7)
-    plot("rm", num_filled=1, freq=0.28, fit_start=7)
-    plot("rm", num_filled=2, freq=1.0, fit_start=10)
-    plot("rm", num_filled=2, freq=0.28, fit_start=10)
-    plot("rm", num_filled=3, freq=1.0, fit_start=13)
-    plot("rm", num_filled=3, freq=0.28, fit_start=13)
-    plot("rm", num_filled=4, freq=1.0, fit_start=13)
+    r.extend(plot("add", num_filled=1, freq=1.0, fit_start=7))
+    r.extend(plot("add", num_filled=1, freq=0.28, fit_start=7))
+    r.extend(plot("add", num_filled=2, freq=1.0, fit_start=10))
+    r.extend(plot("add", num_filled=2, freq=0.28, fit_start=10))
+    r.extend(plot("add", num_filled=3, freq=1.0, fit_start=13))
+    r.extend(plot("add", num_filled=3, freq=0.28, fit_start=13))
+    r.extend(plot("add", num_filled=4, freq=1.0, fit_start=13))
 
+    r.extend(plot("rm", num_filled=1, freq=1.0, fit_start=7))
+    r.extend(plot("rm", num_filled=1, freq=0.28, fit_start=7))
+    r.extend(plot("rm", num_filled=2, freq=1.0, fit_start=10))
+    r.extend(plot("rm", num_filled=2, freq=0.28, fit_start=10))
+    r.extend(plot("rm", num_filled=3, freq=1.0, fit_start=13))
+    r.extend(plot("rm", num_filled=3, freq=0.28, fit_start=13))
+    r.extend(plot("rm", num_filled=4, freq=1.0, fit_start=13))
+
+    utils.save_json("fit_results.json", r)
+
+warnings.simplefilter("ignore", scipy.optimize.OptimizeWarning)
 utils.plot_main(__file__, plot, main)

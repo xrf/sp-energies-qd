@@ -145,7 +145,7 @@ def savefig(fig, name):
         fn = "../FigureFiles/fig-{name}.svg".format(**locals())
         fig.savefig(fn)
         plt.close(fig)
-        sys.stderr.write("//Figure saved to: {}\n\n".format(fn))
+        sys.stderr.write("Figure saved to: {}\n".format(fn))
         sys.stderr.flush()
 
 def filter_eq(d, keys, check_unused_kwargs=True):
