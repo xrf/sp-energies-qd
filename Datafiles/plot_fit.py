@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-import argparse, itertools, json, os, scipy, sys, traceback, warnings
+import argparse, itertools, json, logging, os, sys, traceback, warnings
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import scipy, scipy.stats
 import utils
 
 DUPLICATE_THRESHOLD = 1e-6
@@ -16,39 +17,58 @@ STAGE_TO_LINESTYLE = {
 def default_fit_condition(cov, **kwargs):
     return np.isfinite(cov).all()
 
-def default_fit_compare(cov1, cov2, **kwargs):
-    # dimensionally this is valid and has the advantage of not being dependent
+def rel_badness_cov(ref_fit, fit):
+    # dimensionally valid and has the advantage of not being dependent
     # on the parameter values, but I'm not sure if there is a rigorous
-    # justification to its sensibleness
-    return -np.sign(np.linalg.norm(cov1 / cov2) - cov1.shape[0] ** 2)
+    # justification to its sensibility
+    n = ref_fit["cov"].shape[0]
+    with np.errstate(divide="ignore"):
+        return np.linalg.norm(fit["cov"] / ref_fit["cov"]) / n ** 2
 
-class FittingError(Exception):
-    pass
-
-def try_curve_fit(f, x, y, p0,
-                  max_num_outliers=2,
-                  fit_compare=default_fit_compare):
+def try_curve_fit(f, x, y, p0, badness_threshold=0.05,
+                  rel_badness_func=rel_badness_cov, max_num_outliers=2):
     '''Like scipy.optimize.curve_fit, but tries to drop some of the points to
-    find the most satisfactory fit.  The quality of the fit is compared using
-    'fit_compare'.'''
-    max_num_outliers = min(max_num_outliers, len(x) - len(p0))
-    best_outliers = None
+    find the most satisfactory fit.
+
+    rel_badness_func(ref_fit, fit) should return a number between 0.0 and inf,
+    where 0.0 = fit is better than ref_fit, 1.0 = equally good, etc.  A 'fit'
+    is a dictionary:
+
+        {"outliers": outlier_indices, "p": params, "cov": covariance}
+
+    This is also the value that gets returned.
+
+    The badness_threshold is a number between 0.0 and 1.0 that determines the
+    eagerness to drop points.  At 1.0 the algorithm is maximally eager.
+    '''
+    max_num_outliers = min(max_num_outliers, len(x) - len(p0) - 2)
+    ref_fit = None
+    best_fit = None
     for num_outliers in range(max_num_outliers + 1):
+        fits = []
         for outliers in itertools.combinations(list(x.index), num_outliers):
             outliers = list(outliers)
             new_x = x.drop(outliers)
             new_y = y.drop(outliers)
             p, cov = scipy.optimize.curve_fit(f, new_x, new_y, p0=p0)
-            if (best_outliers is None or
-                    fit_compare(p1=best_p, cov1=best_cov,
-                                outliers1=best_outliers,
-                                p2=p, cov2=cov, outliers2=outliers) < 0):
-                best_outliers = outliers
-                best_p = p
-                best_cov = cov
-    if best_outliers is not None:
-        return best_outliers, best_p, best_cov
-    raise FittingError("unable to get a satisfying fit")
+            fit = {"outliers": outliers, "p": p, "cov": cov}
+            if ref_fit is None:         # first fit (no excluded points)
+                ref_fit = fit
+                best_fit = fit
+            else:
+                fits.append(fit)
+        if fits:
+            rel_badnesses = [rel_badness_func(ref_fit, fit) for fit in fits]
+            change = (np.min(rel_badnesses)
+                      / scipy.stats.gmean(rel_badnesses)
+                      / badness_threshold)
+            if change <= 1.0:
+                best_fit = fits[np.argmin(rel_badnesses)]
+                logging.info("try_curve_fit: accept: "
+                             "log10(min_badness/avg_badness) = "
+                             f"{np.log10(change * badness_threshold)}")
+    assert best_fit
+    return best_fit
 
 def do_fit(data, deriv_data):
     '''Perform a fit using a power law model:
@@ -64,11 +84,14 @@ def do_fit(data, deriv_data):
     # linear fit on log|dy/dx|-log(x)
     sign = np.sign(np.mean(deriv_data["dydx"]))
     outliers0 = deriv_data[deriv_data["dydx"] == 0.0].index
-    outliers, mc0, cov = try_curve_fit(
+    r = try_curve_fit(
         lambda x, m, c: m * x + c,
         np.log(deriv_data["x"].drop(outliers0)),
         np.log(abs(deriv_data["dydx"].drop(outliers0))),
         p0=[1.0, 1.0])
+    outliers = r["outliers"]
+    mc0 = r["p"]
+    cov = r["cov"]
     b0 = mc0[0] + 1.0
     a0 = sign * np.exp(mc0[1]) / (mc0[0] + 1.0)
     result["logderiv"] = {
@@ -158,6 +181,7 @@ def plot_fits(data,
     y_range = np.array([np.nan, np.nan])
     fit_results = {}
     for color_key, g in utils.groupby(gg, color_cols):
+        logging.info(f"plot_fits: method: {color_key['method']}")
         color = get_color(color_key["method"])
         label = get_color_label(color_key["method"])
         g = g.sort_values([x_col])
@@ -173,12 +197,7 @@ def plot_fits(data,
         deriv_subset = deriv_d[deriv_d["x"].between(*fit_range)]
         if len(deriv_subset) < 2:
             continue
-        try:
-            fit = do_fit(d_subset, deriv_subset)
-        except FittingError as e:
-            sys.stderr.write(f"could not fit {color_key['method']}: {e}\n")
-            sys.stderr.flush()
-            continue
+        fit = do_fit(d_subset, deriv_subset)
 
         fit_results[color_key["method"]] = fit
 
@@ -318,7 +337,7 @@ def main():
     r.extend(plot("ground", num_filled=2, freq=1.0, fit_start=6))
     r.extend(plot("ground", num_filled=2, freq=0.28, fit_start=6))
     r.extend(plot("ground", num_filled=3, freq=1.0, fit_start=9))
-    r.extend(plot("ground", num_filled=3, freq=0.28, fit_start=9))
+    r.extend(plot("ground", num_filled=3, freq=0.28, fit_start=11))
     r.extend(plot("ground", num_filled=4, freq=1.0, fit_start=10))
     r.extend(plot("ground", num_filled=4, freq=0.28, fit_start=14))
     r.extend(plot("ground", num_filled=5, freq=1.0, fit_start=15))
