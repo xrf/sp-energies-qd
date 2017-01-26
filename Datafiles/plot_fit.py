@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 import argparse, itertools, json, logging, os, sys, traceback, warnings
 import matplotlib.pyplot as plt
+import matplotlib.ticker
 import numpy as np
 import pandas as pd
 import scipy, scipy.stats
 import utils
 
 DUPLICATE_THRESHOLD = 1e-6
+
+LOGDERIV_BADNESS_THRESHOLD = 0.03
 
 STAGE_TO_LINESTYLE = {
     "logderiv": ":",
@@ -25,7 +28,7 @@ def rel_badness_cov(ref_fit, fit):
     with np.errstate(divide="ignore"):
         return np.linalg.norm(fit["cov"] / ref_fit["cov"]) / n ** 2
 
-def try_curve_fit(f, x, y, p0, badness_threshold=0.05,
+def try_curve_fit(f, x, y, p0, badness_threshold, min_num_points=None,
                   rel_badness_func=rel_badness_cov, max_num_outliers=2):
     '''Like scipy.optimize.curve_fit, but tries to drop some of the points to
     find the most satisfactory fit.
@@ -41,9 +44,13 @@ def try_curve_fit(f, x, y, p0, badness_threshold=0.05,
     The badness_threshold is a number between 0.0 and 1.0 that determines the
     eagerness to drop points.  At 1.0 the algorithm is maximally eager.
     '''
-    max_num_outliers = min(max_num_outliers, len(x) - len(p0) - 2)
+    assert 0.0 <= badness_threshold <= 1.0
+    if min_num_points is None:
+        min_num_points = len(p0) + 2
+    max_num_outliers = max(min(max_num_outliers, len(x) - min_num_points), 0)
     ref_fit = None
     best_fit = None
+    threshold = badness_threshold
     for num_outliers in range(max_num_outliers + 1):
         fits = []
         for outliers in itertools.combinations(list(x.index), num_outliers):
@@ -61,16 +68,19 @@ def try_curve_fit(f, x, y, p0, badness_threshold=0.05,
             rel_badnesses = [rel_badness_func(ref_fit, fit) for fit in fits]
             change = (np.min(rel_badnesses)
                       / scipy.stats.gmean(rel_badnesses)
-                      / badness_threshold)
+                      / threshold)
             if change <= 1.0:
+                threshold *= badness_threshold
                 best_fit = fits[np.argmin(rel_badnesses)]
                 logging.info("try_curve_fit: accept: "
                              "log10(min_badness/avg_badness) = "
                              f"{np.log10(change * badness_threshold)}")
+        elif badness_threshold == 0.0:
+            break
     assert best_fit
     return best_fit
 
-def do_fit(data, deriv_data):
+def do_fit(data, deriv_data, badness_threshold):
     '''Perform a fit using a power law model:
 
         y = a * x ** b + c
@@ -88,7 +98,10 @@ def do_fit(data, deriv_data):
         lambda x, m, c: m * x + c,
         np.log(deriv_data["x"].drop(outliers0)),
         np.log(abs(deriv_data["dydx"].drop(outliers0))),
-        p0=[1.0, 1.0])
+        p0=[1.0, 1.0],
+        badness_threshold=badness_threshold)
+    if r is None:
+        return None
     outliers = r["outliers"]
     mc0 = r["p"]
     cov = r["cov"]
@@ -109,7 +122,7 @@ def do_fit(data, deriv_data):
         "exponent": b0,
         "coefficient": a0,
         "constant": c0[0],
-        "constant_err": var_c0[0] ** 0.5,
+        "constant_err": var_c0[0, 0] ** 0.5,
     }
 
     try:
@@ -155,7 +168,8 @@ def fit_label(stage, exponent, exponent_err, **kwargs):
     return "{stage} fit (b={exponent:.3g}{b_err})".format(**locals())
 
 def plot_fits(data,
-              fit_range,
+              get_fit_range,
+              badness_threshold,
               x_col,
               x_label,
               y_col,
@@ -170,9 +184,6 @@ def plot_fits(data,
               get_dmc,
               dmc_label,
               dmc_yerr_col=None):
-    if fit_range[1] == np.inf:
-        fit_range[1] = np.max(data[x_col])
-    fit_range = fit_range + np.array([-0.2, 0.2]) # make it look less ambiguous
     # continuous x range for plotting continuous functions
     x_c = np.linspace(data[x_col].min() - 1, data[x_col].max() + 1, 250)
     [(title_key, gg)] = utils.groupby(data, title_cols)
@@ -193,12 +204,22 @@ def plot_fits(data,
         ax[1].plot(d["x"], d["y"], "x", label=label, color=color)
         utils.update_range(y_range, d["y"])
 
+        fit_range = get_fit_range(color_key["method"])
+        fit_range = (max(fit_range[0], d["x"].min()),
+                     min(fit_range[1], d["x"].max()))
+        if fit_range[1] < fit_range[0]:
+            continue
+        fit_range = fit_range + np.array([-0.2, 0.2]) # to make it look nicer
+        ax[0].axvspan(fit_range[0], fit_range[1], alpha=0.05, color=color)
+        ax[1].axvspan(fit_range[0], fit_range[1], alpha=0.05, color=color)
+
         d_subset = d[d["x"].between(*fit_range)]
         deriv_subset = deriv_d[deriv_d["x"].between(*fit_range)]
         if len(deriv_subset) < 2:
             continue
-        fit = do_fit(d_subset, deriv_subset)
 
+        fit = do_fit(d_subset, deriv_subset,
+                     badness_threshold=badness_threshold)
         fit_results[color_key["method"]] = fit
 
         outliers = deriv_subset.loc[fit["logderiv"]["outliers"]]
@@ -229,7 +250,10 @@ def plot_fits(data,
                 x_c, y_c, linestyle=STAGE_TO_LINESTYLE[stage],
                 label=label + " " + fit_label(stage, b, b_err),
                 color=color)
-            ax[1].axhline(c, linestyle=":", color=color)
+            if b < 0:
+                ax[1].axhline(c, linestyle=":", color=color)
+            else:
+                logging.warn(f"plot_fits: {stage}.b >= 0: no asymptotic result")
             utils.update_range(y_range, c)
 
     g = get_dmc(**title_key)
@@ -244,7 +268,6 @@ def plot_fits(data,
         ax[1].axhline(y, alpha=0.4, color="black")
         utils.update_range(y_range, [y])
 
-    ax[0].axvspan(fit_range[0], fit_range[1], alpha=0.15, color="#d6a528")
     ax[0].set_xlabel(x_label)
     ax[0].set_ylabel(absdydx_label)
     ax[0].set_xscale("log")
@@ -254,7 +277,6 @@ def plot_fits(data,
     ax[0].set_position([box.x0, box.y0, box.width * 0.6, box.height])
     ax[0].legend(bbox_to_anchor=(1, 1.0))
 
-    ax[1].axvspan(fit_range[0], fit_range[1], alpha=0.15, color="#d6a528")
     ax[1].legend()
     ax[1].set_xlabel(x_label)
     ax[1].set_ylabel(y_label)
@@ -262,6 +284,8 @@ def plot_fits(data,
     box = ax[1].get_position()
     ax[1].set_position([box.x0, box.y0, box.width * 0.6, box.height])
     ax[1].legend(bbox_to_anchor=(1, 1.0))
+    ax[1].get_xaxis().set_major_locator(
+        matplotlib.ticker.MaxNLocator(integer=True))
 
     fn = get_fn(**title_key)
     settings_fn = os.path.join("plot_settings", fn + ".json")
@@ -275,7 +299,14 @@ def plot_fits(data,
     return fit_results
 
 def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
-         interaction="normal", hartree_fock=False):
+         fit_ranges={}, interaction="normal", methods=None,
+         badness_threshold=LOGDERIV_BADNESS_THRESHOLD):
+    '''label: ground, add, or rm.
+
+    fit_ranges: {method: (start, stop)}
+    Used to adjust the fit_range of a specific method (overrides fit_start and
+    fit_stop).'''
+
     d_dmc = utils.load_all_dmc()
     d = utils.load_all()
     d = utils.filter_preferred_ml(d)
@@ -286,8 +317,8 @@ def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
     d = d[d["num_filled"] == num_filled]
     d = d[d["freq"] == freq]
     d = d[d["label"] == label]
-    if hartree_fock:
-        d = d[d["method"] != "hf"]
+    if methods is not None:
+        d = d[d["method"].isin(methods)]
 
     if label == "ground":
         e_sym = "E/N"
@@ -298,9 +329,12 @@ def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
     else:
         e_sym = "ε"
         e_text = "energy"
+
+    default_fit_range = (fit_start, fit_stop)
     fit_results = plot_fits(
         data=d,
-        fit_range=[fit_start, fit_stop],
+        get_fit_range=lambda method: fit_ranges.get(method, default_fit_range),
+        badness_threshold=badness_threshold,
         x_col="num_shells",
         x_label="K (number of shells)",
         y_col="energy",
@@ -333,32 +367,70 @@ def main():
     r = []
 
     r.extend(plot("ground", num_filled=1, freq=1.0, fit_start=6))
+    r.extend(plot("ground", num_filled=1, freq=0.5, fit_start=6))
     r.extend(plot("ground", num_filled=1, freq=0.28, fit_start=6))
+    r.extend(plot("ground", num_filled=1, freq=0.1, fit_start=8))
     r.extend(plot("ground", num_filled=2, freq=1.0, fit_start=6))
+    r.extend(plot("ground", num_filled=2, freq=0.5, fit_start=6))
     r.extend(plot("ground", num_filled=2, freq=0.28, fit_start=6))
+    r.extend(plot("ground", num_filled=2, freq=0.1, fit_start=10))
     r.extend(plot("ground", num_filled=3, freq=1.0, fit_start=9))
+    r.extend(plot("ground", num_filled=3, freq=0.5, fit_start=9))
     r.extend(plot("ground", num_filled=3, freq=0.28, fit_start=11))
+    r.extend(plot("ground", num_filled=3, freq=0.1, fit_start=11))
     r.extend(plot("ground", num_filled=4, freq=1.0, fit_start=10))
+    r.extend(plot("ground", num_filled=4, freq=0.5, fit_start=12,
+                  fit_ranges={"hf": [10, 99999]}))
     r.extend(plot("ground", num_filled=4, freq=0.28, fit_start=14))
-    r.extend(plot("ground", num_filled=5, freq=1.0, fit_start=15))
+    r.extend(plot("ground", num_filled=4, freq=0.1, fit_start=11))
+    r.extend(plot("ground", num_filled=5, freq=1.0, fit_start=13))
+    r.extend(plot("ground", num_filled=5, freq=0.5, fit_start=14))
     r.extend(plot("ground", num_filled=5, freq=0.28, fit_start=17))
+    r.extend(plot("ground", num_filled=5, freq=0.1, fit_start=11))
     r.extend(plot("ground", num_filled=6, freq=1.0, fit_start=16))
+    r.extend(plot("ground", num_filled=6, freq=0.28, fit_start=15))
+    r.extend(plot("ground", num_filled=6, freq=0.1, fit_start=15,
+                  badness_threshold=0.0))
 
     r.extend(plot("add", num_filled=1, freq=1.0, fit_start=7))
+    r.extend(plot("add", num_filled=1, freq=0.5, fit_start=7))
     r.extend(plot("add", num_filled=1, freq=0.28, fit_start=7))
-    r.extend(plot("add", num_filled=2, freq=1.0, fit_start=10))
+    r.extend(plot("add", num_filled=2, freq=1.0, fit_start=9))
+    r.extend(plot("add", num_filled=2, freq=0.5, fit_start=9))
     r.extend(plot("add", num_filled=2, freq=0.28, fit_start=10))
+    r.extend(plot("add", num_filled=2, freq=0.1, fit_start=10))
     r.extend(plot("add", num_filled=3, freq=1.0, fit_start=13))
+    r.extend(plot("add", num_filled=3, freq=0.5, fit_start=10))
     r.extend(plot("add", num_filled=3, freq=0.28, fit_start=13))
+    r.extend(plot("add", num_filled=3, freq=0.1, fit_start=10))
     r.extend(plot("add", num_filled=4, freq=1.0, fit_start=13))
+    r.extend(plot("add", num_filled=4, freq=0.28, fit_start=13))
+    r.extend(plot("add", num_filled=4, freq=0.1, fit_start=11))
+    r.extend(plot("add", num_filled=5, freq=1.0, fit_start=10))
+    r.extend(plot("add", num_filled=5, freq=0.5, fit_start=10))
+    r.extend(plot("add", num_filled=5, freq=0.28, fit_start=10))
+    r.extend(plot("add", num_filled=5, freq=0.1, fit_start=10))
 
     r.extend(plot("rm", num_filled=1, freq=1.0, fit_start=7))
-    r.extend(plot("rm", num_filled=1, freq=0.28, fit_start=7))
+    r.extend(plot("rm", num_filled=1, freq=0.5, fit_start=7))
+    r.extend(plot("rm", num_filled=1, freq=0.28, fit_start=7,
+                  fit_ranges={"hf+qdpt3": [12, 99999]}))
     r.extend(plot("rm", num_filled=2, freq=1.0, fit_start=10))
+    r.extend(plot("rm", num_filled=2, freq=0.5, fit_start=7))
     r.extend(plot("rm", num_filled=2, freq=0.28, fit_start=10))
-    r.extend(plot("rm", num_filled=3, freq=1.0, fit_start=13))
-    r.extend(plot("rm", num_filled=3, freq=0.28, fit_start=13))
+    r.extend(plot("rm", num_filled=2, freq=0.1, fit_start=9))
+    r.extend(plot("rm", num_filled=3, freq=1.0, fit_start=11))
+    r.extend(plot("rm", num_filled=3, freq=0.5, fit_start=9))
+    r.extend(plot("rm", num_filled=3, freq=0.28, fit_start=11))
+    r.extend(plot("rm", num_filled=3, freq=0.1, fit_start=9))
     r.extend(plot("rm", num_filled=4, freq=1.0, fit_start=13))
+    r.extend(plot("rm", num_filled=4, freq=0.5, fit_start=10))
+    r.extend(plot("rm", num_filled=4, freq=0.28, fit_start=10))
+    r.extend(plot("rm", num_filled=4, freq=0.1, fit_start=10))
+    r.extend(plot("rm", num_filled=5, freq=1.0, fit_start=13))
+    r.extend(plot("rm", num_filled=5, freq=0.5, fit_start=10))
+    r.extend(plot("rm", num_filled=5, freq=0.28, fit_start=10))
+    r.extend(plot("rm", num_filled=5, freq=0.1, fit_start=11))
 
     utils.save_json("fit_results.json", r)
 

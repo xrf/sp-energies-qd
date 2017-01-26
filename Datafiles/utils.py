@@ -29,7 +29,7 @@ METHOD_COLOR = {
     "ccsd": "#1c5aa5",
     "ccsd+eom": "#1351c4",
     "fci": "#2e2360",
-    "hf": "#e0cc18",
+    "hf": "#b7ac12",
     "hf+qdpt3": "#e28522",
     "imsrg": "#92e057",
     "imsrg+eom": "#841a0b",
@@ -105,7 +105,8 @@ def plot(filename, call=None, block=True, main_name="main"):
         p.add_argument("-v", "--verbose", action="store_true")
         args = p.parse_args()
         if args.verbose:
-            logging.basicConfig(level=logging.INFO)
+            logging.basicConfig(format="[%(levelname)s] %(message)s",
+                                level=logging.INFO)
         cmd_args = args.cmd_args
         matplotlib.rcParams["interactive"] = bool(cmd_args)
     else:
