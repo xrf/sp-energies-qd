@@ -57,7 +57,10 @@ def try_curve_fit(f, x, y, p0, badness_threshold, min_num_points=None,
             outliers = list(outliers)
             new_x = x.drop(outliers)
             new_y = y.drop(outliers)
-            p, cov = scipy.optimize.curve_fit(f, new_x, new_y, p0=p0)
+            try:
+                p, cov = scipy.optimize.curve_fit(f, new_x, new_y, p0=p0)
+            except TypeError:
+                return
             fit = {"outliers": outliers, "p": p, "cov": cov}
             if ref_fit is None:         # first fit (no excluded points)
                 ref_fit = fit
@@ -77,10 +80,9 @@ def try_curve_fit(f, x, y, p0, badness_threshold, min_num_points=None,
                              f"{np.log10(change * badness_threshold)}")
         elif badness_threshold == 0.0:
             break
-    assert best_fit
     return best_fit
 
-def do_fit(data, deriv_data, badness_threshold):
+def do_fit(data, deriv_data, badness_threshold, maxfev=0):
     '''Perform a fit using a power law model:
 
         y = a * x ** b + c
@@ -117,7 +119,7 @@ def do_fit(data, deriv_data, badness_threshold):
 
     c0, var_c0 = scipy.optimize.curve_fit(
         lambda x, c: a0 * x ** b0 + c,
-        data["x"], data["y"], p0=[0.0])
+        data["x"], data["y"], p0=[0.0], maxfev=maxfev)
     result["fixedab"] = {
         "exponent": b0,
         "coefficient": a0,
@@ -128,8 +130,9 @@ def do_fit(data, deriv_data, badness_threshold):
     try:
         abc, var_abc = scipy.optimize.curve_fit(
             lambda x, a, b, c: a * x ** b + c,
-            data["x"], data["y"], p0=[a0, b0, c0])
-    except RuntimeError:
+            data["x"], data["y"], p0=[a0, b0, c0], maxfev=maxfev)
+    except (RuntimeError, TypeError) as e:
+        print(e)
         pass
     else:
         result["full"] = {
@@ -167,7 +170,8 @@ def fit_label(stage, exponent, exponent_err, **kwargs):
         b_err = "±{:.2g}".format(exponent_err)
     return "{stage} fit (b={exponent:.3g}{b_err})".format(**locals())
 
-def plot_fits(data,
+def plot_fits(plot,
+              data,
               get_fit_range,
               badness_threshold,
               x_col,
@@ -220,7 +224,13 @@ def plot_fits(data,
 
         fit = do_fit(d_subset, deriv_subset,
                      badness_threshold=badness_threshold)
-        fit_results[color_key["method"]] = fit
+        if fit is None:
+            continue
+        fit_result = {
+            "num_points": len(d["x"])
+        }
+        fit_result.update(fit)
+        fit_results[color_key["method"]] = fit_result
 
         outliers = deriv_subset.loc[fit["logderiv"]["outliers"]]
         ax[0].plot(outliers["x"], abs(outliers["dydx"]), "o",
@@ -287,20 +297,21 @@ def plot_fits(data,
     ax[1].get_xaxis().set_major_locator(
         matplotlib.ticker.MaxNLocator(integer=True))
 
-    fn = get_fn(**title_key)
-    settings_fn = os.path.join("plot_settings", fn + ".json")
-    settings = utils.load_json(settings_fn) or {"ax1": {}, "ax2": {}}
-    fit_results_fn = os.path.join("fit_results", fn + ".json")
-    def save_settings():
-        utils.save_json(settings_fn, settings)
-    utils.sync_axes_lims(ax[0], settings["ax1"], save_settings)
-    utils.sync_axes_lims(ax[1], settings["ax2"], save_settings)
-    utils.savefig(fig, fn)
+    if plot:
+        fn = get_fn(**title_key)
+        settings_fn = os.path.join("plot_settings", fn + ".json")
+        settings = utils.load_json(settings_fn) or {"ax1": {}, "ax2": {}}
+        fit_results_fn = os.path.join("fit_results", fn + ".json")
+        def save_settings():
+            utils.save_json(settings_fn, settings)
+        utils.sync_axes_lims(ax[0], settings["ax1"], save_settings)
+        utils.sync_axes_lims(ax[1], settings["ax2"], save_settings)
+        utils.savefig(fig, fn)
     return fit_results
 
 def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
          fit_ranges={}, interaction="normal", methods=None,
-         badness_threshold=LOGDERIV_BADNESS_THRESHOLD):
+         badness_threshold=LOGDERIV_BADNESS_THRESHOLD, plot=True):
     '''label: ground, add, or rm.
 
     fit_ranges: {method: (start, stop)}
@@ -310,7 +321,7 @@ def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
     d_dmc = utils.load_all_dmc()
     d = utils.load_all()
     d = utils.filter_preferred_ml(d)
-    d = d[d["method"] != "imsrg[f]+eom[n]"]
+    d = d[~d["method"].isin(["imsrg[f]+eom[n]"])]
 
     # filters
     d = d[d["interaction"] == interaction]
@@ -332,6 +343,7 @@ def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
 
     default_fit_range = (fit_start, fit_stop)
     fit_results = plot_fits(
+        plot=plot,
         data=d,
         get_fit_range=lambda method: fit_ranges.get(method, default_fit_range),
         badness_threshold=badness_threshold,
@@ -434,5 +446,6 @@ def main():
 
     utils.save_json("fit_results.json", r)
 
-warnings.simplefilter("ignore", scipy.optimize.OptimizeWarning)
-utils.plot_main(__file__, plot, main)
+if __name__ == "__main__":
+    warnings.simplefilter("ignore", scipy.optimize.OptimizeWarning)
+    utils.plot_main(__file__, plot, main)
