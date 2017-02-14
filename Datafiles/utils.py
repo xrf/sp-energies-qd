@@ -55,38 +55,52 @@ METHOD_LABEL = {
     "mp2": "MP2",
 }
 
-def rainbow_colors():
-    # Rainbow (J', C') = (71.0, 26.0)
-    colors = [
-        "#ec7ca3", "#ee7c9a", "#ef7c8f", "#f07d85",
-        "#f07e7b", "#f08071", "#ef8168", "#ed845e",
-        "#ea8656", "#e7894e", "#e48c46", "#df9040",
-        "#da933a", "#d59736", "#ce9b33", "#c79f32",
-        "#c0a233", "#b8a635", "#afa939", "#a6ad3e",
-        "#9db044", "#93b34b", "#89b553", "#7eb85b",
-        "#73ba63", "#67bc6c", "#5bbd75", "#4fbf7e",
-        "#42bf87", "#35c08f", "#28c098", "#1ac0a1",
-        "#0bc0a9", "#01c0b1", "#05bfb9", "#12bec1",
-        "#20bcc8", "#2dbbcf", "#3ab9d5", "#45b7db",
-        "#51b5e0", "#5cb3e5", "#66b0e9", "#70aded",
-        "#7aabf0", "#83a8f3", "#8ca5f4", "#95a1f5",
-        "#9d9ef6", "#a59bf5", "#ac98f4", "#b495f2",
-        "#bb92f0", "#c18fec", "#c78ce8", "#cd89e3",
-        "#d287dd", "#d784d7", "#dc82d0", "#e080c8",
-        "#e47fbf", "#e77eb7", "#ea7dad", "#ec7ca3",
-    ]
-    cdict = {"red": [], "green": [], "blue": []}
-    for i, color in enumerate(colors):
-        t = float(i) / (len(colors) - 1)
-        c = int(color[1:3], 16) / 255.0
-        cdict["red"].append((t, c, c))
-        c = int(color[3:5], 16) / 255.0
-        cdict["green"].append((t, c, c))
-        c = int(color[5:7], 16) / 255.0
-        cdict["blue"].append((t, c, c))
-    return matplotlib.colors.LinearSegmentedColormap("rainbow", cdict)
+def parse_color(color):
+    '''Accepts either (r, g, b[, a]) or "#rrggbb[aa]".'''
+    if isinstance(color, str):
+        assert color[0] == "#"
+        cs = []
+        cs.append(int(color[1:3], 16) / 255.0)
+        cs.append(int(color[3:5], 16) / 255.0)
+        cs.append(int(color[5:7], 16) / 255.0)
+        if len(color) > 7:
+            cs.append(int(hexcolor[7:9], 16) / 255.0)
+        color = cs
+    return np.array(color)
 
-RAINBOW_COLORS = rainbow_colors()
+def colormap(name, colors):
+    n = len(colors)
+    rgba = np.array([parse_color(color) for color in colors]) # [_; k, n]
+    rgba = rgba.transpose()                                   # [_; k, n]
+    k = rgba.shape[0]
+    t = np.linspace(0.0, 1.0, n)              # [_; n]
+    t = np.broadcast_to(t, (k, n))            # [_; k, n]
+    tccs = np.stack([t, rgba, rgba], axis=-1) # [_; k, n, 3]
+    cdict = dict(zip(["red", "green", "blue", "alpha"], tccs))
+    return matplotlib.colors.LinearSegmentedColormap(name, cdict)
+
+def split_alpha_colormap(name, hexcolor):
+    return colormap(name, [hexcolor + "00", hexcolor + "ff", hexcolor + "00"])
+
+# Rainbow (J', C') = (71.0, 26.0)
+CMAP_RAINBOW = colormap("rainbow", [
+    "#ec7ca3", "#ee7c9a", "#ef7c8f", "#f07d85",
+    "#f07e7b", "#f08071", "#ef8168", "#ed845e",
+    "#ea8656", "#e7894e", "#e48c46", "#df9040",
+    "#da933a", "#d59736", "#ce9b33", "#c79f32",
+    "#c0a233", "#b8a635", "#afa939", "#a6ad3e",
+    "#9db044", "#93b34b", "#89b553", "#7eb85b",
+    "#73ba63", "#67bc6c", "#5bbd75", "#4fbf7e",
+    "#42bf87", "#35c08f", "#28c098", "#1ac0a1",
+    "#0bc0a9", "#01c0b1", "#05bfb9", "#12bec1",
+    "#20bcc8", "#2dbbcf", "#3ab9d5", "#45b7db",
+    "#51b5e0", "#5cb3e5", "#66b0e9", "#70aded",
+    "#7aabf0", "#83a8f3", "#8ca5f4", "#95a1f5",
+    "#9d9ef6", "#a59bf5", "#ac98f4", "#b495f2",
+    "#bb92f0", "#c18fec", "#c78ce8", "#cd89e3",
+    "#d287dd", "#d784d7", "#dc82d0", "#e080c8",
+    "#e47fbf", "#e77eb7", "#ea7dad", "#ec7ca3",
+])
 
 def matplotlib_try_enable_deterministic_svgs():
     # we want deterministic SVGs, but this isn't supported until matplotlib 2.0
@@ -109,6 +123,10 @@ def parse_arg(s):
         pass
     if "," in s:
         return [parse_arg(s) for s in s.split(",")]
+    if s.lower() == 'false':
+        return False
+    if s.lower() == 'true':
+        return True
     return s
 
 def parse_kwarg(s):
@@ -273,8 +291,8 @@ def save_json(fn, j):
         write_json(f, j)
     os.rename(fn + ".tmp", fn)
 
-def sha1_json(x):
-    return hashlib.sha1(json_pretty(x).encode("utf-8")).digest()
+def to_json_bytes(x):
+    return json_pretty(x).encode("utf-8")
 
 class FileDeps:
     '''Represents a set of existing, read-only files, used as an argument for
@@ -297,17 +315,21 @@ class FileDeps:
 
 sanitize_json_handlers.append((FileDeps, lambda self: self._hash()))
 
-def cached(hash=sha1_json, dump=pickle.dump, load=pickle.load):
+def cached(filenames=[], dir=".cache", hash=hashlib.sha1,
+           to_bytes=to_json_bytes, dump=pickle.dump, load=pickle.load):
+    filenames = tuple(filenames)
     def make_cached(func):
-        dir = ".cache"
-        func_path = func.__code__.co_filename
-        mtime = os.path.getmtime(func_path)
+        h0_in = [func.__qualname__]
+        for filename in filenames:
+            with open(filename, "rb") as f:
+                h0_in.append(hash(f.read()).hexdigest())
+        h0 = hash(to_bytes(h0_in)).hexdigest()
         name = "".join(re.findall(r"[-_.a-zA-Z0-9]+", func.__qualname__))
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            inputs = (func_path, mtime, func.__qualname__, args, kwargs)
-            arg_hash = base64.urlsafe_b64encode(hash(inputs)).decode("ascii")
-            path = os.path.join(dir, "{}_{}.cache~".format(name, arg_hash))
+            h_in = to_bytes((h0, args, kwargs))
+            h = base64.urlsafe_b64encode(hash(h_in).digest()).decode("ascii")
+            path = os.path.join(dir, "{}_{}.cache~".format(name, h.strip("=")))
             try:
                 with open(path, "rb") as f:
                     return load(f)
