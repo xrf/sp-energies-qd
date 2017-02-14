@@ -315,7 +315,7 @@ def plot(fit_count=5, log=False, maxfev=0, plot_type="scatter",
 
     fig.canvas.mpl_connect("pick_event", on_pick_event)
 
-    d["x_hessian"] = np.log(d["constant_err"]/d["chisq"]**0.5)
+    d["quality"] = np.log10(d["constant_err"]/d["chisq"]**0.5)
 
     # hf has unique behaviors (what about mp2?)
     if hf:
@@ -323,80 +323,81 @@ def plot(fit_count=5, log=False, maxfev=0, plot_type="scatter",
     else:
         d = d[d["method"] != "hf"]
         if stat == "err":
-            d = d[d["x_hessian"] > -0.5]
+            d = d[d["quality"] > 0]
 
-    d["x"] = d["rel_constant_err"]
     d["y"] = d["rel_discrep"] / d["rel_constant_err"]
-    d["x"] = np.log10(d["x"])
-
-    ax.plot(d["x_hessian"], d["constant"], "x")
-    return
-
     if stat == "hessian":
-        d["x"] = d["x_hessian"]
+        d["x"] = d["quality"]
+    elif stat == "err":
+        d["x"] = np.log10(d["rel_constant_err"])
+    else:
+        assert False
 
     d["y_err"] = d["rel_discrep_err"] / d["rel_discrep"] * d["y"]
 
     d = d[(d["rel_constant_err"] > 0) & (d["rel_constant_err"] < np.inf)]
     if plot_type == "contour":
-        cfg = {
-            "err": {
-                "nx": 20,
-                "ny": 40,
-                # ranged = mesh; lim = view
-                "lims": {
-                    False: { # !hf
-                        "xrange": (-7, -1),
-                        "yrange": (-50, 50),
-                        "xlim": (-6, -2),
-                        "ylim": (-40, 40),
-                    },
-                    True: { # hf
-                        "xrange": (-7, -1),
-                        "yrange": (-5, 5),
-                        "xlim": (-6, -2),
-                        "ylim": (-4, 4),
-                    },
-                },
-                "title": ("“actual” discrepancy vs fit uncertainty "
-                          "(filtered: Q > -0.5)"),
-                "xlabel": r"$\log\left(\frac{\sigma_c}{c}\right)$",
-                "ylabel": r"$\frac{\varepsilon}{\sigma_c}$",
-            },
-            "hessian": {
-                "nx": 20,
-                "ny": 40,
-                # ranged = mesh; lim = view
-                "lims": {
-                    False: { # !hf
-                        "xrange": (-2.0, 8.0),
-                        "yrange": (-200, 200),
-                        "xlim": (-1.0, 4.0),
-                        "ylim": (-150, 150),
-                    },
-                    True: { # hf
-                        "xrange": (-1.0, 2.0),
-                        "yrange": (-10, 10),
-                        "xlim": (-1.0, 2.0),
-                        "ylim": (-10, 10),
-                    },
-                },
-                "title": "spread of “actual” discrepancy",
-                "xlabel": (r"$Q = \log\left(\frac{\sigma_c}"
-                           r"{\sqrt{\mathtt{RSS}}}\right)$"),
-                "ylabel": r"$\frac{\varepsilon}{\sigma_c}$",
-            },
-        }[stat]
-        nx = cfg["nx"]
-        ny = cfg["ny"]
-        lims = cfg["lims"][hf]
+
+        if hf:
+            hf_suffix = "HF"
+        else:
+            hf_suffix = "non-HF"
+        # ranged = mesh; lim = view
+        if stat == "err":
+            if hf:
+                nx = 20
+                ny = 20
+                xrange = (-7, -1)
+                yrange = (-5, 5)
+                xlim = (-6, -2)
+                ylim = (-4, 4)
+                title = ("discrepancy vs fit uncertainty "
+                         f"({hf_suffix})")
+            else:
+                nx = 20
+                ny = 40
+                xrange = (-7, -1)
+                yrange = (-50, 50)
+                xlim = (-6, -2)
+                ylim = (-40, 40)
+                title = ("discrepancy vs fit uncertainty "
+                         f"(filtered: Q > 0, {hf_suffix})")
+            xlabel = r"$\log_{10}\left(\frac{\sigma_c}{c}\right)$"
+            ylabel = r"$\frac{\varepsilon}{\sigma_c}$"
+        elif stat == "hessian":
+            if hf:
+                nx = 20
+                ny = 40
+                xrange = (-0.6, 1.5)
+                yrange = (-10, 10)
+                xlim = (-0.4, 1.1)
+                ylim = (-10, 10)
+            else:
+                nx = 20
+                ny = 40
+                xrange = (-0.6, 2.1)
+                yrange = (-200, 200)
+                xlim = (-0.4, 1.7)
+                ylim = (-150, 150)
+            title = ("spread of “actual” discrepancy vs quality "
+                     f"({hf_suffix})")
+            xlabel = (r"$Q = \log_{10}\left(\frac{\sigma_c}"
+                       r"{\sqrt{\mathtt{RSS}}}\right)$")
+            ylabel = r"$\frac{\varepsilon}{\sigma_c}$"
+        else:
+            assert False
         ax.plot(d["x"], d["y"], "o", markersize=1, picker=3,
                 color="white", markeredgewidth=0)
-        h, x, y = np.histogram2d(d["x"], d["y"], bins=(nx, ny),
-                                 range=(lims["xrange"], lims["yrange"]))
-        ch = np.cumsum(h, axis=1)
+        dx = (xrange[1] - xrange[0]) / (nx - 1)
+        h, x, y = np.histogram2d(d["x"], d["y"], bins=(nx, ny - 1),
+                                 range=((xrange[0] - 0.5 * dx,
+                                         xrange[1] + 0.5 * dx),
+                                        yrange))
+        ch = np.concatenate([np.zeros((nx, 1)),
+                             np.cumsum(h, axis=1)],
+                            axis=1)
         z = ch / ch[..., -1, np.newaxis]
-        x, y = np.meshgrid(x[:-1], y[1:], indexing="ij")
+        x, y = np.meshgrid(0.5 * (x[1:] + x[:-1]), y, indexing="ij")
         levels = np.linspace(-2.0, 2.0, 5)
         levels = 0.5 + 0.5 * scipy.special.erf(2.0 ** -0.5 * levels)
         ax.axhline(-1.0, linestyle="--", color="white", linewidth=0.5)
@@ -406,15 +407,18 @@ def plot(fit_count=5, log=False, maxfev=0, plot_type="scatter",
                    colors="white",
                    alpha=0.3)
         cs = ax.contourf(x, y, z,
-                         levels=np.linspace(0.0, 1.0, 100),
+                         levels=np.linspace(0.0, 1.0, 300),
                          # note: translucent cmaps tend to cause artifacts
                          cmap=CMAP_FOLDED_VIRIDIS,
                          linestyle=":")
+        for c in cs.collections: # http://stackoverflow.com/a/32911283
+            c.set_edgecolor("face")
         fig.colorbar(cs)
-        ax.set_xlabel(cfg["xlabel"])
-        ax.set_ylabel(cfg["ylabel"])
-        ax.set_xlim(lims["xlim"])
-        ax.set_ylim(lims["ylim"])
+        ax.set_title(title)
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+        ax.set_xlim(xlim)
+        ax.set_ylim(ylim)
 
     elif plot_type == "scatter":
 
@@ -430,6 +434,19 @@ def plot(fit_count=5, log=False, maxfev=0, plot_type="scatter",
                     picker=2)
         ax.legend()
 
-    m = min(ax.get_xlim()[1], -ax.get_ylim()[0])
+    fn = f"fit-predictiveness-{plot_type}-{fit_count}-{stat}-{hf}"
+    fig.tight_layout()
+    utils.savefig(fig, fn)
 
-utils.plot_main(__file__, plot, plot)
+def main():
+    maxfev = 100000
+    fit_count = 5
+    for stat in ["err", "hessian"]:
+        for hf in [False, True]:
+            plot(fit_count=fit_count,
+                 maxfev=maxfev,
+                 plot_type="contour",
+                 stat=stat,
+                 hf=hf)
+
+utils.plot_main(__file__, plot, main)

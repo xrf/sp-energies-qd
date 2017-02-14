@@ -211,3 +211,66 @@ The data here is similar, but there is a lot more stuff to look at.  Some intere
 ![](FigureFiles/fig-fit-ground-5-0.28.pdf)
 ![](FigureFiles/fig-fit-ground-5-1.0.pdf)
 ![](FigureFiles/fig-fit-ground-6-1.0.pdf)
+
+## 2016-02-14: Extrapolation uncertainty
+
+To recap: we are performing a fit on the data using the power law:
+
+$$E = a K^b + c$$
+
+where $K$ is the number of shells and $E$ is ground, addition, or removal energy.  The constant term $c$ is the infinite-basis limit in this model, provided that $b < 0$.  For this section, we always use 5-point-consecutive fits.
+
+The focus of this section is to answer these two questions:
+
+  - How far are the extrapolated results from the actual results?
+  - Can we predict the uncertainty of extrapolated results without knowledge of the infinite-basis result?
+
+Unfortunately, due to the inability to perform calculations with an infinite basis, we must instead compromise by using an estimate.  Naturally, we would guess that the "best" result comes from extrapolated results near the maximum number of shells for which we have data (treat this as the *formal* definition of the word "best" in this section).  For systems with few particles, we have good confidence that the asymptotics have been reached, based on the quality of the fits.  But for larger cases, this is less certain.
+
+To mitigate this deficiency, we would prefer to exclude the best fits from consideration if there is any suspicion that asymptotics have not been reached.  To investigate precisely what criterion to use, we performed a preliminary examination of each best fit by visual inspection and marked them as either "good" or "bad".  After some analysis, we found that this resulted in roughly three categories of fits:
+
+  - A. Fits with good visual agreement on the log-log derivative plots.
+  - B. Fits with apparently poor visual agreement in the log-log derivative
+    plots, but relative sum of squared residuals (SSR) is unusually low.
+    ("Relative" here means divided by $c$.)
+  - C. Fits with poor visual agreement in both log-log derivative plots as
+    well as the ordinary energy plots, and relative SSR is high.
+
+Category B was somewhat unique in that it occurred predominantly for Hartree-Fock cases.  The convergence of Hartree-Fock tends to be very rapid, so the tails of the plots are often extremely flat, leading to visually poor power law fits but with good statistics (low SSR and uncertainty of $c$).
+
+Even in category B fits are often marked "bad", we chose to accept them nonetheless as their uncertainties are often quite good.  Moreover, there are strong indications that HF does not have the power law tail that other methods do, in which judging based on the log-log derivative plot would be wrong.
+
+After tallying up the results in a histogram of the relative SSR, we found that the boundary between category (A, B) and category C lies at roughly $10^{-6}$, which is coincidentally (?) the tolerance used in our IM-SRG calculations.  This is the final cutoff that we use to decide whether a fit was "good" or "bad".  Best fits with bad relative SSR are excluded from consideration in the remaining parts of this section.
+
+Now that we have a selection of systems each of which has a best value for $c_{\mathrm{best}}$ that represents our infinite-basis limit, we proceed to perform fits on subsets of the data below the maximum number of shells (e.g. fit between 11-15, then 12-16, then 13-17, etc).  This allows us to simulate what happens had we stopped collecting data earlier than what we have now.
+
+After doing this we gather all of the results and calculate the *discrepancy* $\varepsilon$:
+
+$$\varepsilon = c - c_{\mathrm{best}}$$
+
+This quantifies the "actual" error.  We divide the discrepancy by the fit uncertainty $\sigma_c$ as estimated by the Levenberg-Marquardt optimization algorithm:
+
+$$\frac{\varepsilon}{\sigma_c}$$
+
+This is plotted as the $y$-axis in all figures.  If the fit uncertainty is accurate, then we expect this quantity to form a standard normal distribution.  In reality, we find that the magnitude of this value can fluctuate anywhere between 1 and a few hundred.  However, the cases above 50 or so ("outliers") are actually quite rare, which suggests there's something that we aren't accounting for.  In the plots, outliers tend to occur when the fitting algorithm find a spurious minimum that seem far better than it really is.
+
+After some trial and error, we found that the quantity
+$$Q = \log_{10}(\sigma_c / \sqrt{\mathrm{RSS}})$$
+is actually a useful statistic for excluding outliers.  The $Q$ number compares the uncertainty of the constant term with the residuals themselves: if the root-mean-squared residuals are larger than the fit uncertainty, that can be rather suspicious.
+
+The $Q$ number is the $c$-component of $(\boldsymbol J^{\mathrm{T}} \boldsymbol J)^{-1/2}$ where $\boldsymbol J$ is the Jacobian of the model function.  This could also be interpreted as the $c$-component of an approximation of the inverse-square-root of the Hessian.
+
+The plot against $Q$ is shown in first and third figures.  Note that we have split HF from non-HF methods.  HF has distinctively different behavior from the rest of the methods.  It was suggested that this is likely because Hartree-Fock fails to probe the Coulomb cusp, thus rendering the power law model highly inaccurate.  Nonetheless, despite the incorrect model, the discrepancy-to-uncertainty ratio is quite good.  This is probably due to the rapid HF convergence.
+
+For non-HF, the results are not as great.  The outlier problem makes the plot difficult to read, but fortunately they occur only for $Q < 0$ or so.
+
+Another parameter we could plot against is the relative uncertainty $\sigma_c / c$.  These are the second and fourth figures.  The outliers have been excluded by the $Q < 0$ criterion for the non-HF case.  For HF, we observe that HF uncertainties are generally very slightly overestimated.
+
+For non-HF, there is a curious drift upward.  It seems that above around -3.5 or so the uncertainty quantifies the discrepancy well, but below -3.5 the uncertainty tends to underestimate the true discrepancy by about a factor of ten.  Moreover, the discrepancy tends to be skewed more toward the positive side, meaning that the extrapolated results tend to be above the true value.
+
+In overall, the fit uncertainty is not a bad estimate of the error, albeit some corrections need to be applied for cases where $\log_{10}(\sigma_c / c) < -3.5$ for non-HF methods.
+
+![](FigureFiles/fig-fit-predictiveness-contour-5-hessian-False.pdf)
+![](FigureFiles/fig-fit-predictiveness-contour-5-err-True.pdf)
+![](FigureFiles/fig-fit-predictiveness-contour-5-hessian-True.pdf)
+![](FigureFiles/fig-fit-predictiveness-contour-5-err-False.pdf)
