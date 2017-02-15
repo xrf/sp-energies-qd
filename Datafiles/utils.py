@@ -366,13 +366,14 @@ def parse_uncertainty(s):
     uncertainty =  decimal.Decimal((0, list(map(int, uncertainty)), exponent))
     return value, uncertainty
 
-def load_table(f, sep=r"\s+", names=None):
+def load_table(f, sep=r"\s+", names=None, skiprows=0):
     kwargs = {
         "sep": sep,
         "names": names,
         "quotechar": "'",
         "comment": "#",
         "float_precision": PRECISION,
+        "skiprows": skiprows,
     }
     if names is not None:
         kwargs["header"] = None
@@ -600,28 +601,31 @@ def load_ground(with_priority=False, toler=6e-4):
     ds.append(d)
 
     # agreement between Fei's IMSRG and Nathan's IMSRG ~ 1e-4
-    d1 = load_table("EOM_IMSRG_qd_attached.dat")
-    d1["method"] = "imsrg"
-    d2 = load_table("EOM_CCSD_qd_attached.dat",
-                    names=NATHAN_ATTACHED_COLS)
-    d2["method"] = "ccsd"
-    d = pd.concat([d1, d2], ignore_index=True)
-    d = d[["shells", "filled", "omega", "E(N)", "method"]]
+    d = load_table("EOM_IMSRG_qd_attached.dat")
     d = d.rename(columns={
         "shells": "num_shells",
         "filled": "num_filled",
         "omega": "freq",
         "E(N)": "energy",
-    })
-    # this data point disagrees with Sarah's results
-    # I'm not sure which one is right, but hiding Sam's results for now
-    # because the graph of his results has a weird kink in it
-    d = d[~((d["freq"] == 0.1) &
-            (d["num_filled"] == 3) &
-            (d["num_shells"] == 14) &
-            (d["method"] == "ccsd"))]
-    d["priority"] = -1
+    })[["num_shells", "num_filled", "freq", "energy"]]
     d = d.drop_duplicates()
+    d["method"] = "imsrg"
+    d["priority"] = -1
+    ds.append(d)
+
+    d = pd.concat([
+        load_table("QD_CCSD_PA.dat", skiprows=1),
+        load_table("QD_CCSD_PA_10_2_010-100.dat", skiprows=1),
+    ], ignore_index=True)
+    d = d.rename(columns={
+        "shells": "num_shells",
+        "filled": "num_filled",
+        "hw": "freq",
+        "E0": "energy",
+    })[["num_shells", "num_filled", "freq", "energy"]]
+    d = d.drop_duplicates()
+    d["method"] = "ccsd"
+    d["priority"] = 0
     ds.append(d)
 
     d = pd.concat(ds, ignore_index=True)
@@ -649,7 +653,6 @@ def load_addrm_dmc():
     del d["is_hole"]
     d["num_particles"] = d["num_filled"] * (d["num_filled"] + 1)
     return d
-
 
 @cached()
 def load_addrm(toler=3e-7,
@@ -759,23 +762,33 @@ def load_addrm(toler=3e-7,
     ds.append(d)
 
     # Sam's coupled cluster singles and doubles
-    d = load_table(files["EOM_CCSD_qd_attached.dat"],
-                   names=NATHAN_ATTACHED_COLS)
-    d = parse_nathan_like_data(d, "add")
-    d["method"] = "ccsd+eom"
-    d["interaction"] = "normal"
-    ds.append(d)
-    d = load_table(files["EOM_CCSD_qd_removed.dat"],
-                   names=NATHAN_REMOVED_COLS)
-    d = parse_nathan_like_data(d, "rm")
+    d1 = pd.concat([
+        load_table("QD_CCSD_PA.dat", skiprows=1),
+        load_table("QD_CCSD_PA_10_2_010-100.dat", skiprows=1),
+    ], ignore_index=True)
+    d1["label"] = "add"
+    d2 = pd.concat([
+        load_table("QD_CCSD_PR.dat", skiprows=1),
+        load_table("QD_CCSD_PR_10_2_010-100.dat", skiprows=1),
+    ], ignore_index=True)
+    d2["label"] = "rm"
+    d2["dE"] = -d2["dE"]
+    d = pd.concat([d1, d2], ignore_index=True)
+    d = d.rename(columns={
+        "shells": "num_shells",
+        "filled": "num_filled",
+        "hw": "freq",
+        "ML": "ml",
+        "dE": "energy",
+    })[["label", "num_shells", "num_filled", "freq", "ml", "energy"]]
     d["method"] = "ccsd+eom"
     d["interaction"] = "normal"
     ds.append(d)
 
     d = pd.concat(ds, ignore_index=True)
-    check_fun_dep(d, ["label", "ml", "interaction", "freq", "num_filled",
-                      "num_shells", "method"],
-                  {"energy": toler}, combiner=leftmost_combiner)
+    d = check_fun_dep(d, ["label", "ml", "interaction", "freq", "num_filled",
+                          "num_shells", "method"],
+                      {"energy": toler}, combiner=leftmost_combiner)
     d["num_particles"] = d["num_filled"] * (d["num_filled"] + 1)
     return d
 
