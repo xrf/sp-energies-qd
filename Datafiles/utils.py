@@ -242,6 +242,15 @@ def expand_range(r, factor):
         r[1] + factor * (r[1] - r[0]),
     ])
 
+def intersperse(sep, xs):
+    first = True
+    for x in xs:
+        if first:
+            first = False
+        else:
+            yield sep
+        yield x
+
 def load_json_records(fn):
     with open(fn) as f:
         return pd.DataFrame.from_records([

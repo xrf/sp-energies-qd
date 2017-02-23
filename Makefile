@@ -30,6 +30,7 @@ dist/gh-pages/figures.pdf: figures.pdf
 	cp figures.pdf $@
 
 dist/gh-pages/index.html:
+	mkdir -p $(@D)
 	echo '<meta http-equiv="refresh" content="0;url=paper.pdf"/>' >$@
 
 dist/gh-pages/paper.pdf: Manuscript/paper.pdf

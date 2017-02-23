@@ -869,45 +869,22 @@ Unlike ground state energy, whose systems are characterized only by the number o
 
 \begin{table}
   \centering
-  \caption{Ground state energy with $N$ particles and oscillator frequency $\omega$. The IM-SRG(2) results are given for $R=20$ shells (except for the $N=56$ results which are for $R=18$), employing a Hartree-Fock basis, a bare Coulomb interaction and the White generator. For $N=42$ and $\omega=0.1$ results are presented up to $R=22$ major shells. The results labelled IM-SRG(2)$_{R\rightarrow \infty}$ are obtained using the extrapolation formula of [[equation? TODO: redo the extrapolations]].}
+  \caption{Ground state energy with $N$ particles and oscillator frequency $\omega$. The IM-SRG(2) results are given for $K=20$ shells (except for the $N=56$ results which are for $K=18$), employing a Hartree-Fock basis, the ordinary Coulomb interaction and the White generator.}
   \label{tab:SRGDMC-R20}
-  \begin{tabular}{SSSSS}
-    \toprule
-    {$N$} & {$\omega$} & {IM-SRG(2)} & {IM-SRG(2)$_{R\rightarrow \infty}$} & {DMC} \\
-    \midrule
-    6  & 1.0  &  20.1583  &  20.1468 &  20.1593(1) \\
-       & 0.5  &  11.7690  &  11.7631 &  11.7848(1) \\
-       & 0.28 &   7.5713  &   7.5695 &   7.6002(1) \\
-       & 0.1  &   3.4962  &   3.4977 &   3.5539(1) \\
-    \midrule
-    12 & 1.0  &  65.7280  &  65.6990 &  65.7001(1) \\
-       & 0.5  &  39.1631  &  39.1473 &  39.1596(1) \\
-       & 0.28 &  25.6212  &  25.6140 &  25.6358(1) \\
-       & 0.1  &  12.2223  &  12.2234 &  12.2698(1) \\
-    \midrule
-    20 & 1.0  & 155.9737  & 155.9130 & 155.8822(1) \\
-       & 0.5  &  93.9219  &  93.8853 &  93.8752(1) \\
-       & 0.28 &  61.94362 &  61.9240 &  61.9268(1) \\
-       & 0.1  &  29.95263 &  29.9565 &  29.9779(1) \\
-    \midrule
-    30 & 1.0  & 308.7673  & 308.6053 & 308.5627(2) \\
-       & 0.5  & 187.1671  & 186.8340 & 187.0426(2) \\
-       & 0.28 & 124.0410  & 123.7171 & 123.9683(2) \\
-       & 0.1  &  60.4319  &  60.1158 &  60.4205(2) \\
-    \midrule
-    42 & 1.0  & 543.3398  & 543.3304 & 542.9428(8) \\
-       & 0.5  & 330.8885  & 330.8425 & 330.6306(2) \\
-       & 0.28 & 220.0226  & 219.9534 & 219.8426(2) \\
-       & 0.1  & 107.7851  & 106.8074 & 107.6389(2) \\
-    \midrule
-    56 & 1.0  & 880.4159  &          & 879.3986(6) \\
-       & 0.5  & 538.8199  &          & 537.353(2)  \\
-       & 0.28 & 360.83689 &          & 358.145(2)  \\
-    \bottomrule
-  \end{tabular}
+  \input{tab-ground}
 \end{table}
 
-[[TODO: table for addrm]]
+\begin{table}
+  \centering
+  \caption{[[Addition energy]]}
+  \input{tab-add}
+\end{table}
+
+\begin{table}
+  \centering
+  \caption{[[Removal energy]]}
+  \input{tab-rm}
+\end{table}
 
 \begin{figure}
   \centering
