@@ -179,6 +179,14 @@ def parse_bin(s):
 def parse_binned_groups(stream):
     return ((parse_bin(k), v) for k, v in stream)
 
+def is_good(d_good, r):
+    key = r["interaction"], r["label"], r["freq"], r["num_filled"], r["method"]
+    try:
+        return d_good.loc[key]["good"]
+    except KeyError:
+        # unknown: default to False
+        return False
+
 def plot(fit_count=5, log=False, maxfev=0, plot_type="scatter",
          stat="err", hf=False):
     dorig = utils.filter_preferred_ml(utils.load_all())
@@ -203,9 +211,7 @@ def plot(fit_count=5, log=False, maxfev=0, plot_type="scatter",
     d["rel_constant_err"] = d["constant_err"] / d["constant"]
     d["rel_best_constant_err"] = d["best_constant_err"] / d["best_constant"]
     d["label_is_ground"] = d["label"] == "ground"
-    d["good"] = d.apply(lambda r: d_good.loc[
-        (r["interaction"], r["label"], r["freq"],
-         r["num_filled"], r["method"])]["good"], axis=1)
+    d["good"] = d.apply(functools.partial(is_good, d_good), axis=1)
     d["rel_chi"] = d["chisq"]**.5 / d["constant"]
     d["rel_reduced_chi"] = d["rel_chi"] / (fit_count - 3)
     d["rel_best_chisq"] = d["best_chisq"]**.5 / d["best_constant"]

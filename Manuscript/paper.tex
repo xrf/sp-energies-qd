@@ -869,21 +869,48 @@ Unlike ground state energy, whose systems are characterized only by the number o
 
 \begin{table}
   \centering
-  \caption{Ground state energy with $N$ particles and oscillator frequency $\omega$. The IM-SRG(2) results are given for $K=20$ shells (except for the $N=56$ results which are for $K=18$), employing a Hartree-Fock basis, the ordinary Coulomb interaction and the White generator.}
-  \label{tab:SRGDMC-R20}
+  \caption{Ground state energy of quantum dots with $N$ particles and an oscillator frequency of $\omega$.  For every row, the calculations performed in a harmonic oscillator basis size with $K$ shells.}
+  \label{tab:ground}
   \input{tab-ground}
 \end{table}
 
 \begin{table}
   \centering
-  \caption{[[Addition energy]]}
+  \caption{Addition energy of a selection of quantum dot systems.  See Table \ref{tab:ground} for details.}
+  \label{tab:add}
   \input{tab-add}
 \end{table}
 
 \begin{table}
   \centering
-  \caption{[[Removal energy]]}
+  \caption{Removal energy of a selection of quantum dot systems.  See Table \ref{tab:add} for details.}
+  \label{tab:rm}
   \input{tab-rm}
+\end{table}
+
+\begin{table}
+  \centering
+  % The siunitx package somehow makes the columns unnecessarily wide so we have to compensate by shrinking the text size :/
+  \footnotesize
+  \caption{Extrapolated ground state energies for quantum dots with fit uncertainties.  The uncertainties are computed from the approximate Hessian used in Levenberg-Marquardt fitting procedure.  Extrapolations are done using 5-point fits where the number of shells $K$ ranges between $K_{\text{stop}} - 4$ and $K_{\text{stop}}$ (inclusive).}
+  \label{tab:ground-extrapolated}
+  \input{tab-ground-extrapolated}
+\end{table}
+
+\begin{table}
+  \centering
+  \footnotesize
+  \caption{Extrapolated addition energies for quantum dots with fit uncertainties.  See Table \ref{tab:ground-extrapolated} for details.}
+  \label{tab:add-extrapolated}
+  \input{tab-add-extrapolated}
+\end{table}
+
+\begin{table}
+  \centering
+  \footnotesize
+  \caption{Extrapolated removal energies for quantum dots with fit uncertainties.  See Table \ref{tab:add-extrapolated} for details.}
+  \label{tab:rm-extrapolated}
+  \input{tab-rm-extrapolated}
 \end{table}
 
 \begin{figure}
@@ -917,14 +944,14 @@ Unlike ground state energy, whose systems are characterized only by the number o
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{fig-by-num-shells-6-2-ground-0-normal}
-  \caption{[[...]]}
+  \caption{Ground state energy for quantum dots with 6 electrons plotted against $K$, the number of shells in the basis.  [[TODO: Results for FCI are from who?]] [[TODO: Add DMC results]]}
   \label{fig:by-num-shells-6-2-ground-0-normal}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{fig-by-freq-10-6-ground-0-normal}
-  \caption{The behavior of ground state energy as a function of the oscillator frequency $\omega$.  The energy is normalized with respect to the Hartree-Fock values to make plot easier to see.  Lower frequency leads to stronger correlations and thereby a more difficult problem. [[the fact that CCSD and MP2 are really close may be just a coincidence, since they cross around 12 shells but then diverge again]]}
+  \caption{The behavior of ground state energy as a function of the oscillator frequency $\omega$, with 10 shells in the basis.  The energy is normalized with respect to the Hartree-Fock values to magnify the differences.  Lower frequency leads to stronger correlations and thereby a more difficult problem.  The fact that CCSD and MP2 are similar is likely coincidence as they cross at around 12 shells and then diverge again (not shown in this plot). [[TODO: Add DMC results if available]]}
   \label{fig:by-freq-10-6-gs-0-normal}
 \end{figure}
 
@@ -942,24 +969,23 @@ Unlike ground state energy, whose systems are characterized only by the number o
     \caption{Removal energy}
     \label{fig:by-freq-10-6-rm-1-normal}
   \end{subfigure}
-  \caption{The behavior of addition and removal energy as a function of the oscillator frequency $\omega$.  Like Figure \ref{fig:by-freq-10-6-gs-0-normal}, the energy is normalized with respect to the Hartree-Fock values.}
+  \caption{The behavior of addition and removal energy as a function of the oscillator frequency $\omega$, with 10 shells in the basis.  Like Figure \ref{fig:by-freq-10-6-gs-0-normal}, the energy is normalized with respect to the Hartree-Fock values.}
 \end{figure}
 
 In this section, we discuss the numerical results for the ground state, addition, and removal energies of closed-shell systems for a selection of methods.
 
 For the IM-SRG results
 
+All calculations in this paper are performed with a relative numerical precision of about $10^{-5}$ or lower (sometimes \emph{much} lower).  This does not necessarily mean the results are as precise as $10^{-5}$, since numerical errors tend to accumulate at every step of the calculation, thus the precision of the final results may be an order of magnitude larger.
+
 As foreshadowed, we find the Wegner generator described in subsection [[??]].  Numerical instabilities in the integration process, as well as a rather slow convergence as function of the number of oscillator shells, favors the use of a Hartree-Fock basis and the Coulomb interaction.  Since higher correlations still lead to stiff equation systems, we change in subsection [[??]] to the White generator. In particular, we give an overview of the IM-SRG(2) ground state energies for closed-shell systems up to $N=42$ particles and compare with other \textit{ab initio} many-body methods.
 
 [[...]]
 
-
-The discrepeancy between IM-SRG results and the exact result is due to a combination of two factors: inadequate basis set, and operator truncation.
+The discrepancy between IM-SRG results and the exact result is due to a combination of two factors: inadequate basis set, and operator truncation.
 The former can be reduced by increasing the number of shells, and can be further alleviated by extrapolation techniques.
 
 Both IM-SRG and MP2 improve the accuracy the result dramatically over the more primitive HF.  (It may help to add plots *without* HF.)
-
-[[TODO: add FCI, CCSD results to GS energy plots]]
 
 It is possible to omit some of the methods, bypassing some of the steps.  For example, one can do an IM-SRG calculation \emph{without} doing HF.  There are few good reasons to do so, as it typically worsens the result and increases the numerical cost of IM-SRG, but it can be done.  Similarly, one can do both HF and IM-SRG, but omit QDPT, yet still obtain \emph{addition and removal} energies.  The result would be poor, but it may be useful for the purpose of assessing difficulty of the problem.  For example, if the omission of QDPT leads to a large change, then it may indicate the presence of strong correlations.
 
@@ -967,7 +993,7 @@ It is possible to omit some of the methods, bypassing some of the steps.  For ex
 
 \subsubsection{Ground state energy}
 
-In Figure \ref{fig:gs} we display a selection of ground state energies calculated using the Hartree-Fock method, second-order (M\o ller-Plesset) perturbation theory (MPPT), and IM-SRG.  The exact result from diffusion Monte Carlo (DMC) is also shown as a dashed line \cite{PhysRevB.84.115302}.
+In Figure \ref{fig:gs} we display a selection of ground state energies calculated using the Hartree-Fock method, second-order (M\o ller-Plesset) perturbation theory (MPPT), and IM-SRG.  Results from diffusion Monte Carlo (DMC) \cite{hoegberget2013thesis} are shown as a dashed line for comparison.
 
 Both perturbation theory and IM-SRG add corrections in addition to the Hartree-Fock results to recover the correlation energy and they do quite well in recovering the correlation energy in the system.  Compared with MPPT, IM-SRG generally converges faster, although does not always converge to the DMC result.  Generally speaking, IM-SRG is closer to the DMC result as the number of particles increases.
 
@@ -977,7 +1003,7 @@ The operator truncations in the evaluation of the commutator is one of the two s
 
 \subsubsection{Addition and removal energies}
 
-For our addition and removal energy calculations, the results are summarized in Figure \ref{fig:add} and Figure \ref{fig:rm} respectively.  The figures show the the addition/removal energies for Hartree-Fock, combined with IM-SRG and/or QDPT (Hartree-Fock is always included, as usual) [[better way to explain this? the figure labels are somewhat misleading too]].  The DMC results are also shown via dashed lines where they are known.
+For our addition and removal energy calculations, the results are summarized in Figure \ref{fig:add} and Figure \ref{fig:rm} respectively.  The figures show the the addition/removal energies for Hartree-Fock, combined with IM-SRG and/or QDPT (Hartree-Fock is always included, as usual) [[better way to explain this? the figure labels are somewhat misleading too]].  Results from diffusion Monte Carlo (DMC) \cite{PhysRevB.84.115302} are shown as a dashed line, where available.
 
 From these results, we see that the QDPT corrections add a substantial contribution to the results of both Hartree-Fock with and without IM-SRG.  [[quantify ``substantial'' numerically]]
 

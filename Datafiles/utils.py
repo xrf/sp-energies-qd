@@ -1,5 +1,5 @@
 import argparse, base64, collections, contextlib, decimal
-import functools, hashlib, io, json, logging, os, pickle, re, sys
+import functools, hashlib, io, json, logging, math, os, pickle, re, sys
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -251,6 +251,38 @@ def intersperse(sep, xs):
             yield sep
         yield x
 
+
+def num_dec_digits(x):
+    x = abs(x)
+    e = int(math.log10(x))
+    if 10 ** e > x: # prevent overshooting due to round off errors
+        e -= 1
+    assert 10 ** e <= x < 10 ** (e + 1)
+    return e
+
+def render_with_err(value, err, digits=1):
+    if err <= 0.0:
+        raise Exception("uncertainty must be positive")
+    if not (math.isfinite(value) and math.isfinite(err)):
+        raise Exception("value and err must be finite")
+    e_err = num_dec_digits(err)
+    modified_err = int(round(err * 10.0 ** -e_err))
+    if modified_err == 10:
+        modified_err = 1
+        e_err -= 1
+    if e_err > 0:
+        e_value = num_dec_digits(value)
+        e_diff = e_value - e_err
+        if e_diff >= 0:
+            s = "{{:.{}e}}".format(e_diff).format(value)
+            return s.replace("e", "({})e".format(modified_err))
+        else:
+            return "{}0({})e{}".format("" if value >= 0.0 else "-",
+                                       modified_err, e_err)
+    else:
+        s = "{{:.{}f}}({{}})".format(-e_err)
+        return s.format(value, modified_err)
+
 def load_json_records(fn):
     with open(fn) as f:
         return pd.DataFrame.from_records([
@@ -389,7 +421,7 @@ def load_table(f, sep=r"\s+", names=None, skiprows=0):
     return pd.read_csv(f, **kwargs)
 
 def save_table(f, df):
-    df.to_csv(f, sep=" ", index=False)
+    df.to_csv(f, sep=" ", index=False, na_rep="nan")
 
 def parse_nathan_like_data(d, label):
     if label == "add":
