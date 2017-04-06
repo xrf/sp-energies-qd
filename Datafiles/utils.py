@@ -28,6 +28,7 @@ JSON_PRETTY = {
 METHOD_COLOR = {
     "ccsd": "#1c5aa5",
     "ccsd+eom": "#1351c4",
+    "dmc": "#666666",
     "fci": "#2e2360",
     "hf": "#b7ac12",
     "hf+qdpt3": "#e28522",
@@ -42,6 +43,7 @@ METHOD_COLOR = {
 METHOD_LABEL = {
     "ccsd": "CCSD",
     "ccsd+eom": "CCSD+EOM",
+    "dmc": "DMC",
     "fci": "FCI",
     "hf": "HF only",
     "hf+qdpt2": "HF only + QDPT2",
@@ -54,6 +56,24 @@ METHOD_LABEL = {
     "magnus_quads+eom": "Magnus(2*) + EOM",
     "mp2": "MP2",
 }
+
+METHOD_MARKER = {
+    "ccsd": "*",
+    "ccsd+eom": "*",
+    "fci": "D",
+    "hf": "^",
+    "hf+qdpt3": "^",
+    "imsrg": "x",
+    "imsrg+eom": "+",
+    "imsrg+qdpt3": "x",
+    "mp2": "+",
+}
+
+MARKERSIZE_CORRECTION = {
+    "D": 0.7,
+}
+
+DMC_LINESTYLE = "--"
 
 def parse_color(color):
     '''Accepts either (r, g, b[, a]) or "#rrggbb[aa]".'''
@@ -196,9 +216,12 @@ def plot_main(filename, call, main):
         if not interactive:
             main()
 
-def savefig(fig, name):
+def savefig(fig, name=None, fn=None):
+    if (name is None) == (fn is None):
+        raise TypeError("either name or fn must be given, but not both")
     if not matplotlib.rcParams["interactive"]:
-        fn = "../FigureFiles/fig-{name}.svg".format(**locals())
+        if fn is None:
+            fn = "../FigureFiles/fig-{name}.svg".format(**locals())
         fig.savefig(fn)
         plt.close(fig)
         sys.stderr.write("Figure saved to: {}\n".format(fn))

@@ -1,4 +1,4 @@
-.PHONY: all build clean deploy purge
+.PHONY: all build clean deploy purge regenerate
 
 all: dist/gh-pages/paper.pdf dist/gh-pages/index.html dist/gh-pages/figures.pdf
 
@@ -14,6 +14,9 @@ deploy: dist/gh-pages/.git/config all
 
 purge:
 	rm -fr Datafiles/.cache
+
+regenerate:
+	Datafiles/tabulate.py
 
 dist/gh-pages/.git/config:
 	mkdir -p dist/gh-pages

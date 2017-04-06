@@ -1,7 +1,11 @@
 *.md_dep
 *.out
 FigureFiles/*.pdf
-Manuscript/fig-*.pdf
+Manuscript/fig-by-freq-10-6-add-0-normal.pdf
+Manuscript/fig-by-freq-10-6-ground-0-normal.pdf
+Manuscript/fig-by-freq-10-6-rm-1-normal.pdf
+Manuscript/fig-by-num-shells-6-2-ground-normal.pdf
+Manuscript/fig-rel-slopes.pdf
 Manuscript/figures/*.pdf
 Manuscript/paper.pdf
 figures.pdf
