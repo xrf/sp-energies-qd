@@ -184,8 +184,9 @@ def plot(filename, call=None, block=True, main_name="main"):
         cmd_args = []
     os.chdir(os.path.dirname(filename))
     matplotlib_try_enable_deterministic_svgs()
-    matplotlib.style.use("ggplot")
-    matplotlib.rcParams["font.sans-serif"] = ["Roboto"]
+    matplotlib.style.use("seaborn-deep")
+    matplotlib.rcParams["font.family"] = "sans-serif"
+    matplotlib.rcParams["mathtext.fontset"] = "stixsans"
     if cmd_args:
         args = []
         kwargs = {}

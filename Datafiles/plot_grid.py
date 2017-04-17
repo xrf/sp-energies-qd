@@ -14,13 +14,15 @@ def main(label):
         42: [11.5, 20.5],
         56: [14.5, 20.5],
     }
-    num_particles_ticks = [6, 12, 20, 30, 42, 56]
-    freq_ticks = [0.1, 0.28, 1.0]
+    num_particles_ticks = [6, 30, 56]
+    LEGEND_FACET_IDX = 2
 
     if label == "ground":
+        freq_ticks = [0.1, 1.0]
         methods = ["mp2", "imsrg", "ccsd", "fci"]
         fn = "../Manuscript/fig-gs2.pdf"
     else:
+        freq_ticks = [0.1, 0.28]        # 0.28 needed to show DMC results
         fn = "../Manuscript/fig-{}2.pdf".format(label)
         methods = ["imsrg+qdpt3", "imsrg+eom", "ccsd+eom"]
 
@@ -36,6 +38,7 @@ def main(label):
     del d_dmc["label"]
     del d["num_filled"]
     d_dmc = d_dmc.set_index(["num_particles", "freq"])
+    print(d_dmc)
 
     facet_x = {
         "col": "num_particles",
@@ -49,13 +52,14 @@ def main(label):
     }
     facet_to_num_particles_freq = lambda x, y: (x, y)
 
-    base_markersize = 3.0
+    has_dmc = False
+    width = 7
+    height = 3
+    base_markersize = 5.0
     linewidth = 1.0
-    fig = plt.figure(figsize=(9, 4))
+    fig = plt.figure(figsize=(width, height))
     gs = matplotlib.gridspec.GridSpec(len(facet_y["ticks"]),
                                       len(facet_x["ticks"]))
-    #d = d.set_index(["num_shells", "num_particles", "freq", "method"])
-    LEGEND_FACET_IDX = 5
     for (fct_x, fct_y), d in d.groupby([facet_x["col"], facet_y["col"]]):
         num_particles, freq = facet_to_num_particles_freq(fct_x, fct_y)
         try:
@@ -72,6 +76,7 @@ def main(label):
         except KeyError:
             pass
         else:
+            has_dmc = True
             ax.axhline(sel_dmc["energy"],
                        color=utils.METHOD_COLOR["dmc"],
                        linestyle=utils.DMC_LINESTYLE,
@@ -92,40 +97,57 @@ def main(label):
                                 base_markersize),
                     color=utils.METHOD_COLOR[method])
 
-            title = ("${}={}$\n${}={}$"
-                     .format(facet_x["symbol"], fct_x,
-                             facet_y["symbol"], fct_y))
-            ax.text(.4, .7, title,
-                    color="#666666",
-                    horizontalalignment="left",
-                    transform=ax.transAxes)
+        title = ("${} = {}$\n${} = {}$"
+                 .format(facet_x["symbol"], fct_x,
+                         facet_y["symbol"], fct_y))
+        ax.text(1.0 - 2.65 / width, 0.6, title,
+                color="#505050",
+                horizontalalignment="left",
+                transform=ax.transAxes,
+                fontsize=12)
         ax.set_xlim(num_shells_range[num_particles])
+    fig.text(0.5, 0.05 / height, "$K$ (number of shells)",
+             horizontalalignment="center",
+             verticalalignment="bottom",
+             transform=ax.transAxes)
+    fig.text(0.05 / width, 0.5, "$E$ (energy)",
+             horizontalalignment="left",
+             verticalalignment="center",
+             transform=ax.transAxes,
+             rotation="vertical")
 
     # phantom lines to configure the legend
     markersize = (utils.MARKERSIZE_CORRECTION.get(marker, 1.0) *
                   base_markersize)
-    lines = ([matplotlib.lines.Line2D([], [],
-                                      linewidth=linewidth,
-                                      marker=utils.METHOD_MARKER[method],
-                                      markersize=markersize,
-                                      color=utils.METHOD_COLOR[method],
-                                      label=utils.METHOD_LABEL[method])
-             for method in methods] +
-             [matplotlib.lines.Line2D([], [],
-                                      linewidth=linewidth,
-                                      linestyle=utils.DMC_LINESTYLE,
-                                      color=utils.METHOD_COLOR["dmc"],
-                                      label=utils.METHOD_LABEL["dmc"])])
+    lines = [matplotlib.lines.Line2D([], [],
+                                     linewidth=linewidth,
+                                     marker=utils.METHOD_MARKER[method],
+                                     markersize=markersize,
+                                     color=utils.METHOD_COLOR[method],
+                                     label=utils.METHOD_LABEL[method])
+             for method in methods]
+    if has_dmc:
+        lines.append(matplotlib.lines.Line2D([], [],
+                                             linewidth=linewidth,
+                                             linestyle=utils.DMC_LINESTYLE,
+                                             color=utils.METHOD_COLOR["dmc"],
+                                             label=utils.METHOD_LABEL["dmc"]))
     ax = fig.add_subplot(gs[LEGEND_FACET_IDX])
     ax.axis("off")
-    ax.legend(handles=lines)
+    ax.legend(handles=lines, loc="center", frameon=False,
+              bbox_to_anchor=(0.5, 0.5 - 0.1 / height))
 
-    fig.tight_layout()
+    left_margin = 0.1
+    right_margin = 0.0
+    top_margin = 0.0
+    bottom_margin = 0.1
+    gs.tight_layout(fig, rect=[left_margin / width,
+                               bottom_margin / height,
+                               1.0 - right_margin / width,
+                               1.0 - top_margin / height])
     utils.savefig(fig, fn=fn)
 
 with utils.plot(__file__):
-    matplotlib.rcParams["axes.titlesize"] = "medium"
-    matplotlib.rcParams["font.size"] = 8
     main("ground")
     main("add")
     main("rm")
