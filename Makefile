@@ -17,6 +17,8 @@ purge:
 
 regenerate:
 	Datafiles/tabulate.py
+	Datafiles/plot_grid.py
+	Datafiles/plot_compare_rel_slopes.py
 
 dist/gh-pages/.git/config:
 	mkdir -p dist/gh-pages

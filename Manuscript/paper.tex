@@ -55,7 +55,7 @@ In general, quantum dot systems are not analytically solvable, with the exceptio
 
 One of the most accurate techniques for solving many-body systems is that of exact diagonalization, also known as the full configuation interaction method.  Unlike most methods, it is assured to converge to the exact answer as the size of the finite basis is increases to infinity (the so-called \textit{infinite-basis limit}).  Despite this significant advantage, it is often infeasible to perform exact diagonalization due to its factorially increasing cost with respect to the basis size and the number of particles.  This led to the development of more cost-effective methods that trade varying amounts of accuracy for varying amounts of speed.
 
-In this paper, we analyze the application of several methods to the quantum dot systems, including the Hartree--Fock (HF) method, M\o ller-Plesset perturbation theory (MPPT), the in-medium similarity renormalization group (IM-SRG) method, coupled cluster (CC) theory \cite{PhysRevB.67.045320,heidari:114708,PhysRevB.84.115302}, quasidegenerate perturbation theory (QDPT), and equation-of-motion (EOM) methods.  We compare them against variational and diffusion Monte Carlo (VMC and DMC) \cite{PhysRevB.68.035304,PhysRevB.62.8120,PhysRevB.84.115302,PhysRevB.54.4780} and full configuration interaction (FCI) \cite{olsen2013thesis,JJAP.36.3924,PhysRevB.56.6428,2008arXiv0810.2644K,rontani:124102} results from existing literature.
+In this paper, we analyze the application of several methods to the quantum dot systems, including the Hartree--Fock (HF) method, M\o ller-Plesset perturbation theory (MP), the in-medium similarity renormalization group (IM-SRG) method, coupled cluster (CC) theory \cite{PhysRevB.67.045320,heidari:114708,PhysRevB.84.115302}, quasidegenerate perturbation theory (QDPT), and equation-of-motion (EOM) methods.  We compare them against variational and diffusion Monte Carlo (VMC and DMC) \cite{PhysRevB.68.035304,PhysRevB.62.8120,PhysRevB.84.115302,PhysRevB.54.4780} and full configuration interaction (FCI) \cite{olsen2013thesis,JJAP.36.3924,PhysRevB.56.6428,2008arXiv0810.2644K,rontani:124102} results from existing literature.
 
 Of these methods, IM-SRG is a recently developed technique that has shown significant promises.  Similarity renormalization group (SRG) methods are a family of methods that transform the Hamiltonian into a band- or block-diagonal form through a continuous sequence of unitary transformations.  The goal of such a transformation is to reduce the coupling between a subspace of interest -- such as the ground state or a set of low-lying states -- and the remaining Hilbert space.  It has successfully been applied to systems with various underlying potentials to calculate their binding energy and other observables, especially in nuclear theory \cite{ScottSRG,PhysRevC.75.061001,SRGThreeDim}.  The \emph{in-medium} SRG (IM-SRG) is an adaptation of the SRG method to evolve Hamiltonians in a truncated Fock space, which avoids the prohibitive cost of constructing a full many-body Hamiltonian.  The effect of the truncation is minimized through the normal-ordering technique, which re-expands the operators with respect to a nearby many-body reference state rather than the far-away vacuum state.
 
@@ -541,6 +541,8 @@ Taking into account the perturbation corrections, one can obtain reasonably accu
   \varepsilon_p = H^{[1]}_{p, p} + \varepsilon_p^{(2)} + \varepsilon_p^{(3)}
 \end{align*}
 
+We will refer to QDPT to third order as ``QDPT3''.
+
 \subsection{Equations of motion methods}
 
 Particle attached and particle removed equations of motion (EOM) methods can be coupled with either IM-SRG or coupled cluster calculations. The principal idea is that one may construct a ladder operator $\hat{X}$ that promotes the $N$-particle ground state to any state in the $N + 1$ or $N - 1$ spectrum,
@@ -668,8 +670,8 @@ Large single particle partial norms indicate that the EOM truncation is valid fo
 
 \begin{figure}
   \centering
-  \includegraphics[width=\linewidth]{fig-rel-slopes}
-  \caption{Comparison of the rate of convergence for various modifications to the Coulomb interaction.  The trends suggest that the short-range part of the interaction has a strong impact on the convergence, whereas the long-range tail has little effect.}
+  \includegraphics[width=\linewidth]{fig-rel-slopes2}
+  \caption{The impact of the interaction on convergence of addition and removal energies using IM-SRG + QDPT3.  For clarity, the plot does not distinguish between addition and removal energies.  The horizontal axis shows quantum system parameters, where $N$ is the number of particles and $\omega$ is the oscillator frequency.  The vertical axis shows $|\rho_{15}|$ (``relative slope''), which estimates the rate of convergence at 15 total shells.  The lower the value of $|\rho_{15}|$, the faster the convergence.  The data points are categorized by the interactions.  The trends suggest that the singular short-range part of the interaction has a much stronger impact on the convergence than the long-range tail.}
   \label{fig:rel-slopes}
 \end{figure}
 
@@ -708,7 +710,7 @@ There is large amount of flexibility in the application of many-body methods.  T
 
 The arrows in the diagram indicate the flow of numerical data, which are usually matrix elements of some many-body operator.  For HF and IM-SRG, they are simply (evolved) Hamiltonian matrix elements.  For CC, they would be elements of the cluster operator $\hat{T}$.
 
-There are several paths in this diagram through which one can traverse to obtain the output observables.  Among these possibilities, we shall primarily focus on the three combinations: (a) HF + IM-SRG + QDPT, (b) HF + IM-SRG + EOM, and (c) HF + CC + EOM.
+There are several paths in this diagram through which one can traverse to obtain the output observables.  Among these possibilities, we shall primarily focus on the three combinations: (a) HF + IM-SRG(2) + QDPT3, (b) HF + IM-SRG(2) + EOM, and (c) HF + CCSD + EOM.
 
 Moreover, one may also omit some steps of the process.  For example, one can omit HF, but continue with the remaining two steps.  While this is doable, from our experience Hartree--Fock significantly improves the results of the later post-HF methods at very low cost compared to the post-HF methods.  Therefore, in practice there is little reason to omit HF.  We will however investigate the effects of removing one or more of the post-HF methods.
 
@@ -732,11 +734,11 @@ All calculations in this paper are performed with a relative numerical precision
 
 \subsubsection{Ground state energy}
 
-In Figure \ref{fig:gs} we display a selection of ground state energies calculated using the three approaches described in Section \ref{subsec:methodology}.  We also include results from DMC \cite{hoegberget2013thesis} and FCI \cite{olsen2013thesis} for comparison.
+In Figure \ref{fig:gs} we display a selection of ground state energies calculated using the three approaches described in Section \ref{subsec:methodology}.  We also include results from M\o ller--Plesset perturbation theory to second order (MP2), DMC \cite{hoegberget2013thesis}, and FCI \cite{olsen2013thesis} for comparison.
 
-Both perturbation theory and IM-SRG add significant corrections to the Hartree--Fock results.  Compared with MPPT, IM-SRG generally converges faster, although does not always converge to the DMC result.  Generally speaking, IM-SRG is closer to the DMC result as the number of particles increases.
+Both perturbation theory and IM-SRG add significant corrections to the Hartree--Fock results.  Compared with MP2, IM-SRG generally converges faster, although does not always converge to the DMC result.  Generally speaking, IM-SRG is closer to the DMC result as the number of particles increases.
 
-There are a few cases where the IM-SRG over-corrects the result, leading to a ground state energy that is lower than the exact result.  This is not unexpected given that, unlike Hartree--Fock, IM-SRG is non-variational in the presence of operator truncations, which cause small unitarity violations.  Overcorrection tends to occur when the number of particles is few, or the frequency is very low (high correlation).  However, MPPT does not do much better in the high frequency regimes as it often converges slower than IM-SRG.
+There are a few cases where the IM-SRG over-corrects the result, leading to a ground state energy that is lower than the exact result.  This is not unexpected given that, unlike Hartree--Fock, IM-SRG is non-variational in the presence of operator truncations, which cause small unitarity violations.  Overcorrection tends to occur when the number of particles is few, or the frequency is very low (high correlation).  However, MP2 does not do much better in the high frequency regimes as it often converges slower than IM-SRG.
 
 The operator truncations in the evaluation of the commutator is one of the two sources of discrepancy between IM-SRG and exact results.  The other source is that of basis truncation, which limits the size of the Hilbert space that can be explored by the method.  Unlike operator truncation, which is difficult to overcome due to its exponentially increasing computational cost, the cost of increasing the basis is ``only'' polynomial with respect to the number of basis elements: roughly $O(N_{\mathrm{b}}^6)$ where $N_{\mathrm{b}}$ is the total number of states in the single-particle basis.  In practice, the scaling cost is usually lower as the conserved symmetries allow the Hamiltonian to be partitioned into blocks.
 

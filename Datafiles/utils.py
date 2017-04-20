@@ -32,9 +32,9 @@ METHOD_COLOR = {
     "fci": "#2e2360",
     "hf": "#b7ac12",
     "hf+qdpt3": "#e28522",
-    "imsrg": "#92e057",
+    "imsrg": "#3ec61b",
     "imsrg+eom": "#841a0b",
-    "imsrg+qdpt3": "#39b237",
+    "imsrg+qdpt3": "#286d17",
     "imsrg[f]+eom[n]": "#8e2544",
     "magnus_quads+eom": "#a825bc",
     "mp2": "#a81e4c",
@@ -58,8 +58,8 @@ METHOD_LABEL = {
 }
 
 METHOD_MARKER = {
-    "ccsd": "*",
-    "ccsd+eom": "*",
+    "ccsd": "o",
+    "ccsd+eom": "o",
     "fci": "D",
     "hf": "^",
     "hf+qdpt3": "^",
@@ -275,6 +275,11 @@ def intersperse(sep, xs):
             yield sep
         yield x
 
+def merge_dicts(d, *ds):
+    d = dict(d)
+    for di in ds:
+        d.update(di)
+    return d
 
 def num_dec_digits(x):
     x = abs(x)
@@ -431,7 +436,7 @@ def parse_uncertainty(s):
     uncertainty =  decimal.Decimal((0, list(map(int, uncertainty)), exponent))
     return value, uncertainty
 
-def load_table(f, sep=r"\s+", names=None, skiprows=0):
+def load_table(f, sep=r"\s+", names=None, skiprows=0, na_filter=None):
     kwargs = {
         "sep": sep,
         "names": names,
@@ -439,6 +444,7 @@ def load_table(f, sep=r"\s+", names=None, skiprows=0):
         "comment": "#",
         "float_precision": PRECISION,
         "skiprows": skiprows,
+        "na_filter": na_filter,
     }
     if names is not None:
         kwargs["header"] = None

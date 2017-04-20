@@ -38,7 +38,6 @@ def main(label):
     del d_dmc["label"]
     del d["num_filled"]
     d_dmc = d_dmc.set_index(["num_particles", "freq"])
-    print(d_dmc)
 
     facet_x = {
         "col": "num_particles",
@@ -93,6 +92,7 @@ def main(label):
             ax.plot(d["num_shells"], d["energy"],
                     linewidth=linewidth,
                     marker=marker,
+                    markerfacecolor="none",
                     markersize=(utils.MARKERSIZE_CORRECTION.get(marker, 1.0) *
                                 base_markersize),
                     color=utils.METHOD_COLOR[method])
