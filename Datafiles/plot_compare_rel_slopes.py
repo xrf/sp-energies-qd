@@ -12,10 +12,10 @@ with utils.plot(__file__):
     # but matplotlib doesn't let us do that
     # so we have to use this awful hack
     interactions = [
-        ("", r"$(\sigma_{\mathrm{A}} = 0, \sigma_{\mathrm{B}} = \infty)$"),
-        ("_sigmaB=4.0", r"$(\sigma_{\mathrm{A}} = 0, \sigma_{\mathrm{B}} = 4)$"),
-        ("_sigmaA=0.5", r"$(\sigma_{\mathrm{A}} = \frac{1}{2}, \sigma_{\mathrm{B}} = \infty)$"),
-        ("_sigmaA=0.5_sigmaB=4.0", r"$(\sigma_{\mathrm{A}} = \frac{1}{2}, \sigma_{\mathrm{B}} = 4)$"),
+        ("", r"$(0, \infty)$"),
+        ("_sigmaB=4.0", r"$(0, 4)$"),
+        ("_sigmaA=0.5", r"$(\frac{1}{2}, \infty)$"),
+        ("_sigmaA=0.5_sigmaB=4.0", r"$(\frac{1}{2}, 4)$"),
     ]
     interaction_colors = {
         "": "#a883e4",
@@ -43,7 +43,9 @@ with utils.plot(__file__):
     d["system_pos"] = d.apply(
         lambda r: system_pos[(r["num_particles"], r["freq"])], axis=1)
 
-    fig, ax = plt.subplots(figsize=(5, 3.5))
+    width = 3.2
+    height = 3.0
+    fig, ax = plt.subplots(figsize=(width, height))
     for inter, g in sorted(d.groupby("interaction"),
                            key=lambda x: interaction_pos[x[0]]):
         g.sort_values(["freq", "num_particles"], inplace=True,
@@ -62,7 +64,9 @@ with utils.plot(__file__):
     ax.set_xlabel(r"$(N, \omega)$")
     ax.set_ylabel(r"$|\rho_{15}|$")
     ax.set_yscale("log")
-    ax.legend(loc="center left", bbox_to_anchor=(1.0, 0.5), frameon=False)
+    ax.legend(loc="center left", frameon=False,
+              title="$(\sigma_{\mathrm{A}}, \sigma_{\mathrm{B}})$",
+              bbox_to_anchor=(1.0 - 0.3 / width, 0.5))
     fig.tight_layout()
-    fig.subplots_adjust(right=0.65)
+    fig.subplots_adjust(left=0.2, right=0.75)
     utils.savefig(fig, fn="../Manuscript/fig-rel-slopes2.pdf")

@@ -52,10 +52,9 @@ def main(label):
     facet_to_num_particles_freq = lambda x, y: (x, y)
 
     has_dmc = False
-    width = 7
+    width = 6.5
     height = 3
     base_markersize = 5.0
-    linewidth = 1.0
     fig = plt.figure(figsize=(width, height))
     gs = matplotlib.gridspec.GridSpec(len(facet_y["ticks"]),
                                       len(facet_x["ticks"]))
@@ -78,8 +77,7 @@ def main(label):
             has_dmc = True
             ax.axhline(sel_dmc["energy"],
                        color=utils.METHOD_COLOR["dmc"],
-                       linestyle=utils.DMC_LINESTYLE,
-                       linewidth=linewidth)
+                       linestyle=utils.DMC_LINESTYLE)
 
         for method, d in d.groupby("method"):
             if method not in methods:
@@ -90,7 +88,6 @@ def main(label):
             d = d.sort_values(["num_shells"])
             marker = utils.METHOD_MARKER[method]
             ax.plot(d["num_shells"], d["energy"],
-                    linewidth=linewidth,
                     marker=marker,
                     markerfacecolor="none",
                     markersize=(utils.MARKERSIZE_CORRECTION.get(marker, 1.0) *
@@ -120,7 +117,6 @@ def main(label):
     markersize = (utils.MARKERSIZE_CORRECTION.get(marker, 1.0) *
                   base_markersize)
     lines = [matplotlib.lines.Line2D([], [],
-                                     linewidth=linewidth,
                                      marker=utils.METHOD_MARKER[method],
                                      markersize=markersize,
                                      color=utils.METHOD_COLOR[method],
@@ -128,7 +124,6 @@ def main(label):
              for method in methods]
     if has_dmc:
         lines.append(matplotlib.lines.Line2D([], [],
-                                             linewidth=linewidth,
                                              linestyle=utils.DMC_LINESTYLE,
                                              color=utils.METHOD_COLOR["dmc"],
                                              label=utils.METHOD_LABEL["dmc"]))

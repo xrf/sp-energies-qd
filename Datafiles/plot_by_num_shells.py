@@ -30,13 +30,22 @@ def plot(label, num_filled, freq,
                    "add": "addition",
                    "rm": "removal"}[label]
     fig, ax = plt.subplots()
-    fig.set_size_inches((4, 3))
+    fig.set_size_inches((3.2, 2.7))
+    base_markersize = 5 
     for method, case in d.groupby("method"):
         case = case.sort_values("num_shells")
         xs = case["num_shells"].astype(int)
         ys = case["energy"]
-        ax.plot(xs, ys, "-x", label=utils.METHOD_LABEL[method],
-                color=utils.METHOD_COLOR[method])
+        marker = utils.METHOD_MARKER[method]
+        style = {
+            "marker": marker,
+            "markerfacecolor": "none",
+            "markersize": (utils.MARKERSIZE_CORRECTION.get(marker, 1.0) *
+                           base_markersize),
+            "color": utils.METHOD_COLOR[method],
+            "label": utils.METHOD_LABEL[method],
+        }
+        ax.plot(xs, ys, **style)
         ax.get_xaxis().set_major_locator(
             matplotlib.ticker.MaxNLocator(integer=True))
     if len(d_dmc["energy"]):
@@ -45,9 +54,9 @@ def plot(label, num_filled, freq,
                    label=utils.METHOD_LABEL["dmc"],
                    color=utils.METHOD_COLOR["dmc"],
                    linestyle=utils.DMC_LINESTYLE)
-    ax.set_xlabel("K (number of shells)")
-    ax.set_ylabel("E (energy)")
-    ax.legend()
+    ax.set_xlabel("$K$ (number of shells)")
+    ax.set_ylabel("$E$ (energy)")
+    ax.legend(frameon=False)
     fig.tight_layout()
     utils.savefig(fig,
                   "by-num-shells-{num_particles}-{num_filled}-"

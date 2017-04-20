@@ -27,7 +27,7 @@ def get_tex_fig_deps(fn):
         if os.path.splitext(path)[1] == "":
             path += ".bib"
         yield normpath(os.path.join(os.path.dirname(fn), path))
-    for match in re.finditer(r"\\includegraphics\[[^]]+\]\{([^}]+)\}",
+    for match in re.finditer(r"\\includegraphics(?:\[[^]]+\])?\{([^}]+)\}",
                              doc, flags=re.MULTILINE):
         path = match.group(1)
         if os.path.splitext(path)[1] == "":

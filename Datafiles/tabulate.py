@@ -39,14 +39,14 @@ def save_table(path, label,
     if label == "ground":
         methods = ["hf", "mp2", "imsrg", "ccsd"]
         header = r"""
-        \begin{tabular}{SSSSSSS}%
+        \begin{tabular}{S[table-format=2.0]SS[table-format=2.0]S[table-format=3.5]S[table-format=3.5]S[table-format=3.5]S[table-format=3.5]}%
         \toprule
         {$N$} & {$\omega$} & {$K$} & {HF} & {MP2} & {IM-SRG(2)} & {CCSD} \\
         """
     else:
         methods = ["hf+qdpt3", "imsrg+qdpt3", "imsrg+eom", "ccsd+eom"]
         header = r"""
-        \begin{tabular}{SSSSSSS}%
+        \begin{tabular}{S[table-format=2.0]SS[table-format=2.0]S[table-format=3.5]S[table-format=3.5]S[table-format=3.5]S[table-format=3.5]}%
         \toprule
         {$N$} & {$\omega$} & {$K$} & {HF} & {IM-SRG(2)} & {IMSRG(2)} & {CCSD} \\
         {} & {} & {} & {+QDPT3} & {+QDPT3} & {+EOM} & {+EOM} \\
@@ -106,14 +106,14 @@ def save_extrapolated_table(path, label,
     if label == "ground":
         methods = ["mp2", "imsrg", "ccsd"]
         header = r"""
-        \begin{tabular}{SSSSSS}%
+        \begin{tabular}{S[table-format=2.0]SS[table-format=2.0]S[table-format=4.6]S[table-format=4.6]S[table-format=4.6]}%
         \toprule
         {$N$} & {$\omega$} & {$K_{\text{stop}}$} & {MP2} & {IM-SRG(2)} & {CCSD} \\
         """
     else:
         methods = ["imsrg+qdpt3", "imsrg+eom", "ccsd+eom"]
         header = r"""
-        \begin{tabular}{SSSSSS}%
+        \begin{tabular}{S[table-format=2.0]SS[table-format=2.0]S[table-format=3.6]S[table-format=3.6]S[table-format=3.6]}%
         \toprule
         {$N$} & {$\omega$} & {$K_{\text{stop}}$} & {IM-SRG(2)} & {IMSRG(2)} & {CCSD} \\
         {} & {} & {} & {+QDPT3} & {+EOM} & {+EOM} \\

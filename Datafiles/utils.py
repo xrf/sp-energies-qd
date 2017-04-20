@@ -26,7 +26,7 @@ JSON_PRETTY = {
 }
 
 METHOD_COLOR = {
-    "ccsd": "#1c5aa5",
+    "ccsd": "#428ff4",
     "ccsd+eom": "#1351c4",
     "dmc": "#666666",
     "fci": "#2e2360",
@@ -59,18 +59,25 @@ METHOD_LABEL = {
 
 METHOD_MARKER = {
     "ccsd": "o",
-    "ccsd+eom": "o",
+    "ccsd+eom": ".",
     "fci": "D",
     "hf": "^",
-    "hf+qdpt3": "^",
+    "hf+qdpt3": "s",
     "imsrg": "x",
-    "imsrg+eom": "+",
-    "imsrg+qdpt3": "x",
-    "mp2": "+",
+    "imsrg+eom": "*",
+    "imsrg+qdpt3": "+",
+    "mp2": "p",
 }
 
 MARKERSIZE_CORRECTION = {
     "D": 0.7,
+    "2": 1.5,
+}
+
+ENERGY_SYMBOL = {
+    "ground": r"E",
+    "add": r"\varepsilon^{(+)}",
+    "rm": r"\varepsilon^{(-)}",
 }
 
 DMC_LINESTYLE = "--"

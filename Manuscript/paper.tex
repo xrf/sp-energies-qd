@@ -47,7 +47,7 @@
 
 The behavior of strongly confined electrons is of fundamental concern to many-body theory.  The prototypical system is that of quantum dots, also known as ``artificial atoms'', in which electrons are confined within artificial constructed semiconducting heterostructures.  Such nanoscale systems are highly relevant as they lie at a critical point where both theoretical models and experimental observations can readily probe quantum phenomena such as tunneling, entanglement, and magnetization \cite{reimann2002,engel1993}.  Moreover, unlike many physical systems, quantum dots enjoy the benefit of being highly tunable through changes in the external field or the structure of the confining material.  This allows experiments to quantify the impact of quantum effects at different levels of correlation.
 
-The ground states of quantum dots exhibit shell structures and magic numbers similar to those of atoms and nuclei \cite{tarucha1996}.  Thus, this provides a rare opportunity to study electronic systems without the influence of the atomic nuclei.  They also provide a testbed for the development of many-body methods for other systems with similar geometry, such as nuclei or neutrons drops.
+The ground states of quantum dots exhibit shell structures and magic numbers similar to those of atoms and nuclei \cite{tarucha1996}.  Thus, they provide a rare opportunity to study electronic systems without the influence of the atomic nuclei.  They also provide a testbed for the development of many-body methods for other systems with similar geometry, such as nuclei or neutrons drops.
 
 Beyond their theoretical relevance, there are numerous potential applications quantum dots.  The electrical and optical properties of quantum dots are particularly useful for solar cells \cite{jenks:013111,doi:10.1021/cr900289f} and laser technology \cite{strauf2010,5075760}.  They are have potential medical applications in diagnosis and treatment \cite{Ben-Ari02042003}.  And of course, quantum dots are also promising candidates for the physical realization of quantum computing\cite{PhysRevA.57.120}.
 
@@ -98,8 +98,8 @@ where $\hat{H}^{[1]}$ and $\hat{H}^{[2]}$ are the one- and two-body parts of the
 The operator $\hat{\bm r}_j$ is the position operator of the $j$-th particle,\footnote{The ordering of the particle labels $j$ is unimportant as they exist only for the purpose of bookkeeping.} and $\hat{\bm p}_j \equiv -\mathrm{i} \hat{\bm{\nabla}}_{\bm{r}_j}$ is its momentum operator.
 
 \begin{figure}
-  \includegraphics[width=\linewidth]{figures/fig-shell-structure-v2}
-  \caption{Visualization of the 20 lowest single-particle states in the 2D harmonic oscillator basis.  Each box represents a single-particle state arranged by $m_\ell$, $m_{\mathrm{s}}$, and energy, and the up/down arrows indicate the spin of the states.  The $n$ quantum number increases upward vertically, starting at zero for the lowest state within each column.}
+  \includegraphics{figures/fig-shell-structure-v2}
+  \caption{The 42 lowest single-particle states (the first 5 shells) in the 2D harmonic oscillator basis.  Each box represents a single-particle state arranged by $m_\ell$, $m_{\mathrm{s}}$, and energy, and the up/down arrows indicate the spin of the states.  Within each column, the principal quantum number $n$ increases as one traverses upward.}
   \label{fig:shell-structure}
 \end{figure}
 
@@ -409,7 +409,7 @@ where
 \end{align}
 
 \begin{figure}
-\includegraphics[width=.48\linewidth]{fig-diagrams-imsrg}
+\includegraphics{fig-diagrams-imsrg}
 \caption{Diagrammatic representation of $D^{[k]}(\circ, \bullet)$ of \eqref{eq:flow0}, \eqref{eq:flow1}, and \eqref{eq:flow2}, where open circles represent $A$ and filled circles represent $B$.  The two-body vertices are implicitly antisymmetric (i.e.\ \textit{Hugenholtz diagrams} \cite{HUGENHOLTZ1957481}, as described in \cite{shavitt2009many} \S 4.4.3).  Internal directed lines (bound/dummy indices) that point upward denote summations over unoccupied states, whereas lines that point downward denote summations over occupied states.  External undirected lines denote unconstrained free indices.}
 \label{fig:diagrams-imsrg}
 \end{figure}
@@ -463,7 +463,7 @@ Compared to the Wegner generator, where the derivatives of the final flow equati
 
 IM-SRG, in the approach described, provides a means to calculate the ground state energy of any system that is reasonably approximated by a single Slater determinant.  This works well for closed-shell systems, but it does not provide a direct means to obtain the ground state energy of open-shell systems.  While there exist more complicated multi-reference approaches to IM-SRG that can tackle the general problem \cite{Hergert2016165}, we opted to use a perturbative approach, which is simple, inexpensive, and as we shall see in the results, quite effective for many problems.
 
-Quasidegenerate perturbation theory (QDPT) is an extension to the traditional perturbation theory framework that incorporates multiple reference states.   This provides us with a simple means to extract ground state energies of open-shell systems that are only a few particles away from a closed-shell system.  In particular, it allows us to calculate \textit{addition energies} $\varepsilon_a$ and \textit{removal energies} $\varepsilon_i$ of such systems, which we define as:
+Quasidegenerate perturbation theory (QDPT) is an extension to the traditional perturbation theory framework that incorporates multiple reference states.   It provides us with a simple means to extract ground state energies of open-shell systems that are only a few particles away from a closed-shell system.  In particular, it allows us to calculate \textit{addition energies} $\varepsilon_a$ and \textit{removal energies} $\varepsilon_i$ of such systems, which we define as:
 \begin{align}
   \varepsilon_a &\equiv E_{\Phi_a} - E_{\Phi} \\
   \varepsilon_i &\equiv E_{\Phi} - E_{\Phi_i}
@@ -520,8 +520,8 @@ This leads to a recursion relation of $\hat \Omega$ that enables $\hat \Omega$ t
 \end{align*}
 
 \begin{figure}
-\includegraphics[width=.48\linewidth]{fig-diagrams-sfe}
-\caption{Diagrammatic form of the second- and third-order QDPT corrections.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams), but also have implicit denominators as with many-body perturbation theory.}
+\includegraphics{fig-diagrams-sfe}
+\caption{Diagrammatic form of the second- and third-order QDPT corrections.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams), but also have implicit denominators as with many-body perturbation theory.  When QDPT is performed on IM-SRG-evolved Hamiltonians, many of the diagrams vanish.  The remaining nonvanishing diagrams for addition energy are highlighted in blue and for removal energy are highlighted in red.}
 \label{fig:diagrams-sfe}
 \end{figure}
 
@@ -534,14 +534,14 @@ We can then express the perturbation expansion in terms of summations over matri
     \sum_{i, a, b} \frac{n_i \bar{n}_a \bar{n}_b |H^{[2]}_{p, i, a, b}|^2}{2 \Delta_{\{p, i\}, \{a, b\}}}
     - \sum_{i, j, a} \frac{n_i n_j \bar{n}_a |H^{[2]}_{i, j, p, a}|^2}{2 \Delta_{\{i, j\}, \{p, a\}}}
 \end{align*}
-where the M\o ller--Plesset denominators $\Delta$ are defined in \eqref{eq:moellerplessetdenominator}.  The above expression is depicted in Figure \ref{fig:diagrams-sfe}.  Since there are numerous terms in the third-order correction $\varepsilon_p^{(3)}$, they are listed in diagrammatic form in Figure \ref{fig:diagrams-sfe}.
+where the M\o ller--Plesset denominators $\Delta$ are defined in \eqref{eq:moellerplessetdenominator}.  The above expression is depicted in Figure \ref{fig:diagrams-sfe}.  Since there are numerous terms in the third-order correction $\varepsilon_p^{(3)}$, they are listed in diagrammatic form in Figure \ref{fig:diagrams-sfe}.  We will refer to QDPT to third order as ``QDPT3''.
 
-Taking into account the perturbation corrections, one can obtain reasonably accurate addition and removal energies for single-particle states near the Fermi level via:
+Taking into account the perturbation corrections, one can extract reasonably accurate addition and removal energies for single-particle states near the Fermi level via:
 \begin{align*}
   \varepsilon_p = H^{[1]}_{p, p} + \varepsilon_p^{(2)} + \varepsilon_p^{(3)}
 \end{align*}
 
-We will refer to QDPT to third order as ``QDPT3''.
+There is some degree of synergy between IM-SRG and QDPT: a generator that decouples the ground state energy will necessarily drive certain classes of matrix elements to zero.  This means certain kinds of vertices in the diagrams become forbidden, reducing the number of nonzero diagrams at third order from 18 to only 4.
 
 \subsection{Equations of motion methods}
 
@@ -596,7 +596,7 @@ Large single particle partial norms indicate that the EOM truncation is valid fo
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\linewidth]{figures/fig-methods}
+  \includegraphics{figures/fig-methods}
   \caption{A schematic view of the various ways in which many-body methods in this paper could be combined to calculate ground state, addition, and removal energies.}
   \label{fig:methods}
 \end{figure}
@@ -624,8 +624,6 @@ Large single particle partial norms indicate that the EOM truncation is valid fo
 
 \begin{table}
   \centering
-  % [[LAYOUT]] The siunitx package somehow makes the columns unnecessarily wide so we have to compensate by shrinking the text size :/
-  \footnotesize
   \caption{Extrapolated ground state energies for quantum dots with fit uncertainties.  The uncertainties are computed from the approximate Hessian constructed by Levenberg-Marquardt fitting algorithm.  Extrapolations are done using 5-point fits where the number of shells $K$ ranges between $K_{\text{stop}} - 4$ and $K_{\text{stop}}$ (inclusive).}
   \label{tab:ground-extrapolated}
   \input{tab-ground-extrapolated}
@@ -633,7 +631,6 @@ Large single particle partial norms indicate that the EOM truncation is valid fo
 
 \begin{table}
   \centering
-  \footnotesize
   \caption{Extrapolated addition energies for quantum dots with fit uncertainties.  See Table \ref{tab:ground-extrapolated} for details.}
   \label{tab:add-extrapolated}
   \input{tab-add-extrapolated}
@@ -641,7 +638,6 @@ Large single particle partial norms indicate that the EOM truncation is valid fo
 
 \begin{table}
   \centering
-  \footnotesize
   \caption{Extrapolated removal energies for quantum dots with fit uncertainties.  See Table \ref{tab:add-extrapolated} for details.}
   \label{tab:rm-extrapolated}
   \input{tab-rm-extrapolated}
@@ -649,61 +645,44 @@ Large single particle partial norms indicate that the EOM truncation is valid fo
 
 \begin{figure}
   \centering
-  \includegraphics[width=\linewidth]{fig-gs2}
+  \includegraphics{fig-gs2}
   \caption{Ground state energies for a selection of quantum dot parameters, plotted against the number of shells.}
   \label{fig:gs}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=\linewidth]{fig-add2}
+  \includegraphics{fig-add2}
   \caption{Addition energies for a selection of quantum dot parameters.  See Figure \ref{fig:gs} for details.}
   \label{fig:add}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=\linewidth]{fig-rm2}
+  \includegraphics{fig-rm2}
   \caption{Removal energies for a selection of quantum dot parameters.  See Figure \ref{fig:add} for details.}
   \label{fig:rm}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=\linewidth]{fig-rel-slopes2}
+  \includegraphics{fig-rel-slopes2}
   \caption{The impact of the interaction on convergence of addition and removal energies using IM-SRG + QDPT3.  For clarity, the plot does not distinguish between addition and removal energies.  The horizontal axis shows quantum system parameters, where $N$ is the number of particles and $\omega$ is the oscillator frequency.  The vertical axis shows $|\rho_{15}|$ (``relative slope''), which estimates the rate of convergence at 15 total shells.  The lower the value of $|\rho_{15}|$, the faster the convergence.  The data points are categorized by the interactions.  The trends suggest that the singular short-range part of the interaction has a much stronger impact on the convergence than the long-range tail.}
   \label{fig:rel-slopes}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=\linewidth]{fig-by-num-shells-6-2-ground-normal}
+  \includegraphics{fig-by-num-shells-6-2-ground-normal}
   \caption{Ground state energy for quantum dots with 6 electrons plotted against $K$, the number of shells in the basis.}
   \label{fig:by-num-shells-6-2-ground-0-normal}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=\linewidth]{fig-by-freq-10-6-ground-0-normal}
-  \caption{The behavior of ground state energy as a function of the oscillator frequency $\omega$, with 10 shells in the basis.  The energy is normalized with respect to the Hartree--Fock values to magnify the differences.  Lower frequency leads to stronger correlations and thereby a more difficult problem.  The fact that CCSD and MP2 are similar is likely coincidence as they cross at around 12 shells and then diverge again (not shown in this plot).}
-  \label{fig:by-freq-10-6-gs-0-normal}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \begin{subfigure}{0.5\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{fig-by-freq-10-6-add-0-normal}
-    \caption{Addition energy}
-    \label{fig:by-freq-10-6-add-0-normal}
-  \end{subfigure}%
-  \begin{subfigure}{0.5\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{fig-by-freq-10-6-rm-1-normal}
-    \caption{Removal energy}
-    \label{fig:by-freq-10-6-rm-1-normal}
-  \end{subfigure}
-  \caption{The behavior of addition and removal energy as a function of the oscillator frequency $\omega$, with 10 shells in the basis.  Like Figure \ref{fig:by-freq-10-6-gs-0-normal}, the energy is normalized with respect to the Hartree--Fock values.}
+  \includegraphics{fig-by-freq-10-6-normal}
+  \caption{The behavior of ground state, addition, and removal energies as a function of the oscillator frequency $\omega$, with 10 shells in the basis.  The energy is normalized with respect to the Hartree--Fock values to magnify the differences.  Lower frequency leads to stronger correlations and thereby a more difficult problem.  The fact that CCSD and MP2 are similar is likely coincidence as they cross at around 12 shells and then diverge again (not shown in this plot).}
+  \label{fig:by-freq-10-6-normal}
 \end{figure}
 
 There is large amount of flexibility in the application of many-body methods.  The approach we use is shown in Figure \ref{fig:methods}.  Such an ordering maximizes the benefits of each method: Hartree--Fock acts as an initial, crude procedure to ``soften'' the Hamiltonian, followed by IM-SRG or CC to refine the ground state energy, and then finally QDPT or EOM to refine the addition and removal energies.
