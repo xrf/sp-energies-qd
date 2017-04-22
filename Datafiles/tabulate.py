@@ -2,7 +2,7 @@
 import itertools, math, os, sys
 import numpy as np
 import pandas as pd
-import utils
+import fits, utils
 
 NUM_SHELLS = [12, 15, 15, 15, 20, 20]
 
@@ -90,15 +90,9 @@ def save_extrapolated_table(path, label,
                             num_shells=NUM_SHELLS,
                             num_particles=[6, 12, 20, 30, 42, 56],
                             freqs=[0.1, 0.28, 1.0],
-                            fit_count=5,
-                            maxfev=100000):
-    d = utils.load_table(f"fits.fit_count={fit_count}_maxfev={maxfev}.txt")
-    d = d[d["interaction"] == "normal"]
-    d = d[d["label"] == label]
-    d["num_particles"] = d["num_filled"] * (d["num_filled"] + 1)
-    #dump_best_fit_stop(d)
-    d2 = d.groupby(["num_particles", "freq", "method"]).first()
-    d = d.set_index(["fit_stop", "num_particles", "freq", "method"])
+                            fit_count=fits.DEFAULT_FIT_COUNT,
+                            maxfev=fits.DEFAULT_MAXFEV):
+    d = fits.load_fit_data(label, fit_count=fit_count, maxfev=maxfev)
 
     # HF has been excluded because:
     # (1) the extrapolations are kinda meh (because HF isn't very power law)
@@ -136,30 +130,17 @@ def save_extrapolated_table(path, label,
                                 return "n.c.",
 
                     try:
-                        r = d.loc[(num_shells, num_particles, freq, method)]
+                        p = fits.get_fit_params(d, num_shells, num_particles,
+                                                freq, method)
+                    except fits.NoMatchButBestExistsError as e:
+                        sys.stderr.write("warning: {!r}\n".format(e))
+                        sys.stderr.flush()
+                        return np.nan,
                     except KeyError:
-                        r = None
-                    else:
-                        value = r["constant"]
-                        err = r["constant_err"]
+                        return np.nan,
 
-                    if r is None:
-                        # some of the fit_stops are "best"
-                        # so they aren't included directly
-                        try:
-                            r = d2.loc[(num_particles, freq, method)]
-                        except KeyError:
-                            return np.nan,
-                        if r["best_fit_stop"] != num_shells:
-                            sys.stderr.write(
-                                "no matching fit "
-                                "even though best exists: {} -> {}\n"
-                                .format((num_particles, freq, method),
-                                        r["best_fit_stop"]))
-                            return np.nan,
-                        value = r["best_constant"]
-                        err = r["best_constant_err"]
-
+                    value = p["constant"]
+                    err = p["constant_err"]
                     if err > abs(value):
                         value = "{n.f.}"
                     return value, err
