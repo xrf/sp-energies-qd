@@ -685,6 +685,13 @@ Large single particle partial norms indicate that the EOM truncation is valid fo
   \label{fig:by-freq-10-6-normal}
 \end{figure}
 
+\begin{figure}
+  \centering
+  \includegraphics{fig-fit-2-1p0-add}
+  \caption{A five-point fit of the addition energies of the $(N, \omega) = (6, 1.0)$ system.  The grey shaded region contains the masked data points, which are ignored by the fitting procedure.  The left figure plots the central difference of the addition energies $\varepsilon^{(+)}$ with respect to the number of shells $K$.  On such a plot, the power law model should appear as a straight line.  The fits are optimized using the procedure described in Section \ref{subsec:extrapolation}.  Note that the lines do not evenly pass through the points in the left plot as the fitting weights are tuned for the energy on a linear scale, not the energy differences on a logarithmic scale.}
+  \label{fig:by-fit-2-1p0-add}
+\end{figure}
+
 There is large amount of flexibility in the application of many-body methods.  The approach we use is shown in Figure \ref{fig:methods}.  Such an ordering maximizes the benefits of each method: Hartree--Fock acts as an initial, crude procedure to ``soften'' the Hamiltonian, followed by IM-SRG or CC to refine the ground state energy, and then finally QDPT or EOM to refine the addition and removal energies.
 
 The arrows in the diagram indicate the flow of numerical data, which are usually matrix elements of some many-body operator.  For HF and IM-SRG, they are simply (evolved) Hamiltonian matrix elements.  For CC, they would be elements of the cluster operator $\hat{T}$.

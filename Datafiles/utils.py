@@ -9,8 +9,9 @@ import scipy.optimize
 # used for the 'float_precision' argument in pandas.read_csv
 # "round_trip" is preferable but it segfaults on some versions of Pandas:
 # https://github.com/pandas-dev/pandas/issues/15140
-if ("+" in pd.__version__ or
-        tuple(map(int, pd.__version__.split("."))) >= (0, 20, 0)):
+pd_ver = tuple(map(int, re.match("(\d+)\.(\d+)\.(\d+)",
+                                 pd.__version__).groups()))
+if "+" in pd.__version__ or pd_ver >= (0, 20, 0):
     PRECISION = "round_trip"
 else:
     PRECISION = "high"
@@ -42,18 +43,18 @@ METHOD_COLOR = {
 
 METHOD_LABEL = {
     "ccsd": "CCSD",
-    "ccsd+eom": "CCSD+EOM",
+    "ccsd+eom": "CCSD + EOM2",
     "dmc": "DMC",
     "fci": "FCI",
     "hf": "HF only",
     "hf+qdpt2": "HF only + QDPT2",
     "hf+qdpt3": "HF only + QDPT3",
     "imsrg": "IMSRG(2)",
-    "imsrg+eom": "IMSRG(2) + EOM",
+    "imsrg+eom": "IMSRG(2) + EOM2",
     "imsrg+qdpt2": "IMSRG(2) + QDPT2",
     "imsrg+qdpt3": "IMSRG(2) + QDPT3",
-    "imsrg[f]+eom[f]": "IMSRG(2)[F] + EOM[N]",
-    "magnus_quads+eom": "Magnus(2*) + EOM",
+    "imsrg[f]+eom[f]": "IMSRG(2)[F] + EOM2[N]",
+    "magnus_quads+eom": "Magnus(2*) + EOM2",
     "mp2": "MP2",
 }
 
