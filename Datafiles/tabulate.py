@@ -11,7 +11,7 @@ KNOWN_NC_IMSRG = set((k, kf * (kf + 1), f) for (k, kf, f) in [
     (20, 7, 0.1),
 ])
 
-def render_entry(value, err=None, default_precision=5):
+def render_entry(value, err=None, default_precision=4):
     if isinstance(value, str):
         return "{" + value + "}"
     if np.isnan(value):
@@ -133,8 +133,9 @@ def save_extrapolated_table(path, label,
                         p = fits.get_fit_params(d, num_shells, num_particles,
                                                 freq, method)
                     except fits.NoMatchButBestExistsError as e:
-                        sys.stderr.write("warning: {!r}\n".format(e))
-                        sys.stderr.flush()
+                        if "--verbose" in sys.argv:
+                            sys.stderr.write("warning: {!r}\n".format(e))
+                            sys.stderr.flush()
                         return np.nan,
                     except KeyError:
                         return np.nan,

@@ -6,17 +6,26 @@ import numpy as np
 import pandas as pd
 import scipy.optimize
 
+def parse_version_digits(ver):
+    return tuple(map(int, re.match("(\d+)\.(\d+)\.(\d+)", ver).groups()))
+
 # used for the 'float_precision' argument in pandas.read_csv
 # "round_trip" is preferable but it segfaults on some versions of Pandas:
 # https://github.com/pandas-dev/pandas/issues/15140
-pd_ver = tuple(map(int, re.match("(\d+)\.(\d+)\.(\d+)",
-                                 pd.__version__).groups()))
-if "+" in pd.__version__ or pd_ver >= (0, 20, 0):
+if "+" in pd.__version__ or parse_version_digits(pd.__version__) >= (0, 20, 0):
     PRECISION = "round_trip"
 else:
     PRECISION = "high"
     sys.stderr.write("Warning: Your Pandas is too old. "
                      "Data read from files may lose accuracy.\n")
+    sys.stderr.flush()
+
+# we want deterministic PDFs, but this isn't supported until matplotlib 2.1+
+os.environ["SOURCE_DATE_EPOCH"] = "0"
+if not ("+" in matplotlib.__version__ or
+        parse_version_digits(matplotlib.__version__) > (2, 1, 0)):
+    sys.stderr.write("Warning: Your Matplotlib is too old. "
+                     "PDF output may be nondeterministic.\n")
     sys.stderr.flush()
 
 JSON_PRETTY = {
@@ -49,11 +58,11 @@ METHOD_LABEL = {
     "hf": "HF only",
     "hf+qdpt2": "HF only + QDPT2",
     "hf+qdpt3": "HF only + QDPT3",
-    "imsrg": "IMSRG(2)",
-    "imsrg+eom": "IMSRG(2) + EOM2",
-    "imsrg+qdpt2": "IMSRG(2) + QDPT2",
-    "imsrg+qdpt3": "IMSRG(2) + QDPT3",
-    "imsrg[f]+eom[f]": "IMSRG(2)[F] + EOM2[N]",
+    "imsrg": "IM-SRG(2)",
+    "imsrg+eom": "IM-SRG(2) + EOM2",
+    "imsrg+qdpt2": "IM-SRG(2) + QDPT2",
+    "imsrg+qdpt3": "IM-SRG(2) + QDPT3",
+    "imsrg[f]+eom[f]": "IM-SRG(2)[F] + EOM2[N]",
     "magnus_quads+eom": "Magnus(2*) + EOM2",
     "mp2": "MP2",
 }
@@ -136,7 +145,7 @@ def matplotlib_try_enable_deterministic_svgs():
         matplotlib.rcParams["svg.hashsalt"] = ""
     except KeyError:
         sys.stderr.write("Warning: Your matplotlib is too old. "
-                         "SVG output will be nondeterministic.\n")
+                         "SVG output may be nondeterministic.\n")
         sys.stderr.flush()
 
 def init(filename):

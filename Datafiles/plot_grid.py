@@ -107,7 +107,7 @@ def main(label):
              horizontalalignment="center",
              verticalalignment="bottom",
              transform=ax.transAxes)
-    fig.text(0.05 / width, 0.5, "$E$ (energy)",
+    fig.text(0.05 / width, 0.5, "${}$".format(utils.ENERGY_SYMBOL[label]),
              horizontalalignment="left",
              verticalalignment="center",
              transform=ax.transAxes,
