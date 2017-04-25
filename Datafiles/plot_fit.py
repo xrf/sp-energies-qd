@@ -135,15 +135,17 @@ def do_fit(data, deriv_data, badness_threshold, maxfev=0):
         print(e)
         pass
     else:
-        result["full"] = {
-            "exponent": abc[1],
-            "exponent_err": var_abc[1, 1] ** 0.5,
-            "coefficient": abc[0],
-            "coefficient_err": var_abc[0, 0] ** 0.5,
-            "constant": abc[2],
-            "constant_err": var_abc[2, 2] ** 0.5,
-            "covariance": var_abc,
-        }
+        # sometimes we get negative variances because the fit was garbage
+        with np.errstate(invalid="ignore"):
+            result["full"] = {
+                "exponent": abc[1],
+                "exponent_err": var_abc[1, 1] ** 0.5,
+                "coefficient": abc[0],
+                "coefficient_err": var_abc[0, 0] ** 0.5,
+                "constant": abc[2],
+                "constant_err": var_abc[2, 2] ** 0.5,
+                "covariance": var_abc,
+            }
 
     return result
 

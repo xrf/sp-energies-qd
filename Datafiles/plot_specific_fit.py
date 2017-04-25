@@ -9,15 +9,20 @@ import fits, utils
 
 def plot(label, num_filled, freq,
          num_shells_range):
+    method_blacklist = [
+        "imsrg[f]+eom[n]",
+        "magnus_quads+eom",
+        "fci",
+        "hf",
+    ]
+    if label != "ground":
+        method_blacklist.append("imsrg")
+
     fit_data = fits.load_fit_data(label)
 
     d = utils.load_all()
     d = utils.filter_preferred_ml(d)
-    d = d[~d["method"].isin(["imsrg[f]+eom[n]",
-                             "imsrg",
-                             "magnus_quads+eom",
-                             "fci",
-                             "hf"]) &
+    d = d[~d["method"].isin(method_blacklist) &
           (d["interaction"] == "normal") &
           (d["label"] == label) &
           (d["num_filled"] == num_filled) &

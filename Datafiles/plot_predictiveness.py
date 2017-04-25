@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-import collections, functools, itertools, logging, multiprocessing, random
+import functools, random
 import matplotlib.cm
-import matplotlib.patches
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy.optimize
 import scipy.special
-import plot_fit, utils
-import plot_fit
+import fits, utils
 
 CMAP_VIRIDIS = matplotlib.cm.get_cmap("viridis")
 
@@ -25,153 +23,6 @@ CMAP_FOLDED_PINK = utils.colormap(
 TRANSFORM_LOG_ABS = lambda x: np.log(abs(x)), lambda x: np.exp(x)
 TRANSFORM_ID = lambda x: x, lambda x: x
 
-def gather_fit_data_inner(group, fit_count, maxfev):
-    badness_threshold = plot_fit.LOGDERIV_BADNESS_THRESHOLD
-    (label, interaction, num_filled, freq, method), gg = group
-    logging.info(f"{(label, interaction, num_filled, freq, method)}")
-    gg = gg.rename(columns={"num_shells": "x", "energy": "y"})
-    gg = gg.sort_values(["x"])
-    deriv_gg = plot_fit.differentiate(gg, "x", "y", "dydx")
-    subresults = []
-    for fit_start in range(4, 20):
-        fit_stop = fit_start + fit_count - 1
-        g = gg[gg["x"].between(fit_start, fit_stop)]
-        if len(g) != fit_count:
-            continue
-        deriv_g = deriv_gg[deriv_gg["x"].between(fit_start, fit_stop)]
-        fit = plot_fit.do_fit(g, deriv_g, badness_threshold=badness_threshold,
-                              maxfev=maxfev)
-        if fit is None:
-            continue
-        main_fit = fit.get("full", fit["fixedab"])
-        exponent = main_fit["exponent"]
-        if exponent > 0:
-            continue
-        constant = main_fit["constant"]
-        constant_err = main_fit["constant_err"]
-        subresults.append({
-            "fit_method": "full" if "full" in fit else "fixedab",
-            "fit_stop": fit_stop,
-            "chisq": np.linalg.norm(
-                g["y"]
-                - (main_fit["coefficient"] * g["x"] ** main_fit["exponent"]
-                   + main_fit["constant"])) ** 2,
-            "coefficient": main_fit["coefficient"],
-            "coefficient_err": main_fit.get("coefficient_err", float("nan")),
-            "exponent": exponent,
-            "exponent_err": main_fit.get("exponent_err", float("nan")),
-            "constant": constant,
-            "constant_err": constant_err,
-            "fixedab_constant_err": fit["fixedab"]["constant_err"],
-            "dist": g["y"].tail(1).iloc[0] - constant,
-            "dist_err": constant_err,
-        })
-    results = []
-    for r in subresults[:-1]:
-        best_constant = subresults[-1]["constant"]
-        best_constant_err = subresults[-1]["constant_err"]
-        constant = r["constant"]
-        constant_err = r["constant_err"]
-        dist = r["dist"]
-        results.append({
-            "label": label,
-            "interaction": interaction,
-            "num_filled": num_filled,
-            "freq": freq,
-            "method": method,
-            "fit_method": r["fit_method"],
-            "fit_stop": r["fit_stop"],
-            "chisq": r["chisq"],
-            "coefficient": r["coefficient"],
-            "coefficient_err": r["coefficient_err"],
-            "exponent": r["exponent"],
-            "exponent_err": r["exponent_err"],
-            "constant": constant,
-            "constant_err": constant_err,
-            "fixedab_constant_err": r["fixedab_constant_err"],
-            "best_fit_method": subresults[-1]["fit_method"],
-            "best_fit_stop": subresults[-1]["fit_stop"],
-            "best_chisq": subresults[-1]["chisq"],
-            "best_coefficient": subresults[-1]["coefficient"],
-            "best_coefficient_err": subresults[-1]["coefficient_err"],
-            "best_exponent": subresults[-1]["exponent"],
-            "best_exponent_err": subresults[-1]["exponent_err"],
-            "best_constant": best_constant,
-            "best_constant_err": best_constant_err,
-            "best_fixedab_constant_err": subresults[-1]["fixedab_constant_err"],
-            "rel_discrep": constant / best_constant - 1.0,
-            "rel_discrep_err": (
-                (constant_err / best_constant) ** 2 +
-                (constant * best_constant_err / best_constant ** 2) ** 2
-            ) ** 0.5,
-            "rel_dist": dist / best_constant,
-            "rel_dist_err": (
-                (r["dist_err"] / best_constant) ** 2 +
-                (dist * best_constant_err / best_constant ** 2) ** 2
-            ) ** 0.5,
-        })
-    return results
-
-def gather_fit_data(fit_count, maxfev):
-    fn_format = "fits.fit_count={fit_count}_maxfev={maxfev}.txt"
-    try:
-        return utils.load_table(fn_format.format(**locals()))
-    except OSError:
-        pass
-
-    d = utils.filter_preferred_ml(utils.load_all())
-    d = d[~d["method"].isin(["imsrg[f]+eom[n]"])]
-    results = []
-    with multiprocessing.Pool(4) as p:
-        results = p.map(
-            functools.partial(gather_fit_data_inner,
-                              fit_count=fit_count,
-                              maxfev=maxfev),
-            tuple(d.groupby(["label", "interaction", "num_filled",
-                             "freq", "method"])))
-    d = pd.DataFrame.from_records(itertools.chain(*results))
-    print("{} fits failed, out of {}"
-          .format((d["fit_method"] == "fixedab").sum(), len(d)))
-    # fit_count=5:
-    #  maxfev=default: 198 fits failed, out of 2247
-    #  maxfev=10k: 40 fits failed, out of 2248
-    #  maxfev=100k: 0 fits failed
-
-    cols = """
-    interaction
-    label
-    freq
-    num_filled
-    method
-    best_chisq
-    best_coefficient
-    best_coefficient_err
-    best_constant
-    best_constant_err
-    best_fixedab_constant_err
-    best_exponent
-    best_exponent_err
-    best_fit_method
-    best_fit_stop
-    chisq
-    coefficient
-    coefficient_err
-    constant
-    constant_err
-    fixedab_constant_err
-    exponent
-    exponent_err
-    fit_method
-    fit_stop
-    rel_discrep
-    rel_discrep_err
-    rel_dist
-    rel_dist_err
-    """.split()
-    assert len(d.columns) == len(cols)
-    utils.save_table(fn_format.format(**locals()), d[cols])
-    return d
-
 def parse_bin(s):
     # why Pandas converts bins to strings, no-one knows
     return (tuple(map(float, s[1:-1].split(","))))
@@ -187,7 +38,8 @@ def is_good(d_good, r):
         # unknown: default to False
         return False
 
-def plot(fit_count=5, log=False, maxfev=0, plot_type="scatter",
+def plot(fit_count=fits.DEFAULT_FIT_COUNT, log=False,
+         maxfev=fits.DEFAULT_MAXFEV, plot_type="scatter",
          stat="err", hf=False):
     dorig = utils.filter_preferred_ml(utils.load_all())
 
@@ -196,7 +48,7 @@ def plot(fit_count=5, log=False, maxfev=0, plot_type="scatter",
         ["interaction", "label", "freq", "num_filled", "method"]
     ).first()
 
-    d = gather_fit_data(fit_count=fit_count, maxfev=maxfev)
+    d = fits.load_full_fit_data(fit_count=fit_count, maxfev=maxfev)
 
     d = d[d["interaction"] == "normal"]
     # d = d[d["label"] == "add"]
@@ -445,8 +297,8 @@ def plot(fit_count=5, log=False, maxfev=0, plot_type="scatter",
     utils.savefig(fig, fn)
 
 def main():
-    maxfev = 100000
-    fit_count = 5
+    maxfev = fits.DEFAULT_MAXFEV
+    fit_count = fits.DEFAULT_FIT_COUNT
     for stat in ["err", "hessian"]:
         for hf in [False, True]:
             plot(fit_count=fit_count,
