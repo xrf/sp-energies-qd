@@ -125,9 +125,9 @@ def gather_fit_data(group, fit_count, maxfev):
 def load_full_fit_data(fit_count=DEFAULT_FIT_COUNT,
                        maxfev=DEFAULT_MAXFEV):
     '''Load fit data from file if available.  Otherwise calculate the fits.'''
-    fn_format = "fits.fit_count={fit_count}_maxfev={maxfev}.txt"
+    fn = "fits.fit_count={fit_count}_maxfev={maxfev}.txt".format(**locals())
     try:
-        return utils.load_table(fn_format.format(**locals()))
+        return utils.load_table(fn)
     except OSError:
         pass
 
@@ -136,7 +136,6 @@ def load_full_fit_data(fit_count=DEFAULT_FIT_COUNT,
     sys.stderr.flush()
     d = utils.filter_preferred_ml(utils.load_all())
     d = d[~d["method"].isin(["imsrg[f]+eom[n]"])]
-    results = []
     with multiprocessing.Pool(4) as p:
         results_s, missing_num_shells = zip(*p.map(
             functools.partial(gather_fit_data,
@@ -145,9 +144,15 @@ def load_full_fit_data(fit_count=DEFAULT_FIT_COUNT,
             tuple(d.groupby(["label", "interaction", "num_filled",
                              "freq", "method"]))))
     results = itertools.chain(*results_s)
-    utils.save_table(
-        "fits_missing_points.fit_count={fit_count}_maxfev={maxfev}.log"
-        .format(**locals()), pd.DataFrame.from_records(missing_num_shells))
+
+    missing_fn = ("fits_missing_points."
+                  "fit_count={fit_count}_maxfev={maxfev}.log"
+                  .format(**locals()))
+    utils.save_table(missing_fn.format(**locals()),
+                     pd.DataFrame.from_records(missing_num_shells))
+    sys.stderr.write("Missing data points logged to: {}\n".format(missing_fn))
+    sys.stderr.flush()
+
     d = pd.DataFrame.from_records(results)
     num_failed = (d["fit_method"] == "fixedab").sum()
     if num_failed:
@@ -155,7 +160,7 @@ def load_full_fit_data(fit_count=DEFAULT_FIT_COUNT,
                          .format(num_failed, len(d)))
         sys.stderr.flush()
 
-    utils.save_table(fn_format.format(**locals()), d)
+    utils.save_table(fn, d)
     return d
 
 def load_fit_data(label, fit_count=DEFAULT_FIT_COUNT, maxfev=DEFAULT_MAXFEV):
