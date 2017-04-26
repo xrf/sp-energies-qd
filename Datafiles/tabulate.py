@@ -8,6 +8,12 @@ NUM_SHELLS = [12, 15, 15, 15, 20, 20]
 
 # known cases of IM-SRG that don't converge
 KNOWN_NC_IMSRG = set((k, kf * (kf + 1), f) for (k, kf, f) in [
+    (12, 5, 0.1),
+    (12, 6, 0.1),
+    (12, 6, 0.1),
+    (13, 6, 0.1),
+    (15, 6, 0.1),
+    (16, 7, 0.28),
     (20, 7, 0.1),
 ])
 
