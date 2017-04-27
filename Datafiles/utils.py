@@ -641,7 +641,14 @@ def load_ground_dmc():
     return d
 
 @cached()
-def load_ground(with_priority=False, toler=6e-4):
+def load_ground(with_priority=False, toler=6e-4,
+                files=FileDeps(
+                    "ground-sarah.txt",
+                    "imsrg-qdpt/ground.txt",
+                    "EOM_IMSRG_qd_attached.dat"
+                    "QD_CCSD_PA.dat",
+                    "QD_CCSD_PA_10_2_010-100.dat",
+                )):
     '''
     Read ground state energy data from various sources.  Columns (order is
     unspecified):
@@ -664,7 +671,7 @@ def load_ground(with_priority=False, toler=6e-4):
 
     # agreement between Fei's IMSRG and Sarah's IMSRG ~ 1e-3
     # agreement between Nathan's IMSRG and Sarah's IMSRG ~ 1e-3
-    d = load_table("ground-sarah.txt")
+    d = load_table(files["ground-sarah.txt"])
     # this data point does not agree with Fei's results and just seems wrong
     # (it breaks the monotonically decreasing behavior of HF)
     d = d[~((d["freq"] == 0.1) &
@@ -682,14 +689,14 @@ def load_ground(with_priority=False, toler=6e-4):
     d = d.dropna()
     ds.append(d)
 
-    d = load_table("imsrg-qdpt/ground.txt")
+    d = load_table(files["imsrg-qdpt/ground.txt"])
     d = d[d["interaction"] == "normal"]
     del d["interaction"]
     d["priority"] = 0
     ds.append(d)
 
     # agreement between Fei's IMSRG and Nathan's IMSRG ~ 1e-4
-    d = load_table("EOM_IMSRG_qd_attached.dat")
+    d = load_table(files["EOM_IMSRG_qd_attached.dat"])
     d = d.rename(columns={
         "shells": "num_shells",
         "filled": "num_filled",
@@ -702,8 +709,8 @@ def load_ground(with_priority=False, toler=6e-4):
     ds.append(d)
 
     d = pd.concat([
-        load_table("QD_CCSD_PA.dat", skiprows=1),
-        load_table("QD_CCSD_PA_10_2_010-100.dat", skiprows=1),
+        load_table(files["QD_CCSD_PA.dat"], skiprows=1),
+        load_table(files["QD_CCSD_PA_10_2_010-100.dat"], skiprows=1),
     ], ignore_index=True)
     d = d.rename(columns={
         "shells": "num_shells",
