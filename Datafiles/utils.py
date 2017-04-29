@@ -645,7 +645,8 @@ def load_ground(with_priority=False, toler=6e-4,
                 files=FileDeps(
                     "ground-sarah.txt",
                     "imsrg-qdpt/ground.txt",
-                    "EOM_IMSRG_qd_attached.dat"
+                    "EOM_IMSRG_qd_attached.dat",
+                    "EOMIMSRG_up_to_16_attached.dat",
                     "QD_CCSD_PA.dat",
                     "QD_CCSD_PA_10_2_010-100.dat",
                 )):
@@ -696,7 +697,11 @@ def load_ground(with_priority=False, toler=6e-4,
     ds.append(d)
 
     # agreement between Fei's IMSRG and Nathan's IMSRG ~ 1e-4
-    d = load_table(files["EOM_IMSRG_qd_attached.dat"])
+    d = pd.concat([
+        load_table(files["EOM_IMSRG_qd_attached.dat"]),
+        load_table(files["EOMIMSRG_up_to_16_attached.dat"],
+                   names=NATHAN_ATTACHED_COLS),
+    ], ignore_index=True)
     d = d.rename(columns={
         "shells": "num_shells",
         "filled": "num_filled",
@@ -763,6 +768,8 @@ def load_addrm(toler=3e-7,
                    "EOM_IMSRG_softened_removed.dat",
                    "EOM_IMSRG_FEI_HAM_particle_attached.dat",
                    "EOM_IMSRG_FEI_HAM_particle_removed.dat",
+                   "EOMIMSRG_up_to_16_attached.dat",
+                   "EOMIMSRG_up_to_16_removed.dat",
                    "EOM_magnus_quads_attached.dat",
                    "EOM_magnus_quads_removed.dat",
                    "EOM_CCSD_qd_attached.dat",
@@ -814,6 +821,18 @@ def load_addrm(toler=3e-7,
     d["interaction"] = "normal"
     ds.append(d)
     d = load_table(files["EOM-IMSRG_freq_sweep_6part_ml1_removed.dat"],
+                   names=NATHAN_REMOVED_COLS)
+    d = parse_nathan_like_data(d, "rm")
+    d["method"] = "imsrg+eom"
+    d["interaction"] = "normal"
+    ds.append(d)
+    d = load_table(files["EOMIMSRG_up_to_16_attached.dat"],
+                   names=NATHAN_ATTACHED_COLS)
+    d = parse_nathan_like_data(d, "add")
+    d["method"] = "imsrg+eom"
+    d["interaction"] = "normal"
+    ds.append(d)
+    d = load_table(files["EOMIMSRG_up_to_16_removed.dat"],
                    names=NATHAN_REMOVED_COLS)
     d = parse_nathan_like_data(d, "rm")
     d["method"] = "imsrg+eom"
