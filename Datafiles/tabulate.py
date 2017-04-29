@@ -8,8 +8,15 @@ NUM_SHELLS = [12, 15, 15, 15, 20, 20]
 
 # known cases of IM-SRG that don't converge
 KNOWN_NC_IMSRG = set((k, kf * (kf + 1), f) for (k, kf, f) in [
+    # diverged (no hope of convergence)
+    (8, 3, 0.1),
+    (11, 4, 0.1),
+
+    # took more than 500 steps to go from s = 0 to 2.0
+    (7, 4, 0.1),
+    (7, 4, 0.28),
+    (9, 4, 0.1),
     (12, 5, 0.1),
-    (12, 6, 0.1),
     (12, 6, 0.1),
     (13, 6, 0.1),
     (15, 6, 0.1),
