@@ -48,7 +48,7 @@ def plot(fit_count=fits.DEFAULT_FIT_COUNT, log=False,
         ["interaction", "label", "freq", "num_filled", "method"]
     ).first()
 
-    d = fits.load_full_fit_data(fit_count=fit_count, maxfev=maxfev)
+    d = fits.load_predictive_data(fit_count=fit_count, maxfev=maxfev)
 
     d = d[d["interaction"] == "normal"]
     # d = d[d["label"] == "add"]

@@ -4,19 +4,19 @@ import numpy as np
 import pandas as pd
 import fits, utils
 
-NUM_SHELLS = [12, 15, 15, 15, 20, 20]
+NUM_SHELLS = [12, 16, 16, 16, 20, 20]
 
-# known cases of IM-SRG that don't converge
+# known cases of IM-SRG(2) that don't converge
 KNOWN_NC_IMSRG = set((k, kf * (kf + 1), f) for (k, kf, f) in [
     # diverged (no hope of convergence)
     (8, 3, 0.1),
     (11, 4, 0.1),
 
-    # took more than 500 steps to go from s = 0 to 2.0
+    # took more than 500 steps to reach s = 2.0
     (7, 4, 0.1),
     (7, 4, 0.28),
     (9, 4, 0.1),
-    (12, 5, 0.1),
+    (12, 5, 0.1),               # took more than 2000 steps to reach s = 0.001
     (12, 6, 0.1),
     (13, 6, 0.1),
     (15, 6, 0.1),
@@ -24,11 +24,18 @@ KNOWN_NC_IMSRG = set((k, kf * (kf + 1), f) for (k, kf, f) in [
     (20, 7, 0.1),
 ])
 
+# known cases of CCSD that don't converge
+KNOWN_NC_CCSD = set((k, kf * (kf + 1), f) for (k, kf, f) in [
+    (20, 7, 0.1),
+])
+
 def render_entry(value, err=None, default_precision=4):
     if isinstance(value, str):
         return "{" + value + "}"
-    if np.isnan(value):
+    if value is None:
         return ""
+    if np.isnan(value):
+        return "NaN"
     if err is None:
         return "{{:.{}f}}".format(default_precision).format(value)
     if np.isnan(err):
@@ -74,16 +81,20 @@ def save_table(path, label,
             row = [num_particles, freq, num_shells]
             for method in methods:
                 def get(): # to allow early returns
-                    if ("imsrg" in method and
-                            (num_shells, num_particles, freq)
-                                in KNOWN_NC_IMSRG):
-                        return "n.c."
                     try:
                         r = d.loc[(num_shells, num_particles, freq, method)]
                     except KeyError:
-                        return np.nan
+                        return None
                     return r["energy"]
-                row.append(render_entry(get()))
+                value = get()
+                if value is None:
+                    if ("imsrg" in method and
+                        (num_shells, num_particles, freq) in KNOWN_NC_IMSRG):
+                        value = "n.c."
+                    if ("ccsd" in method and
+                        (num_shells, num_particles, freq) in KNOWN_NC_CCSD):
+                        value = "n.c."
+                row.append(render_entry(value))
             s.append(" & ".join(map(str, row)) + " \\\\\n")
     s.append(r"""\bottomrule\end{tabular}""")
 
@@ -134,32 +145,33 @@ def save_extrapolated_table(path, label,
             row = [num_particles, freq, num_shells]
             for method in methods:
                 def get(): # to allow early returns
-
-                    # check for nonconvergent cases
-                    if method in ["imsrg+qdpt3"]:
-                        for k in range(num_shells + 1 - fit_count,
-                                       num_shells + 1):
-                            if (k, num_particles, freq) in KNOWN_NC_IMSRG:
-                                return "n.c.",
-
                     try:
                         p = fits.get_fit_params(d, num_shells, num_particles,
                                                 freq, method)
-                    except fits.NoMatchButBestExistsError as e:
-                        if "--verbose" in sys.argv:
-                            sys.stderr.write("warning: {!r}\n".format(e))
-                            sys.stderr.flush()
-                        return np.nan,
                     except KeyError:
-                        return np.nan,
-
+                        return None, None
                     value = p["constant"]
                     err = p["constant_err"]
                     if err > abs(value):
                         value = "{n.f.}"
                     return value, err
 
-                row.append(render_entry(*get()))
+                value, err = get()
+
+                # check for nonconvergent cases
+                if value is None:
+                    for k in range(num_shells + 1 - fit_count,
+                                   num_shells + 1):
+                        if ("imsrg" in method and
+                            (k, num_particles, freq) in KNOWN_NC_IMSRG):
+                            value = "n.c."
+                            break
+                        if ("ccsd" in method and
+                            (k, num_particles, freq) in KNOWN_NC_CCSD):
+                            value = "n.c."
+                            break
+
+                row.append(render_entry(value, err))
             s.append(" & ".join(map(str, row)) + " \\\\\n")
     s.append(r"""\bottomrule\end{tabular}""")
 

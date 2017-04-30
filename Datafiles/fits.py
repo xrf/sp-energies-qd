@@ -23,17 +23,21 @@ FIT_PARAM_KEYS = [
     "constant_err",
 ]
 
-class NoMatchButBestExistsError(KeyError):
-    pass
-
 def gather_fit_data(group, fit_count, maxfev):
     badness_threshold = plot_fit.LOGDERIV_BADNESS_THRESHOLD
     (label, interaction, num_filled, freq, method), gg = group
+    context = collections.OrderedDict([
+        ("label", label),
+        ("interaction", interaction),
+        ("num_filled", num_filled),
+        ("freq", freq),
+        ("method", method),
+    ])
     gg = gg.rename(columns={"num_shells": "x", "energy": "y"})
     gg = gg.sort_values(["x"])
     deriv_gg = plot_fit.differentiate(gg, "x", "y", "dydx")
+    results = []
     missing_num_shells = set()
-    subresults = []
     for fit_start in range(max(MIN_FIT_START, num_filled), MAX_FIT_START + 1):
         fit_stop = fit_start + fit_count - 1
         g = gg[gg["x"].between(fit_start, fit_stop)]
@@ -44,31 +48,99 @@ def gather_fit_data(group, fit_count, maxfev):
         deriv_g = deriv_gg[deriv_gg["x"].between(fit_start, fit_stop)]
         fit = plot_fit.do_fit(g, deriv_g, badness_threshold=badness_threshold,
                               maxfev=maxfev)
-        if fit is None:
-            continue
-        main_fit = fit.get("full", fit["fixedab"])
-        exponent = main_fit["exponent"]
-        if exponent > 0:
-            continue
-        constant = main_fit["constant"]
-        constant_err = main_fit["constant_err"]
-        subresults.append({
-            "fit_method": "full" if "full" in fit else "fixedab",
-            "fit_stop": fit_stop,
-            "chisq": np.linalg.norm(
-                g["y"]
-                - (main_fit["coefficient"] * g["x"] ** main_fit["exponent"]
-                   + main_fit["constant"])) ** 2,
-            "coefficient": main_fit["coefficient"],
-            "coefficient_err": main_fit.get("coefficient_err", float("nan")),
-            "exponent": exponent,
-            "exponent_err": main_fit.get("exponent_err", float("nan")),
-            "constant": constant,
-            "constant_err": constant_err,
-            "fixedab_constant_err": fit["fixedab"]["constant_err"],
-            "dist": g["y"].tail(1).iloc[0] - constant,
-            "dist_err": constant_err,
-        })
+        if fit is not None:
+            main_fit = fit.get("full", fit["fixedab"])
+            exponent = main_fit["exponent"]
+            constant = main_fit["constant"]
+            constant_err = main_fit["constant_err"]
+            fit_info = {
+                "fit_method": "full" if "full" in fit else "fixedab",
+                "fit_stop": fit_stop,
+                "chisq": np.linalg.norm(
+                    g["y"]
+                    - (main_fit["coefficient"] * g["x"] ** main_fit["exponent"]
+                       + main_fit["constant"])) ** 2,
+                "coefficient": main_fit["coefficient"],
+                "coefficient_err": main_fit.get("coefficient_err", float("nan")),
+                "exponent": exponent,
+                "exponent_err": main_fit.get("exponent_err", float("nan")),
+                "constant": constant,
+                "constant_err": constant_err,
+                "fixedab_constant_err": fit["fixedab"]["constant_err"],
+                "dist": g["y"].tail(1).iloc[0] - constant,
+                "dist_err": constant_err,
+            }
+        else:
+            fit_info = {}
+        results.append(fit_info)
+    results = [utils.merge_dicts(context, x) for x in results]
+    missing = utils.merge_dicts(context, {
+        "num_shells": ",".join(map(str, sorted(missing_num_shells))),
+    })
+    return results, missing
+
+def load_full_fit_data(fit_count=DEFAULT_FIT_COUNT,
+                       maxfev=DEFAULT_MAXFEV):
+    '''Load fit data from file if available.  Otherwise calculate the fits.'''
+    fn = "fit_data.fit_count={fit_count}_maxfev={maxfev}.txt".format(**locals())
+    try:
+        return utils.load_table(fn)
+    except OSError:
+        pass
+
+    sys.stderr.write("Fit data has not yet been calculated.  "
+                     "This may take a few minutes...\n")
+    sys.stderr.flush()
+    d = utils.filter_preferred_ml(utils.load_all())
+    d = d[~d["method"].isin(["imsrg[f]+eom[n]"])]
+    with multiprocessing.Pool(4) as p:
+        results_s, missing_num_shells = zip(*p.map(
+            functools.partial(gather_fit_data,
+                              fit_count=fit_count,
+                              maxfev=maxfev),
+            tuple(d.groupby(["label", "interaction", "num_filled",
+                             "freq", "method"]))))
+    results = itertools.chain(*results_s)
+
+    missing_fn = ("fits_missing_points."
+                  "fit_count={fit_count}_maxfev={maxfev}.log"
+                  .format(**locals()))
+    utils.save_table(missing_fn.format(**locals()),
+                     pd.DataFrame.from_records(missing_num_shells))
+    sys.stderr.write("Missing data points logged to: {}\n".format(missing_fn))
+    sys.stderr.flush()
+
+    d = pd.DataFrame.from_records(results)
+    num_failed = (d["fit_method"] == "fixedab").sum()
+    if num_failed:
+        sys.stderr.write("{} out of {} fits failed\n"
+                         .format(num_failed, len(d)))
+        sys.stderr.flush()
+
+    utils.save_table(fn, d)
+    return d
+
+def load_fit_data(label, fit_count=DEFAULT_FIT_COUNT, maxfev=DEFAULT_MAXFEV):
+    d = load_full_fit_data(fit_count=fit_count, maxfev=maxfev)
+    d = d[d["interaction"] == "normal"]
+    d = d[d["label"] == label]
+    d["num_particles"] = d["num_filled"] * (d["num_filled"] + 1)
+    d = d.set_index(["fit_stop", "num_particles", "freq", "method"])
+    return d
+
+def get_fit_params(fit_data, num_shells, num_particles, freq, method):
+    '''Raises KeyError if the data cannot be found.'''
+    try:
+        return utils.merge_dicts(
+            dict(fit_data.loc[(num_shells, num_particles, freq, method)]),
+            {"fit_stop": num_shells},
+        )
+    except KeyError:
+        raise KeyError from None
+
+def gather_predictive_data(group):
+    (label, interaction, num_filled, freq, method), subresults = group
+    subresults = [x for _, x in subresults.iterrows()]
     results = []
     for r in subresults[:-1]:
         best_constant = subresults[-1]["constant"]
@@ -113,88 +185,13 @@ def gather_fit_data(group, fit_count, maxfev):
                 (dist * best_constant_err / best_constant ** 2) ** 2
             ) ** 0.5),
         ]))
-    return results, collections.OrderedDict([
-        ("label", label),
-        ("interaction", interaction),
-        ("num_filled", num_filled),
-        ("freq", freq),
-        ("method", method),
-        ("num_shells", ",".join(map(str, sorted(missing_num_shells)))),
-    ])
+    return results
 
-def load_full_fit_data(fit_count=DEFAULT_FIT_COUNT,
-                       maxfev=DEFAULT_MAXFEV):
-    '''Load fit data from file if available.  Otherwise calculate the fits.'''
-    fn = "fits.fit_count={fit_count}_maxfev={maxfev}.txt".format(**locals())
-    try:
-        return utils.load_table(fn)
-    except OSError:
-        pass
-
-    sys.stderr.write("Fit data has not yet been calculated.  "
-                     "This may take a few minutes...\n")
-    sys.stderr.flush()
-    d = utils.filter_preferred_ml(utils.load_all())
-    d = d[~d["method"].isin(["imsrg[f]+eom[n]"])]
-    with multiprocessing.Pool(4) as p:
-        results_s, missing_num_shells = zip(*p.map(
-            functools.partial(gather_fit_data,
-                              fit_count=fit_count,
-                              maxfev=maxfev),
-            tuple(d.groupby(["label", "interaction", "num_filled",
-                             "freq", "method"]))))
-    results = itertools.chain(*results_s)
-
-    missing_fn = ("fits_missing_points."
-                  "fit_count={fit_count}_maxfev={maxfev}.log"
-                  .format(**locals()))
-    utils.save_table(missing_fn.format(**locals()),
-                     pd.DataFrame.from_records(missing_num_shells))
-    sys.stderr.write("Missing data points logged to: {}\n".format(missing_fn))
-    sys.stderr.flush()
-
-    d = pd.DataFrame.from_records(results)
-    num_failed = (d["fit_method"] == "fixedab").sum()
-    if num_failed:
-        sys.stderr.write("{} out of {} fits failed\n"
-                         .format(num_failed, len(d)))
-        sys.stderr.flush()
-
-    utils.save_table(fn, d)
-    return d
-
-def load_fit_data(label, fit_count=DEFAULT_FIT_COUNT, maxfev=DEFAULT_MAXFEV):
+def load_predictive_data(fit_count=DEFAULT_FIT_COUNT,
+                         maxfev=DEFAULT_MAXFEV):
     d = load_full_fit_data(fit_count=fit_count, maxfev=maxfev)
-    d = d[d["interaction"] == "normal"]
-    d = d[d["label"] == label]
-    d["num_particles"] = d["num_filled"] * (d["num_filled"] + 1)
-    d_best = d.groupby(["num_particles", "freq", "method"]).first()
-    d = d.set_index(["fit_stop", "num_particles", "freq", "method"])
-    return {"fit": d, "fit_best": d_best}
-
-def get_best_fit_params(fit_data, num_particles, freq, method):
-    '''Raises KeyError if the data cannot be found.'''
-    try:
-        r = fit_data["fit_best"].loc[(num_particles, freq, method)]
-    except KeyError:
-        raise KeyError((num_particles, freq, method)) from None
-    return dict((k, r["best_" + k]) for k in FIT_PARAM_KEYS)
-
-def get_fit_params(fit_data, num_shells, num_particles, freq, method):
-    '''Raises KeyError if the data cannot be found.'''
-    try:
-        r = fit_data["fit"].loc[(num_shells, num_particles, freq, method)]
-    except KeyError:
-        r = None
-    else:
-        r = r.copy()
-        r["fit_stop"] = num_shells
-        return dict((k, r[k]) for k in FIT_PARAM_KEYS)
-    if r is None:
-        # some of the fit_stops are "best"
-        # so they aren't included directly
-        r = get_best_fit_params(fit_data, num_particles, freq, method)
-        if r["fit_stop"] != num_shells:
-            raise NoMatchButBestExistsError((num_particles, freq, method),
-                                            {"best": r["fit_stop"]})
-        return r
+    results = itertools.chain(*map(
+        gather_predictive_data,
+        tuple(d.groupby(["label", "interaction", "num_filled",
+                         "freq", "method"]))))
+    return pd.DataFrame.from_records(results)

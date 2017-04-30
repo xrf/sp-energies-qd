@@ -1,5 +1,5 @@
-import argparse, base64, collections, contextlib, decimal
-import functools, hashlib, io, json, logging, math, os, pickle, re, sys
+import argparse, base64, collections, contextlib, decimal, functools
+import hashlib, inspect, io, json, logging, math, os, pickle, re, sys
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -293,7 +293,7 @@ def intersperse(sep, xs):
         yield x
 
 def merge_dicts(d, *ds):
-    d = dict(d)
+    d = type(d)(d)
     for di in ds:
         d.update(di)
     return d
@@ -397,24 +397,24 @@ class FileDeps:
         '''The hash is computed on demand so that the file is only checked in
         the correct context (e.g. if the working directory needs to be changed
         before calling a function)..'''
-        return sha1_json([(path, os.path.getmtime(path))
-                          for path in sorted(paths)])
+        return [(path, os.path.getmtime(path))
+                for path in sorted(self._paths)]
 
 sanitize_json_handlers.append((FileDeps, lambda self: self._hash()))
 
-def cached(filenames=[], dir=".cache", hash=hashlib.sha1,
+def cached(dir=".cache", hash=hashlib.sha1,
            to_bytes=to_json_bytes, dump=pickle.dump, load=pickle.load):
-    filenames = tuple(filenames)
     def make_cached(func):
         h0_in = [func.__qualname__]
-        for filename in filenames:
-            with open(filename, "rb") as f:
-                h0_in.append(hash(f.read()).hexdigest())
         h0 = hash(to_bytes(h0_in)).hexdigest()
         name = "".join(re.findall(r"[-_.a-zA-Z0-9]+", func.__qualname__))
+        signature = inspect.signature(func)
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            h_in = to_bytes((h0, args, kwargs))
+            # inspect.Signature is needed to obtain the default arguments
+            bound_arguments = signature.bind(*args, **kwargs)
+            bound_arguments.apply_defaults()
+            h_in = to_bytes((h0, dict(bound_arguments.arguments)))
             h = base64.urlsafe_b64encode(hash(h_in).digest()).decode("ascii")
             path = os.path.join(dir, "{}_{}.cache~".format(name, h.strip("=")))
             try:

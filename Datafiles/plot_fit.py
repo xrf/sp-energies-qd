@@ -1,4 +1,14 @@
 #!/usr/bin/env python3
+# This is the "main" script for doing fits one-by-one interactively.
+# (Non-interactive fitting is done by fits.py instead.)
+#
+# The script can be run interactively like this:
+#
+#     Datafiles/plot_fit.py rm num_filled=1 freq=1.0 fit_start=7
+#
+# All arguments to the 'plot' function in this script are accepted as
+# command-line arguments in the syntax above.
+#
 import argparse, itertools, json, logging, os, sys, traceback, warnings
 import matplotlib.pyplot as plt
 import matplotlib.ticker
@@ -189,7 +199,8 @@ def plot_fits(plot,
               get_color_label,
               get_dmc,
               dmc_label,
-              dmc_yerr_col=None):
+              dmc_yerr_col=None,
+              maxfev=0):
     # continuous x range for plotting continuous functions
     x_c = np.linspace(data[x_col].min() - 1, data[x_col].max() + 1, 250)
     [(title_key, gg)] = utils.groupby(data, title_cols)
@@ -225,7 +236,7 @@ def plot_fits(plot,
             continue
 
         fit = do_fit(d_subset, deriv_subset,
-                     badness_threshold=badness_threshold)
+                     badness_threshold=badness_threshold, maxfev=maxfev)
         if fit is None:
             continue
         fit_result = {
@@ -265,7 +276,8 @@ def plot_fits(plot,
             if b < 0:
                 ax[1].axhline(c, linestyle=":", color=color)
             else:
-                logging.warn(f"plot_fits: {stage}.b >= 0: no asymptotic result")
+                logging.warn(f"plot_fits: {label}: {stage}.b >= 0: "
+                             "no asymptotic result")
             utils.update_range(y_range, c)
 
     g = get_dmc(**title_key)
@@ -313,7 +325,7 @@ def plot_fits(plot,
 
 def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
          fit_ranges={}, interaction="normal", methods=None,
-         badness_threshold=LOGDERIV_BADNESS_THRESHOLD, plot=True):
+         badness_threshold=LOGDERIV_BADNESS_THRESHOLD, plot=True, maxfev=0):
     '''label: ground, add, or rm.
 
     fit_ranges: {method: (start, stop)}
@@ -364,6 +376,7 @@ def plot(label, freq, num_filled, fit_start, fit_stop=np.inf,
                                 check_unused_kwargs=False),
         dmc_label="DMC",
         dmc_yerr_col="energy_err",
+        maxfev=maxfev,
     )
     results = []
     for method, fit_result in sorted(fit_results.items()):
