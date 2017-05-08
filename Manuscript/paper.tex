@@ -16,6 +16,7 @@
 \newcommand{\braket}[2]{\langle #1 | #2\rangle}
 \newcommand{\ket}[1]{| #1 \rangle}
 \newcommand{\normord}[1]{\mathopen: #1 \mathclose:}
+\newcommand{\overbar}[1]{\mkern 3.0mu\overline{\mkern-3.0mu #1 \mkern-0.8mu}\mkern 0.8mu}
 
 \begin{document}
 \title{Addition and removal energies of circular quantum dots}
@@ -24,7 +25,7 @@
 \email{yuan@nscl.msu.edu}
 \homepage{https://people.nscl.msu.edu/~yuan}
 \affiliation{National Superconducting Cyclotron Laboratory and Department of Physics and Astronomy, Michigan State University, East Lansing, MI 48824, USA}
-\author{Sam Novario}
+\author{Samuel J. Novario}
 \affiliation{National Superconducting Cyclotron Laboratory and Department of Physics and Astronomy, Michigan State University, East Lansing, MI 48824, USA}
 \author{Nathan Parzuchowski}
 \affiliation{National Superconducting Cyclotron Laboratory and Department of Physics and Astronomy, Michigan State University, East Lansing, MI 48824, USA}
@@ -53,7 +54,7 @@ Beyond their theoretical relevance, there are numerous potential applications qu
 
 In general, quantum dot systems are not analytically solvable, with the exception of 2-electron systems or systems with specific strengths of the external field \cite{PhysRevA.48.3561}.  Hence, in practical applications one can only hope for a numerical solution through some \textit{many-body method} or a combination thereof.
 
-One of the most accurate techniques for solving many-body systems is that of exact diagonalization, also known as the full configuation interaction method.  Unlike most methods, it is assured to converge to the exact answer as the size of the finite basis is increases to infinity (the so-called \textit{infinite-basis limit}).  Despite this significant advantage, it is often infeasible to perform exact diagonalization due to its factorially increasing cost with respect to the basis size and the number of particles.  This led to the development of more cost-effective methods that trade varying amounts of accuracy for varying amounts of speed.
+One of the most accurate techniques for solving many-body systems is that of exact diagonalization, also known as the full configuation interaction method.  Unlike most methods, it is assured to converge to the exact answer as the size of the finite basis is increased to infinity (the so-called \textit{infinite-basis limit}).  Despite this significant advantage, it is often infeasible to perform exact diagonalization due to its factorially increasing cost with respect to the basis size and the number of particles.  This led to the development of more cost-effective methods that trade varying amounts of accuracy for varying amounts of speed.
 
 In this paper, we analyze the application of several methods to the quantum dot systems, including the Hartree--Fock (HF) method, M\o ller-Plesset perturbation theory (MP), the in-medium similarity renormalization group (IM-SRG) method, coupled cluster (CC) theory \cite{PhysRevB.67.045320,heidari:114708,PhysRevB.84.115302}, quasidegenerate perturbation theory (QDPT), and equation-of-motion (EOM) methods.  We compare them against variational and diffusion Monte Carlo (VMC and DMC) \cite{PhysRevB.68.035304,PhysRevB.62.8120,PhysRevB.84.115302,PhysRevB.54.4780} and full configuration interaction (FCI) \cite{olsen2013thesis,JJAP.36.3924,PhysRevB.56.6428,2008arXiv0810.2644K,rontani:124102} results from existing literature.
 
@@ -215,7 +216,7 @@ To perform numerical calculations, we further assume that each unknown state $|q
 \begin{align*}
   |q'\rangle \equiv \sum_p |p\rangle C_{p, q'}
 \end{align*}
-The allows the problem to be reduced from an abstract minimization problem \eqref{eq:hfexpectation} to a concrete numerical problem.  The caveat is that the set of known functions be large enough to capture the relevant behavior of the system.
+This allows the problem to be reduced from an abstract minimization problem \eqref{eq:hfexpectation} to a concrete numerical problem.  The caveat is that the set of known functions be large enough to capture the relevant behavior of the system.
 
 If the interaction is not too strong, it is common to use the single-particle states of the noninteracting Hamiltonian $\hat{H}^{[1]}$ as the set of known states.
 
@@ -574,19 +575,84 @@ After a single-reference ground state IM-SRG calculation, the Hamiltonian has be
 where bars denote rotated operators. Now the reference state is used in place of the bare correlated ground state. The ground state IM-SRG procedure has implicitly re-summed contributions from higher order excitations (3-particle-2-hole, 2-particle-3-hole, 2-particle-3-hole, 4-particle-3-hole, \ldots) into the lower order amplitudes of the ladder operators (1-particle-0-hole, 0-particle-1-hole, 2-particle-1-hole, 1-particle-2-hole).
 
 Despite these gains, the EOM calculation is still a partial diagonalization method, limited by the truncation to 2-particle-1-hole and 1-particle-2-hole operators. We expect $N + 1$ (or $N - 1$) states to be described appropriately by EOM-IM-SRG if their wavefunctions are dominated by 1-particle-0-hole (or 0-particle-1-hole) contributions in the rotated frame. We use partial norms of the EOM ladder operators to make this determination:
-\begin{align}\label{eq:partial_norms}
+\begin{align}
+  \label{eq:partial_norms_p}
   n_{\text{1-particle}} &= \sqrt{\sum_p \bar{n}_p | \bar{x}^{[1,0]}_p |^2},\\
+  \label{eq:partial_norms_h}
   n_{\text{1-hole}} &= \sqrt{\sum_p n_p | \bar{x}^{[0,1]}_p |^2}.
 \end{align}
 Large single particle partial norms indicate that the EOM truncation is valid for the relevant state. States with lower single particle norms should be treated by with a higher EOM approximation, which can be accomplished directly or perturbatively \cite{PhysRevC.95.044304}.
 
-\subsection{Coupled cluster theory}
+\subsection{Coupled-cluster theory}
+\label{subsec:cctheory}
 
-[[?]]
+Coupled-cluster theory is based on expressing the A-particle correlated wave function using the exponential ansatz, $\ket{\Psi} = e^{\hat{T}}\ket{\Phi}$.  The cluster operator $\hat{T} = \hat{T}_{1} + \hat{T}_{2} + ... + \hat{T}_{A}$, is composed of $N$-particle $N$-hole excitation operators, $\hat{T}_{N}$,
+\begin{equation}\label{eq:cc_amps}
+\hat{T}_{N} = \left( \frac{1}{N!} \right)^{2}\sum\limits_{\substack{a_{1} \cdots a_{N} \\ i_{1} \cdots i_{N}}} \bar{n}_{a_{1}} \cdots \bar{n}_{a_{N}} n_{i_{1}} \cdots n_{i_{N}}\ t_{a_{1} \cdots a_{N}, i_{1} \cdots i_{N}}^{[N]}\ \normord{\hat a_{a_{1}}^\dagger \cdots \hat a_{a_{N}}^\dagger \hat a_{i_{N}} \cdots \hat a_{i_{1}}}
+\end{equation}
+which include unknown scalars, $t_{a_{1} \cdots a_{N}, i_{1} \cdots i_{N}}^{[N]}$, known as cluster amplitudes.
+
+Using the coupled cluster wave function, the Schr{\"o}dinger equation,
+\begin{equation}\label{eq:cc_schrodeq}
+\hat{H}e^{\hat{T}}\ket{\Phi} = Ee^{\hat{T}}\ket{\Phi},
+\end{equation}
+can be rewritten by left-multiplying by $\bra{\Phi}e^{-T}$ as,
+\begin{equation}\label{eq:ccsd0}
+\bra{\Phi}\overbar{H}_{CC}\ket{\Phi} = E,
+\end{equation}
+where we define an coupled cluster effective Hamiltonian,
+\begin{equation}\label{eq:cc_heff0}
+\overbar{H}_{CC} \equiv e^{-\hat{T}}\hat{H}e^{\hat{T}},
+\end{equation}
+in which the wave operator, $e^{\hat{T}}$, acts as a similarity transform on the Hamiltonian in the same way that $\hat{U}(s)$ acts to transform the Hamiltonian in SRG methods.  An important difference, however, is that the coupled cluster wave operator is not unitary, and thus $\overbar{H}$ is not Hermitian.
+
+The effective Hamiltonian in \eqref{eq:cc_heff0} can be rewritten with commutators according to the Baker-Campbell-Hausdorff expansion as,
+\begin{equation*}\label{eq:cc_bch}
+\overbar{H}_{CC} = \hat{H} + [ \hat{H},\hat{T} ] + \frac{1}{2} [[ \hat{H},\hat{T} ],\hat{T} ] + \frac{1}{3!} [[[ \hat{H},\hat{T} ],\hat{T} ],\hat{T} ] + \frac{1}{4!} [[[[ \hat{H},\hat{T} ],\hat{T} ],\hat{T} ],\hat{T} ],
+\end{equation*}
+which terminates at four-nested commutators due to the two-body nature of the interaction.  Like with IM-SRG, this commutator expression ensures that coupled cluster is size-extensive and contains only connected terms.  In addition, because $\hat{T}$ is an excitation operator, terms of the form $\hat{T}\hat{H}$ are disconnected and thus vanish \cite{shavitt2009many}.  Therefore the coupled cluster effective Hamiltonian can be further reduced to
+\begin{equation}\label{eq:cc_heff1}
+\overbar{H}_{CC} = \left( \hat{H}e^{\hat{T}} \right)_{c},
+\end{equation}
+where the label ``$c$'' indicates that only connected terms are used.
+
+In practice, $\hat{T}$ must be truncated to be computationally feasible.  In this paper, we make the truncation that includes single and double excitations, $\hat{T} = \hat{T}_{1} + \hat{T}_{2}$, known as CCSD, which scales equivilently to IM-SRG(2).  This truncation has been successfully applied to many problems in quantum chemistry \cite{RevModPhys.79.291} and nuclear physics \cite{0034-4885-77-9-096302}.  In addition, we also truncate the three-body effective Hamiltonian terms that are induced by the similarity transformation.  Figure \ref{fig:diagrams-ccsd} shows the diagrammatic representation of \eqref{eq:cc_heff1} in CCSD.
+
+\begin{figure}
+\includegraphics{fig-diagrams-ccsd}
+\caption{Diagrammatic representation of $\overbar{H}$ of \eqref{eq:cc_heff1}, where open circles represent the excitation cluster operators $\hat{T}_{1}$ and $\hat{T}_{2}$, and filled circles represent the two-body interaction $\hat{H}^{[2]}$.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams).  Lines connected to $\hat{T}$ are always directed upward because they represent an excitation operator while the directions of external lines connected to $\hat{H}^{[2]}$ are unconstrained.}
+\label{fig:diagrams-ccsd}
+\end{figure}
+
+The unknown cluster amplitudes in CCSD, $t_{a, i}^{[1]}$ and $t_{a, b, i, j}^{[2]}$, are calculated by left-multiplying \eqref{eq:cc_schrodeq} by $\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{a}}e^{-\hat{T}}$ and $\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{j}^\dagger \hat a_{b} \hat a_{a}}e^{-\hat{T}}$, respectively.
+\begin{gather}\label{eq:ccsd1}
+\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{a}}\overbar{H}_{CC}\ket{\Phi} = 0 \\
+\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{j}^\dagger \hat a_{b} \hat a_{a}}\overbar{H}_{CC}\ket{\Phi} = 0 \notag
+\end{gather}
+After the Fock matrix has been diagonalized, the diagonal components of \eqref{eq:ccsd1} can be separated and, after expanding the exponent in \eqref{eq:cc_heff1}, the non-vanishing terms of the CCSD amplitude equations become,
+\begin{gather}\label{eq:ccsd2}
+\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{a}} \hat{H}^{[2]}( \hat{T}_{1} + \hat{T}_{2} + \hat{T}_{1}\hat{T}_{2} + \frac{1}{2}\hat{T}_{1}^{2} + \frac{1}{3!}\hat{T}_{1}^{3} )_{c} \ket{\Phi} = (H_{i,i}^{[1]} - H_{a,a}^{[1]})t_{a, i}^{[1]} \\
+\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{j}^\dagger \hat a_{b} \hat a_{a}} \hat{H}^{[2]}( 1 + \hat{T}_{1} + \hat{T}_{2} + \frac{1}{2}\hat{T}_{1}^{2} + \hat{T}_{1}\hat{T}_{2} + \frac{1}{2}\hat{T}_{2}^{2} + \frac{1}{3!}\hat{T}_{1}^{3} + \frac{1}{2}\hat{T}_{1}^{2}\hat{T}_{2} + \frac{1}{4!}\hat{T}_{1}^{4} )_{c} \ket{\Phi} \notag \\
+\hspace{10cm} = (H_{i,i}^{[1]} + H_{j,j}^{[1]} - H_{a,a}^{[1]} - H_{b,b}^{[1]})t_{a, b, i, j}^{[2]} \notag
+\end{gather}
+These non-linear equations are solved using an iterative procedure that begins with an initial guess for the cluster amplitudes which are used to calculate the left-hand side of \eqref{eq:ccsd2}. Dividing by the denominator on the right-hand side gives updated amplitudes which are used to reevaluate the left-hand side. This proccess is repeated until the amplitudes reach a fixed point. Like the Hartree-Fock iterative procedure, employing similar convergence acceleration techniques can help improve the coupled cluster iterations.
 
 \subsubsection{EOM-CC}
+\label{subsec:eomcc}
+Like EOM-IM-SRG, the equation-of-motion technique can be applied after a coupled-cluster ground-state calculation, by using the coupled-cluster effective Hamiltonian.  Here, the non-Hermitian nature of $\overbar{H}_{CC}$ becomes apparent.  In this case, in addition to constructing excitation ladder operators \eqref{eq:gen_attached} and \eqref{eq:gen_removed} that correspond to the right-eigenvectors of the generalized eigenvalue problem \eqref{eq:EOMIMSRG}, there exist analogous de-excitation ladder operators, $\hat{L}^{(N+1)}$ and $\hat{L}^{(N-1)}$, that correspond to the left-eigenvectors,
+\begin{align}
+  \label{eq:left_attached}
+    \hat{L}^{(N+1)}_w &= \sum_p \bar{n}_p l^{[1,0]}_p  \hat{a}_p + \frac{1}{2} \sum_{p, q, r} \bar{n}_p \bar{n}_q n_r l^{[2,1]}_{p, q, r} \hat{a}^\dagger_r \hat{a}_q \hat{a}_p + \cdots,  \\
+  \label{eq:left_removed}
+    \hat{L}^{(N-1)}_w &= \sum_p n_p l_p^{[0,1]} \hat{a}^\dagger_p + \frac{1}{2} \sum_{p, q, r} n_p n_q \bar{n}_r  l^{[1,2]}_{p, q, r} \hat{a}^\dagger_p  \hat{a}^\dagger_q \hat{a}_r + \cdots.
+\end{align}
+These left-eigenvectors satisfy the left-eigenvalue problem, with left-eigenvalues $\varepsilon^{(\pm)}_w$, analogous to \eqref{eq:EOMIMSRG},
+\begin{equation}\label{eq:left_EOM}
+  \bra{\Phi^{(N)}_0} [\overbar{H},\bar{L}^{(N \pm 1)}_w] = \pm \varepsilon^{(\pm)}_w \bra{\Phi^{(N)}_0} \overbar{L}^{(N \pm 1)}_w,
+\end{equation}
+and form a bi-orthogonal set with the right-eigenvectors, $\braket{\bar{L}^{(N \pm 1)}_w}{\bar{X}^{(N \pm 1)}_u} = \delta_{w,u}$.
 
-[[?]]
+In this paper, because the interaction is real and thus the effective Hamiltonian is real, the left- and right-eigenvalues are equivalent. In addition, while the the left- and right-eigenvectors are generally not equal, the differences in their single-particle \eqref{eq:partial_norms_p} or single-hole \eqref{eq:partial_norms_h} natures are, in practice, not significant.  Therefore, only the right-eigenvectors are used in this paper.
 
 \section{Results}
 \label{sec:results}
@@ -643,7 +709,7 @@ Numerical calculations in this paper are performed with a relative precision of 
   \label{fig:gs}
 \end{figure}
 
-In Figure \ref{fig:gs} we display a selection of ground state energies calculated using HF + CC and HF + CCSD as described in Section \ref{subsec:methodology}.  We also include results from M\o ller--Plesset perturbation theory to second order (MP2), DMC \cite{hoegberget2013thesis}, and FCI \cite{olsen2013thesis} for comparison where available.
+In Figure \ref{fig:gs} we display a selection of ground state energies calculated using HF + IM-SRG(2) and HF + CCSD as described in Section \ref{subsec:methodology}.  We also include results from M\o ller--Plesset perturbation theory to second order (MP2), DMC \cite{hoegberget2013thesis}, and FCI \cite{olsen2013thesis} for comparison where available.
 
 We do not include results from ``HF only'' to avoid overshadowing the comparatively smaller differences between the non-HF results in the plots.  Some HF results can be found Figure \ref{fig:by-freq-10-6-normal} instead.  Generally, HF ground state energies differ from the non-HF ones by a few to several percent, whereas non-HF energies tend to differ from each other by less than a percent.
 
