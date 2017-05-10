@@ -1,6 +1,7 @@
 *.md_dep
 *.out
 FigureFiles/*.pdf
+Manuscript/fig-diagrams-ccsd.pdf
 Manuscript/fig-by-freq-10-6-add-0-normal.pdf
 Manuscript/fig-by-freq-10-6-ground-0-normal.pdf
 Manuscript/fig-by-freq-10-6-rm-1-normal.pdf

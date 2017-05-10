@@ -16,7 +16,6 @@
 \newcommand{\braket}[2]{\langle #1 | #2\rangle}
 \newcommand{\ket}[1]{| #1 \rangle}
 \newcommand{\normord}[1]{\mathopen: #1 \mathclose:}
-\newcommand{\overbar}[1]{\mkern 3.0mu\overline{\mkern-3.0mu #1 \mkern-0.8mu}\mkern 0.8mu}
 
 \begin{document}
 \title{Addition and removal energies of circular quantum dots}
@@ -411,7 +410,7 @@ where
 
 \begin{figure}
 \includegraphics{fig-diagrams-imsrg}
-\caption{Diagrammatic representation of $D^{[k]}(\circ, \bullet)$ of \eqref{eq:flow0}, \eqref{eq:flow1}, and \eqref{eq:flow2}, where open circles represent $A$ and filled circles represent $B$.  The two-body vertices are implicitly antisymmetric (i.e.\ \textit{Hugenholtz diagrams} \cite{HUGENHOLTZ1957481}, as described in \cite{shavitt2009many} \S 4.4.3).  Internal directed lines (bound/dummy indices) that point upward denote summations over unoccupied states, whereas lines that point downward denote summations over occupied states.  External undirected lines denote unconstrained free indices.}
+\caption{Diagrammatic representation of $D^{[k]}(\circ, \bullet)$ of \eqref{eq:flow0}, \eqref{eq:flow1}, and \eqref{eq:flow2}, where open circles represent $A$ and filled circles represent $B$.  The two-body vertices are implicitly antisymmetric (i.e.\ \textit{Hugenholtz diagrams} \cite{HUGENHOLTZ1957481}, as described in \cite{shavitt2009many} \S 4.4.3).  Internal directed lines (bound/dummy indices) that point upward denote summations over unoccupied states, whereas lines that point downward denote summations over occupied states.  External undirected lines denote unconstrained free indices.  In IM-SRG(2), the three-body diagrams are not included.}
 \label{fig:diagrams-imsrg}
 \end{figure}
 
@@ -598,36 +597,36 @@ Using the coupled cluster wave function, the Schr{\"o}dinger equation,
 \end{equation}
 can be rewritten by left-multiplying by $\bra{\Phi}e^{-T}$ as,
 \begin{equation}\label{eq:ccsd0}
-\bra{\Phi}\overbar{H}_{CC}\ket{\Phi} = E,
+\bra{\Phi}\bar{H}_{\mathrm{CC}}\ket{\Phi} = E,
 \end{equation}
 where we define an coupled cluster effective Hamiltonian,
 \begin{equation}\label{eq:cc_heff0}
-\overbar{H}_{CC} \equiv e^{-\hat{T}}\hat{H}e^{\hat{T}},
+\bar{H}_{\mathrm{CC}} \equiv e^{-\hat{T}}\hat{H}e^{\hat{T}},
 \end{equation}
-in which the wave operator, $e^{\hat{T}}$, acts as a similarity transform on the Hamiltonian in the same way that $\hat{U}(s)$ acts to transform the Hamiltonian in SRG methods.  An important difference, however, is that the coupled cluster wave operator is not unitary, and thus $\overbar{H}$ is not Hermitian.
+in which the wave operator, $e^{\hat{T}}$, acts as a similarity transform on the Hamiltonian in the same way that $\hat{U}(s)$ acts to transform the Hamiltonian in SRG methods.  An important difference, however, is that the coupled cluster wave operator is not unitary, and thus $\bar{H}$ is not Hermitian.
 
 The effective Hamiltonian in \eqref{eq:cc_heff0} can be rewritten with commutators according to the Baker-Campbell-Hausdorff expansion as,
 \begin{equation*}\label{eq:cc_bch}
-\overbar{H}_{CC} = \hat{H} + [ \hat{H},\hat{T} ] + \frac{1}{2} [[ \hat{H},\hat{T} ],\hat{T} ] + \frac{1}{3!} [[[ \hat{H},\hat{T} ],\hat{T} ],\hat{T} ] + \frac{1}{4!} [[[[ \hat{H},\hat{T} ],\hat{T} ],\hat{T} ],\hat{T} ],
+\bar{H}_{\mathrm{CC}} = \hat{H} + [ \hat{H},\hat{T} ] + \frac{1}{2} [[ \hat{H},\hat{T} ],\hat{T} ] + \frac{1}{3!} [[[ \hat{H},\hat{T} ],\hat{T} ],\hat{T} ] + \frac{1}{4!} [[[[ \hat{H},\hat{T} ],\hat{T} ],\hat{T} ],\hat{T} ],
 \end{equation*}
 which terminates at four-nested commutators due to the two-body nature of the interaction.  Like with IM-SRG, this commutator expression ensures that coupled cluster is size-extensive and contains only connected terms.  In addition, because $\hat{T}$ is an excitation operator, terms of the form $\hat{T}\hat{H}$ are disconnected and thus vanish \cite{shavitt2009many}.  Therefore the coupled cluster effective Hamiltonian can be further reduced to
 \begin{equation}\label{eq:cc_heff1}
-\overbar{H}_{CC} = \left( \hat{H}e^{\hat{T}} \right)_{c},
+\bar{H}_{\mathrm{CC}} = \left( \hat{H}e^{\hat{T}} \right)_{\mathrm{c}},
 \end{equation}
-where the label ``$c$'' indicates that only connected terms are used.
+where the subscript ``$\mathrm{c}$'' indicates that only connected terms are used.
 
 In practice, $\hat{T}$ must be truncated to be computationally feasible.  In this paper, we make the truncation that includes single and double excitations, $\hat{T} = \hat{T}_{1} + \hat{T}_{2}$, known as CCSD, which scales equivilently to IM-SRG(2).  This truncation has been successfully applied to many problems in quantum chemistry \cite{RevModPhys.79.291} and nuclear physics \cite{0034-4885-77-9-096302}.  In addition, we also truncate the three-body effective Hamiltonian terms that are induced by the similarity transformation.  Figure \ref{fig:diagrams-ccsd} shows the diagrammatic representation of \eqref{eq:cc_heff1} in CCSD.
 
 \begin{figure}
 \includegraphics{fig-diagrams-ccsd}
-\caption{Diagrammatic representation of $\overbar{H}$ of \eqref{eq:cc_heff1}, where open circles represent the excitation cluster operators $\hat{T}_{1}$ and $\hat{T}_{2}$, and filled circles represent the two-body interaction $\hat{H}^{[2]}$.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams).  Lines connected to $\hat{T}$ are always directed upward because they represent an excitation operator while the directions of external lines connected to $\hat{H}^{[2]}$ are unconstrained.}
+\caption{Diagrammatic representation of $\bar{H}$ of \eqref{eq:cc_heff1}, where open circles represent the excitation cluster operators $\hat{T}_{1}$ and $\hat{T}_{2}$, and filled circles represent the two-body interaction $\hat{H}^{[2]}$.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams).  Lines connected to $\hat{T}$ are always directed upward because they represent an excitation operator while the directions of external lines connected to $\hat{H}^{[2]}$ are unconstrained.}
 \label{fig:diagrams-ccsd}
 \end{figure}
 
 The unknown cluster amplitudes in CCSD, $t_{a, i}^{[1]}$ and $t_{a, b, i, j}^{[2]}$, are calculated by left-multiplying \eqref{eq:cc_schrodeq} by $\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{a}}e^{-\hat{T}}$ and $\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{j}^\dagger \hat a_{b} \hat a_{a}}e^{-\hat{T}}$, respectively.
 \begin{gather}\label{eq:ccsd1}
-\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{a}}\overbar{H}_{CC}\ket{\Phi} = 0 \\
-\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{j}^\dagger \hat a_{b} \hat a_{a}}\overbar{H}_{CC}\ket{\Phi} = 0 \notag
+\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{a}}\bar{H}_{\mathrm{CC}}\ket{\Phi} = 0 \\
+\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{j}^\dagger \hat a_{b} \hat a_{a}}\bar{H}_{\mathrm{CC}}\ket{\Phi} = 0 \notag
 \end{gather}
 After the Fock matrix has been diagonalized, the diagonal components of \eqref{eq:ccsd1} can be separated and, after expanding the exponent in \eqref{eq:cc_heff1}, the non-vanishing terms of the CCSD amplitude equations become,
 \begin{gather}\label{eq:ccsd2}
@@ -635,11 +634,11 @@ After the Fock matrix has been diagonalized, the diagonal components of \eqref{e
 \bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{j}^\dagger \hat a_{b} \hat a_{a}} \hat{H}^{[2]}( 1 + \hat{T}_{1} + \hat{T}_{2} + \frac{1}{2}\hat{T}_{1}^{2} + \hat{T}_{1}\hat{T}_{2} + \frac{1}{2}\hat{T}_{2}^{2} + \frac{1}{3!}\hat{T}_{1}^{3} + \frac{1}{2}\hat{T}_{1}^{2}\hat{T}_{2} + \frac{1}{4!}\hat{T}_{1}^{4} )_{c} \ket{\Phi} \notag \\
 \hspace{10cm} = (H_{i,i}^{[1]} + H_{j,j}^{[1]} - H_{a,a}^{[1]} - H_{b,b}^{[1]})t_{a, b, i, j}^{[2]} \notag
 \end{gather}
-These non-linear equations are solved using an iterative procedure that begins with an initial guess for the cluster amplitudes which are used to calculate the left-hand side of \eqref{eq:ccsd2}. Dividing by the denominator on the right-hand side gives updated amplitudes which are used to reevaluate the left-hand side. This proccess is repeated until the amplitudes reach a fixed point. Like the Hartree-Fock iterative procedure, employing similar convergence acceleration techniques can help improve the coupled cluster iterations.
+These non-linear equations are solved using an iterative procedure that begins with an initial guess for the cluster amplitudes which are used to calculate the left-hand side of \eqref{eq:ccsd2}. Dividing by the denominator on the right-hand side gives updated amplitudes which are used to reevaluate the left-hand side. This process is repeated until the amplitudes reach a fixed point. Like the Hartree-Fock iterative procedure, employing similar convergence acceleration techniques can help improve the coupled cluster iterations.
 
 \subsubsection{EOM-CC}
 \label{subsec:eomcc}
-Like EOM-IM-SRG, the equation-of-motion technique can be applied after a coupled-cluster ground-state calculation, by using the coupled-cluster effective Hamiltonian.  Here, the non-Hermitian nature of $\overbar{H}_{CC}$ becomes apparent.  In this case, in addition to constructing excitation ladder operators \eqref{eq:gen_attached} and \eqref{eq:gen_removed} that correspond to the right-eigenvectors of the generalized eigenvalue problem \eqref{eq:EOMIMSRG}, there exist analogous de-excitation ladder operators, $\hat{L}^{(N+1)}$ and $\hat{L}^{(N-1)}$, that correspond to the left-eigenvectors,
+Like EOM-IM-SRG, the equation-of-motion technique can be applied after a coupled-cluster ground-state calculation, by using the coupled-cluster effective Hamiltonian.  Here, the non-Hermitian nature of $\bar{H}_{\mathrm{CC}}$ becomes apparent.  In this case, in addition to constructing excitation ladder operators \eqref{eq:gen_attached} and \eqref{eq:gen_removed} that correspond to the right-eigenvectors of the generalized eigenvalue problem \eqref{eq:EOMIMSRG}, there exist analogous de-excitation ladder operators, $\hat{L}^{(N+1)}$ and $\hat{L}^{(N-1)}$, that correspond to the left-eigenvectors,
 \begin{align}
   \label{eq:left_attached}
     \hat{L}^{(N+1)}_w &= \sum_p \bar{n}_p l^{[1,0]}_p  \hat{a}_p + \frac{1}{2} \sum_{p, q, r} \bar{n}_p \bar{n}_q n_r l^{[2,1]}_{p, q, r} \hat{a}^\dagger_r \hat{a}_q \hat{a}_p + \cdots,  \\
@@ -648,7 +647,7 @@ Like EOM-IM-SRG, the equation-of-motion technique can be applied after a coupled
 \end{align}
 These left-eigenvectors satisfy the left-eigenvalue problem, with left-eigenvalues $\varepsilon^{(\pm)}_w$, analogous to \eqref{eq:EOMIMSRG},
 \begin{equation}\label{eq:left_EOM}
-  \bra{\Phi^{(N)}_0} [\overbar{H},\bar{L}^{(N \pm 1)}_w] = \pm \varepsilon^{(\pm)}_w \bra{\Phi^{(N)}_0} \overbar{L}^{(N \pm 1)}_w,
+  \bra{\Phi^{(N)}_0} [\bar{H},\bar{L}^{(N \pm 1)}_w] = \pm \varepsilon^{(\pm)}_w \bra{\Phi^{(N)}_0} \bar{L}^{(N \pm 1)}_w,
 \end{equation}
 and form a bi-orthogonal set with the right-eigenvectors, $\braket{\bar{L}^{(N \pm 1)}_w}{\bar{X}^{(N \pm 1)}_u} = \delta_{w,u}$.
 
