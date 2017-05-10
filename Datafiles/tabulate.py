@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import fits, utils
 
-NUM_SHELLS = [12, 16, 16, 16, 20, 20]
+NUM_SHELLS = [14, 16, 16, 16, 20, 20]
 
 # known cases of IM-SRG(2) that don't converge
 KNOWN_NC_IMSRG = set((k, kf * (kf + 1), f) for (k, kf, f) in [

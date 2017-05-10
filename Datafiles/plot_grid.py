@@ -7,10 +7,10 @@ import utils
 
 def main(label):
     num_shells_range = {
-        6: [3.5, 15.5],
-        12: [4.5, 15.5],
-        20: [6.5, 15.5],
-        30: [9.5, 20.5],
+        6: [3.5, 14.5],
+        12: [4.5, 16.5],
+        20: [6.5, 16.5],
+        30: [9.5, 16.5],
         42: [11.5, 20.5],
         56: [14.5, 20.5],
     }
@@ -18,11 +18,11 @@ def main(label):
     LEGEND_FACET_IDX = 2
 
     if label == "ground":
-        freq_ticks = [0.1, 1.0]
+        freq_ticks = [0.28, 1.0]
         methods = ["mp2", "imsrg", "ccsd", "fci"]
         fn = "../Manuscript/fig-gs2.pdf"
     else:
-        freq_ticks = [0.1, 0.28]        # 0.28 needed to show DMC results
+        freq_ticks = [0.28, 1.0]        # 0.28 needed to show DMC results
         fn = "../Manuscript/fig-{}2.pdf".format(label)
         methods = ["imsrg+qdpt3", "imsrg+eom", "ccsd+eom"]
 
