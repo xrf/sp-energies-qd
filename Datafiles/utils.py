@@ -770,6 +770,7 @@ def load_addrm(toler=3e-7,
                    "EOM_IMSRG_FEI_HAM_particle_removed.dat",
                    "EOMIMSRG_up_to_16_attached.dat",
                    "EOMIMSRG_up_to_16_removed.dat",
+                   "EOM_particle_removed.dat",
                    "EOM_magnus_quads_attached.dat",
                    "EOM_magnus_quads_removed.dat",
                    "EOM_CCSD_qd_attached.dat",
@@ -795,56 +796,41 @@ def load_addrm(toler=3e-7,
     ds.append(d)
 
     # Nathan's EOM on Nathan's IMSRG matrix elements
-    d = load_table(files["EOM_IMSRG_qd_attached.dat"])
-    d = parse_nathan_like_data(d, "add")
+    d = pd.concat([
+        parse_nathan_like_data(
+            load_table(files["EOM_IMSRG_qd_attached.dat"]), "add"),
+        parse_nathan_like_data(
+            load_table(files["EOM_IMSRG_qd_removed.dat"]), "rm"),
+        parse_nathan_like_data(
+            load_table(files["freq_sweep_N6_R10_attached.dat"]), "add"),
+        parse_nathan_like_data(
+            load_table(files["freq_sweep_N6_R10_removed.dat"]), "rm"),
+        parse_nathan_like_data(
+            load_table(files["EOM-IMSRG_freq_sweep_6part_ml1_attached.dat"],
+                       names=NATHAN_ATTACHED_COLS), "add"),
+        parse_nathan_like_data(
+            load_table(files["EOM-IMSRG_freq_sweep_6part_ml1_removed.dat"],
+                       names=NATHAN_REMOVED_COLS), "rm"),
+        parse_nathan_like_data(
+            load_table(files["EOMIMSRG_up_to_16_attached.dat"],
+                       names=NATHAN_ATTACHED_COLS), "add"),
+        parse_nathan_like_data(
+            load_table(files["EOMIMSRG_up_to_16_removed.dat"],
+                       names=NATHAN_REMOVED_COLS), "rm"),
+        parse_nathan_like_data(
+            load_table(files["EOM_particle_removed.dat"],
+                       names=NATHAN_REMOVED_COLS), "rm"),
+    ], ignore_index=True)
     d["method"] = "imsrg+eom"
     d["interaction"] = "normal"
     ds.append(d)
-    d = load_table(files["EOM_IMSRG_qd_removed.dat"])
-    d = parse_nathan_like_data(d, "rm")
-    d["method"] = "imsrg+eom"
-    d["interaction"] = "normal"
-    ds.append(d)
-    d = load_table(files["freq_sweep_N6_R10_attached.dat"])
-    d = parse_nathan_like_data(d, "add")
-    d["method"] = "imsrg+eom"
-    d["interaction"] = "normal"
-    ds.append(d)
-    d = load_table(files["freq_sweep_N6_R10_removed.dat"])
-    d = parse_nathan_like_data(d, "rm")
-    d["method"] = "imsrg+eom"
-    d["interaction"] = "normal"
-    d = load_table(files["EOM-IMSRG_freq_sweep_6part_ml1_attached.dat"],
-                   names=NATHAN_ATTACHED_COLS)
-    d = parse_nathan_like_data(d, "add")
-    d["method"] = "imsrg+eom"
-    d["interaction"] = "normal"
-    ds.append(d)
-    d = load_table(files["EOM-IMSRG_freq_sweep_6part_ml1_removed.dat"],
-                   names=NATHAN_REMOVED_COLS)
-    d = parse_nathan_like_data(d, "rm")
-    d["method"] = "imsrg+eom"
-    d["interaction"] = "normal"
-    ds.append(d)
-    d = load_table(files["EOMIMSRG_up_to_16_attached.dat"],
-                   names=NATHAN_ATTACHED_COLS)
-    d = parse_nathan_like_data(d, "add")
-    d["method"] = "imsrg+eom"
-    d["interaction"] = "normal"
-    ds.append(d)
-    d = load_table(files["EOMIMSRG_up_to_16_removed.dat"],
-                   names=NATHAN_REMOVED_COLS)
-    d = parse_nathan_like_data(d, "rm")
-    d["method"] = "imsrg+eom"
-    d["interaction"] = "normal"
-    ds.append(d)
-    d = load_table(files["EOM_IMSRG_softened_attached.dat"])
-    d = parse_nathan_like_data(d, "add")
-    d["method"] = "imsrg+eom"
-    d["interaction"] = "sigmaA=0.5,sigmaB=4.0"
-    ds.append(d)
-    d = load_table(files["EOM_IMSRG_softened_removed.dat"])
-    d = parse_nathan_like_data(d, "rm")
+
+    d = pd.concat([
+        parse_nathan_like_data(
+            load_table(files["EOM_IMSRG_softened_attached.dat"]), "add"),
+        parse_nathan_like_data(
+            load_table(files["EOM_IMSRG_softened_removed.dat"]), "rm"),
+    ], ignore_index=True)
     d["method"] = "imsrg+eom"
     d["interaction"] = "sigmaA=0.5,sigmaB=4.0"
     ds.append(d)
