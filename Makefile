@@ -23,9 +23,9 @@ regenerate:
 	Datafiles/plot_by_freq.py
 
 dist/gh-pages/.git/config:
-	mkdir -p dist/gh-pages
+	mkdir -p $(@D)
 	url=`git remote -v | grep origin | awk '{ printf "%s", $$2; exit }'` && \
-	cd dist/gh-pages && \
+	cd $(@D)/.. && \
 	git init && \
 	git config user.name Bot && \
 	git config user.email "<>" && \
@@ -59,7 +59,7 @@ dist/gh-pages/paper.pdf: Manuscript/paper.pdf
 	./gen-deps $< $@
 
 .tex.pdf:
-	./mklatex $*
+	./run-latex $*
 
 -include figures.md_dep Manuscript/paper.dep
 
