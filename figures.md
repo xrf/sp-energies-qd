@@ -1,6 +1,7 @@
 ---
 title: Figures
 toc: true
+fontsize: 12pt
 ---
 
 ## 2016-11-01: Comparison of different methods

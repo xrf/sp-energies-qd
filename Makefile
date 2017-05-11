@@ -46,11 +46,8 @@ dist/gh-pages/paper.pdf: Manuscript/paper.pdf
 
 .SUFFIXES: .dep .md .md_dep .pdf .svg .tex
 
-.md.md_dep:
-	./gen-deps $< $@
-
 .md.tex:
-	pandoc -s -V fontsize=12pt -o $@ $<
+	pandoc -s -o $@ $<
 
 .svg.pdf:
 	inkscape --without-gui --export-pdf=$@ $<
@@ -59,8 +56,8 @@ dist/gh-pages/paper.pdf: Manuscript/paper.pdf
 	./gen-deps $< $@
 
 .tex.pdf:
-	./run-latex $*
+	latexmk -g -pdf -interaction=nonstopmode -outdir=$(@D) $<
 
--include figures.md_dep Manuscript/paper.dep
+-include figures.dep Manuscript/paper.dep
 
 .SECONDARY:

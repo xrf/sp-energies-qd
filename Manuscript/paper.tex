@@ -8,7 +8,6 @@
 \usepackage{hyperref}
 \usepackage{natbib}
 \usepackage{siunitx}
-\usepackage{subcaption}
 
 \newcommand{\D}{\operatorname{d\!}}
 \newcommand{\E}{\operatorname{e}}
@@ -98,7 +97,7 @@ where $\hat{H}^{[1]}$ and $\hat{H}^{[2]}$ are the one- and two-body parts of the
 The operator $\hat{\bm r}_j$ is the position operator of the $j$-th particle,\footnote{The ordering of the particle labels $j$ is unimportant as they exist only for the purpose of bookkeeping.} and $\hat{\bm p}_j \equiv -\mathrm{i} \hat{\bm{\nabla}}_{\bm{r}_j}$ is its momentum operator.
 
 \begin{figure}
-  \includegraphics{figures/fig-shell-structure-v2}
+  \includegraphics{figures/fig-shell-structure-v2.pdf}
   \caption{The 42 lowest single-particle states (the first 5 shells) in the 2D harmonic oscillator basis.  Each box represents a single-particle state arranged by $m_\ell$, $m_{\mathrm{s}}$, and energy, and the up/down arrows indicate the spin of the states.  Within each column, the principal quantum number $n$ increases as one traverses upward.}
   \label{fig:shell-structure}
 \end{figure}
@@ -409,7 +408,7 @@ where
 \end{align}
 
 \begin{figure}
-\includegraphics{fig-diagrams-imsrg}
+\includegraphics{fig-diagrams-imsrg.pdf}
 \caption{Diagrammatic representation of $D^{[k]}(\circ, \bullet)$ of \eqref{eq:flow0}, \eqref{eq:flow1}, and \eqref{eq:flow2}, where open circles represent $A$ and filled circles represent $B$.  The two-body vertices are implicitly antisymmetric (i.e.\ \textit{Hugenholtz diagrams} \cite{HUGENHOLTZ1957481}, as described in \cite{shavitt2009many} \S 4.4.3).  Internal directed lines (bound/dummy indices) that point upward denote summations over unoccupied states, whereas lines that point downward denote summations over occupied states.  External undirected lines denote unconstrained free indices.  In IM-SRG(2), the three-body diagrams are not included.}
 \label{fig:diagrams-imsrg}
 \end{figure}
@@ -461,56 +460,64 @@ Compared to the Wegner generator, where the derivatives of the final flow equati
 \subsection{Coupled-cluster theory}
 \label{subsec:cctheory}
 
-Coupled-cluster theory is based on expressing the A-particle correlated wave function using the exponential ansatz, $\ket{\Psi} = e^{\hat{T}}\ket{\Phi}$.  The cluster operator $\hat{T} = \hat{T}_{1} + \hat{T}_{2} + ... + \hat{T}_{A}$, is composed of $N$-particle $N$-hole excitation operators, $\hat{T}_{N}$,
-\begin{equation}\label{eq:cc_amps}
-\hat{T}_{N} = \left( \frac{1}{N!} \right)^{2}\sum\limits_{\substack{a_{1} \cdots a_{N} \\ i_{1} \cdots i_{N}}} \bar{n}_{a_{1}} \cdots \bar{n}_{a_{N}} n_{i_{1}} \cdots n_{i_{N}}\ t_{a_{1} \cdots a_{N}, i_{1} \cdots i_{N}}^{[N]}\ \normord{\hat a_{a_{1}}^\dagger \cdots \hat a_{a_{N}}^\dagger \hat a_{i_{N}} \cdots \hat a_{i_{1}}}
-\end{equation}
-which include unknown scalars, $t_{a_{1} \cdots a_{N}, i_{1} \cdots i_{N}}^{[N]}$, known as cluster amplitudes.
+Coupled-cluster theory is based on expressing the $N$-particle correlated wave function $\ket{\Psi}$ using the exponential ansatz,
+\begin{align*}
+  \ket{\Psi} = e^{\hat{T}}\ket{\Phi}
+\end{align*}
+where $\ket{\Phi}$ is the reference state as before.  The cluster operator $\hat{T} \equiv \hat{T}_{1} + \hat{T}_{2} + ... + \hat{T}_{N}$, is composed of $k$-particle $k$-hole excitation operators, $\hat{T}_{k}$,
+\begin{align} \label{eq:cc_amps}
+  \hat{T}_{k} \equiv \left(\frac{1}{k!}\right)^{2}\sum\limits_{\substack{a_{1}, \dots, a_{k}, \\ i_{1}, \dots, i_{k}}} \bar{n}_{a_{1}} \cdots \bar{n}_{a_{k}} n_{i_{1}} \cdots n_{i_{k}} t^{[k]}_{a_{1}, \dots, a_{k}, i_{1}, \dots, i_{k}} \normord{\hat a_{a_{1}}^\dagger \cdots \hat a_{a_{k}}^\dagger \hat a_{i_{k}} \cdots \hat a_{i_{1}}}
+\end{align}
+where the unknown matrix elements, $t^{[k]}_{a_{1}, \dots, a_{k}, i_{1}, \dots, i_{k}}$, known as \textit{cluster amplitudes}.
 
-Using the coupled cluster wave function, the Schr{\"o}dinger equation,
-\begin{equation}\label{eq:cc_schrodeq}
-\hat{H}e^{\hat{T}}\ket{\Phi} = Ee^{\hat{T}}\ket{\Phi},
-\end{equation}
+Using the coupled cluster wave function, the Schr\"odinger equation,
+\begin{align} \label{eq:cc_schrodeq}
+  \hat{H} \E^{\hat{T}} \ket{\Phi} = E \E^{\hat{T}}\ket{\Phi}
+\end{align}
 can be rewritten by left-multiplying by $\bra{\Phi}e^{-T}$ as,
-\begin{equation}\label{eq:ccsd0}
-\bra{\Phi}\bar{H}_{\mathrm{CC}}\ket{\Phi} = E,
-\end{equation}
-where we define an coupled cluster effective Hamiltonian,
-\begin{equation}\label{eq:cc_heff0}
-\bar{H}_{\mathrm{CC}} \equiv e^{-\hat{T}}\hat{H}e^{\hat{T}},
-\end{equation}
-in which the wave operator, $e^{\hat{T}}$, acts as a similarity transform on the Hamiltonian in the same way that $\hat{U}(s)$ acts to transform the Hamiltonian in SRG methods.  An important difference, however, is that the coupled cluster wave operator is not unitary, and thus $\bar{H}$ is not Hermitian.
+\begin{align*}
+  \bra{\Phi} \bar{H}_{\mathrm{CC}} \ket{\Phi} = E
+\end{align*}
+where we define a coupled-cluster effective Hamiltonian,
+\begin{align} \label{eq:cc_heff0}
+  \bar{H}_{\mathrm{CC}} \equiv \E^{-\hat{T}} \hat{H} \E^{\hat{T}}
+\end{align}
+in which the wave operator, $\E^{\hat{T}}$, acts as a similarity transform on the Hamiltonian in the same way that $\hat{U}(s)$ acts to transform the Hamiltonian in SRG methods.  An important difference, however, is that the coupled cluster wave operator is not unitary, and thus $\bar{H}$ is not Hermitian.
 
-The effective Hamiltonian in \eqref{eq:cc_heff0} can be rewritten with commutators according to the Baker-Campbell-Hausdorff expansion as,
-\begin{equation*}\label{eq:cc_bch}
-\bar{H}_{\mathrm{CC}} = \hat{H} + [ \hat{H},\hat{T} ] + \frac{1}{2} [[ \hat{H},\hat{T} ],\hat{T} ] + \frac{1}{3!} [[[ \hat{H},\hat{T} ],\hat{T} ],\hat{T} ] + \frac{1}{4!} [[[[ \hat{H},\hat{T} ],\hat{T} ],\hat{T} ],\hat{T} ],
-\end{equation*}
-which terminates at four-nested commutators due to the two-body nature of the interaction.  Like with IM-SRG, this commutator expression ensures that coupled cluster is size-extensive and contains only connected terms.  In addition, because $\hat{T}$ is an excitation operator, terms of the form $\hat{T}\hat{H}$ are disconnected and thus vanish \cite{shavitt2009many}.  Therefore the coupled cluster effective Hamiltonian can be further reduced to
-\begin{equation}\label{eq:cc_heff1}
-\bar{H}_{\mathrm{CC}} = \left( \hat{H}e^{\hat{T}} \right)_{\mathrm{c}},
-\end{equation}
+The effective Hamiltonian in \eqref{eq:cc_heff0} can be rewritten with commutators according to the Baker--Campbell--Hausdorff expansion as,
+\begin{align*}
+  \bar{H}_{\mathrm{CC}} = \hat{H} + [\hat{H}, \hat{T}] + \frac{1}{2} [[\hat{H}, \hat{T} ], \hat{T}] + \frac{1}{3!} [[[\hat{H}, \hat{T}], \hat{T}], \hat{T}] + \frac{1}{4!} [[[[\hat{H}, \hat{T}], \hat{T}], \hat{T}], \hat{T}]
+\end{align*}
+which terminates at four-nested commutators due to the two-body nature of the interaction.  Like with IM-SRG, this commutator expression ensures that coupled cluster is size-extensive and contains only connected terms.  In addition, because $\hat{T}$ is an excitation operator, terms of the form $\hat{T} \hat{H}$ are disconnected and thus vanish \cite{shavitt2009many}.  Therefore the coupled cluster effective Hamiltonian can be further reduced to
+\begin{align} \label{eq:cc_heff1}
+  \bar{H}_{\mathrm{CC}} = \bigl(\hat{H}e^{\hat{T}}\bigr)_{\mathrm{c}}
+\end{align}
 where the subscript ``$\mathrm{c}$'' indicates that only connected terms are used.
 
-In practice, $\hat{T}$ must be truncated to be computationally feasible.  In this paper, we make the truncation that includes single and double excitations, $\hat{T} = \hat{T}_{1} + \hat{T}_{2}$, known as CCSD, which scales equivilently to IM-SRG(2).  This truncation has been successfully applied to many problems in quantum chemistry \cite{RevModPhys.79.291} and nuclear physics \cite{0034-4885-77-9-096302}.  In addition, we also truncate the three-body effective Hamiltonian terms that are induced by the similarity transformation.  Figure \ref{fig:diagrams-ccsd} shows the diagrammatic representation of \eqref{eq:cc_heff1} in CCSD.
+In practice, the cluster operator $\hat{T}$ must be truncated to be computationally feasible.  In this paper, we truncate it to only single and double excitations,
+\begin{align*}
+  \hat{T} = \hat{T}_{1} + \hat{T}_{2}
+\end{align*}
+This is known as coupled cluster singles and doubles (CCSD), with a asymptotic computational cost that scales like IM-SRG(2).  This truncation has been successfully applied to many problems in quantum chemistry \cite{RevModPhys.79.291} and nuclear physics \cite{0034-4885-77-9-096302}.  In addition, we also truncate the three-body effective Hamiltonian terms that are induced by the similarity transformation.  Figure \ref{fig:diagrams-ccsd} shows the diagrammatic representation of \eqref{eq:cc_heff1} in CCSD.
 
 \begin{figure}
-\includegraphics{fig-diagrams-ccsd}
-\caption{Diagrammatic representation of $\bar{H}$ of \eqref{eq:cc_heff1}, where open circles represent the excitation cluster operators $\hat{T}_{1}$ and $\hat{T}_{2}$, and filled circles represent the two-body interaction $\hat{H}^{[2]}$.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams).  Lines connected to $\hat{T}$ are always directed upward because they represent an excitation operator while the directions of external lines connected to $\hat{H}^{[2]}$ are unconstrained.}
-\label{fig:diagrams-ccsd}
+  \includegraphics{fig-diagrams-ccsd.pdf}
+  \caption{Diagrammatic representation of $\bar{H}$ of \eqref{eq:cc_heff1}, where open circles represent the excitation cluster operators $\hat{T}_{1}$ and $\hat{T}_{2}$, and filled circles represent the two-body interaction $\hat{H}^{[2]}$.  As before, the diagrams are implicitly antisymmetrized (Hugenholtz diagrams).  Lines connected to $\hat{T}$ are always directed upward because they represent an excitation operator while the directions of external lines connected to $\hat{H}^{[2]}$ are unconstrained.}
+  \label{fig:diagrams-ccsd}
 \end{figure}
 
-The unknown cluster amplitudes in CCSD, $t_{a, i}^{[1]}$ and $t_{a, b, i, j}^{[2]}$, are calculated by left-multiplying \eqref{eq:cc_schrodeq} by $\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{a}}e^{-\hat{T}}$ and $\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{j}^\dagger \hat a_{b} \hat a_{a}}e^{-\hat{T}}$, respectively.
-\begin{gather}\label{eq:ccsd1}
-\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{a}}\bar{H}_{\mathrm{CC}}\ket{\Phi} = 0 \\
-\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{j}^\dagger \hat a_{b} \hat a_{a}}\bar{H}_{\mathrm{CC}}\ket{\Phi} = 0 \notag
-\end{gather}
+The unknown cluster amplitudes in CCSD, $t_{a, i}^{[1]}$ and $t_{a, b, i, j}^{[2]}$, are calculated by left-multiplying \eqref{eq:cc_schrodeq} by $\bra{\Phi} \normord{\hat a_{i}^\dagger \hat a_{a}} \E^{-\hat{T}}$ and $\bra{\Phi} \normord{\hat a_{i}^\dagger \hat a_{j}^\dagger \hat a_{b} \hat a_{a}} \E^{-\hat{T}}$, respectively.
+\begin{align} \label{eq:ccsd1}
+  \bra{\Phi} \normord{\hat a_{i}^\dagger \hat a_{a}} \bar{H}_{\mathrm{CC}} \ket{\Phi} &= 0 \\
+  \bra{\Phi} \normord{\hat a_{i}^\dagger \hat a_{j}^\dagger \hat a_{b} \hat a_{a}}\bar{H}_{\mathrm{CC}} \ket{\Phi} &= 0 \notag
+\end{align}
 After the Fock matrix has been diagonalized, the diagonal components of \eqref{eq:ccsd1} can be separated and, after expanding the exponent in \eqref{eq:cc_heff1}, the non-vanishing terms of the CCSD amplitude equations become,
-\begin{gather}\label{eq:ccsd2}
-\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{a}} \hat{H}^{[2]}( \hat{T}_{1} + \hat{T}_{2} + \hat{T}_{1}\hat{T}_{2} + \frac{1}{2}\hat{T}_{1}^{2} + \frac{1}{3!}\hat{T}_{1}^{3} )_{c} \ket{\Phi} = (H_{i,i}^{[1]} - H_{a,a}^{[1]})t_{a, i}^{[1]} \\
-\bra{\Phi}\normord{ \hat a_{i}^\dagger \hat a_{j}^\dagger \hat a_{b} \hat a_{a}} \hat{H}^{[2]}( 1 + \hat{T}_{1} + \hat{T}_{2} + \frac{1}{2}\hat{T}_{1}^{2} + \hat{T}_{1}\hat{T}_{2} + \frac{1}{2}\hat{T}_{2}^{2} + \frac{1}{3!}\hat{T}_{1}^{3} + \frac{1}{2}\hat{T}_{1}^{2}\hat{T}_{2} + \frac{1}{4!}\hat{T}_{1}^{4} )_{c} \ket{\Phi} \notag \\
-\hspace{10cm} = (H_{i,i}^{[1]} + H_{j,j}^{[1]} - H_{a,a}^{[1]} - H_{b,b}^{[1]})t_{a, b, i, j}^{[2]} \notag
+\begin{gather} \label{eq:ccsd2}
+  \bra{\Phi} \normord{\hat a_{i}^\dagger \hat a_{a}} \hat{H}^{[2]}(\hat{T}_{1} + \hat{T}_{2} + \hat{T}_{1}\hat{T}_{2} + \frac{1}{2}\hat{T}_{1}^{2} + \frac{1}{3!}\hat{T}_{1}^{3})_{c} \ket{\Phi} = (H_{i, i}^{[1]} - H_{a, a}^{[1]}) t_{a, i}^{[1]} \\
+  \bra{\Phi} \normord{\hat a_{i}^\dagger \hat a_{j}^\dagger \hat a_{b} \hat a_{a}} \hat{H}^{[2]} (1 + \hat{T}_{1} + \hat{T}_{2} + \frac{1}{2} \hat{T}_{1}^{2} + \hat{T}_{1}\hat{T}_{2} + \frac{1}{2}\hat{T}_{2}^{2} + \frac{1}{3!}\hat{T}_{1}^{3} + \frac{1}{2}\hat{T}_{1}^{2}\hat{T}_{2} + \frac{1}{4!}\hat{T}_{1}^{4} )_{c} \ket{\Phi} \notag \\
+= \Delta_{\{i, j\}, \{a, b\}} t_{a, b, i, j}^{[2]} \notag
 \end{gather}
-These non-linear equations are solved using an iterative procedure that begins with an initial guess for the cluster amplitudes which are used to calculate the left-hand side of \eqref{eq:ccsd2}. Dividing by the denominator on the right-hand side gives updated amplitudes which are used to reevaluate the left-hand side. This process is repeated until the amplitudes reach a fixed point. Like the Hartree-Fock iterative procedure, employing similar convergence acceleration techniques can help improve the coupled cluster iterations.
+where $\Delta$ are the M\o ller--Plesset denominators from \eqref{eq:moellerplessetdenominator}.  As usual, these non-linear equations are solved using an iterative procedure.  One begins with an initial guess for the cluster amplitudes, which are used to calculate the left-hand side of \eqref{eq:ccsd2}.  Dividing by the denominator on the right-hand side gives updated amplitudes which are used to re-evaluate the left-hand side. This process is repeated until the amplitudes reach a fixed point.  Like the Hartree--Fock iterative procedure, employing convergence acceleration techniques can reduce the number of coupled cluster iterations required.
 
 \subsection{Quasigenerate perturbation theory}
 \label{subsec:selfenergy}
@@ -574,7 +581,7 @@ This leads to a recursion relation of $\hat \Omega$ that enables $\hat \Omega$ t
 \end{align*}
 
 \begin{figure}
-\includegraphics{fig-diagrams-sfe}
+\includegraphics{fig-diagrams-sfe.pdf}
 \caption{Diagrammatic form of the second- and third-order QDPT corrections.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams), but also have implicit denominators as with many-body perturbation theory.  When QDPT is performed on IM-SRG-evolved Hamiltonians, many of the diagrams vanish.  The remaining nonvanishing diagrams for addition energy are highlighted in blue and for removal energy are highlighted in red.}
 \label{fig:diagrams-sfe}
 \end{figure}
@@ -621,10 +628,11 @@ gives
 which constitutes a generalized eigenvalue problem for the amplitudes $x$, where $\varepsilon^{(\pm)}_u$ are the single-particle addition ($+$) and removal ($-$) energies. The quality of this calculation depends on the ansatz for the $N$-particle ground state, as well as the systematically improvable truncation on the ladder operators. In this work we include 1p and 2p1h excitations in the $N + 1$ ladder operator and likewise 1h and 2h1p operators for the $N - 1$ ladder operators.
 
 \subsubsection*{EOM-IM-SRG}
+
 After a single-reference ground state IM-SRG calculation, the Hamiltonian has been rotated such that the reference state is an eigenfunction with corresponding eigenvalue $E^{(N)}_0$, which is the correlated $N$-particle ground state energy. The EOM equation is therefore
-\begin{equation}\label{eq:EOMIMSRG}
+\begin{align} \label{eq:EOMIMSRG}
   [\bar{H},\bar{X}^{(N \pm 1)}_u] \ket{\Phi^{(N)}_0} = \pm \varepsilon^{(\pm)}_u \bar{X}^{(N \pm 1)}_u \ket{\Phi^{(N)}_0},
-\end{equation}
+\end{align}
 where bars denote rotated operators. Now the reference state is used in place of the bare correlated ground state. The ground state IM-SRG procedure has implicitly re-summed contributions from higher order excitations (3-particle-2-hole, 2-particle-3-hole, 2-particle-3-hole, 4-particle-3-hole, \ldots) into the lower order amplitudes of the ladder operators (1-particle-0-hole, 0-particle-1-hole, 2-particle-1-hole, 1-particle-2-hole).
 
 Despite these gains, the EOM calculation is still a partial diagonalization method, limited by the truncation to 2-particle-1-hole and 1-particle-2-hole operators. We expect $N + 1$ (or $N - 1$) states to be described appropriately by EOM-IM-SRG if their wavefunctions are dominated by 1-particle-0-hole (or 0-particle-1-hole) contributions in the rotated frame. We use partial norms of the EOM ladder operators to make this determination:
@@ -637,18 +645,16 @@ Despite these gains, the EOM calculation is still a partial diagonalization meth
 Large single particle partial norms indicate that the EOM truncation is valid for the relevant state. States with lower single particle norms should be treated by with a higher EOM approximation, which can be accomplished directly or perturbatively \cite{PhysRevC.95.044304}.
 
 \subsubsection*{EOM-CC}
-\label{subsec:eomcc}
+
 Like EOM-IM-SRG, the equation-of-motion technique can be applied after a coupled-cluster ground-state calculation, by using the coupled-cluster effective Hamiltonian.  Here, the non-Hermitian nature of $\bar{H}_{\mathrm{CC}}$ becomes apparent.  In this case, in addition to constructing excitation ladder operators \eqref{eq:gen_attached} and \eqref{eq:gen_removed} that correspond to the right-eigenvectors of the generalized eigenvalue problem \eqref{eq:EOMIMSRG}, there exist analogous de-excitation ladder operators, $\hat{L}^{(N+1)}$ and $\hat{L}^{(N-1)}$, that correspond to the left-eigenvectors,
-\begin{align}
-  \label{eq:left_attached}
-    \hat{L}^{(N+1)}_w &= \sum_p \bar{n}_p l^{[1,0]}_p  \hat{a}_p + \frac{1}{2} \sum_{p, q, r} \bar{n}_p \bar{n}_q n_r l^{[2,1]}_{p, q, r} \hat{a}^\dagger_r \hat{a}_q \hat{a}_p + \cdots,  \\
-  \label{eq:left_removed}
-    \hat{L}^{(N-1)}_w &= \sum_p n_p l_p^{[0,1]} \hat{a}^\dagger_p + \frac{1}{2} \sum_{p, q, r} n_p n_q \bar{n}_r  l^{[1,2]}_{p, q, r} \hat{a}^\dagger_p  \hat{a}^\dagger_q \hat{a}_r + \cdots.
-\end{align}
+\begin{align*}
+    \hat{L}^{(N+1)}_w &= \sum_p \bar{n}_p l^{[1,0]}_p \hat{a}_p + \frac{1}{2} \sum_{p, q, r} \bar{n}_p \bar{n}_q n_r l^{[2,1]}_{p, q, r} \hat{a}^\dagger_r \hat{a}_q \hat{a}_p + \cdots \\
+    \hat{L}^{(N-1)}_w &= \sum_p n_p l_p^{[0,1]} \hat{a}^\dagger_p + \frac{1}{2} \sum_{p, q, r} n_p n_q \bar{n}_r  l^{[1,2]}_{p, q, r} \hat{a}^\dagger_p  \hat{a}^\dagger_q \hat{a}_r + \cdots
+\end{align*}
 These left-eigenvectors satisfy the left-eigenvalue problem, with left-eigenvalues $\varepsilon^{(\pm)}_w$, analogous to \eqref{eq:EOMIMSRG},
-\begin{equation}\label{eq:left_EOM}
-  \bra{\Phi^{(N)}_0} [\bar{H},\bar{L}^{(N \pm 1)}_w] = \pm \varepsilon^{(\pm)}_w \bra{\Phi^{(N)}_0} \bar{L}^{(N \pm 1)}_w,
-\end{equation}
+\begin{align*}
+  \bra{\Phi^{(N)}_0} [\bar{H},\bar{L}^{(N \pm 1)}_w] = \pm \varepsilon^{(\pm)}_w \bra{\Phi^{(N)}_0} \bar{L}^{(N \pm 1)}_w
+\end{align*}
 and form a bi-orthogonal set with the right-eigenvectors, $\braket{\bar{L}^{(N \pm 1)}_w}{\bar{X}^{(N \pm 1)}_u} = \delta_{w,u}$.
 
 In this paper, because the interaction is real and thus the effective Hamiltonian is real, the left- and right-eigenvalues are equivalent. In addition, while the the left- and right-eigenvectors are generally not equal, the differences in their single-particle \eqref{eq:partial_norms_p} or single-hole \eqref{eq:partial_norms_h} natures are, in practice, not significant.  Therefore, only the right-eigenvectors are used in this paper.
@@ -661,7 +667,7 @@ In this paper, because the interaction is real and thus the effective Hamiltonia
 
 \begin{figure}
   \centering
-  \includegraphics{figures/fig-methods}
+  \includegraphics{figures/fig-methods.pdf}
   \caption{A schematic view of the various ways in which many-body methods in this paper could be combined to calculate ground state, addition, and removal energies.}
   \label{fig:methods}
 \end{figure}
@@ -703,7 +709,7 @@ Numerical calculations in this paper are performed with a relative precision of 
 
 \begin{figure}
   \centering
-  \includegraphics{fig-gs2}
+  \includegraphics{fig-gs2.pdf}
   \caption{Plots of ground state energy of quantum dots with $N$ particles and an oscillatory frequency of $\omega$ against the number of shells $K$.  Since DMC does not utilize a finite basis, the horizontal axis is irrelevant and DMC results are plotted as horizontal lines.}
   \label{fig:gs}
 \end{figure}
@@ -734,14 +740,14 @@ There are a few cases where the IM-SRG over-corrects the result, leading to an e
 
 \begin{figure}
   \centering
-  \includegraphics{fig-add2}
+  \includegraphics{fig-add2.pdf}
   \caption{Addition energies for a selection of quantum dot parameters.  See Figure \ref{fig:gs} for details.}
   \label{fig:add}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics{fig-rm2}
+  \includegraphics{fig-rm2.pdf}
   \caption{Removal energies for a selection of quantum dot parameters.  See Figure \ref{fig:add} for details.}
   \label{fig:rm}
 \end{figure}
@@ -756,14 +762,14 @@ There is strong agreement between IM-SRG(2) + QDPT3 and IM-SRG(2) + EOM2 in many
 
 \begin{figure}
   \centering
-  \includegraphics{fig-by-freq-10-6-normal}
+  \includegraphics{fig-by-freq-10-6-normal.pdf}
   \caption{The behavior of ground state, addition, and removal energies as a function of the oscillator frequency $\omega$, with $K = 10$ shells in the basis.  The energy is normalized with respect to the Hartree--Fock values to magnify the differences.  Lower frequency leads to stronger correlations and thereby a more difficult problem.  The fact that CCSD and MP2 are similar is likely coincidence as they cross at around 12 shells and then diverge again (not shown in this plot).}
   \label{fig:by-freq-10-6-normal}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics{fig-rel-slopes2}
+  \includegraphics{fig-rel-slopes2.pdf}
   \caption{The impact of the interaction on convergence of addition and removal energies using IM-SRG(2) + QDPT3.  For clarity, the plot does not distinguish between addition and removal energies.  The horizontal axis shows the system parameters, where $N$ is the number of particles and $\omega$ is the oscillator frequency.  The vertical axis shows $|\rho_{15}|$ (``relative slope''), which estimates the rate of convergence at 15 total shells.  The lower the value of $|\rho_{15}|$, the faster the convergence.  The data points are categorized by the interactions.  The trends suggest that the singular short-range part of the interaction has a much stronger impact on the convergence than the long-range tail.}
   \label{fig:rel-slopes}
 \end{figure}
@@ -812,7 +818,7 @@ In general, there does not appear to be any difference between the convergence b
 
 \begin{figure}
   \centering
-  \includegraphics{fig-fit-2-1p0-add}
+  \includegraphics{fig-fit-2-1p0-add.pdf}
   \caption{A five-point fit of the addition energies of the $(N, \omega) = (6, 1.0)$ system with $K_{\text{stop}} = 15$.  The grey shaded region contains the masked data points, which are ignored by the fitting procedure.  The left figure plots the central difference of the addition energies $\varepsilon^{(+)}$ with respect to the number of shells $K$.  On such a plot, the power law model should appear as a straight line.  The fits are optimized using the procedure described in Section \ref{subsec:extrapolation}.  Note that the lines do not evenly pass through the points in the left plot as the fitting weights are tuned for the energy on a linear scale, not the energy differences on a logarithmic scale.}
   \label{fig:by-fit-2-1p0-add}
 \end{figure}
