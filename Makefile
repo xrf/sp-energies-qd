@@ -56,7 +56,7 @@ dist/gh-pages/paper.pdf: Manuscript/paper.pdf
 	./gen-deps $< $@
 
 .tex.pdf:
-	latexmk -g -pdf -interaction=nonstopmode -outdir=$(@D) $<
+	latexmk -g -pdf -interaction=nonstopmode -cd $<
 
 -include figures.dep Manuscript/paper.dep
 
