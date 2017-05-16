@@ -772,6 +772,7 @@ def load_addrm(toler=3e-7,
                    "EOMIMSRG_up_to_16_removed.dat",
                    "EOM_particle_attached.dat",
                    "EOM_particle_removed.dat",
+                   "missing_EOM_particle_attached.dat",
                    "EOM_magnus_quads_attached.dat",
                    "EOM_magnus_quads_removed.dat",
                    "EOM_CCSD_qd_attached.dat",
@@ -824,6 +825,9 @@ def load_addrm(toler=3e-7,
         parse_nathan_like_data(
             load_table(files["EOM_particle_removed.dat"],
                        names=NATHAN_REMOVED_COLS), "rm"),
+        parse_nathan_like_data(
+            load_table(files["missing_EOM_particle_attached.dat"],
+                       names=NATHAN_ATTACHED_COLS), "add"),
     ], ignore_index=True)
     d["method"] = "imsrg+eom"
     d["interaction"] = "normal"
