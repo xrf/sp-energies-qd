@@ -38,7 +38,19 @@
 \affiliation{Department of Physics, University of Oslo, N-0316 Oslo, Norway}
 
 \begin{abstract}
-  We present and compare several many-body methods as applied to two-dimensional quantum dots with circular symmetry.  We calculate the approximate ground state energy using a harmonic oscillator basis optimized by Hartree--Fock (HF) theory and further improve the ground state energy using two post-HF methods: in-medium similarity renormalization group (IM-SRG) and coupled cluster singles-and-doubles (CCSD).  With the application of quasidegenerate perturbation theory (QDPT) or the equation-of-motion (EOM) method, we obtain addition and removal energies as well.  Our results are benchmarked against full configuration interaction (FCI) and diffusion Monte Carlo (DMC) where available.  We examine the rate of convergence and perform extrapolations to the infinite basis limit using a power-law model.
+  We present and compare several many-body methods as applied to
+  two-dimensional quantum dots with circular symmetry.  We calculate
+  the approximate ground state energy using a harmonic oscillator
+  basis optimized by Hartree--Fock (HF) theory and further improve the
+  ground state energy using two post-HF methods: in-medium similarity
+  renormalization group (IM-SRG) and coupled cluster
+  singles-and-doubles (CCSD).  With the application of quasidegenerate
+  perturbation theory (QDPT) or the equation-of-motion (EOM) method,
+  we obtain addition and removal energies as well.  Our results are
+  benchmarked against full configuration interaction (FCI) and
+  diffusion Monte Carlo (DMC) where available.  We examine the rate of
+  convergence and perform extrapolations to the infinite basis limit
+  using a power-law model.
 \end{abstract}
 
 \pacs{02.70.Ss, 31.15.A-, 31.15.bw, 71.15.-m, 73.21.La}
@@ -46,21 +58,94 @@
 
 \section{Introduction}
 
-The behavior of strongly confined electrons is of fundamental concern to many-body theory.  The prototypical system is that of quantum dots, also known as ``artificial atoms'', in which electrons are confined within artificially constructed semiconducting heterostructures.  Such nanoscale systems are highly relevant as they lie at a critical point where both theoretical models and experimental observations can readily probe quantum phenomena such as tunneling, entanglement, and magnetization \cite{reimann2002,engel1993}.  Moreover, unlike many physical systems, quantum dots enjoy the benefit of being highly tunable through changes in the external field or the structure of the confining material.  This allows experiments to quantify the impact of quantum effects at different levels of correlation.
+The behavior of strongly confined electrons is of fundamental concern
+to many-body theory.  The prototypical system is that of quantum dots,
+also known as ``artificial atoms'', in which electrons are confined
+within artificially constructed semiconducting heterostructures.  Such
+nanoscale systems are highly relevant as they lie at a critical point
+where both theoretical models and experimental observations can
+readily probe quantum phenomena such as tunneling, entanglement, and
+magnetization \cite{reimann2002,engel1993}.  Moreover, unlike many
+physical systems, quantum dots enjoy the benefit of being highly
+tunable through changes in the external field or the structure of the
+confining material.  This allows experiments to quantify the impact of
+quantum effects at different levels of correlation.
 
-The ground states of quantum dots exhibit shell structures and magic numbers similar to those of atoms and nuclei \cite{tarucha1996}.  Thus, they provide a rare opportunity to study electronic systems without the influence of the atomic nuclei.  They also provide a testbed for the development of many-body methods for other systems with similar geometry, such as nuclei or neutrons drops \cite{PhysRevC.84.044306}.
+The ground states of quantum dots exhibit shell structures and magic
+numbers similar to those of atoms and nuclei \cite{tarucha1996}.
+Thus, they provide a rare opportunity to study electronic systems
+without the influence of the atomic nuclei.  They also provide a
+testbed for the development of many-body methods for other systems
+with similar geometry, such as nuclei or neutrons
+drops \cite{PhysRevC.84.044306}.
 
-Beyond their theoretical relevance, there are numerous potential applications of quantum dots.  The electrical and optical properties of quantum dots are particularly useful for solar cells \cite{jenks:013111,doi:10.1021/cr900289f} and laser technology \cite{strauf2010,5075760}.  They have potential medical applications in diagnosis and treatment \cite{Ben-Ari02042003}.  And of course, quantum dots are also promising candidates for the physical realization of quantum computing \cite{PhysRevA.57.120}.
+Beyond their theoretical relevance, there are numerous potential
+applications of quantum dots.  The electrical and optical properties
+of quantum dots are particularly useful for solar
+cells \cite{jenks:013111,doi:10.1021/cr900289f} and laser
+technology \cite{strauf2010,5075760}.  They have potential medical
+applications in diagnosis and treatment \cite{Ben-Ari02042003}.  And
+of course, quantum dots are also promising candidates for the physical
+realization of quantum computing \cite{PhysRevA.57.120}.
 
-In general, quantum dot systems are not analytically solvable, with the exception of two-electron systems or systems with specific strengths of the external field \cite{PhysRevA.48.3561}.  Hence, in practical applications one can only hope for a numerical solution through some \textit{many-body method} or a combination thereof.
+In general, quantum dot systems are not analytically solvable, with
+the exception of two-electron systems or systems with specific
+strengths of the external field \cite{PhysRevA.48.3561}.  Hence, in
+practical applications one can only hope for a numerical solution
+through some \textit{many-body method} or a combination thereof.
 
-One of the most accurate techniques for solving many-body systems is that of exact diagonalization, also known as the full configuration interaction method.  Unlike most methods, it is assured to converge to the exact answer as the size of the finite basis is increased to infinity (the so-called \textit{infinite-basis limit}).  Despite this significant advantage, it is often not possible to perform exact diagonalization due to its factorially increasing cost with respect to the basis size and the number of particles.  This led to the development of more cost-effective methods that trade varying amounts of accuracy for varying amounts of speed.
+One of the most accurate techniques for solving many-body systems is
+that of exact diagonalization, also known as the full configuration
+interaction method.  Unlike most methods, it is assured to converge to
+the exact answer as the size of the finite basis is increased to
+infinity (the so-called \textit{infinite-basis limit}).  Despite this
+significant advantage, it is often not possible to perform exact
+diagonalization due to its factorially increasing cost with respect to
+the basis size and the number of particles.  This led to the
+development of more cost-effective methods that trade varying amounts
+of accuracy for varying amounts of speed.
 
-In this paper, we analyze the application of several methods to the quantum dot systems, including the Hartree--Fock (HF) method, M\o ller-Plesset perturbation theory (MP), the in-medium similarity renormalization group (IM-SRG) method, coupled cluster (CC) theory \cite{PhysRevB.67.045320,heidari:114708,PhysRevB.84.115302}, quasidegenerate perturbation theory (QDPT), and equation-of-motion (EOM) methods.  We compare them against variational and diffusion Monte Carlo (VMC and DMC) \cite{PhysRevB.68.035304,PhysRevB.62.8120,PhysRevB.84.115302,PhysRevB.54.4780} and full configuration interaction (FCI) theory \cite{olsen2013thesis,JJAP.36.3924,PhysRevB.56.6428,2008arXiv0810.2644K,rontani:124102} results, where available, from the existing literature.
+In this paper, we analyze the application of several methods to the
+quantum dot systems, including the Hartree--Fock (HF) method, M\o
+ller-Plesset perturbation theory (MP), the in-medium similarity
+renormalization group (IM-SRG) method, coupled cluster (CC)
+theory \cite{PhysRevB.67.045320,heidari:114708,PhysRevB.84.115302},
+quasidegenerate perturbation theory (QDPT), and equation-of-motion
+(EOM) methods.  We compare them against variational and diffusion
+Monte Carlo (VMC and
+DMC) \cite{PhysRevB.68.035304,PhysRevB.62.8120,PhysRevB.84.115302,PhysRevB.54.4780}
+and full configuration interaction (FCI)
+theory \cite{olsen2013thesis,JJAP.36.3924,PhysRevB.56.6428,2008arXiv0810.2644K,rontani:124102}
+results, where available, from the existing literature.
 
-Of these methods, IM-SRG is a recently developed technique that has shown significant promises.  Similarity renormalization group (SRG) methods are a family of methods that transform the Hamiltonian into a band- or block-diagonal form through a continuous sequence of unitary transformations.  The goal of such a transformation is to reduce the coupling between a subspace of interest -- such as the ground state or a set of low-lying states -- and the remaining Hilbert space.  It has successfully been applied to systems with various underlying potentials to calculate their binding energy and other observables, especially in nuclear theory \cite{ScottSRG,PhysRevC.75.061001,SRGThreeDim}.  The \emph{in-medium} SRG (IM-SRG) is an adaptation of the SRG method to evolve Hamiltonians in a truncated Fock space, which avoids the prohibitive cost of constructing a full many-body Hamiltonian.  The effect of the truncation is minimized through the normal-ordering technique, which re-expands the operators with respect to a nearby many-body reference state rather than the far-away vacuum state.
+Of these methods, IM-SRG is a recently developed technique that has
+shown significant promises.  Similarity renormalization group (SRG)
+methods are a family of methods that transform the Hamiltonian into a
+band- or block-diagonal form through a continuous sequence of unitary
+transformations.  The goal of such a transformation is to reduce the
+coupling between a subspace of interest -- such as the ground state or
+a set of low-lying states -- and the remaining Hilbert space.  It has
+successfully been applied to systems with various underlying
+potentials to calculate their binding energy and other observables,
+especially in nuclear
+theory \cite{ScottSRG,PhysRevC.75.061001,SRGThreeDim}.
+The \emph{in-medium} SRG (IM-SRG) is an adaptation of the SRG method
+to evolve Hamiltonians in a truncated Fock space, which avoids the
+prohibitive cost of constructing a full many-body Hamiltonian.  The
+effect of the truncation is minimized through the normal-ordering
+technique, which re-expands the operators with respect to a nearby
+many-body reference state rather than the far-away vacuum state.
 
-The article is organized as follows: Section \ref{sec:formalism} introduces first (\ref{subsec:modelHamiltonian}) the Hamiltonian we use to model circular quantum dots, and gives afterwards an overview of the \textit{ab initio} many-body methods used in this paper: Hartree--Fock, IM-SRG, CCSD, QDPT, EOM.  Our results are presented in Section \ref{sec:results}.  We analyze and compare the differences between the various methods and also between different quantum dot systems.  We examine the usefulness of extrapolation techniques in improving the precision of the results.  Section \ref{sec:conclusions} concludes our work and gives perspectives for future work.
+The article is organized as follows: Section \ref{sec:formalism}
+introduces first (\ref{subsec:modelHamiltonian}) the Hamiltonian we
+use to model circular quantum dots, and gives afterwards an overview
+of the \textit{ab initio} many-body methods used in this paper:
+Hartree--Fock, IM-SRG, CCSD, QDPT, EOM.  Our results are presented in
+Section \ref{sec:results}.  We analyze and compare the differences
+between the various methods and also between different quantum dot
+systems.  We examine the usefulness of extrapolation techniques in
+improving the precision of the results.  Section \ref{sec:conclusions}
+concludes our work and gives perspectives for future work.
 
 \section{Formalism}
 \label{sec:formalism}
@@ -68,11 +153,25 @@ The article is organized as follows: Section \ref{sec:formalism} introduces firs
 \subsection{The model Hamiltonian}
 \label{subsec:modelHamiltonian}
 
-We shall model the circular quantum dot system as a collection of $N$ nonrelativistic electrons of mass $m$ in two-dimensional space, trapped by an external harmonic-oscillator potential of the form $m \omega^2r^2 / 2$, where $\omega$ is the angular frequency of the oscillator trap and $r$ is the distance from the center of the trap.  The electrons interact with each other through the standard Coulomb interaction $e^2 / (4 \pi \epsilon R)$, where $e$ is the charge of each electron, $\epsilon$ is the permittivity of the medium, and $R$ is the distance between the two interacting electrons.
+We shall model the circular quantum dot system as a collection of $N$
+nonrelativistic electrons of mass $m$ in two-dimensional space,
+trapped by an external harmonic-oscillator potential of the form
+$m \omega^2r^2 / 2$, where $\omega$ is the angular frequency of the
+oscillator trap and $r$ is the distance from the center of the trap.
+The electrons interact with each other through the standard Coulomb
+interaction $e^2 / (4 \pi \epsilon R)$, where $e$ is the charge of
+each electron, $\epsilon$ is the permittivity of the medium, and $R$
+is the distance between the two interacting electrons.
 
-Even though the model system contains five parameters $(N, m, \omega, e, \epsilon)$, many of them are redundant.  With an appropriate choice of units, the number of parameters in the system can be reduced to just two.  For rest of this paper, we shall use atomic units where $\hbar$, $m$, $e$ and $4 \pi \epsilon$ are all set to one.  The unit Hartree $E_{\mathrm{h}}$ becomes the unit of energy and the Bohr radius $a$ becomes the unit of length:
+Even though the model system contains five parameters $(N, m, \omega,
+e, \epsilon)$, many of them are redundant.  With an appropriate choice
+of units, the number of parameters in the system can be reduced to
+just two.  For rest of this paper, we shall use atomic units where
+$\hbar$, $m$, $e$ and $4 \pi \epsilon$ are all set to one.  The unit
+Hartree $E_{\mathrm{h}}$ becomes the unit of energy and the Bohr
+radius $a$ becomes the unit of length:
 \begin{align*}
-  E_{\mathrm{h}} &\equiv m \left(\frac{e^2}{4 \pi \epsilon \hbar}\right)^2 &
+  E_{\mathrm{h}} &\equiv m \left(\frac{e^2}{4 \pi \epsilon \hbar}\right)^2, &
   a &\equiv \frac{4 \pi \epsilon \hbar^2}{m e^2}.
 \end{align*}
 This leaves us with $(N, \omega)$ as the only parameters necessary to specify the quantum dot system, with $\omega$ in units of $E_{\mathrm{h}} / \hbar$.
@@ -83,7 +182,10 @@ The behavior of each electron in isolation is described by the nonrelativistic k
   u(\bm{r}) &\equiv \frac{1}{2} \omega^2 \bm{r}^2, &
   h(\bm{p}, \bm{r}) &\equiv t(\bm{p}) + t(\bm{r}).
 \end{align*}
-Here, $\bm{p}$ is the linear momentum of the electron and $\bm{r}$ is its position relative to the center of the trap.  The pairwise interaction between two electrons at positions $\bm{r}$ and $\bm{r}'$ is simply the Coulomb interaction:
+Here, $\bm{p}$ is the linear momentum of the electron and $\bm{r}$ is
+its position relative to the center of the trap.  The pairwise
+interaction between two electrons at positions $\bm{r}$ and $\bm{r}'$
+is simply the Coulomb interaction:
 \begin{align*}
   v(\bm{r}, \bm{r}') \equiv \frac{1}{|\bm{r} - \bm{r}'|}.
 \end{align*}
@@ -96,15 +198,21 @@ where $\hat{H}^{[1]}$ and $\hat{H}^{[2]}$ are respectively the one- and two-body
 \hat{H}^{[1]} &\equiv \sum_{j = 1}^N h(\hat{\bm p}_j, \hat{\bm r}_j), &
 \hat{H}^{[2]} &\equiv \sum_{j_1 = 1}^N \sum_{j_2 = 1}^{j_1 - 1} v(\hat{\bm r}_{j_1}, \hat{\bm r}_{j_2}).
 \end{align}
-The operator $\hat{\bm r}_j$ is the position operator of the $j$-th particle,\footnote{The ordering of the particle labels $j$ is unimportant as they exist only for the purpose of bookkeeping.} and $\hat{\bm p}_j \equiv -\mathrm{i} \hat{\bm{\nabla}}_{\bm{r}_j}$ is its momentum operator.
+The operator $\hat{\bm r}_j$ is the position operator of the $j$-th
+particle,\footnote{The ordering of the particle labels $j$ is
+unimportant as they exist only for the purpose of bookkeeping.} and
+$\hat{\bm p}_j \equiv -\mathrm{i} \hat{\bm{\nabla}}_{\bm{r}_j}$ is its
+momentum operator.
 
 \begin{figure}
   \includegraphics{figures/fig-shell-structure-v2.pdf}
-  \caption{The 42 lowest single-particle states (the first 5 shells) in the 2D harmonic oscillator basis.  Each box represents a single-particle state arranged by $m_\ell$, $m_{\mathrm{s}}$, and energy, and the up/down arrows indicate the spin of the states.  Within each column, the principal quantum number $n$ increases as one traverses upward.}
+  \caption{(Color online) The 42 lowest single-particle states (the first 5 shells) in the 2D harmonic oscillator basis.  Each box represents a single-particle state arranged by $m_\ell$, $m_{\mathrm{s}}$, and energy, and the up/down arrows indicate the spin of the states.  Within each column, the principal quantum number $n$ increases as one traverses upward.}
   \label{fig:shell-structure}
 \end{figure}
 
-The noninteracting part of the many-body Hamiltonian $\hat{H}^{[1]}$ can be reduced to $N$ independent single-particle Hamiltonians each of the form:
+The noninteracting part of the many-body Hamiltonian $\hat{H}^{[1]}$
+can be reduced to $N$ independent single-particle Hamiltonians each of
+the form:
 \begin{align*}
   \hat{h} = \frac{1}{2} \hat{\bm{\nabla}}^2 + \frac{1}{2} \omega^2 \hat{\bm{r}}^2.
 \end{align*}
@@ -112,7 +220,14 @@ Therefore, solving the noninteracting many-body problem amounts to solving the s
 \begin{align*}
   \hat{h} |p\rangle = \varepsilon_p |p\rangle,
 \end{align*}
-where $p$ is an unknown tuple of quantum numbers.  In Cartesian coordinates, the two-dimensional harmonic oscillator is trivially reducible to the well-known one-dimensional problem.  However, to exploit the circular symmetry, we prefer to use Fock-Darwin states, which are written in polar coordinates $\bm{r} = (\rho, \varphi)$.  Such states have the computationally useful property of conserving orbital angular momentum $\hat{L}_{\mathrm{z}} \equiv -\mathrm{i} \frac{\partial}{\partial \varphi}$.
+where $p$ is an unknown tuple of quantum numbers.  In Cartesian
+coordinates, the two-dimensional harmonic oscillator is trivially
+reducible to the well-known one-dimensional problem.  However, to
+exploit the circular symmetry, we prefer to use Fock-Darwin states,
+which are written in polar coordinates $\bm{r} = (\rho, \varphi)$.
+Such states have the computationally useful property of conserving
+orbital angular momentum $\hat{L}_{\mathrm{z}} \equiv
+-\mathrm{i} \frac{\partial}{\partial \varphi}$.
 
 The Fock-Darwin wave functions can be decomposed into radial and angular components,\cite{lohne2010coupled}
 \begin{align}
@@ -124,13 +239,25 @@ where $L_n^{(\alpha)}$ denotes the (generalized) Laguerre polynomial \cite{NIST:
 \begin{align*}
   L_n^{(\alpha)}(u) = \frac{1}{n!} u^{-\alpha} \mathrm{e}^u \frac{\mathrm{d}^n}{\mathrm{d} u^n} (\mathrm{e}^{-u} u^{\alpha + n}).
 \end{align*}
-The states are labeled by two quantum numbers: the principal quantum number $n \in \{0, 1, 2, \ldots\}$ and orbital angular momentum projection $m_\ell \in \mathbb \{\ldots, -2, -1, 0, +1, +2, \ldots\}$.  For a wave function, $n$ indicates the degree of the Laguerre polynomial, whereas $m_\ell$ is simply the eigenvalue of $\hat{L}_{\mathrm{z}}$.
+The states are labeled by two quantum numbers: the principal quantum
+number $n \in \{0, 1, 2, \ldots\}$ and orbital angular momentum
+projection $m_\ell \in \mathbb \{\ldots, -2, -1, 0, +1, +2, \ldots\}$.
+For a wave function, $n$ indicates the degree of the Laguerre
+polynomial, whereas $m_\ell$ is simply the eigenvalue of
+$\hat{L}_{\mathrm{z}}$.
 
-Since electrons are spin-$\frac{1}{2}$ fermions, they can occupy either of the two possible spin states $\chi_{-\frac{1}{2}}$ or $\chi_{+\frac{1}{2}}$.  Thus, every single-particle basis state $|n m_\ell m_{\mathrm{s}}\rangle$ contains both a spatial component \eqref{eq:fockdarwin} and a spin component,
+Since electrons are spin-$\frac{1}{2}$ fermions, they can occupy
+either of the two possible spin states $\chi_{-\frac{1}{2}}$ or
+$\chi_{+\frac{1}{2}}$.  Thus, every single-particle basis state $|n
+m_\ell m_{\mathrm{s}}\rangle$ contains both a spatial
+component \eqref{eq:fockdarwin} and a spin component,
 \begin{align} \label{eq:singleparticlestate}
   \langle \rho \varphi m_{\mathrm{s}}' |n m_\ell m_{\mathrm{s}}\rangle \equiv F_{n m_\ell}(\rho, \varphi) \delta_{m_{\mathrm{s}}^{} m_{\mathrm{s}}'}.
 \end{align}
-Here we have introduced spin projection $m_{\mathrm{s}} \in \bigl\{-\frac{1}{2}, +\frac{1}{2}\bigr\}$ as the third quantum number and $\delta_{p q}$ to denote the Kronecker delta..
+Here we have introduced spin projection
+$m_{\mathrm{s}} \in \bigl\{-\frac{1}{2}, +\frac{1}{2}\bigr\}$ as the
+third quantum number and $\delta_{p q}$ to denote the Kronecker
+delta.
 
 The energy of the single-particle state $|n m_\ell m_{\mathrm{s}}\rangle$ is given by
 \begin{align} \label{eq:energysingleparticlestate}
@@ -140,9 +267,20 @@ The energies are degenerate with respect to the spin projection $m_{\mathrm{s}}$
 \begin{align} \label{eq:shell_index}
   k \equiv 2 n + |m_\ell|,
 \end{align}
-which we conveniently call the \textit{shell index} as it labels each shell starting from zero.  The shells are equidistant with an energy spacing equal to the frequency $\omega$.
+which we conveniently call the \textit{shell index} as it labels each
+shell starting from zero.  The shells are equidistant with an energy
+spacing equal to the frequency $\omega$.
 
-Returning to the one-body part of the many-body Hamiltonian, $\hat{H}^{[1]}$, we can use the Slater determinant construction to build an $N$-particle eigenstate $|p_1, \ldots, p_N\rangle$ of the many-body Hamiltonian $\hat{H}^{[1]}$ from an arbitrary choice of $N$ single-particle eigenstates $|p_1\rangle, \ldots, |p_N\rangle$ from \eqref{eq:singleparticlestate}, where $p$ is an abbreviation for the triplet $(n, m_\ell, m_{\mathrm{s}})$.  Note that a Slater determinant $|p_1 \ldots p_N\rangle$ is not merely a product of the single-particle states, but an antisymmetrized sum over all possible products,
+Returning to the one-body part of the many-body Hamiltonian,
+$\hat{H}^{[1]}$, we can use the Slater determinant construction to
+build an $N$-particle eigenstate $|p_1, \ldots, p_N\rangle$ of the
+many-body Hamiltonian $\hat{H}^{[1]}$ from an arbitrary choice of $N$
+single-particle eigenstates $|p_1\rangle, \ldots, |p_N\rangle$
+from \eqref{eq:singleparticlestate}, where $p$ is an abbreviation for
+the triplet $(n, m_\ell, m_{\mathrm{s}})$.  Note that a Slater
+determinant $|p_1 \ldots p_N\rangle$ is not merely a product of the
+single-particle states, but an antisymmetrized sum over all possible
+products,
 \begin{align*}
   \langle \bm{r}_1 \ldots \bm{r}_N | p_1 \ldots p_N \rangle \equiv
   \frac{1}{\sqrt{N}} \left|
@@ -153,17 +291,47 @@ Returning to the one-body part of the many-body Hamiltonian, $\hat{H}^{[1]}$, we
   \end{matrix}
   \right|.
 \end{align*}
-The Slater determinant $|p_1 \ldots p_N\rangle$ is said to \textit{occupy} the states $|p_1\rangle, \ldots, |p_N\rangle$.  By construction, Slater determinants satisfy the Pauli exclusion principle, ensuring that the exchange of any two particles is equivalent to a reversal in the sign of the many-body wave function.
+The Slater determinant $|p_1 \ldots p_N\rangle$ is said
+to \textit{occupy} the states $|p_1\rangle, \ldots, |p_N\rangle$.  By
+construction, Slater determinants satisfy the Pauli exclusion
+principle, ensuring that the exchange of any two particles is
+equivalent to a reversal in the sign of the many-body wave function.
 
 The energy of a Slater determinant is given by a sum over the occupied single-particle energies,
 \begin{align*}
-  \hat{H}^{[1]} | p_1 \ldots p_N \rangle = (\varepsilon_{p_1} + \cdots + \varepsilon_{p_N}) | p_1 \ldots p_N \rangle
+  \hat{H}^{[1]} | p_1 \ldots p_N \rangle = (\varepsilon_{p_1} + \cdots + \varepsilon_{p_N}) | p_1 \ldots p_N \rangle.
 \end{align*}
-It is possible for Slater determinants occupying different sets of single-particle states to be degenerate in energy.  This is possible even for ground states of $\hat{H}^{[1]}$.  However, if the number of particles $N$ satisfies $N = K_{\mathrm{F}} (K_{\mathrm{F}} + 1)$ for some nonnegative integer $K_{\mathrm{F}}$, there would be just enough particles to form a closed-shell Slater determinant, leading to a unique, well-isolated ground state.  The values of $N$ at which this occurs are said to be \textit{magic numbers}.  We call $K_{\mathrm{F}}$ the \textit{number of filled shells} (or ``Fermi level'').  In particular, a single-particle state is occupied in the ground state Slater determinant if and only $k < K_{\mathrm{F}}$, where $k$ is the shell index of the single-particle state as defined in \eqref{eq:shell_index}.
+It is possible for Slater determinants occupying different sets of
+single-particle states to be degenerate in energy.  This is possible
+even for ground states of $\hat{H}^{[1]}$.  However, if the number of
+particles $N$ satisfies $N = K_{\mathrm{F}} (K_{\mathrm{F}} + 1)$ for
+some nonnegative integer $K_{\mathrm{F}}$, there would be just enough
+particles to form a closed-shell Slater determinant, leading to a
+unique, well-isolated ground state.  The values of $N$ at which this
+occurs are said to be \textit{magic numbers}.  We call
+$K_{\mathrm{F}}$ the \textit{number of filled shells} (or ``Fermi
+level'').  In particular, a single-particle state is occupied in the
+ground state Slater determinant if and only $k < K_{\mathrm{F}}$,
+where $k$ is the shell index of the single-particle state as defined
+in \eqref{eq:shell_index}.
 
-In this paper, we use the letters $p, q, r, s, \ldots$ to label arbitrary \textit{single-particle states} in the basis.  In the discussion of many-body methods that rely a single, distinguished Slater determinant $\Phi$, known as the \textit{reference state}, we use the letters $i, j, k, l, \ldots$ as placeholders for the occupied states of $\Phi$, and $a, b, c, d, \ldots$ for the unoccupied states.  A summation such as $\sum_p$ is understood as a summation over every single-particle basis state $p$.  In contrast, $\sum_i$ only sums over those that are occupied and $\sum_a$ only sums over those that are unoccupied.
+In this paper, we use the letters $p, q, r, s, \ldots$ to label
+arbitrary \textit{single-particle states} in the basis.  In the
+discussion of many-body methods that rely a single, distinguished
+Slater determinant $\Phi$, known as the \textit{reference state}, we
+use the letters $i, j, k, l, \ldots$ as placeholders for the occupied
+states of $\Phi$, and $a, b, c, d, \ldots$ for the unoccupied states.
+A summation such as $\sum_p$ is understood as a summation over every
+single-particle basis state $p$.  In contrast, $\sum_i$ only sums over
+those that are occupied and $\sum_a$ only sums over those that are
+unoccupied.
 
-We will describe many-body methods within the formalism of second quantization; see for example Ref.\ \cite{shavitt2009many}.  To properly describe fermions, we introduce the annihilation and creation operators $\hat a_p$ and $\hat a_p^\dagger$. These operators must satisfy the anticommutation relations that encode the Pauli principle, namely
+We will describe many-body methods within the formalism of second
+quantization; see for example Ref.\ \cite{shavitt2009many}.  To
+properly describe fermions, we introduce the annihilation and creation
+operators $\hat a_p$ and $\hat a_p^\dagger$. These operators must
+satisfy the anticommutation relations that encode the Pauli principle,
+namely
 \begin{align*}
   &\{\hat a_p, \hat a_q\} = \{\hat a_p^\dagger, \hat a_q^\dagger\} = 0, &
   &\{\hat a_p, \hat a_q^\dagger\} = \delta_{p q}.
@@ -172,7 +340,7 @@ We will describe many-body methods within the formalism of second quantization; 
 In second quantization, the one- and two-body Hamiltonian operators $H^{[1]}$ and $\hat{H}^{[2]}$ from Eq.\ \eqref{eq:onetwobodyhamiltonian} can be rewritten as
 \begin{align} \label{eq:second_quantized_hamiltonian}
   \hat H^{[1]} &= \sum_{p q} \langle p | \hat{H}^{[1]} | q \rangle \hat a_p^\dagger \hat a_q^{}, &
-  \hat{H}^{[2]} &= \frac{1}{4} \sum_{p q r s} \langle p q | \hat{H}^{[2]} | r s \rangle \hat a_p^\dagger \hat a_q^\dagger \hat a_s^{} \hat a_r^{}.
+  \hat{H}^{[2]} &= \frac{1}{4} \sum_{p q r s} \langle p q | \hat{H}^{[2]} | r s \rangle \hat a_p^\dagger \hat a_q^\dagger \hat a_s^{} \hat a_r^{},
 \end{align}
 where the quantities $\langle p | \hat{H}^{[1]} | q \rangle$ and $\langle p q | \hat{H}^{[2]} | r s \rangle$ are known as \textit{matrix elements} and fully characterize the two operators in the basis.
 
@@ -180,37 +348,80 @@ The complete Hamiltonian is given by the sum
 \begin{align}
   \hat{H} = \sum_{p q} \langle p | \hat{H}^{[1]} | q \rangle \hat{a}_p^\dagger \hat{a}_q + \frac{1}{4} \sum_{p q r s} \langle p q | \hat{H}^{[2]} | r s \rangle \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r. \label{eq:vacuumhamiltonian}
 \end{align}
-Due to the antisymmetry of Slater determinants, we have the property that exchanging either $p$ with $q$ or $r$ with $s$ reverses the sign of $\langle p q | \hat{H}^{[2]} | r s \rangle$, leading to a 4-fold symmetry that must be canceled out by the $1/4$ factor in front of the summation in \eqref{eq:vacuumhamiltonian}.  For this reason, the two-body matrix element $\langle p q | \hat{H}^{[2]} | r s \rangle$ is commonly referred to as the \emph{antisymmetrized} matrix element.  This is not to be confused with the (non-antisymmetric) interaction integral,
+Due to the antisymmetry of Slater determinants, we have the property
+that exchanging either $p$ with $q$ or $r$ with $s$ reverses the sign
+of $\langle p q | \hat{H}^{[2]} | r s \rangle$, leading to a four-fold
+symmetry that must be canceled out by the $1/4$ factor in front of the
+summation in \eqref{eq:vacuumhamiltonian}.  For this reason, the
+two-body matrix element $\langle p q | \hat{H}^{[2]} | r s \rangle$ is
+commonly referred to as the \emph{antisymmetrized} matrix element.
+This is not to be confused with the (non-antisymmetric) interaction
+integral,
 \begin{align} \label{eq:interactionintegral}
   v_{p_1 p_2 p_3 p_4} \equiv \int \langle p_1 | \bm{r} \rangle \langle p_2 | \bm{r}' \rangle v(\bm r, \bm r') \langle \bm{r} | p_3 \rangle \langle \bm{r}' | p_4 \rangle \D \bm{r} \D \bm{r}'.
 \end{align}
 This object only has a two-fold symmetry: $v_{p_1 p_2 p_3 p_4} = v_{p_2 p_1 p_4 p_3}$.  The antisymmetrized matrix elements are related to the interaction integral via
 \begin{align} \label{eq:antisymmetricmatrixelement}
-  \langle p q | \hat{H}^{[2]} | r s \rangle = v_{p q r s} - v_{p q s r}
+  \langle p q | \hat{H}^{[2]} | r s \rangle = v_{p q r s} - v_{p q s r}.
 \end{align}
 
-With the basic formalism and notation established along with the system of interest, we may begin to discuss the various techniques to solve the full many-body problem.  The principal difficulty stems from the fact that, due to the presence of interactions, the exact solution is in general \emph{not} a single Slater determinant built from the single-particle states.  Hence, it is not possible to trivially reduce the problem to that of a single particle as we had done previously.
+With the basic formalism and notation established along with the
+system of interest, we may begin to discuss the various techniques to
+solve the full many-body problem.  The principal difficulty stems from
+the fact that, due to the presence of interactions, the exact solution
+is in general \emph{not} a single Slater determinant built from the
+single-particle states.  Hence, it is not possible to trivially reduce
+the problem to that of a single particle as we had done previously.
 
-However, if we assume the interaction alters the behavior of the system only mildly, we can use a Slater determinant of the noninteracting system as a starting point and then apply various methods to improve the accuracy of the solution.  This is a general strategy for many of the many-body methods that we shall describe.
+However, if we assume the interaction alters the behavior of the
+system only mildly, we can use a Slater determinant of the
+noninteracting system as a starting point and then apply various
+methods to improve the accuracy of the solution.  This is a general
+strategy for many of the many-body methods that we shall describe.
 
 \subsection{Hartree--Fock method}
 \label{subsec:HartreeFockmethod}
 
-One of the simplest numerical corrections that could be applied to the initial guess is that of the Hartree--Fock (HF) method.  Using the variational principle, one can compute an approximate ground state $\Phi$ by minimizing the energy expectation value
+One of the simplest numerical corrections that could be applied to the
+initial guess is that of the Hartree--Fock (HF) method.  Using the
+variational principle, one can compute an approximate ground state
+$\Phi$ by minimizing the energy expectation value
 \begin{align} \label{eq:hfexpectation}
-  E_{\Phi} \equiv \langle \Phi | \hat H | \Phi \rangle
+  E_{\Phi} \equiv \langle \Phi | \hat H | \Phi \rangle,
 \end{align}
-with respect to $|\Phi\rangle$, subject to the restriction that $|\Phi\rangle$ remains a single Slater determinant constructed from an unknown single-particle basis.  The restriction is what enables the simplicity and efficiency of this method.  We shall denote each unknown single-particle state $|q'\rangle$ by a primed label $q'$.
+with respect to $|\Phi\rangle$, subject to the restriction that
+$|\Phi\rangle$ remains a single Slater determinant constructed from an
+unknown single-particle basis.  The restriction is what enables the
+simplicity and efficiency of this method.  We shall denote each
+unknown single-particle state $|q'\rangle$ by a primed label $q'$.
 
-To perform numerical calculations, we further assume that each unknown state $|q'\rangle$ is built from a linear combination of known states $|p\rangle$, with an unknown matrix of coefficients $\bm C$ defined via the transformation equation
+To perform numerical calculations, we further assume that each unknown
+state $|q'\rangle$ is built from a linear combination of known states
+$|p\rangle$, with an unknown matrix of coefficients $\bm C$ defined
+via the transformation equation
 \begin{align*}
   |q'\rangle \equiv \sum_p |p\rangle C_{p q'}.
 \end{align*}
-This allows the problem to be reduced from an abstract minimization problem \eqref{eq:hfexpectation} to a concrete numerical problem.  The caveat is that the set of known functions be large enough to capture the relevant behavior of the system.
+This allows the problem to be reduced from an abstract minimization
+problem \eqref{eq:hfexpectation} to a concrete numerical problem.  The
+caveat is that the set of known functions be large enough to capture
+the relevant behavior of the system.
 
-If the interaction is not too strong, it is common to use the single-particle states of the noninteracting Hamiltonian $\hat{H}^{[1]}$ as the set of known states.
+If the interaction is not too strong, it is common to use the
+single-particle states of the noninteracting Hamiltonian
+$\hat{H}^{[1]}$ as the set of known states.
 
-To ensure orthonormality of the states, we require there to be as many unknown states $|q'\rangle$ as known states $|p\rangle$, and the coefficient matrix $\bm C$ must be unitary.  These conditions are more strict than necessary, but they greatly simplify the calculations and allow the states $|q'\rangle$ to act as \textit{optimized} inputs for methods beyond HF.  At the end of the calculation, of the set of states $|q'\rangle$ there would exactly $N$ \textit{occupied} states that participate in the optimized Slater determinant $|\Phi\rangle$.  The remaining \textit{unoccupied} states serve as the complementary space into which particles can be excited by the interaction $\hat{H}^{[2]}$ during the post-HF calculation.
+To ensure orthonormality of the states, we require there to be as many
+unknown states $|q'\rangle$ as known states $|p\rangle$, and the
+coefficient matrix $\bm C$ must be unitary.  These conditions are more
+strict than necessary, but they greatly simplify the calculations and
+allow the states $|q'\rangle$ to act as \textit{optimized} inputs for
+methods beyond HF.  At the end of the calculation, of the set of
+states $|q'\rangle$ there would exactly $N$ \textit{occupied} states
+that participate in the optimized Slater determinant $|\Phi\rangle$.
+The remaining \textit{unoccupied} states serve as the complementary
+space into which particles can be excited by the interaction
+$\hat{H}^{[2]}$ during the post-HF calculation.
 
 The goal then is to find the coefficients $\bm C$ that minimize the energy $E_{\Phi}$, now given by
 \begin{align}
@@ -218,7 +429,7 @@ The goal then is to find the coefficients $\bm C$ that minimize the energy $E_{\
 \end{align}
 where the transformed operators are defined as
 \begin{align}
-  H^{[1] \prime}_{p q} &\equiv \sum_{r s} C_{r p}^* \langle r | \hat{H}^{[1]} | s \rangle C_{s q}^{} \label{eq:hftransform1} \\
+  H^{[1] \prime}_{p q} &\equiv \sum_{r s} C_{r p}^* \langle r | \hat{H}^{[1]} | s \rangle C_{s q}^{}, \label{eq:hftransform1} \\
   H^{[2] \prime}_{p q r s} &\equiv \sum_{t u v w} C_{t p}^* C_{u q}^* \langle t u | \hat{H}^{[2]} | v w \rangle C_{v r}^{} C_{w s}^{}, \label{eq:hftransform2}
 \end{align}
 
@@ -277,11 +488,36 @@ This equation allows $\hat{H}(s)$ to be evaluated without explicitly constructin
 \end{align}
 where $s_i \equiv i \Delta s$, $n \equiv \lfloor s' / \Delta s \rfloor$, and $\lfloor x \rfloor$ denotes the \textit{floor} of $x$.  This is the formal solution to the linear differential equation Eq.\ (\ref{eq:etadefinition}).  The product integral in Eq.\ (\ref{eq:etaintegral}) may also be reinterpreted as \textit{$s$-ordering} \cite{reimann2013quantum} in analogy to time-ordering from quantum field theory.
 
-The power of SRG methods lies in the flexibility of the generator $\hat{\eta}$, which is usually chosen in an $s$-dependent manner.  In particular, it is often dependent on the evolving Hamiltonian $\hat{H}(s)$.  The operator $\hat{\eta}$ determines which parts of the Hamiltonian matrix would become suppressed by the evolution, which are usually considered ``off-diagonal'' in an abstract sense.  The ``off-diagonal'' parts could be elements far away from the matrix diagonal, in which case the evolution drives the matrix towards a band-diagonal form.  Or, the ``off-diagonal'' parts could be elements that couple the ground state from the excited state, in which case the evolution drives the matrix towards a block-diagonal form that isolates the ground state.  Or, the ``off-diagonal'' could be literally the elements that do not lie on the diagonal, in which case the evolution would simply diagonalize the Hamiltonian.  Through different choices of $\hat{\eta}$, the SRG evolution can be controlled and adapted to the features of a particular problem.
+The power of SRG methods lies in the flexibility of the generator
+$\hat{\eta}$, which is usually chosen in an $s$-dependent manner.  In
+particular, it is often dependent on the evolving Hamiltonian
+$\hat{H}(s)$.  The operator $\hat{\eta}$ determines which parts of the
+Hamiltonian matrix would become suppressed by the evolution, which are
+usually considered ``off-diagonal'' in an abstract sense.  The
+``off-diagonal'' parts could be elements far away from the matrix
+diagonal, in which case the evolution drives the matrix towards a
+band-diagonal form.  Or, the ``off-diagonal'' parts could be elements
+that couple the ground state from the excited state, in which case the
+evolution drives the matrix towards a block-diagonal form that
+isolates the ground state.  Or, the ``off-diagonal'' could be
+literally the elements that do not lie on the diagonal, in which case
+the evolution would simply diagonalize the Hamiltonian.  Through
+different choices of $\hat{\eta}$, the SRG evolution can be controlled
+and adapted to the features of a particular problem.
 
 \subsubsection{Evolving the flow equation in medium}
 
-The SRG flow equation Eq.\ \eqref{eq:imsrgode} can be solved in the second quantization formalism described in Section \ref{subsec:modelHamiltonian}, where field operators are defined with respect to the physical vacuum state.  However, since the basis of a many-body problem grows factorially with the number of particles and the size of the model space, the applicability of the naive (free-space) SRG method is restricted to comparatively small systems.  A more practical approach is to perform the evolution \textit{in medium}, i.e.\ using a many-body Slater determinant as a reference \cite{kehrein2006flow}.  This gives rise to the IM-SRG method \cite{PhysRevC.85.061304,Hergert2016165,lnp936}.
+The SRG flow equation Eq.\ \eqref{eq:imsrgode} can be solved in the
+second quantization formalism described in
+Section \ref{subsec:modelHamiltonian}, where field operators are
+defined with respect to the physical vacuum state.  However, since the
+basis of a many-body problem grows factorially with the number of
+particles and the size of the model space, the applicability of the
+naive (free-space) SRG method is restricted to comparatively small
+systems.  A more practical approach is to perform the
+evolution \textit{in medium}, i.e.\ using a many-body Slater
+determinant as a reference \cite{kehrein2006flow}.  This gives rise to
+the IM-SRG method \cite{PhysRevC.85.061304,Hergert2016165,lnp936}.
 
 The second-quantized operators in Eq.\ \eqref{eq:second_quantized_hamiltonian} are constructed with respect to the vacuum state in the sense that their operator strings $\hat{a}_p^\dagger \hat{a}_q$ and $\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r$ both have expectation values of zero in vacuum:
 \begin{align*}
@@ -292,11 +528,14 @@ They are said to be \emph{normal-ordered} with respect to the vacuum state $\ket
 \begin{align*}
   \ket{\Phi} \equiv \ket{i_1 i_2 \ldots i_N}
 \end{align*}
-where $\{i_1, i_2, \ldots, i_N\}$ is a set of $N$ indices that label the occupied states.  One can define a set of \textit{quasiparticle field operators} $\hat b$ and $\hat b^\dagger$ that obey the same anticommutation relations as the $\hat a$ operators.  The normal ordering of the quasiparticle field operators is straightforward to compute.  What is more interesting is the normal ordering of the physical field operators $\hat a$ and $\hat a^\dagger$ with respect to $|\Phi\rangle$:
+where $\{i_1, i_2, \ldots, i_N\}$ is a set of $N$ indices that label
+the occupied states.  We define then the normal ordering of the
+physical field operators $\hat a$ and $\hat a^\dagger$ with respect to
+$|\Phi\rangle$, that is
 \begin{align*}
   \normord{\hat{a}_p^\dagger \hat{a}_q^{}} &= \hat{a}_p^\dagger \hat{a}_q^{} - n_p^{} \delta_{p q}^{}.
 \end{align*}
-and $n_p$ is the \textit{occupancy} of the single-particle state $p$, defined as
+where $n_p$ is the \textit{occupancy} of the single-particle state $p$, defined as
 \begin{align}
   n_p \equiv \begin{cases}
     1 & \text{if $p$ is an occupied state of $\Phi$}, \\
@@ -315,15 +554,54 @@ where
   H^{[1]}_{p q} &\equiv \langle p | \hat{H}^{[1]} | q \rangle + \sum_i \langle p i | \hat{H}^{[2]} | q i \rangle, \\
   H^{[2]}_{p q r s} &\equiv \langle p q | \hat{H}^{[2]} | r s \rangle. \\
 \end{align*}
-If $\Phi$ is a state optimized by the HF method, then $H^{[0]}$ is simply the HF energy $E_\Phi$ and $H^{[1]}_{p q}$ is the Fock matrix $F_{p q}$.  The operator $\hat H$ in Eq.\ \eqref{eq:normordhamiltonian} is completely equivalent to $\hat H$ in Eq.\ \eqref{eq:vacuumhamiltonian}.  The only difference is that the meaning of a ``$k$-body operator'' has been redefined with respect to the reference state $\Phi$ rather than vacuum state $\ket{}$, causing matrix elements to be reshuffled among the $k$-body operators.  Where this makes a critical difference is when the operator expressions are \emph{truncated}, i.e.\ some $k$-body operators may be discarded from the computation for efficiency reasons.  Normal-ordering can drastically alter the importance of the $k$-body operators with respect to each other.
+If $\Phi$ is a state optimized by the HF method, then $H^{[0]}$ is
+simply the HF energy $E_\Phi$ and $H^{[1]}_{p q}$ is the Fock matrix
+$F_{p q}$.  The operator $\hat H$ in
+Eq.\ \eqref{eq:normordhamiltonian} is completely equivalent to $\hat
+H$ in Eq.\ \eqref{eq:vacuumhamiltonian}.  The only difference is that
+the meaning of a ``$k$-body operator'' has been redefined with respect
+to the reference state $\Phi$ rather than the vacuum state $\ket{}$,
+causing matrix elements to be reshuffled among the $k$-body operators.
+Where this makes a critical difference is when the operator
+expressions are \emph{truncated}, i.e.\ some $k$-body operators may be
+discarded from the computation for efficiency reasons.
+Normal-ordering can drastically alter the importance of the $k$-body
+operators with respect to each other.
 
-Higher-body operators arise from integrating the flow equations (\ref{eq:imsrgode}), which is one of the major challenges of the SRG method.  With each evaluation of the commutator, the Hamiltonian gains terms of higher order, and these induced contributions will in subsequent integration steps feed back into terms of lower order.  Thus, the higher-body contributions are not irrelevant to the final solution even if only the ground state energy (zero-body component) is of interest.
+Higher-body operators arise from integrating the flow equations of Eq.~(\ref{eq:imsrgode}), 
+which is one of the major challenges of the SRG
+method.  With each evaluation of the commutator, the Hamiltonian gains
+terms of higher order, and these induced contributions will in
+subsequent integration steps feed back into terms of lower order.
+Thus, the higher-body contributions are not irrelevant to the final
+solution even if only the ground state energy (zero-body component) is
+of interest.
 
-Computationally, higher-body terms rapidly become unfeasible to handle: the amount of memory required to store a $k$-body operator is grows exponentially with $k$.  Moreover, the flow equations are capable of generating an infinite number of higher-body terms as the Hamiltonian evolves.  Thus, to make the method tractable, the IM-SRG flow equations must be closed by truncating the equations to a finite order.
+Computationally, higher-body terms rapidly become unfeasible to
+handle: the amount of memory required to store a $k$-body operator is
+grows exponentially with $k$.  Moreover, the flow equations are
+capable of generating an infinite number of higher-body terms as the
+Hamiltonian evolves.  Thus, to make the method tractable, the IM-SRG
+flow equations must be closed by truncating the equations to a finite
+order.
 
-In this paper, we truncate both $\hat{H}$ and $\hat{\eta}$ at the two-body level, leading to an approach known as IM-SRG(2).  This normal-ordered two-body approximation appears to be sufficient in many cases and has yielded excellent results for several nuclei \cite{PhysRevLett.106.222502,PhysRevLett.109.052501,IMSRG}.
+In this paper, we truncate both $\hat{H}$ and $\hat{\eta}$ at the
+two-body level, leading to an approach known as IM-SRG(2).  This
+normal-ordered two-body approximation appears to be sufficient in many
+cases and has yielded excellent results for several
+nuclei \cite{PhysRevLett.106.222502,PhysRevLett.109.052501,IMSRG}.
 
-Note that the loss of three- and higher-body terms (\textit{operator truncation}) is only one out of the two sources of error in this method.  The other source of error is due to the \textit{basis truncation}, a concern for any method that relies on a finite single-particle basis such as IM-SRG.  The latter can be reduced by increasing the size of the basis at the expense of greater computational effort, albeit the cost increases much less rapidly in this direction.  In IM-SRG the CPU cost is polynomial with respect to $N_{\mathrm{b}}$, the number of states in the single-particle basis.  For IM-SRG(2) in particular, the CPU cost scales roughly as $\mathcal{O}(N_{\mathrm{b}}^6)$.
+Note that the loss of three- and higher-body terms (\textit{operator
+truncation}) is only one out of the two sources of error in this
+method.  The other source of error is due to the \textit{basis
+truncation}, a concern for any method that relies on a finite
+single-particle basis such as IM-SRG.  The latter can be reduced by
+increasing the size of the basis at the expense of greater
+computational effort, albeit the cost increases much less rapidly in
+this direction.  In IM-SRG the CPU cost is polynomial with respect to
+$N_{\mathrm{b}}$, the number of states in the single-particle basis.
+For IM-SRG(2) in particular, the CPU cost scales roughly as
+$\mathcal{O}(N_{\mathrm{b}}^6)$.
 
 With the operator truncation, the generator $\hat{\eta}$ can be written as a generic 2-body operator:
 \begin{align*}
@@ -334,7 +612,7 @@ where $\eta_{p q}^{[1]}$ and $ \eta_{p q r s}^{[2]}$ respectively are its one- a
 
 By expanding the commutator in Eq.\ \eqref{eq:imsrgode} and discarding the three-body term, we obtain the matrix-element form of the IM-SRG(2) flow equation:
 \begin{align}
-    \frac{\D H^{[k]}}{\D s} = C^{[k]}(\eta, H) \label{eq:flowmxe}
+    \frac{\D H^{[k]}}{\D s} = C^{[k]}(\eta, H), \label{eq:flowmxe}
 \end{align}
 where
 \begin{align}
@@ -375,7 +653,7 @@ where
 
 \begin{figure}
 \includegraphics{fig-diagrams-imsrg.pdf}
-\caption{Diagrammatic representation of $D^{[k]}(\circ, \bullet)$ of Eq.\ \eqref{eq:flow0}, Eq.\ \eqref{eq:flow1}, and Eq.\ \eqref{eq:flow2}, where open circles represent $A$ and filled circles represent $B$.  The two-body vertices are implicitly antisymmetric (i.e.\ \textit{Hugenholtz diagrams} \cite{HUGENHOLTZ1957481}, as described in \cite{shavitt2009many} \S 4.4.3).  Internal directed lines (bound/dummy indices) that point upward denote summations over unoccupied states, whereas lines that point downward denote summations over occupied states.  External undirected lines denote unconstrained free indices.  In IM-SRG(2), the three-body diagrams are not included.}
+\caption{(Color online) Diagrammatic representation of $D^{[k]}(\circ, \bullet)$ of Eq.\ \eqref{eq:flow0}, Eq.\ \eqref{eq:flow1}, and Eq.\ \eqref{eq:flow2}, where open circles represent $A$ and filled circles represent $B$.  The two-body vertices are implicitly antisymmetric (i.e.\ \textit{Hugenholtz diagrams} \cite{HUGENHOLTZ1957481}, as described in \cite{shavitt2009many} \S 4.4.3).  Internal directed lines (bound/dummy indices) that point upward denote summations over unoccupied states, whereas lines that point downward denote summations over occupied states.  External undirected lines denote unconstrained free indices.  In IM-SRG(2), the three-body diagrams are not included.}
 \label{fig:diagrams-imsrg}
 \end{figure}
 
@@ -395,11 +673,37 @@ The original choice of generator suggested by Wegner \cite{Wegner200177} reads
 \end{align*}
 where $\hat{H}^{\text{d}}$ denotes the ``diagonal'' part of the Hamiltonian and $\hat{H} - \hat{H}^{\text{d}}$ denotes the ``off-diagonal'' part.  This is in the abstract sense described at the end of Section \ref{subsubsec:srgmethods}.
 
-Since $\hat{\eta}^{\text{Wg}}$ is a commutator between two Hermitian operators, it is antihermitian as required for a generator.  Additionally, it can be shown that the commutator has the property of suppressing off-diagonal matrix elements as the state evolves via the flow equation \cite{kehrein2006flow}, as we would like.  Matrix elements ``far'' from the diagonal -- i.e.\ where the Hamiltonian couples states with large energy differences -- are suppressed much faster than those ``close'' to the diagonal.
+Since $\hat{\eta}^{\text{Wg}}$ is a commutator between two Hermitian
+operators, it is antihermitian as required for a generator.
+Additionally, it can be shown that the commutator has the property of
+suppressing off-diagonal matrix elements as the state evolves via the
+flow equation \cite{kehrein2006flow}, as we would like.  Matrix
+elements ``far'' from the diagonal -- i.e.\ where the Hamiltonian
+couples states with large energy differences -- are suppressed much
+faster than those ``close'' to the diagonal.
 
-Apart from Wegner's generator, there exist several other ones in literature. One choice, proposed by White \cite{White:cond-mat0201346}, makes numerical approaches much more efficient.  The problem with the Wegner generator is the widely varying decaying speeds of the Hamiltonian matrix elements.  Terms with large energy separations from the ground state are suppressed initially, followed by those with smaller energy separations.  This leads to stiffness in the flow equation, leading to numerical difficulties in solving the set of coupled differential equations.
+Apart from Wegner's generator, there exist several other ones in
+literature. One choice, proposed by
+White \cite{White:cond-mat0201346}, makes numerical approaches much
+more efficient.  The problem with the Wegner generator is the widely
+varying decaying speeds of the Hamiltonian matrix elements.  Terms
+with large energy separations from the ground state are suppressed
+initially, followed by those with smaller energy separations.  This
+leads to stiffness in the flow equation, leading to numerical
+difficulties in solving the set of coupled differential equations.
 
-The White generator takes an alternative approach, which is well suited for problems where one is mainly interested in the ground state of a system.  Firstly, instead of driving all off-diagonal elements of the Hamiltonian to zero, the generator focuses exclusively on those ones that are coupled to the reference state $\Phi$ so as to decouple the reference state from the remaining Hamiltonian.  This reduces the amount of change done to the Hamiltonian, reducing the accuracy lost from the operator truncation.  Secondly, the rate of decay in Hamiltonian matrix elements are approximately normalized by dividing the generator matrix elements by an appropriate factor.  This ensures that the affected elements decay at approximately the same rate, reducing the stiffness of the flow equations.
+The White generator takes an alternative approach, which is well
+suited for problems where one is mainly interested in the ground state
+of a system.  Firstly, instead of driving all off-diagonal elements of
+the Hamiltonian to zero, the generator focuses exclusively on those
+ones that are coupled to the reference state $\Phi$ so as to decouple
+the reference state from the remaining Hamiltonian.  This reduces the
+amount of change done to the Hamiltonian, reducing the accuracy lost
+from the operator truncation.  Secondly, the rate of decay in
+Hamiltonian matrix elements are approximately normalized by dividing
+the generator matrix elements by an appropriate factor.  This ensures
+that the affected elements decay at approximately the same rate,
+reducing the stiffness of the flow equations.
 
 The White generator is explicitly constructed the following way \cite{PhysRevLett.106.222502,White:cond-mat0201346}.  Let
 \begin{align*}
@@ -407,8 +711,8 @@ The White generator is explicitly constructed the following way \cite{PhysRevLet
 \end{align*}
 where
 \begin{align*}
-\eta^{\prime [1]}_{a i} &\equiv \frac{H^{[1]}_{a i}}{\tilde{\Delta}^{[1]}_{a i}} &
-\eta^{\prime [2]}_{a b i j} &\equiv \frac{H^{[2]}_{a b i j}}{\tilde{\Delta}^{[2]}_{a b i j}}
+\eta^{\prime [1]}_{a i} &\equiv \frac{H^{[1]}_{a i}}{\tilde{\Delta}^{[1]}_{a i}}, &
+\eta^{\prime [2]}_{a b i j} &\equiv \frac{H^{[2]}_{a b i j}}{\tilde{\Delta}^{[2]}_{a b i j}},
 \end{align*}
 and the Epstein--Nesbet energy denominators $\tilde{\Delta}$ \cite{shavitt2009many} are defined as
 \begin{align}
@@ -468,7 +772,7 @@ This is known as coupled cluster singles and doubles (CCSD), with an asymptotic 
 
 \begin{figure}
   \includegraphics{fig-diagrams-ccsd.pdf}
-  \caption{Diagrammatic representation of $\bar{H}$ of Eq.\ \eqref{eq:cc_heff1}, where open circles represent the excitation cluster operators $\hat{T}_1$ and $\hat{T}_2$, and filled circles represent the two-body interaction $\hat{H}^{[2]}$.  As before, the diagrams are implicitly antisymmetrized (Hugenholtz diagrams).  Lines connected to $\hat{T}$ are always directed upward because they represent an excitation operator while the directions of external lines connected to $\hat{H}^{[2]}$ are unconstrained.}
+  \caption{(Color online) Diagrammatic representation of $\bar{H}$ of Eq.\ \eqref{eq:cc_heff1}, where open circles represent the excitation cluster operators $\hat{T}_1$ and $\hat{T}_2$, and filled circles represent the two-body interaction $\hat{H}^{[2]}$.  As before, the diagrams are implicitly antisymmetrized (Hugenholtz diagrams).  Lines connected to $\hat{T}$ are always directed upward because they represent an excitation operator while the directions of external lines connected to $\hat{H}^{[2]}$ are unconstrained.}
   \label{fig:diagrams-ccsd}
 \end{figure}
 
@@ -546,7 +850,7 @@ This leads to a recursion relation of $\hat \Omega$ that enables $\hat \Omega$ t
 
 \begin{figure}
 \includegraphics{fig-diagrams-sfe.pdf}
-\caption{Diagrammatic form of the second- and third-order QDPT corrections.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams), but also have implicit denominators as with many-body perturbation theory.  When QDPT is performed on IM-SRG-evolved Hamiltonians, many of the diagrams vanish.  The remaining nonvanishing diagrams for addition energy are highlighted in blue and for removal energy are highlighted in red.}
+\caption{(Color online) Diagrammatic form of the second- and third-order QDPT corrections.  The diagrams are implicitly antisymmetrized (Hugenholtz diagrams), but also have implicit denominators as with many-body perturbation theory.  When QDPT is performed on IM-SRG-evolved Hamiltonians, many of the diagrams vanish.  The remaining nonvanishing diagrams for addition energy are highlighted in blue and for removal energy are highlighted in red.}
 \label{fig:diagrams-sfe}
 \end{figure}
 
@@ -632,7 +936,7 @@ In this paper, because the interaction is real and thus the effective Hamiltonia
 \begin{figure}
   \centering
   \includegraphics{figures/fig-methods.pdf}
-  \caption{A schematic view of the various ways in which many-body methods in this paper could be combined to calculate ground state, addition, and removal energies.}
+  \caption{(Color online) A schematic view of the various ways in which many-body methods in this paper could be combined to calculate ground state, addition, and removal energies.}
   \label{fig:methods}
 \end{figure}
 
@@ -654,11 +958,25 @@ All calculations of ground state energy $E_N$ in this paper are restricted to ca
 
 Ideally, ground state energies should be characterized entirely by the two system parameters $(N, \omega)$, where $N$ is number of particles and $\omega$ is the oscillator frequency.  However, the methods that we study are limited to a \emph{finite} (truncated) basis and the results depend on the level of truncation.  This is characterized by $K$, the total number of shells in the single-particle basis.  Thus, results are generally presented as a graph plotted against $K$.  In Section \ref{subsec:extrapolation} we discuss how to estimate results as $K \to \infty$ (infinite-basis limit) through \textit{extrapolations}.
 
-The addition and removal energies are similar, but they require an additional parameter: the total orbital angular momentum $M_\ell$, defined as the sum of the $m_\ell$ of each particle.  This is due to the presence of multiple states with near-degenerate energies.  For this paper, we will consider exclusively the addition/removal energies with the lowest $|M_\ell|$ subject to the constraint that the particle added/removed lies within the next/last shell.  This means the $N + 1$ states of interest are those with $|M_\ell| = K_{\mathrm{F}} \bmod 2$ (where $\bmod$ stands for the modulo operation) where $K_{\mathrm{F}}$ is the number of occupied shells, while the $N - 1$ states of interest are those with $|M_\ell| = 1 - (K_{\mathrm{F}} \bmod 2)$.
+The addition and removal energies are similar, but they require an
+additional parameter: the total orbital angular momentum $M_\ell$,
+defined as the sum of the $m_\ell$ of each particle.  This is due to
+the presence of multiple states with near-degenerate energies.  For
+this paper, we will consider exclusively the addition/removal energies
+with the lowest $|M_\ell|$ subject to the constraint that the particle
+added/removed lies within the next/last shell.  This means the $N + 1$
+states of interest are those with $|M_\ell| = K_{\mathrm{F}} \bmod 2$
+(where $\bmod$ stands for the modulo operation) where $K_{\mathrm{F}}$
+is the number of occupied shells, while the $N - 1$ states of interest
+are those with $|M_\ell| = 1 - (K_{\mathrm{F}} \bmod 2)$.
 
-Not all cases are solvable with our selection many-body methods.  Low frequency systems are particularly strenuous for these many-body methods due to their strong correlations, leading to equations that are difficult and expensive to solve numerically.  In the tables, ``n.c.'' marks the cases where IM-SRG or CCSD either diverged or converged extremely slowly.  This also affects the extrapolation results in Section \ref{subsec:extrapolation}, as for consistency reasons we chose to extrapolate only when all five points were available.  Some extrapolations resulted in unphysical parameters ($\beta \le 0$); these are marked ``n.f.''.
+Not all cases are solvable with our selection many-body methods.  Low frequency systems are particularly strenuous for these many-body methods due to their strong correlations, leading to equations that are difficult and expensive to solve numerically.  In the tables, ``n.c.'' marks the cases where IM-SRG or CCSD either diverged or converged extremely slowly.  This also affects the extrapolation results in Section \ref{subsec:extrapolation}, as for consistency reasons we chose to extrapolate only when all five points were available.
 
-Numerical calculations in this paper are performed with a relative precision of about $10^{-5}$ or lower.  This does not necessarily mean the results are as precise as $10^{-5}$, since numerical errors tend to accumulate over the multiple steps of the calculation, thus the precision of the final results is expected to be roughly $10^{-4}$.
+Numerical calculations in this paper are performed with a relative
+precision of about $10^{-5}$ or lower.  This does not necessarily mean
+the results are as precise as $10^{-5}$, since numerical errors tend
+to accumulate over the multiple steps of the calculation, thus the
+precision of the final results is expected to be roughly $10^{-4}$.
 
 \subsection{Comparison between methods}
 
@@ -674,7 +992,7 @@ Numerical calculations in this paper are performed with a relative precision of 
 \begin{figure}
   \centering
   \includegraphics{fig-gs2.pdf}
-  \caption{Plots of ground state energy of quantum dots with $N$ particles and an oscillatory frequency of $\omega$ against the number of shells $K$.  Since DMC does not utilize a finite basis, the horizontal axis is irrelevant and DMC results are plotted as horizontal lines.}
+  \caption{(Color online) Plots of ground state energy of quantum dots with $N$ particles and an oscillatory frequency of $\omega$ against the number of shells $K$.  Since DMC does not utilize a finite basis, the horizontal axis is irrelevant and DMC results are plotted as horizontal lines.}
   \label{fig:gs}
 \end{figure}
 
@@ -705,14 +1023,14 @@ There are a few cases where the IM-SRG over-corrects the result, leading to an e
 \begin{figure}
   \centering
   \includegraphics{fig-add2.pdf}
-  \caption{Addition energies for a selection of quantum dot parameters.  See Fig.\ \ref{fig:gs} for details.}
+  \caption{(Color online) Addition energies for a selection of quantum dot parameters.  See Fig.\ \ref{fig:gs} for details.}
   \label{fig:add}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics{fig-rm2.pdf}
-  \caption{Removal energies for a selection of quantum dot parameters.  See Fig.\ \ref{fig:add} for details.}
+  \caption{(Color online) Removal energies for a selection of quantum dot parameters.  See Fig.\ \ref{fig:add} for details.}
   \label{fig:rm}
 \end{figure}
 
@@ -727,14 +1045,14 @@ There is strong agreement between IM-SRG(2) + QDPT3 and IM-SRG(2) + EOM2 in many
 \begin{figure}
   \centering
   \includegraphics{fig-by-freq-10-6-normal.pdf}
-  \caption{The behavior of ground state, addition, and removal energies as a function of the oscillator frequency $\omega$, with $K = 10$ shells in the basis.  The energy is normalized with respect to the Hartree--Fock values to magnify the differences.  Lower frequency leads to stronger correlations and thereby a more difficult problem.}
+  \caption{(Color online) The behavior of ground state, addition, and removal energies as a function of the oscillator frequency $\omega$, with $K = 10$ shells in the basis.  The energy is normalized with respect to the Hartree--Fock values to magnify the differences.  Lower frequency leads to stronger correlations and thereby a more difficult problem.}
   \label{fig:by-freq-10-6-normal}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics{fig-rel-slopes2.pdf}
-  \caption{The impact of the interaction on convergence of addition and removal energies using IM-SRG(2) + QDPT3.  For clarity, the plot does not distinguish between addition and removal energies.  The horizontal axis shows the system parameters, where $N$ is the number of particles and $\omega$ is the oscillator frequency.  The vertical axis shows $|\rho_{15}|$ (``relative slope''), which estimates the rate of convergence at 15 total shells.  The lower the value of $|\rho_{15}|$, the faster the convergence.  The data points are categorized by the interactions.  The trends suggest that the singular short-range part of the interaction has a much stronger impact on the convergence than the long-range tail.}
+  \caption{(Color online) The impact of the interaction on convergence of addition and removal energies using IM-SRG(2) + QDPT3.  For clarity, the plot does not distinguish between addition and removal energies.  The horizontal axis shows the system parameters, where $N$ is the number of particles and $\omega$ is the oscillator frequency.  The vertical axis shows $|\rho_{15}|$ (``relative slope''), which estimates the rate of convergence at 15 total shells.  The lower the value of $|\rho_{15}|$, the faster the convergence.  The data points are categorized by the interactions.  The trends suggest that the singular short-range part of the interaction has a much stronger impact on the convergence than the long-range tail.}
   \label{fig:rel-slopes}
 \end{figure}
 
@@ -783,68 +1101,190 @@ In general, there does not appear to be any difference between the convergence b
 \begin{figure}
   \centering
   \includegraphics{fig-fit-2-1p0-add.pdf}
-  \caption{A five-point fit of the addition energies of the $(N, \omega) = (6, 1.0)$ system with $K_{\text{stop}} = 15$.  The grey shaded region contains the masked data points, which are ignored by the fitting procedure.  The left figure plots the central difference of the addition energies $\varepsilon^{(+)}$ with respect to the number of shells $K$.  On such a plot, the power law model should appear as a straight line.  The fits are optimized using the procedure described in Section \ref{subsec:extrapolation}.  Note that the lines do not evenly pass through the points in the left plot as the fitting weights are tuned for the energy on a linear scale, not the energy differences on a logarithmic scale.}
+  \caption{(Color online) A five-point fit of the addition energies of the $(N, \omega) = (6, 1.0)$ system with $K_{\text{stop}} = 15$.  The grey shaded region contains the masked data points, which are ignored by the fitting procedure.  The left figure plots the central difference of the addition energies $\varepsilon^{(+)}$ with respect to the number of shells $K$.  On such a plot, the power law model should appear as a straight line.  The fits are optimized using the procedure described in Section \ref{subsec:extrapolation}.  Note that the lines do not evenly pass through the points in the left plot as the fitting weights are tuned for the energy on a linear scale, not the energy differences on a logarithmic scale.}
   \label{fig:by-fit-2-1p0-add}
 \end{figure}
 
 As derived by Kvaal \cite{PhysRevB.80.045321,Kvaal2007}, the asymptotic convergence of the quantum dot observables in a finite harmonic oscillator basis can be approximately described by a power law model:
 \begin{align*}
-  \Delta E \propto K^{-\beta}
+  \Delta E \propto K^{-\beta},
 \end{align*}
 where $\Delta E$ is the difference between the finite-basis result and the infinite-basis result, $K$ is the number of shells in the single-particle basis, and $\beta$ is some positive real exponent.  The \textit{smoothness} of the exact wave function determines the rate of the convergence: the more times the exact wave function can be differentiated, the higher the exponent $\beta$.
 
 It is difficult to ascertain what $\beta$ is \textit{a priori}, thus we will empirically compute $\beta$ by fitting the following model through our data:
 \begin{align} \label{eq:power_law_model}
-  E = \alpha K^{-\beta} + \gamma
+  E = \alpha K^{-\beta} + \gamma.
 \end{align}
 As a nonlinear curve fit, it can be quite sensitive to the initial parameters.  Therefore, good guesses of the parameters are necessary to obtain a sensible result.  For this, we first fit a linear model of $\log |\partial E / \partial K|$ against $\log K$:
 \begin{align*}
-  \log \left|\frac{\partial E}{\partial K}\right| = - (\beta + 1) \log K + \log|\alpha \beta|
+  \log \left|\frac{\partial E}{\partial K}\right| = - (\beta + 1) \log K + \log|\alpha \beta|.
 \end{align*}
 This is useful because linear fits are very robust and will often converge even if the initial parameters are far from their final values.  It also provides a means to visually assess the quality of the fit.  The derivative is approximated using the central difference:
 \begin{align*}
   \frac{\partial E}{\partial K} \approx E\left(K + \frac{1}{2}\right) - E\left(K - \frac{1}{2}\right).
 \end{align*}
-The process of numerically calculating the derivative can amplify the noise in the data and distorts the weights of the data points.  Moreover, it does not provide a means to compute $\gamma$, the extrapolated energy.  Thus a second accurate nonlinear curve fit is necessary.
+The process of numerically calculating the derivative can amplify the
+noise in the data and distorts the weights of the data points.
+Moreover, it does not provide a means to compute $\gamma$, the
+extrapolated energy.  Thus a second accurate nonlinear curve fit is
+necessary.
 
-The parameters $\alpha$ and $\beta$ are extracted from the linear fit and used as inputs for a power-law fit of $E$ against $K$.  It is necessary to estimate the infinite-basis energy $\gamma$ as well, which is done by fitting Eq.\ \eqref{eq:power_law_model} while the parameters $\alpha$ and $\beta$ are fixed to the initial guesses.  The fixing ensures that the fit is still linear in nature and thus highly likely to converge.  Afterward, we do a final fit with all three parameters free to vary.  All fits are done using the traditional Levenberg--Marquardt (LM) optimization algorithm \cite{10.2307/43633451,doi:10.1137/0111030} as implemented in \texttt{Minpack} \cite{More1978,More:126569}, with equal weighting of all data points.
+The parameters $\alpha$ and $\beta$ are extracted from the linear fit
+and used as inputs for a power-law fit of $E$ against $K$.  It is
+necessary to estimate the infinite-basis energy $\gamma$ as well,
+which is done by fitting Eq.\ \eqref{eq:power_law_model} while the
+parameters $\alpha$ and $\beta$ are fixed to the initial guesses.  The
+fixing ensures that the fit is still linear in nature and thus highly
+likely to converge.  Afterward, we do a final fit with all three
+parameters free to vary.  All fits are done using the traditional
+Levenberg--Marquardt (LM) optimization
+algorithm \cite{10.2307/43633451,doi:10.1137/0111030} as implemented
+in \texttt{Minpack} \cite{More1978,More:126569}, with equal weighting
+of all data points.
 
-There is still one additional tuning knob for this model that is not explicitly part of Eq.\ \eqref{eq:power_law_model}: the range of data points taken into consideration (\textit{fit range}).  Since the model describes the \emph{asymptotic} behavior, we do not expect the fit to produce good results when the energy is still very far from convergence.  To account for this, we only fit the last few data points within some chosen range.  If the range is too large, then the non-asymptotic behavior would perturb the result too much, whereas if the range is too small, there would be more noise and less confidence in whether the trend is legitimate rather than accidental.  Empirically, we chose to fit the last 5 points of our available data.  The results are shown in Tables \ref{tab:ground-extrapolated}, \ref{tab:add-extrapolated}, and \ref{tab:rm-extrapolated}.  A specific example of the fit is shown in Fig.\ \ref{fig:by-fit-2-1p0-add}
+There is still one additional tuning knob for this model that is not
+explicitly part of Eq.\ \eqref{eq:power_law_model}: the range of data
+points taken into consideration (\textit{fit range}).  Since the model
+describes the \emph{asymptotic} behavior, we do not expect the fit to
+produce good results when the energy is still very far from
+convergence.  To account for this, we only fit the last few data
+points within some chosen range.  If the range is too large, then the
+non-asymptotic behavior would perturb the result too much, whereas if
+the range is too small, there would be more noise and less confidence
+in whether the trend is legitimate rather than accidental.
+Empirically, we chose to fit the last 5 points of our available data.
+The results are shown in
+Tables \ref{tab:ground-extrapolated}, \ref{tab:add-extrapolated},
+and \ref{tab:rm-extrapolated}.  A specific example of the fit is shown
+in Fig.\ \ref{fig:by-fit-2-1p0-add}
 
-The LM fitting procedure also computes uncertainties for the parameters from an approximate Hessian of the model function.  It is therefore tempting to use the uncertainty of the fit to quantify the uncertainty of the extrapolated energy.  We certainly would not expect this to account for the error due to the operator truncation, but how accurately does it quantify the discrepancy of our extrapolated result from the true infinite-basis energy?
+The LM fitting procedure also computes uncertainties for the
+parameters from an approximate Hessian of the model function.  It is
+therefore tempting to use the uncertainty of the fit to quantify the
+uncertainty of the extrapolated energy.  We certainly would not expect
+this to account for the error due to the operator truncation, but how
+accurately does it quantify the discrepancy of our extrapolated result
+from the true infinite-basis energy?
 
-We investigated this idea by performing a fit over \emph{all possible} 5-point fit ranges $[K_{\text{stop}} - 4, K_{\text{stop}}]$.  By comparing the extrapolated results at varying values of $K_{\text{stop}}$ with the extrapolated result at the highest possible $K_{\text{stop}}$ and treating the latter as the ``true'' infinite-basis result, we can statistically assess whether the fit uncertainties are a good measure of the discrepancy from the true infinite-basis result.  Our results show a somewhat bimodal distribution: when the relative fit uncertainty is higher than $10^{-3.5}$, the fit uncertainty quantifies the discrepancy well; otherwise, the fit uncertainty underestimates the discrepancy by a factor of 10 or less.
+We investigated this idea by performing a fit over \emph{all possible}
+5-point fit ranges $[K_{\text{stop}} - 4, K_{\text{stop}}]$.  By
+comparing the extrapolated results at varying values of
+$K_{\text{stop}}$ with the extrapolated result at the highest possible
+$K_{\text{stop}}$ and treating the latter as the ``true''
+infinite-basis result, we can statistically assess whether the fit
+uncertainties are a good measure of the discrepancy from the true
+infinite-basis result.  Our results show a somewhat bimodal
+distribution: when the relative fit uncertainty is higher than
+$10^{-3.5}$, the fit uncertainty quantifies the discrepancy well;
+otherwise, the fit uncertainty underestimates the discrepancy by a
+factor of 10 or less.
 
-Unlike the other methods, Hartree--Fock energies are somewhat unusual in that they generally do not conform to the power-law model.  In fact, the results and plots seem to indicate an \emph{exponential} convergence with respect to the number of shells.  It is likely that HF is insensitive to the Coulomb cusp.
+Unlike the other methods, Hartree--Fock energies are somewhat unusual
+in that they generally do not conform to the power-law model.  In
+fact, the results and plots seem to indicate an \emph{exponential}
+convergence with respect to the number of shells.  It is likely that
+HF is insensitive to the Coulomb cusp.
 
-Nonetheless, despite the poor fits that often arise, the extrapolated energies are often quite good for HF.  This is likely due to its rapid convergence, which leaves very little degree of freedom even for a poorly chosen model.  Moreover, we found that the fit uncertainties of the energy are fairly good measures of the true discrepancy.
+Nonetheless, despite the poor fits that often arise, the extrapolated
+energies are often quite good for HF.  This is likely due to its rapid
+convergence, which leaves very little degree of freedom even for a
+poorly chosen model.  Moreover, we found that the fit uncertainties of
+the energy are fairly good measures of the true discrepancy.
 
-Not all fits yield a positive value of $\beta$ for addition and removal energies, which suggests that the data points do not converge, or require a very high number of shells to converge.  These cases are marked ``n.f.'' in the tables.  This affects exclusively IM-SRG(2) + QDPT3 for systems with few particles and low frequencies, indicating that perturbation theory is inadequate for such systems.
+Not all fits yield a positive value of $\beta$ for addition and
+removal energies, which suggests that the data points do not converge,
+or require a very high number of shells to converge.  This affects
+exclusively IM-SRG(2) + QDPT3 for systems with few particles and low
+frequencies, indicating that perturbation theory is inadequate for
+such systems.
 
 \section{Conclusions}
 \label{sec:conclusions}
 
-We have demonstrated calculations of ground state, addition, and removal energies of two-dimensional circular quantum dots using a variety of many-body methods: ranging from the basic Hartree-Fock method, to more sophisticated combinations of IM-SRG, CC, QDPT and/or EOM.  Many closed-shell quantum dot systems have been explored, ranging from 2 to 56 particles and frequencies between 0.1 and 1.0.  All such results show good agreement with one another.
+We have demonstrated calculations of ground state, addition, and
+removal energies of two-dimensional circular quantum dots using a
+variety of many-body methods: ranging from the basic Hartree-Fock
+method, to more sophisticated combinations of IM-SRG, CC, QDPT and/or
+EOM.  Many closed-shell quantum dot systems have been explored,
+ranging from 2 to 56 particles and frequencies between 0.1 and 1.0.
+All such results show good agreement with one another.
 
-We note that the HF + IM-SRG + QDPT combination provides a reasonable moderate-cost approach to the calculation of addition and removal energies for many systems in comparison to the somewhat more expensive and complicated EOM calculations.  Both IM-SRG and CC are reasonably accurate compared to the near-exact but factorial-cost FCI method, allowing exploration of much higher number of particles than would otherwise be possible.  EOM-IM-SRG does have more flexibility over perturbative approaches: in particular, it could be more readily used to construct excited states \cite{2016arXiv161100661P}, which is more difficult for methods such as DMC.
+We note that the HF + IM-SRG + QDPT combination provides a reasonable
+moderate-cost approach to the calculation of addition and removal
+energies for many systems in comparison to the somewhat more expensive
+and complicated EOM calculations.  Both IM-SRG and CC are reasonably
+accurate compared to the near-exact but factorial-cost FCI method,
+allowing exploration of much higher number of particles than would
+otherwise be possible.  EOM-IM-SRG does have more flexibility over
+perturbative approaches: in particular, it could be more readily used
+to construct excited states \cite{2016arXiv161100661P}, which is more
+difficult for methods such as DMC.
 
-There are several directions in which the calculations may be improved.  One can attempt to improve the IM-SRG approximation by incorporating some of the missing higher-body terms in the commutator.  This would also provide some insight into the rate of convergence with respect to the operator truncation, providing a sense of how large the truncation error is.  While a full 3-body treatment of IM-SRG would be extremely costly, it is possible implicitly track for a portion of the induced 3-body forces by computing certain diagrams that are either lower cost or could be approximated at lower cost \cite{IMSRG}.
+There are several directions in which the calculations may be
+improved.  One can attempt to improve the IM-SRG approximation by
+incorporating some of the missing higher-body terms in the commutator.
+This would also provide some insight into the rate of convergence with
+respect to the operator truncation, providing a sense of how large the
+truncation error is.  While a full 3-body treatment of IM-SRG would be
+extremely costly, it is possible implicitly track for a portion of the
+induced 3-body forces by computing certain diagrams that are either
+lower cost or could be approximated at lower cost \cite{IMSRG}.
 
-The application of IM-SRG eliminates a large number of the QDPT diagrams of Fig.\ \ref{fig:diagrams-sfe}, which is beneficial as it increases the efficiency of the QDPT calculations.  Thus it may be more feasible to perform higher orders of QDPT on IM-SRG evolved Hamiltonians.  Moreover, the remaining diagrams at third order can be eliminated through infinite resummation techniques, which would incorporate higher order terms and therefore further increase the accuracy of the result.
+The application of IM-SRG eliminates a large number of the QDPT
+diagrams of Fig.\ \ref{fig:diagrams-sfe}, which is beneficial as it
+increases the efficiency of the QDPT calculations.  Thus it may be
+more feasible to perform higher orders of QDPT on IM-SRG evolved
+Hamiltonians.  Moreover, the remaining diagrams at third order can be
+eliminated through infinite resummation techniques, which would
+incorporate higher order terms and therefore further increase the
+accuracy of the result.
 
-We note that this calculation was done entirely using the traditional approach of using a high-order ODE solver to solve the flow equation.  A new technique developed by T. D. Morris \cite{PhysRevC.92.034331} uses an alternative approach that obviates the need for a high-order ODE solver, leading to much more efficient computations and also allowing operators of other observables to be evolved at lower cost, which poses a significant advantage over coupled cluster methods.  Implementing this approach would allows us to study the accuracy and convergence of other possibly more sensitive observables.
+We note that this calculation was done entirely using the traditional
+approach of using a high-order ODE solver to solve the flow equation.
+A new technique developed by T. D. Morris \cite{PhysRevC.92.034331}
+uses an alternative approach that obviates the need for a high-order
+ODE solver, leading to much more efficient computations and also
+allowing operators of other observables to be evolved at lower cost,
+which poses a significant advantage over coupled cluster methods.
+Implementing this approach would allows us to study the accuracy and
+convergence of other possibly more sensitive observables.
 
-The IM-SRG method can be extended to support multiple reference states (multi-reference IM-SRG or simply MR-IM-SRG) \cite{PhysRevLett.110.242501,PhysRevC.90.041302} through the generalized normal ordering formalisms \cite{doi:10.1063/1.474405}, which opens the possibility of calculating quantum systems that are far from the magic numbers (open-shell systems).  This is a territory that few many-body methods can tackle and is one of the major strengths of the IM-SRG approach.
+The IM-SRG method can be extended to support multiple reference states
+(multi-reference IM-SRG or simply
+MR-IM-SRG) \cite{PhysRevLett.110.242501,PhysRevC.90.041302} through
+the generalized normal ordering
+formalisms \cite{doi:10.1063/1.474405}, which opens the possibility of
+calculating quantum systems that are far from the magic numbers
+(open-shell systems).  This is a territory that few many-body methods
+can tackle and is one of the major strengths of the IM-SRG approach.
 
-By transforming of the operator-SRG rather than the wave function, IM-SRG is more amenable to the construction of softened \textit{effective interactions} than CC \cite{Hergert2016165}.  Such interactions can be used to lower the cost of other methods such as full configuration interaction theory.
+By transforming of the operator-SRG rather than the wave function,
+IM-SRG is more amenable to the construction of
+softened \textit{effective interactions} than
+CC \cite{Hergert2016165}.  Such interactions can be used to lower the
+cost of other methods such as full configuration interaction theory.
 
-Implementation-wise, our current code constructs the two-particle states as simple Slater determinants of their one-particle states.  This approach is often referred to as \textit{m-scheme} in nuclear physics.  It is straightforward to implement and works well for general systems, but it fails to exploit all the symmetries in the quantum dot system: not only is spin projection $\hat S_z$ conserved, the Casimir operator $\hat S^2$ is as well.  A more efficient approach is to couple the spins of the single-particle states to form two-particle states with good $\hat S^2$, an approach analogous to \textit{j-scheme} in nuclear physics.  A combination of this with the Eckart-Wigner theorem could reduce the computational cost significantly, albeit at the cost of increased implementation complexity.
+Implementation-wise, our current code constructs the two-particle
+states as simple Slater determinants of their one-particle states.
+This approach is often referred to as \textit{m-scheme} in nuclear
+physics.  It is straightforward to implement and works well for
+general systems, but it fails to exploit all the symmetries in the
+quantum dot system: not only is spin projection $\hat S_z$ conserved,
+the Casimir operator $\hat S^2$ is as well.  A more efficient approach
+is to couple the spins of the single-particle states to form
+two-particle states with good $\hat S^2$, an approach analogous
+to \textit{j-scheme} in nuclear physics.  A combination of this with
+the Eckart-Wigner theorem could reduce the computational cost
+significantly, albeit at the cost of increased implementation
+complexity.
 
 
-We hope to apply these theoretical and technical enhancements not only to the study of quantum dots, but to studies of nuclear and atomic systems, opening up an even greater range of applications.
+We hope to apply these theoretical and technical enhancements not only
+to the study of quantum dots, but to studies of nuclear and atomic
+systems, opening up an even greater range of applications.
 
 \begin{acknowledgments}
-  This work was supported by the National Science Foundation Grant No.\ PHY-1404159 (Michigan State University).
+  This work was supported by the National Science Foundation Grant No.\ PHY-1404159 (Michigan State University). Discussions with Simen Kvaal are highly appreciated.
 \end{acknowledgments}
 
 \bibliographystyle{\mybibstyle}
