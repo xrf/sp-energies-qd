@@ -161,7 +161,9 @@ The energy of a Slater determinant is given by a sum over the occupied single-pa
 \end{align*}
 It is possible for Slater determinants occupying different sets of single-particle states to be degenerate in energy.  This is possible even for ground states of $\hat{H}^{[1]}$.  However, if the number of particles $N$ satisfies $N = K_{\mathrm{F}} (K_{\mathrm{F}} + 1)$ for some nonnegative integer $K_{\mathrm{F}}$, there would be just enough particles to form a closed-shell Slater determinant, leading to a unique, well-isolated ground state.  The values of $N$ at which this occurs are said to be \textit{magic numbers}.  We call $K_{\mathrm{F}}$ the \textit{number of filled shells} (or ``Fermi level'').  In particular, a single-particle state is occupied in the ground state Slater determinant if and only $k < K_{\mathrm{F}}$, where $k$ is the shell index of the single-particle state as defined in \eqref{eq:shell_index}.
 
-In this work we will mainly work within the formalism of second quantization; see for example Ref.\ \cite{shavitt2009many}.  To properly describe fermions, we introduce the annihilation and creation operators $\hat a_p$ and $\hat a_p^\dagger$. These operators must satisfy the anticommutation relations that encode the Pauli principle, namely
+In this paper, we use the letters $p, q, r, s, \ldots$ to label arbitrary \textit{single-particle states} in the basis.  In the discussion of many-body methods that rely a single, distinguished Slater determinant $\Phi$, known as the \textit{reference state}, we use the letters $i, j, k, l, \ldots$ as placeholders for the occupied states of $\Phi$, and $a, b, c, d, \ldots$ for the unoccupied states.  A summation such as $\sum_p$ is understood as a summation over every single-particle basis state $p$.  In contrast, $\sum_i$ only sums over those that are occupied and $\sum_a$ only sums over those that are unoccupied.
+
+We will describe many-body methods within the formalism of second quantization; see for example Ref.\ \cite{shavitt2009many}.  To properly describe fermions, we introduce the annihilation and creation operators $\hat a_p$ and $\hat a_p^\dagger$. These operators must satisfy the anticommutation relations that encode the Pauli principle, namely
 \begin{align*}
   &\{\hat a_p, \hat a_q\} = \{\hat a_p^\dagger, \hat a_q^\dagger\} = 0, &
   &\{\hat a_p, \hat a_q^\dagger\} = \delta_{p q}.
@@ -172,7 +174,7 @@ In second quantization, the one- and two-body Hamiltonian operators $H^{[1]}$ an
   \hat H^{[1]} &= \sum_{p q} \langle p | \hat{H}^{[1]} | q \rangle \hat a_p^\dagger \hat a_q^{}, &
   \hat{H}^{[2]} &= \frac{1}{4} \sum_{p q r s} \langle p q | \hat{H}^{[2]} | r s \rangle \hat a_p^\dagger \hat a_q^\dagger \hat a_s^{} \hat a_r^{}.
 \end{align}
-where the quantities $\langle p | \hat{H}^{[1]} | q \rangle$ and $\langle p q | \hat{H}^{[2]} | r s \rangle$ are known as \textit{matrix elements} and fully characterize the two operators in the basis.  In this paper, we use the letters $p, q, r, s, t, \ldots$ to label arbitrary single-particle \textit{states} in the basis.  A summation such as $\sum_p$ is then understood as a summation over every single-particle basis state $p$.  This is not to be confused with summations such as $\sum_j$ from \eqref{eq:onetwobodyhamiltonian}, which contains a label $j$ denoting an arbitrary \textit{particle}.  We thus see another benefit with second quantization: the Hamiltonian representation makes no attempt to distinguish particles at all, as expected for particles with quantum statistics.
+where the quantities $\langle p | \hat{H}^{[1]} | q \rangle$ and $\langle p q | \hat{H}^{[2]} | r s \rangle$ are known as \textit{matrix elements} and fully characterize the two operators in the basis.
 
 The complete Hamiltonian is given by the sum
 \begin{align}
@@ -212,21 +214,13 @@ To ensure orthonormality of the states, we require there to be as many unknown s
 
 The goal then is to find the coefficients $\bm C$ that minimize the energy $E_{\Phi}$, now given by
 \begin{align}
-  E_{\Phi} &= \sum_i n_i H^{[1] \prime}_{i i} + \sum_{i j} n_i n_j H^{[2] \prime}_{i j i j} \label{eq:hfenergy},
+  E_{\Phi} &= \sum_i H^{[1] \prime}_{i i} + \sum_{i j} H^{[2] \prime}_{i j i j} \label{eq:hfenergy},
 \end{align}
 where the transformed operators are defined as
 \begin{align}
   H^{[1] \prime}_{p q} &\equiv \sum_{r s} C_{r p}^* \langle r | \hat{H}^{[1]} | s \rangle C_{s q}^{} \label{eq:hftransform1} \\
   H^{[2] \prime}_{p q r s} &\equiv \sum_{t u v w} C_{t p}^* C_{u q}^* \langle t u | \hat{H}^{[2]} | v w \rangle C_{v r}^{} C_{w s}^{}, \label{eq:hftransform2}
 \end{align}
-and $n_p$ is the \textit{occupancy}, defined as
-\begin{align}
-  n_p \equiv \begin{cases}
-    1 & \text{if $p$ is an occupied state in $\Phi$}, \\
-    0 & \text{if $p$ is an unoccupied state in $\Phi$}.
-  \end{cases}
-\end{align}
-We will also use $\bar n_p \equiv 1 - n_p$ as a shorthand for the complement.
 
 With the method of Lagrange multipliers, the minimization problem can be reduced to the solving of a nonlinear equation -- the \textit{Hartree--Fock equation}:
 \begin{align} \label{eq:hartreefock}
@@ -234,7 +228,7 @@ With the method of Lagrange multipliers, the minimization problem can be reduced
 \end{align}
 where the \textit{Fock matrix} $\bm F$ is defined as
 \begin{align} \label{eq:fock}
-  F_{p q} \equiv \langle p | \hat{H}^{[1]} | q \rangle + \sum_{r s i} n_i C_{r i}^* \langle p r | \hat{H}^{[2]} | q s \rangle C_{s i}^{},
+  F_{p q} \equiv \langle p | \hat{H}^{[1]} | q \rangle + \sum_{r s i} C_{r i}^* \langle p r | \hat{H}^{[2]} | q s \rangle C_{s i}^{},
 \end{align}
 and $\bm{\varepsilon}$ is a vector of Lagrange multipliers: each element $\varepsilon_{q'}$ is associated with a specific single-particle state $|q'\rangle$.
 
@@ -300,9 +294,16 @@ They are said to be \emph{normal-ordered} with respect to the vacuum state $\ket
 \end{align*}
 where $\{i_1, i_2, \ldots, i_N\}$ is a set of $N$ indices that label the occupied states.  One can define a set of \textit{quasiparticle field operators} $\hat b$ and $\hat b^\dagger$ that obey the same anticommutation relations as the $\hat a$ operators.  The normal ordering of the quasiparticle field operators is straightforward to compute.  What is more interesting is the normal ordering of the physical field operators $\hat a$ and $\hat a^\dagger$ with respect to $|\Phi\rangle$:
 \begin{align*}
-  \normord{\hat{a}_p^\dagger \hat{a}_q^{}} &=
-  \hat{a}_p^\dagger \hat{a}_q^{} - n_p^{} \delta_{p q}^{}.
+  \normord{\hat{a}_p^\dagger \hat{a}_q^{}} &= \hat{a}_p^\dagger \hat{a}_q^{} - n_p^{} \delta_{p q}^{}.
 \end{align*}
+and $n_p$ is the \textit{occupancy} of the single-particle state $p$, defined as
+\begin{align}
+  n_p \equiv \begin{cases}
+    1 & \text{if $p$ is an occupied state of $\Phi$}, \\
+    0 & \text{if $p$ is an unoccupied state of $\Phi$}.
+  \end{cases}
+\end{align}
+
 The normal ordering notation thus provides a concise way of expressing the right-hand side.  In this new notation, we can rewrite the Hamiltonian $\hat H = \hat{H}^{[1]} + \hat{H}^{[2]}$ in its \emph{normal-ordered representation}:
 \begin{align}
   \hat{H} = H^{[0]} + \sum_{p q} H^{[1]}_{p q} \normord{\hat{a}_p^\dagger \hat{a}_q^{}} + \frac{1}{4} \sum_{p q r s} H^{[2]}_{p q r s} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s^{} \hat{a}_r^{}},
@@ -310,8 +311,8 @@ The normal ordering notation thus provides a concise way of expressing the right
 \end{align}
 where
 \begin{align*}
-  H^{[0]} &\equiv \sum_i n_i \langle i | \hat{H}^{[1]} | i \rangle + \frac{1}{2} \sum_{i j} n_i n_j \langle i j | \hat{H}^{[2]} | i j \rangle, \\
-  H^{[1]}_{p q} &\equiv \langle p | \hat{H}^{[1]} | q \rangle + \sum_i n_i \langle p i | \hat{H}^{[2]} | q i \rangle, \\
+  H^{[0]} &\equiv \sum_i \langle i | \hat{H}^{[1]} | i \rangle + \frac{1}{2} \sum_{i j} \langle i j | \hat{H}^{[2]} | i j \rangle, \\
+  H^{[1]}_{p q} &\equiv \langle p | \hat{H}^{[1]} | q \rangle + \sum_i \langle p i | \hat{H}^{[2]} | q i \rangle, \\
   H^{[2]}_{p q r s} &\equiv \langle p q | \hat{H}^{[2]} | r s \rangle. \\
 \end{align*}
 If $\Phi$ is a state optimized by the HF method, then $H^{[0]}$ is simply the HF energy $E_\Phi$ and $H^{[1]}_{p q}$ is the Fock matrix $F_{p q}$.  The operator $\hat H$ in Eq.\ \eqref{eq:normordhamiltonian} is completely equivalent to $\hat H$ in Eq.\ \eqref{eq:vacuumhamiltonian}.  The only difference is that the meaning of a ``$k$-body operator'' has been redefined with respect to the reference state $\Phi$ rather than vacuum state $\ket{}$, causing matrix elements to be reshuffled among the $k$-body operators.  Where this makes a critical difference is when the operator expressions are \emph{truncated}, i.e.\ some $k$-body operators may be discarded from the computation for efficiency reasons.  Normal-ordering can drastically alter the importance of the $k$-body operators with respect to each other.
@@ -343,29 +344,26 @@ where
 \begin{align}
   D^{[0]}(A, B)
   &\equiv
-    \sum_{i a} n_i \bar{n}_a A^{[1]}_{i a} B^{[1]}_{a i}
-    + \frac{1}{4} \sum_{i j a b} n_i n_j \bar{n}_a \bar{n}_b A^{[2]}_{i j a b} B^{[2]}_{a b i j},
+    \sum_{i a} A^{[1]}_{i a} B^{[1]}_{a i}
+    + \frac{1}{4} \sum_{i j a b} A^{[2]}_{i j a b} B^{[2]}_{a b i j},
     \label{eq:flow0} \\
   D^{[1]}_{p q}(A, B)
   &\equiv
     \sum_r A^{[1]}_{p r} B^{[1]}_{r q}
-    - \frac{1}{2} \sum_{i j a} n_i n_j \bar{n}_a A^{[2]}_{i j a q} B^{[2]}_{a p i j}
-    + \frac{1}{2} \sum_{i a b} n_i \bar{n}_a \bar{n}_b A^{[2]}_{i p a b} B^{[2]}_{a b i q}
+    - \frac{1}{2} \sum_{i j a} A^{[2]}_{i j a q} B^{[2]}_{a p i j}
+    + \frac{1}{2} \sum_{i a b} A^{[2]}_{i p a b} B^{[2]}_{a b i q}
     \notag \\
   &\hphantom{=}
-    + \sum_{i a} n_i \bar{n}_a \left(
+    + \sum_{i a} \left(
     A^{[1]}_{i a} B^{[2]}_{a p i q}
     + A^{[2]}_{i p a q} B^{[1]}_{a i}
     \right),
     \label{eq:flow1} \\
   D^{[2]}_{p q r s}(A, B)
   &\equiv
-    4 \antisymm_{p q} \antisymm_{r s}
-    \sum_{i a} n_i \bar{n}_a A^{[2]}_{i p a r} B^{[2]}_{a q i s}
-    \notag \\
-  &\hphantom{=}
-    + \frac{1}{2} \sum_{i j} n_i n_j A^{[2]}_{i j r s} B^{[2]}_{p q i j}
-    + \frac{1}{2} \sum_{a b} \bar{n}_a \bar{n}_b A^{[2]}_{p q a b} B^{[2]}_{a b r s}
+    4 \antisymm_{p q} \antisymm_{r s} \sum_{i a} A^{[2]}_{i p a r} B^{[2]}_{a q i s}
+    + \frac{1}{2} \sum_{i j} A^{[2]}_{i j r s} B^{[2]}_{p q i j}
+    + \frac{1}{2} \sum_{a b} A^{[2]}_{p q a b} B^{[2]}_{a b r s}
     \notag \\
   &\hphantom{=}
     + 2 \sum_t \left(
@@ -409,8 +407,8 @@ The White generator is explicitly constructed the following way \cite{PhysRevLet
 \end{align*}
 where
 \begin{align*}
-\eta^{\prime [1]}_{a i} &\equiv \frac{\bar{n}_a n_i H^{[1]}_{a i}}{\tilde{\Delta}^{[1]}_{a i}} &
-\eta^{\prime [2]}_{a b i j} &\equiv \frac{\bar{n}_a \bar{n}_b n_i n_j H^{[2]}_{a b i j}}{\tilde{\Delta}^{[2]}_{a b i j}}
+\eta^{\prime [1]}_{a i} &\equiv \frac{H^{[1]}_{a i}}{\tilde{\Delta}^{[1]}_{a i}} &
+\eta^{\prime [2]}_{a b i j} &\equiv \frac{H^{[2]}_{a b i j}}{\tilde{\Delta}^{[2]}_{a b i j}}
 \end{align*}
 and the Epstein--Nesbet energy denominators $\tilde{\Delta}$ \cite{shavitt2009many} are defined as
 \begin{align}
@@ -434,7 +432,7 @@ Coupled-cluster theory is based on expressing the $N$-particle correlated wave f
 \end{align*}
 where $\ket{\Phi}$ is the reference state as before.  The cluster operator $\hat{T} \equiv \hat{T}_1 + \hat{T}_2 + \cdots + \hat{T}_N$, is composed of $k$-particle $k$-hole excitation operators, $\hat{T}_k$,
 \begin{align} \label{eq:cc_amps}
-  \hat{T}_k \equiv \left(\frac{1}{k!}\right)^2 \sum_{\substack{a_1 \ldots a_k \\ i_1 \ldots i_k}} \bar{n}_{a_1} \ldots \bar{n}_{a_k} n_{i_1} \ldots n_{i_k} t^{[k]}_{a_1 \ldots a_k i_1 \ldots i_k} \normord{\hat{a}_{a_1}^\dagger \ldots \hat{a}_{a_k}^\dagger \hat a_{i_k}^{} \ldots \hat{a}_{i_1}^{}},
+  \hat{T}_k \equiv \left(\frac{1}{k!}\right)^2 \sum_{\substack{a_1 \ldots a_k \\ i_1 \ldots i_k}} t^{[k]}_{a_1 \ldots a_k i_1 \ldots i_k} \normord{\hat{a}_{a_1}^\dagger \ldots \hat{a}_{a_k}^\dagger \hat a_{i_k}^{} \ldots \hat{a}_{i_1}^{}},
 \end{align}
 where the unknown matrix elements, $t^{[k]}_{a_1 \ldots a_k i_1 \ldots i_k}$, are known as \textit{cluster amplitudes} \cite{shavitt2009many}.
 
@@ -558,8 +556,8 @@ We can then express the perturbation expansion in terms of summations over matri
 \begin{align*}
   \varepsilon_p^{(2)}
   &=
-    \sum_{i a b} \frac{n_i \bar{n}_a \bar{n}_b |H^{[2]}_{p i a b}|^2}{2 \Delta_{p i a b}}
-    - \sum_{i j a} \frac{n_i n_j \bar{n}_a |H^{[2]}_{i j p a}|^2}{2 \Delta_{i j p a}},
+    \sum_{i a b} \frac{|H^{[2]}_{p i a b}|^2}{2 \Delta_{p i a b}}
+    - \sum_{i j a} \frac{|H^{[2]}_{i j p a}|^2}{2 \Delta_{i j p a}},
 \end{align*}
 where the M\o ller--Plesset denominators $\Delta$ are defined in Eq.\ \eqref{eq:moellerplessetdenominator}.  The above expression is depicted in Figure \ref{fig:diagrams-sfe}.  Since there are numerous terms in the third-order correction $\varepsilon_p^{(3)}$, they are listed in diagrammatic form in Figure \ref{fig:diagrams-sfe}.  We will refer to QDPT to third order as ``QDPT3''.
 
@@ -579,9 +577,9 @@ Particle attached and particle removed equations of motion (EOM) methods can be 
 where $\hat{X}$ is in principle a linear combination of excitation and de-excitation operators that change particle number by one,
 \begin{align}
   \label{eq:gen_attached}
-  \hat{X}^{(N + 1)}_u &= \sum_p \bar{n}_p x^{[1, 0]}_p  \hat{a}^\dagger_p + \frac{1}{2} \sum_{p q r} \bar{n}_p \bar{n}_q n_r x^{[2, 1]}_{p q r} \hat{a}^\dagger_p \hat{a}^\dagger_q \hat{a}_r^{} + \cdots,  \\
+  \hat{X}^{(N + 1)}_u &= \sum_a x^{[1, 0]}_a  \hat{a}^\dagger_a + \frac{1}{2} \sum_{a b i} x^{[2, 1]}_{a b i} \hat{a}^\dagger_a \hat{a}^\dagger_b \hat{a}_i^{} + \cdots,  \\
   \label{eq:gen_removed}
-  \hat{X}^{(N - 1)}_u &= \sum_p n_p x_p^{[0, 1]} \hat{a}_p^{} + \frac{1}{2} \sum_{p q r} n_p n_q \bar{n}_r  x^{[1, 2]}_{p q r} \hat{a}^\dagger_r \hat{a}_q^{} \hat{a}_p^{}  + \cdots.
+  \hat{X}^{(N - 1)}_u &= \sum_i x_i^{[0, 1]} \hat{a}_i^{} + \frac{1}{2} \sum_{i j a} x^{[1, 2]}_{i j a} \hat{a}^\dagger_i \hat{a}_j^{} \hat{a}_a^{}  + \cdots.
 \end{align}
 Substitution of Eq.\ \eqref{eq:ladder_def} into the energy eigenvalue problem
 \begin{gather*}
@@ -604,9 +602,9 @@ where bars denote rotated operators. Now the reference state is used in place of
 Despite these gains, the EOM calculation is still a partial diagonalization method, limited by the truncation to 2-particle-1-hole and 1-particle-2-hole operators. We expect $N + 1$ (or $N - 1$) states to be described appropriately by EOM-IM-SRG if their wavefunctions are dominated by 1-particle-0-hole (or 0-particle-1-hole) contributions in the rotated frame. We use partial norms of the EOM ladder operators to make this determination:
 \begin{align}
   \label{eq:partial_norms_p}
-  n_{\text{1-particle}} &= \sqrt{\sum_p \bar{n}_p | \bar{x}^{[1,0]}_p |^2},\\
+  n_{\text{1-particle}} &= \sqrt{\sum_a | \bar{x}^{[1,0]}_a |^2},\\
   \label{eq:partial_norms_h}
-  n_{\text{1-hole}} &= \sqrt{\sum_p n_p | \bar{x}^{[0,1]}_p |^2}.
+  n_{\text{1-hole}} &= \sqrt{\sum_i | \bar{x}^{[0,1]}_i |^2}.
 \end{align}
 Large single particle partial norms indicate that the EOM truncation is valid for the relevant state. States with lower single particle norms should be treated with a higher EOM approximation, which can be accomplished directly or perturbatively \cite{PhysRevC.95.044304}.
 
@@ -614,8 +612,8 @@ Large single particle partial norms indicate that the EOM truncation is valid fo
 
 Like EOM-IM-SRG, the equation-of-motion technique can be applied after a coupled-cluster ground-state calculation, by using the coupled-cluster effective Hamiltonian.  Here, the non-Hermitian nature of $\bar{H}_{\mathrm{CC}}$ becomes apparent.  In this case, in addition to constructing excitation ladder operators Eq.\ \eqref{eq:gen_attached} and Eq.\ \eqref{eq:gen_removed} that correspond to the right-eigenvectors of the generalized eigenvalue problem Eq.\ \eqref{eq:EOMIMSRG}, there exist analogous de-excitation ladder operators, $\hat{L}^{(N + 1)}$ and $\hat{L}^{(N - 1)}$, that correspond to the left-eigenvectors,
 \begin{align*}
-    \hat{L}^{(N + 1)}_w &= \sum_p \bar{n}_p l^{[1, 0]}_p \hat{a}_p^{} + \frac{1}{2} \sum_{p q r} \bar{n}_p \bar{n}_q n_r l^{[2, 1]}_{p q r} \hat{a}^\dagger_r \hat{a}_q^{} \hat{a}_p^{} + \cdots, \\
-    \hat{L}^{(N - 1)}_w &= \sum_p n_p l_p^{[0, 1]} \hat{a}^\dagger_p + \frac{1}{2} \sum_{p q r} n_p n_q \bar{n}_r  l^{[1, 2]}_{p q r} \hat{a}^\dagger_p  \hat{a}^\dagger_q \hat{a}_r^{} + \cdots
+    \hat{L}^{(N + 1)}_w &= \sum_a l^{[1, 0]}_a \hat{a}_a^{} + \frac{1}{2} \sum_{i a b} l^{[2, 1]}_{a b i} \hat{a}^\dagger_i \hat{a}_b^{} \hat{a}_a^{} + \cdots, \\
+    \hat{L}^{(N - 1)}_w &= \sum_i l_i^{[0, 1]} \hat{a}^\dagger_i + \frac{1}{2} \sum_{i j a} l^{[1, 2]}_{i j a} \hat{a}^\dagger_i \hat{a}^\dagger_j \hat{a}_a^{} + \cdots
 \end{align*}
 These left-eigenvectors satisfy the left-eigenvalue problem, with left-eigenvalues $\varepsilon^{(\pm)}_w$, analogous to Eq.\ \eqref{eq:EOMIMSRG},
 \begin{align*}
