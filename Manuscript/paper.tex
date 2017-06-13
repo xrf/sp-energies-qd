@@ -161,7 +161,7 @@ The energy of a Slater determinant is given by a sum over the occupied single-pa
 \end{align*}
 It is possible for Slater determinants occupying different sets of single-particle states to be degenerate in energy.  This is possible even for ground states of $\hat{H}^{[1]}$.  However, if the number of particles $N$ satisfies $N = K_{\mathrm{F}} (K_{\mathrm{F}} + 1)$ for some nonnegative integer $K_{\mathrm{F}}$, there would be just enough particles to form a closed-shell Slater determinant, leading to a unique, well-isolated ground state.  The values of $N$ at which this occurs are said to be \textit{magic numbers}.  We call $K_{\mathrm{F}}$ the \textit{number of filled shells} (or ``Fermi level'').  In particular, a single-particle state is occupied in the ground state Slater determinant if and only $k < K_{\mathrm{F}}$, where $k$ is the shell index of the single-particle state as defined in \eqref{eq:shell_index}.
 
-In this work we will mainly work with the formalism of second quantization, see for example Ref.\ \cite{shavitt2009many}.  To properly describe fermions, we introduce the annihilation and creation operators $\hat a_p$ and $\hat a_p^\dagger$. These operators must satisfy the anticommutation relations that encode the Pauli principle, namely
+In this work we will mainly work within the formalism of second quantization; see for example Ref.\ \cite{shavitt2009many}.  To properly describe fermions, we introduce the annihilation and creation operators $\hat a_p$ and $\hat a_p^\dagger$. These operators must satisfy the anticommutation relations that encode the Pauli principle, namely
 \begin{align*}
   &\{\hat a_p, \hat a_q\} = \{\hat a_p^\dagger, \hat a_q^\dagger\} = 0, &
   &\{\hat a_p, \hat a_q^\dagger\} = \delta_{p q}.
@@ -182,7 +182,7 @@ Due to the antisymmetry of Slater determinants, we have the property that exchan
 \begin{align} \label{eq:interactionintegral}
   v_{p_1 p_2 p_3 p_4} \equiv \int \langle p_1 | \bm{r} \rangle \langle p_2 | \bm{r}' \rangle v(\bm r, \bm r') \langle \bm{r} | p_3 \rangle \langle \bm{r}' | p_4 \rangle \D \bm{r} \D \bm{r}'.
 \end{align}
-This object only has a two-fold symmetry: $v_{p_1 p_2 p_3 p_4} = v_{p_2 p_1 p_4 p_3}$.  The antisymmetrized matrix element are related to the interaction integral via
+This object only has a two-fold symmetry: $v_{p_1 p_2 p_3 p_4} = v_{p_2 p_1 p_4 p_3}$.  The antisymmetrized matrix elements are related to the interaction integral via
 \begin{align} \label{eq:antisymmetricmatrixelement}
   \langle p q | \hat{H}^{[2]} | r s \rangle = v_{p q r s} - v_{p q s r}
 \end{align}
