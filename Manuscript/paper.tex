@@ -412,7 +412,7 @@ where
 \eta^{\prime [1]}_{a i} &\equiv \frac{\bar{n}_a n_i H^{[1]}_{a i}}{\tilde{\Delta}^{[1]}_{a i}} &
 \eta^{\prime [2]}_{a b i j} &\equiv \frac{\bar{n}_a \bar{n}_b n_i n_j H^{[2]}_{a b i j}}{\tilde{\Delta}^{[2]}_{a b i j}}
 \end{align*}
-and the Epstein--Nesbet denominators $\tilde{\Delta}$ are defined as {\bf ref to epstein-nesbet deno, insert later}
+and the Epstein--Nesbet energy denominators $\tilde{\Delta}$ \cite{shavitt2009many} are defined as
 \begin{align}
 \tilde{\Delta}^{[1]}_{a i} &\equiv \Delta_{\{a\}, \{i\}} - H^{[2]}_{a i a i}, \notag \\
 \tilde{\Delta}^{[2]}_{a b i j} &\equiv \Delta_{\{a, b\}, \{i, j\}} + w_{a b i j}, \notag \\
@@ -421,7 +421,7 @@ w_{a b i j}
   &\equiv H^{[2]}_{a b a b} - H^{[2]}_{a i a i} - H^{[2]}_{b i b i} \notag \\
   &\qquad + H^{[2]}_{i j i j} - H^{[2]}_{a j a j} - H^{[2]}_{b j b j}. \notag
 \end{align}
-Some authors {\bf ref} use the M\o ller--Plesset denominators $\Delta$ instead, leading to a slightly different variant of the White generator.  {\bf define Moller plesset denos and give reference}.
+It is also possible \cite{IMSRG} to use $\Delta$ (also defined above), the same energy denominators from M\o ller--Plesset perturbation theory, which leads to a slightly different variant of the White generator.  For our calculations, we use exclusively Epstein--Nesbet denominators.
 
 Compared to the Wegner generator, where the derivatives of the final flow equations contain cubes of the Hamiltonian matrix elements (i.e.\ each term contains a product of 3 one-body and/or two-body matrix elements), the elements in White generators contribute only linearly.  This reduces the stiffness in the differential equation, providing a net increase in computational efficiency as stiff ODE solvers tend to be slower and consume more memory.
 
