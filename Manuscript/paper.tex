@@ -250,7 +250,7 @@ To make use of the HF solution as the reference state for future calculations, w
 \subsubsection{Similarity renormalization group in free space}
 \label{subsubsec:srgmethods}
 
-The central theme of similarity renormalization group (SRG) methods is the application of a continuous sequence of unitary transformations on the Hamiltonian to evolve it into a band- or block-diagonal form, see for examples Refs.\ \cite{kehreinflow2006,heikophysrep2016,lnp936} for derivations and calculational details.
+The central theme of similarity renormalization group (SRG) methods is the application of a continuous sequence of unitary transformations on the Hamiltonian to evolve it into a band- or block-diagonal form, see for examples Refs.\ \cite{kehrein2006flow,Hergert2016165,lnp936} for derivations and calculational details.
 
 This allows the decoupling of a small, designated \textit{model space} from its larger complementary space.  The problem can thus be truncated to the small model space while preserving a large amount of information about the system.
 
@@ -260,7 +260,7 @@ The sequence of transformations is parameterized by a continuous variable $s$ kn
 \end{align*}
 where $U(s)$ is a unitary operator that describes the product of all such transformations since $s = 0$.  Taking the derivative with respect to $s$, we obtain:
 \begin{align*}
-  \frac{\D}{\D s} \hat{H}(s) = \frac{\D \hat{U}(s)}{\Ds} \hat{H}(0) \hat{U}^\dagger(s) + \hat{U}(s) \hat{H}(0) \frac{\D \hat{U}^\dagger (s)}{\D s}.
+  \frac{\D}{\D s} \hat{H}(s) = \frac{\D \hat{U}(s)}{\D s} \hat{H}(0) \hat{U}^\dagger(s) + \hat{U}(s) \hat{H}(0) \frac{\D \hat{U}^\dagger (s)}{\D s}.
 \end{align*}
 If we define an operator $\hat{\eta}(s)$ as
 \begin{align} \label{eq:etadefinition}
@@ -287,7 +287,7 @@ The power of SRG methods lies in the flexibility of the generator $\hat{\eta}$, 
 
 \subsubsection{Evolving the flow equation in medium}
 
-The SRG flow equation Eq.\ \eqref{eq:imsrgode} can be solved in the second quantization formalism described in Section \ref{subsec:modelHamiltonian}, where field operators are defined with respect to the physical vacuum state.  However, since the basis of a many-body problem grows factorially with the number of particles and the size of the model space, the applicability of the naive (free-space) SRG method is restricted to comparatively small systems.  A more practical approach is to perform the evolution \textit{in medium}, i.e.\ using a many-body Slater determinant as a reference \cite{kehrein2006flow}.  This gives rise to the IM-SRG method \cite{bogner2012,heikophysrep2016,lnp936}.
+The SRG flow equation Eq.\ \eqref{eq:imsrgode} can be solved in the second quantization formalism described in Section \ref{subsec:modelHamiltonian}, where field operators are defined with respect to the physical vacuum state.  However, since the basis of a many-body problem grows factorially with the number of particles and the size of the model space, the applicability of the naive (free-space) SRG method is restricted to comparatively small systems.  A more practical approach is to perform the evolution \textit{in medium}, i.e.\ using a many-body Slater determinant as a reference \cite{kehrein2006flow}.  This gives rise to the IM-SRG method \cite{bogner2012,Hergert2016165,lnp936}.
 
 The second-quantized operators in Eq.\ \eqref{eq:second_quantized_hamiltonian} are constructed with respect to the vacuum state in the sense that their operator strings $\hat{a}_p^\dagger \hat{a}_q$ and $\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r$ both have expectation values of zero in vacuum:
 \begin{align*}
@@ -497,7 +497,7 @@ Quasidegenerate perturbation theory (QDPT) is an extension to the traditional pe
   \varepsilon_a &\equiv E_{\Phi_a} - E_{\Phi}, \\
   \varepsilon_i &\equiv E_{\Phi} - E_{\Phi_i},
 \end{align}
-where the meaning of $\Phi_p$ is defined in Eq.\ \eqref{eq:quasisd}, $i$ is restricted to labels of occupied states, and $a$ is restricted to labels of unoccupied states.
+where $i$ is restricted to labels of occupied states, $a$ is restricted to labels of unoccupied states, and $|\Phi_p\rangle \equiv \hat b_p |\Phi\rangle$.
 
 In QDPT, solutions of an approximate one-body Hamiltonian $\hat{H}^{[1]}$ form the basis of the model space.  One begins by assuming the existence of an operator $\hat{\Omega}$, known as the \textit{wave operator}, that maps some set of states $\tilde \Psi^{\mathrm{o}}_u$ within the model space to the exact ground state $\Psi_u$:
 \begin{align} \label{eq:omega-condition1}
