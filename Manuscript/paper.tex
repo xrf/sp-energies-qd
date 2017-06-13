@@ -89,7 +89,7 @@ Then, the full many-body problem is described by the Hamiltonian
 \begin{align*}
   \hat H \equiv \hat H^{[1]} + \hat H^{[2]},
 \end{align*}
-where $\hat{H}^{[1]}$ and $\hat{H}^{[2]}$ are the one- and two-body parts of the Hamiltonian, respectively, and given
+where $\hat{H}^{[1]}$ and $\hat{H}^{[2]}$ are respectively the one- and two-body parts of the Hamiltonian, namely
 \begin{align} \label{eq:onetwobodyhamiltonian}
 \hat{H}^{[1]} &\equiv \sum_{j = 1}^N h(\hat{\bm p}_j, \hat{\bm r}_j), &
 \hat{H}^{[2]} &\equiv \sum_{j_1 = 1}^N \sum_{j_2 = 1}^{j_1 - 1} v(\hat{\bm r}_{j_1}, \hat{\bm r}_{j_2}).
@@ -250,9 +250,7 @@ To make use of the HF solution as the reference state for future calculations, w
 \subsubsection{Similarity renormalization group in free space}
 \label{subsubsec:srgmethods}
 
-The central theme of similarity renormalization group (SRG) methods is the application of a continuous sequence of unitary transformations on the Hamiltonian to evolve it into a band- or block-diagonal form, see for examples Refs.\ \cite{kehrein2006flow,Hergert2016165,lnp936} for derivations and calculational details.
-
-This allows the decoupling of a small, designated \textit{model space} from its larger complementary space.  The problem can thus be truncated to the small model space while preserving a large amount of information about the system.
+The central theme of similarity renormalization group (SRG) methods is the application of a continuous sequence of unitary transformations on the Hamiltonian to evolve it into a band- or block-diagonal form.  This allows the decoupling of a small, designated \textit{model space} from its larger complementary space.  The problem can thus be truncated to the small model space while preserving a large amount of information about the system.  See for examples Refs.\ \cite{kehrein2006flow,Hergert2016165,lnp936} for derivations and calculational details.
 
 The sequence of transformations is parameterized by a continuous variable $s$ known as the \textit{flow parameter}.  Without loss of generality, we can define $s = 0$ to be the beginning of this sequence, thus $\hat{H}(0)$ is simply the original Hamiltonian.  At any value of $s$, the evolving Hamiltonian $\hat{H}(s)$ is related to the original Hamiltonian by
 \begin{align*}
@@ -658,7 +656,7 @@ Ideally, ground state energies should be characterized entirely by the two syste
 
 The addition and removal energies are similar, but they require an additional parameter: the total orbital angular momentum $M_\ell$, defined as the sum of the $m_\ell$ of each particle.  This is due to the presence of multiple states with near-degenerate energies.  For this paper, we will consider exclusively the addition/removal energies with the lowest $|M_\ell|$ subject to the constraint that the particle added/removed lies within the next/last shell.  This means the $N + 1$ states of interest are those with $|M_\ell| = K_{\mathrm{F}} \bmod 2$ (where $\bmod$ stands for the modulo operation) where $K_{\mathrm{F}}$ is the number of occupied shells, while the $N - 1$ states of interest are those with $|M_\ell| = 1 - (K_{\mathrm{F}} \bmod 2)$.
 
-Not all cases are solvable with our selection many-body methods.  Low frequency systems are particularly strenuous for these many-body methods due to their strong correlations, leading to equations that are difficult and expensive to solve numerically.  Cases where IM-SRG converged too slowly to be feasible or diverged are marked ``n.c.(I)''.  For the extrapolations in Section \ref{subsec:extrapolation}, some fits could not be done due to missing data caused by lack of convergence for either the IM-SRG(2) calculations or the CCSD calculations.
+Not all cases are solvable with our selection many-body methods.  Low frequency systems are particularly strenuous for these many-body methods due to their strong correlations, leading to equations that are difficult and expensive to solve numerically.  In the tables, ``n.c.'' marks the cases where IM-SRG or CCSD either diverged or converged extremely slowly.  This also affects the extrapolation results in Section \ref{subsec:extrapolation}, as for consistency reasons we chose to extrapolate only when all five points were available.  Some extrapolations resulted in unphysical parameters ($\beta \le 0$); these are marked ``n.f.''.
 
 Numerical calculations in this paper are performed with a relative precision of about $10^{-5}$ or lower.  This does not necessarily mean the results are as precise as $10^{-5}$, since numerical errors tend to accumulate over the multiple steps of the calculation, thus the precision of the final results is expected to be roughly $10^{-4}$.
 
@@ -807,7 +805,7 @@ This is useful because linear fits are very robust and will often converge even 
 \begin{align*}
   \frac{\partial E}{\partial K} \approx E\left(K + \frac{1}{2}\right) - E\left(K - \frac{1}{2}\right).
 \end{align*}
-The process of calculating numerically the derivative can amplify the noise in the data and distorts the weights of the data points.  Moreover, it does not provide a means to compute $\gamma$, the extrapolated energy.  Thus a second accurate nonlinear curve fit is necessary.
+The process of numerically calculating the derivative can amplify the noise in the data and distorts the weights of the data points.  Moreover, it does not provide a means to compute $\gamma$, the extrapolated energy.  Thus a second accurate nonlinear curve fit is necessary.
 
 The parameters $\alpha$ and $\beta$ are extracted from the linear fit and used as inputs for a power-law fit of $E$ against $K$.  It is necessary to estimate the infinite-basis energy $\gamma$ as well, which is done by fitting Eq.\ \eqref{eq:power_law_model} while the parameters $\alpha$ and $\beta$ are fixed to the initial guesses.  The fixing ensures that the fit is still linear in nature and thus highly likely to converge.  Afterward, we do a final fit with all three parameters free to vary.  All fits are done using the traditional Levenberg--Marquardt (LM) optimization algorithm \cite{10.2307/43633451,doi:10.1137/0111030} as implemented in \texttt{Minpack} \cite{More1978,More:126569}, with equal weighting of all data points.
 
