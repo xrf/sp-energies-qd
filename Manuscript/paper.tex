@@ -580,9 +580,9 @@ Particle attached and particle removed equations of motion (EOM) methods can be 
 where $\hat{X}$ is in principle a linear combination of excitation and de-excitation operators that change particle number by one,
 \begin{align}
   \label{eq:gen_attached}
-  \hat{X}^{(N + 1)}_u &= \sum_a x^{(+)}_a  \hat{a}^\dagger_a + \frac{1}{2} \sum_{a b i} x^{(+)}_{a b i} \hat{a}^\dagger_a \hat{a}^\dagger_b \hat{a}_i^{} + \cdots,  \\
+  \hat{X}^{(N + 1)}_u &= \sum_a x^{(u, +)}_a  \hat{a}^\dagger_a + \frac{1}{2} \sum_{a b i} x^{(u, +)}_{a b i} \hat{a}^\dagger_a \hat{a}^\dagger_b \hat{a}_i^{} + \cdots,  \\
   \label{eq:gen_removed}
-  \hat{X}^{(N - 1)}_u &= \sum_i x_i^{(-)} \hat{a}_i^{} + \frac{1}{2} \sum_{i j a} x^{(-)}_{i j a} \hat{a}^\dagger_i \hat{a}_j^{} \hat{a}_a^{}  + \cdots.
+  \hat{X}^{(N - 1)}_u &= \sum_i x_i^{(u, -)} \hat{a}_i^{} + \frac{1}{2} \sum_{i j a} x^{(u, -)}_{i j a} \hat{a}^\dagger_i \hat{a}_j^{} \hat{a}_a^{}  + \cdots.
 \end{align}
 Substitution of Eq.\ \eqref{eq:ladder_def} into the energy eigenvalue problem
 \begin{gather*}
@@ -615,14 +615,14 @@ Large single particle partial norms indicate that the EOM truncation is valid fo
 
 Like EOM-IM-SRG, the equation-of-motion technique can be applied after a coupled-cluster ground-state calculation, by using the coupled-cluster effective Hamiltonian.  Here, the non-Hermitian nature of $\bar{H}_{\mathrm{CC}}$ becomes apparent.  In this case, in addition to constructing excitation ladder operators Eq.\ \eqref{eq:gen_attached} and Eq.\ \eqref{eq:gen_removed} that correspond to the right-eigenvectors of the generalized eigenvalue problem Eq.\ \eqref{eq:EOMIMSRG}, there exist analogous de-excitation ladder operators, $\hat{L}^{(N + 1)}$ and $\hat{L}^{(N - 1)}$, that correspond to the left-eigenvectors,
 \begin{align*}
-    \hat{L}^{(N + 1)}_w &= \sum_a l^{(+)}_a \hat{a}_a^{} + \frac{1}{2} \sum_{i a b} l^{(+)}_{a b i} \hat{a}^\dagger_i \hat{a}_b^{} \hat{a}_a^{} + \cdots, \\
-    \hat{L}^{(N - 1)}_w &= \sum_i l_i^{(-)} \hat{a}^\dagger_i + \frac{1}{2} \sum_{i j a} l^{(-)}_{i j a} \hat{a}^\dagger_i \hat{a}^\dagger_j \hat{a}_a^{} + \cdots
+    \hat{L}^{(N + 1)}_u &= \sum_a l^{(u, +)}_a \hat{a}_a^{} + \frac{1}{2} \sum_{i a b} l^{(u, +)}_{a b i} \hat{a}^\dagger_i \hat{a}_b^{} \hat{a}_a^{} + \cdots, \\
+    \hat{L}^{(N - 1)}_u &= \sum_i l_i^{(u, -)} \hat{a}^\dagger_i + \frac{1}{2} \sum_{i j a} l^{(u, -)}_{i j a} \hat{a}^\dagger_i \hat{a}^\dagger_j \hat{a}_a^{} + \cdots
 \end{align*}
-These left-eigenvectors satisfy the left-eigenvalue problem, with left-eigenvalues $\varepsilon^{(\pm)}_w$, analogous to Eq.\ \eqref{eq:EOMIMSRG},
+These left-eigenvectors satisfy the left-eigenvalue problem, with left-eigenvalues $\varepsilon^{(\pm)}_u$, analogous to Eq.\ \eqref{eq:EOMIMSRG},
 \begin{align*}
-  \bra{\Phi^{(N)}_0} [\bar{H}, \bar{L}^{(N \pm 1)}_w] = \pm \varepsilon^{(\pm)}_w \bra{\Phi^{(N)}_0} \bar{L}^{(N \pm 1)}_w
+  \bra{\Phi^{(N)}_0} [\bar{H}, \bar{L}^{(N \pm 1)}_u] = \pm \varepsilon^{(\pm)}_u \bra{\Phi^{(N)}_0} \bar{L}^{(N \pm 1)}_u
 \end{align*}
-and form a bi-orthogonal set with the right-eigenvectors, $\braket{\bar{L}^{(N \pm 1)}_w}{\bar{X}^{(N \pm 1)}_u} = \delta_{w u}$.
+and form a bi-orthogonal set with the right-eigenvectors, $\braket{\bar{L}^{(N \pm 1)}_u}{\bar{X}^{(N \pm 1)}_v} = \delta_{u v}$.
 
 In this paper, because the interaction is real and thus the effective Hamiltonian is real, the left- and right-eigenvalues are equivalent. In addition, while the the left- and right-eigenvectors are generally not equal, the differences in their single-particle Eq.\ \eqref{eq:partial_norms_p} or single-hole Eq.\ \eqref{eq:partial_norms_h} natures are, in practice, not significant.  Therefore, only the right-eigenvectors are used in this paper.
 
