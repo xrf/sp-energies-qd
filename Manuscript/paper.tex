@@ -89,14 +89,14 @@ Here, $\bm{p}$ is the linear momentum of the electron and $\bm{r}$ is its positi
 \end{align*}
 Then, the full many-body problem is described by the Hamiltonian
 \begin{align*}
-  \hat H \equiv \hat H^{[1]} + \hat H^{[2]},
+  \hat H \equiv \hat H_1 + \hat H_2,
 \end{align*}
-where $\hat{H}^{[1]}$ and $\hat{H}^{[2]}$ are respectively the one- and two-body parts of the Hamiltonian, namely
+where $\hat{H}_1$ and $\hat{H}_2$ are respectively the one- and two-body parts of the Hamiltonian, namely
 \begin{align} \label{eq:onetwobodyhamiltonian}
-\hat{H}^{[1]} &\equiv \sum_{j = 1}^N h(\hat{\bm p}_j, \hat{\bm r}_j), &
-\hat{H}^{[2]} &\equiv \sum_{j_1 = 1}^N \sum_{j_2 = 1}^{j_1 - 1} v(\hat{\bm r}_{j_1}, \hat{\bm r}_{j_2}).
+\hat{H}_1 &\equiv \sum_{\alpha = 1}^N h(\hat{\bm p}_\alpha, \hat{\bm r}_\alpha), &
+\hat{H}_2 &\equiv \sum_{\alpha = 1}^N \sum_{\beta = 1}^{\alpha - 1} v(\hat{\bm r}_\alpha, \hat{\bm r}_\beta).
 \end{align}
-The operator $\hat{\bm r}_j$ is the position operator of the $j$-th particle,\footnote{The ordering of the particle labels $j$ is unimportant as they exist only for the purpose of bookkeeping.} and $\hat{\bm p}_j \equiv -\mathrm{i} \hat{\bm{\nabla}}_{\bm{r}_j}$ is its momentum operator.
+The operator $\hat{\bm r}_\alpha$ is the position operator of the $\alpha$-th particle,\footnote{The ordering of the particle labels $\alpha$ is unimportant as they exist only for the purpose of bookkeeping.} and $\hat{\bm p}_\alpha \equiv -\mathrm{i} \hat{\bm{\nabla}}_{\bm{r}_\alpha}$ is its momentum operator.
 
 \begin{figure}
   \includegraphics{figures/fig-shell-structure-v2.pdf}
@@ -104,7 +104,7 @@ The operator $\hat{\bm r}_j$ is the position operator of the $j$-th particle,\fo
   \label{fig:shell-structure}
 \end{figure}
 
-The noninteracting part of the many-body Hamiltonian $\hat{H}^{[1]}$ can be reduced to $N$ independent single-particle Hamiltonians each of the form:
+The noninteracting part of the many-body Hamiltonian $\hat{H}_1$ can be reduced to $N$ independent single-particle Hamiltonians each of the form:
 \begin{align*}
   \hat{h} = \frac{1}{2} \hat{\bm{\nabla}}^2 + \frac{1}{2} \omega^2 \hat{\bm{r}}^2.
 \end{align*}
@@ -142,7 +142,7 @@ The energies are degenerate with respect to the spin projection $m_{\mathrm{s}}$
 \end{align}
 which we conveniently call the \textit{shell index} as it labels each shell starting from zero.  The shells are equidistant with an energy spacing equal to the frequency $\omega$.
 
-Returning to the one-body part of the many-body Hamiltonian, $\hat{H}^{[1]}$, we can use the Slater determinant construction to build an $N$-particle eigenstate $|p_1, \ldots, p_N\rangle$ of the many-body Hamiltonian $\hat{H}^{[1]}$ from an arbitrary choice of $N$ single-particle eigenstates $|p_1\rangle, \ldots, |p_N\rangle$ from \eqref{eq:singleparticlestate}, where $p$ is an abbreviation for the triplet $(n, m_\ell, m_{\mathrm{s}})$.  Note that a Slater determinant $|p_1 \ldots p_N\rangle$ is not merely a product of the single-particle states, but an antisymmetrized sum over all possible products,
+Returning to the one-body part of the many-body Hamiltonian, $\hat{H}_1$, we can use the Slater determinant construction to build an $N$-particle eigenstate $|p_1, \ldots, p_N\rangle$ of the many-body Hamiltonian $\hat{H}_1$ from an arbitrary choice of $N$ single-particle eigenstates $|p_1\rangle, \ldots, |p_N\rangle$ from \eqref{eq:singleparticlestate}, where $p$ is an abbreviation for the triplet $(n, m_\ell, m_{\mathrm{s}})$.  Note that a Slater determinant $|p_1 \ldots p_N\rangle$ is not merely a product of the single-particle states, but an antisymmetrized sum over all possible products,
 \begin{align*}
   \langle \bm{r}_1 \ldots \bm{r}_N | p_1 \ldots p_N \rangle \equiv
   \frac{1}{\sqrt{N}} \left|
@@ -157,9 +157,9 @@ The Slater determinant $|p_1 \ldots p_N\rangle$ is said to \textit{occupy} the s
 
 The energy of a Slater determinant is given by a sum over the occupied single-particle energies,
 \begin{align*}
-  \hat{H}^{[1]} | p_1 \ldots p_N \rangle = (\varepsilon_{p_1} + \cdots + \varepsilon_{p_N}) | p_1 \ldots p_N \rangle.
+  \hat{H}_1 | p_1 \ldots p_N \rangle = (\varepsilon_{p_1} + \cdots + \varepsilon_{p_N}) | p_1 \ldots p_N \rangle.
 \end{align*}
-It is possible for Slater determinants occupying different sets of single-particle states to be degenerate in energy.  This is possible even for ground states of $\hat{H}^{[1]}$.  However, if the number of particles $N$ satisfies $N = K_{\mathrm{F}} (K_{\mathrm{F}} + 1)$ for some nonnegative integer $K_{\mathrm{F}}$, there would be just enough particles to form a closed-shell Slater determinant, leading to a unique, well-isolated ground state.  The values of $N$ at which this occurs are said to be \textit{magic numbers}.  We call $K_{\mathrm{F}}$ the \textit{number of filled shells} (or ``Fermi level'').  In particular, a single-particle state is occupied in the ground state Slater determinant if and only $k < K_{\mathrm{F}}$, where $k$ is the shell index of the single-particle state as defined in \eqref{eq:shell_index}.
+It is possible for Slater determinants occupying different sets of single-particle states to be degenerate in energy.  This is possible even for ground states of $\hat{H}_1$.  However, if the number of particles $N$ satisfies $N = K_{\mathrm{F}} (K_{\mathrm{F}} + 1)$ for some nonnegative integer $K_{\mathrm{F}}$, there would be just enough particles to form a closed-shell Slater determinant, leading to a unique, well-isolated ground state.  The values of $N$ at which this occurs are said to be \textit{magic numbers}.  We call $K_{\mathrm{F}}$ the \textit{number of filled shells} (or ``Fermi level'').  In particular, a single-particle state is occupied in the ground state Slater determinant if and only $k < K_{\mathrm{F}}$, where $k$ is the shell index of the single-particle state as defined in \eqref{eq:shell_index}.
 
 In this paper, we use the letters $p, q, r, s, \ldots$ to label arbitrary \textit{single-particle states} in the basis.  In the discussion of many-body methods that rely a single, distinguished Slater determinant $\Phi$, known as the \textit{reference state}, we use the letters $i, j, k, l, \ldots$ as placeholders for the occupied states of $\Phi$, and $a, b, c, d, \ldots$ for the unoccupied states.  A summation such as $\sum_p$ is understood as a summation over every single-particle basis state $p$.  In contrast, $\sum_i$ only sums over those that are occupied and $\sum_a$ only sums over those that are unoccupied.
 
@@ -169,24 +169,24 @@ We will describe many-body methods within the formalism of second quantization; 
   &\{\hat a_p, \hat a_q^\dagger\} = \delta_{p q}.
 \end{align*}
 
-In second quantization, the one- and two-body Hamiltonian operators $H^{[1]}$ and $\hat{H}^{[2]}$ from Eq.\ \eqref{eq:onetwobodyhamiltonian} can be rewritten as
+In second quantization, the one- and two-body Hamiltonian operators $\hat{H}_1$ and $\hat{H}_2$ from Eq.\ \eqref{eq:onetwobodyhamiltonian} can be rewritten as
 \begin{align} \label{eq:second_quantized_hamiltonian}
-  \hat H^{[1]} &= \sum_{p q} \langle p | \hat{H}^{[1]} | q \rangle \hat a_p^\dagger \hat a_q^{}, &
-  \hat{H}^{[2]} &= \frac{1}{4} \sum_{p q r s} \langle p q | \hat{H}^{[2]} | r s \rangle \hat a_p^\dagger \hat a_q^\dagger \hat a_s^{} \hat a_r^{},
+  \hat{H}_1 &= \sum_{p q} \langle p | \hat{H}_1 | q \rangle \hat a_p^\dagger \hat a_q^{}, &
+  \hat{H}_2 &= \frac{1}{4} \sum_{p q r s} \langle p q | \hat{H}_2 | r s \rangle \hat a_p^\dagger \hat a_q^\dagger \hat a_s^{} \hat a_r^{},
 \end{align}
-where the quantities $\langle p | \hat{H}^{[1]} | q \rangle$ and $\langle p q | \hat{H}^{[2]} | r s \rangle$ are known as \textit{matrix elements} and fully characterize the two operators in the basis.
+where the quantities $\langle p | \hat{H}_1 | q \rangle$ and $\langle p q | \hat{H}_2 | r s \rangle$ are known as \textit{matrix elements} and fully characterize the two operators in the basis.
 
 The complete Hamiltonian is given by the sum
 \begin{align}
-  \hat{H} = \sum_{p q} \langle p | \hat{H}^{[1]} | q \rangle \hat{a}_p^\dagger \hat{a}_q + \frac{1}{4} \sum_{p q r s} \langle p q | \hat{H}^{[2]} | r s \rangle \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r. \label{eq:vacuumhamiltonian}
+  \hat{H} = \sum_{p q} \langle p | \hat{H}_1 | q \rangle \hat{a}_p^\dagger \hat{a}_q + \frac{1}{4} \sum_{p q r s} \langle p q | \hat{H}_2 | r s \rangle \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r. \label{eq:vacuumhamiltonian}
 \end{align}
-Due to the antisymmetry of Slater determinants, we have the property that exchanging either $p$ with $q$ or $r$ with $s$ reverses the sign of $\langle p q | \hat{H}^{[2]} | r s \rangle$, leading to a four-fold symmetry that must be canceled out by the $1/4$ factor in front of the summation in \eqref{eq:vacuumhamiltonian}.  For this reason, the two-body matrix element $\langle p q | \hat{H}^{[2]} | r s \rangle$ is commonly referred to as the \emph{antisymmetrized} matrix element.  This is not to be confused with the (non-antisymmetric) interaction integral,
+Due to the antisymmetry of Slater determinants, we have the property that exchanging either $p$ with $q$ or $r$ with $s$ reverses the sign of $\langle p q | \hat{H}_2 | r s \rangle$, leading to a four-fold symmetry that must be canceled out by the $1/4$ factor in front of the summation in \eqref{eq:vacuumhamiltonian}.  For this reason, the two-body matrix element $\langle p q | \hat{H}_2 | r s \rangle$ is commonly referred to as the \emph{antisymmetrized} matrix element.  This is not to be confused with the (non-antisymmetric) interaction integral,
 \begin{align} \label{eq:interactionintegral}
   v_{p_1 p_2 p_3 p_4} \equiv \int \langle p_1 | \bm{r} \rangle \langle p_2 | \bm{r}' \rangle v(\bm r, \bm r') \langle \bm{r} | p_3 \rangle \langle \bm{r}' | p_4 \rangle \D \bm{r} \D \bm{r}'.
 \end{align}
 This object only has a two-fold symmetry: $v_{p_1 p_2 p_3 p_4} = v_{p_2 p_1 p_4 p_3}$.  The antisymmetrized matrix elements are related to the interaction integral via
 \begin{align} \label{eq:antisymmetricmatrixelement}
-  \langle p q | \hat{H}^{[2]} | r s \rangle = v_{p q r s} - v_{p q s r}.
+  \langle p q | \hat{H}_2 | r s \rangle = v_{p q r s} - v_{p q s r}.
 \end{align}
 
 With the basic formalism and notation established along with the system of interest, we may begin to discuss the various techniques to solve the full many-body problem.  The principal difficulty stems from the fact that, due to the presence of interactions, the exact solution is in general \emph{not} a single Slater determinant built from the single-particle states.  Hence, it is not possible to trivially reduce the problem to that of a single particle as we had done previously.
@@ -208,18 +208,18 @@ To perform numerical calculations, we further assume that each unknown state $|q
 \end{align*}
 This allows the problem to be reduced from an abstract minimization problem \eqref{eq:hfexpectation} to a concrete numerical problem.  The caveat is that the set of known functions be large enough to capture the relevant behavior of the system.
 
-If the interaction is not too strong, it is common to use the single-particle states of the noninteracting Hamiltonian $\hat{H}^{[1]}$ as the set of known states.
+If the interaction is not too strong, it is common to use the single-particle states of the noninteracting Hamiltonian $\hat{H}_1$ as the set of known states.
 
-To ensure orthonormality of the states, we require there to be as many unknown states $|q'\rangle$ as known states $|p\rangle$, and the coefficient matrix $\bm C$ must be unitary.  These conditions are more strict than necessary, but they greatly simplify the calculations and allow the states $|q'\rangle$ to act as \textit{optimized} inputs for methods beyond HF.  At the end of the calculation, of the set of states $|q'\rangle$ there would exactly $N$ \textit{occupied} states that participate in the optimized Slater determinant $|\Phi\rangle$.  The remaining \textit{unoccupied} states serve as the complementary space into which particles can be excited by the interaction $\hat{H}^{[2]}$ during the post-HF calculation.
+To ensure orthonormality of the states, we require there to be as many unknown states $|q'\rangle$ as known states $|p\rangle$, and the coefficient matrix $\bm C$ must be unitary.  These conditions are more strict than necessary, but they greatly simplify the calculations and allow the states $|q'\rangle$ to act as \textit{optimized} inputs for methods beyond HF.  At the end of the calculation, of the set of states $|q'\rangle$ there would exactly $N$ \textit{occupied} states that participate in the optimized Slater determinant $|\Phi\rangle$.  The remaining \textit{unoccupied} states serve as the complementary space into which particles can be excited by the interaction $\hat{H}_2$ during the post-HF calculation.
 
 The goal then is to find the coefficients $\bm C$ that minimize the energy $E_{\Phi}$, now given by
 \begin{align}
-  E_{\Phi} &= \sum_i H^{[1] \prime}_{i i} + \sum_{i j} H^{[2] \prime}_{i j i j} \label{eq:hfenergy},
+  E_{\Phi} &= \sum_i H^{\prime}_{i i} + \sum_{i j} H^{\prime}_{i j i j} \label{eq:hfenergy},
 \end{align}
 where the transformed operators are defined as
 \begin{align}
-  H^{[1] \prime}_{p q} &\equiv \sum_{r s} C_{r p}^* \langle r | \hat{H}^{[1]} | s \rangle C_{s q}^{}, \label{eq:hftransform1} \\
-  H^{[2] \prime}_{p q r s} &\equiv \sum_{t u v w} C_{t p}^* C_{u q}^* \langle t u | \hat{H}^{[2]} | v w \rangle C_{v r}^{} C_{w s}^{}, \label{eq:hftransform2}
+  H^{\prime}_{p q} &\equiv \sum_{r s} C_{r p}^* \langle r | \hat{H}_1 | s \rangle C_{s q}^{}, \label{eq:hftransform1} \\
+  H^{\prime}_{p q r s} &\equiv \sum_{t u v w} C_{t p}^* C_{u q}^* \langle t u | \hat{H}_2 | v w \rangle C_{v r}^{} C_{w s}^{}, \label{eq:hftransform2}
 \end{align}
 
 With the method of Lagrange multipliers, the minimization problem can be reduced to the solving of a nonlinear equation -- the \textit{Hartree--Fock equation}:
@@ -228,7 +228,7 @@ With the method of Lagrange multipliers, the minimization problem can be reduced
 \end{align}
 where the \textit{Fock matrix} $\bm F$ is defined as
 \begin{align} \label{eq:fock}
-  F_{p q} \equiv \langle p | \hat{H}^{[1]} | q \rangle + \sum_{r s i} C_{r i}^* \langle p r | \hat{H}^{[2]} | q s \rangle C_{s i}^{},
+  F_{p q} \equiv \langle p | \hat{H}_1 | q \rangle + \sum_{r s i} C_{r i}^* \langle p r | \hat{H}_2 | q s \rangle C_{s i}^{},
 \end{align}
 and $\bm{\varepsilon}$ is a vector of Lagrange multipliers: each element $\varepsilon_{q'}$ is associated with a specific single-particle state $|q'\rangle$.
 
@@ -238,7 +238,7 @@ For the initial guess, we simply use the ground state of our noninteracting Hami
 
 Since HF restricts the ground state to merely a single Slater determinant of single-particle states, it cannot provide an exact solution to a problem where multi-particle correlations are present even if the single-particle basis is not truncated (infinite in size).  The discrepancy between the Hartree--Fock energy and the exact ground state energy is often referred to as the \textit{correlation energy}, by definition.  The focus of post-HF methods such as IM-SRG or coupled cluster is to add corrections beyond mean-field approximations such as HF.
 
-To make use of the HF solution as the reference state for future calculations, we transform the operators via Eqs.\ \eqref{eq:hftransform1} and \eqref{eq:hftransform2}.  Therefore, the post-HF methods described in the next few sections generally use the transformed operators $\hat{H}^{[1] \prime}$ and $\hat{H}^{[2] \prime}$ as inputs.  However, we will not annotate them with the prime symbols as the methods are generic and can be applied to any reference state, whether optimized by HF or not.
+To make use of the HF solution as the reference state for future calculations, we transform the matrix elements via Eqs.\ \eqref{eq:hftransform1} and \eqref{eq:hftransform2}.  Therefore, the post-HF methods described in the next few sections generally use the transformed matrix elements $\hat{H}'_{pq}$ and $\hat{H}'_{pqrs}$ as inputs.  However, we will omit prime symbols as the methods are generic and can be applied to any reference state, whether optimized by HF or not.
 
 \subsection{The IM-SRG method}
 \label{subsec:imsrgmethod}
@@ -307,18 +307,18 @@ where $n_p$ is the \textit{occupancy} of the single-particle state $p$, defined 
   \end{cases}
 \end{align}
 
-The normal ordering notation thus provides a concise way of expressing the right-hand side.  In this new notation, we can rewrite the Hamiltonian $\hat H = \hat{H}^{[1]} + \hat{H}^{[2]}$ in its \emph{normal-ordered representation}:
+The normal ordering notation thus provides a concise way of expressing the right-hand side.  In this new notation, we can rewrite the Hamiltonian $\hat H = \hat{H}_1 + \hat{H}_2$ in its \emph{normal-ordered representation}:
 \begin{align}
-  \hat{H} = H^{[0]} + \sum_{p q} H^{[1]}_{p q} \normord{\hat{a}_p^\dagger \hat{a}_q^{}} + \frac{1}{4} \sum_{p q r s} H^{[2]}_{p q r s} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s^{} \hat{a}_r^{}},
+  \hat{H} = H_\varnothing + \sum_{p q} H_{p q} \normord{\hat{a}_p^\dagger \hat{a}_q^{}} + \frac{1}{4} \sum_{p q r s} H_{p q r s} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s^{} \hat{a}_r^{}},
   \label{eq:normordhamiltonian}
 \end{align}
 where
 \begin{align*}
-  H^{[0]} &\equiv \sum_i \langle i | \hat{H}^{[1]} | i \rangle + \frac{1}{2} \sum_{i j} \langle i j | \hat{H}^{[2]} | i j \rangle, \\
-  H^{[1]}_{p q} &\equiv \langle p | \hat{H}^{[1]} | q \rangle + \sum_i \langle p i | \hat{H}^{[2]} | q i \rangle, \\
-  H^{[2]}_{p q r s} &\equiv \langle p q | \hat{H}^{[2]} | r s \rangle. \\
+  H_\varnothing &\equiv \sum_i \langle i | \hat{H}_1 | i \rangle + \frac{1}{2} \sum_{i j} \langle i j | \hat{H}_2 | i j \rangle, \\
+  H_{p q} &\equiv \langle p | \hat{H}_1 | q \rangle + \sum_i \langle p i | \hat{H}_2 | q i \rangle, \\
+  H_{p q r s} &\equiv \langle p q | \hat{H}_2 | r s \rangle. \\
 \end{align*}
-If $\Phi$ is a state optimized by the HF method, then $H^{[0]}$ is simply the HF energy $E_\Phi$ and $H^{[1]}_{p q}$ is the Fock matrix $F_{p q}$.  The operator $\hat H$ in Eq.\ \eqref{eq:normordhamiltonian} is completely equivalent to $\hat H$ in Eq.\ \eqref{eq:vacuumhamiltonian}.  The only difference is that the meaning of a ``$k$-body operator'' has been redefined with respect to the reference state $\Phi$ rather than the vacuum state $\ket{}$, causing matrix elements to be reshuffled among the $k$-body operators.  Where this makes a critical difference is when the operator expressions are \emph{truncated}, i.e.\ some $k$-body operators may be discarded from the computation for efficiency reasons.  Normal-ordering can drastically alter the importance of the $k$-body operators with respect to each other.
+If $\Phi$ is a state optimized by the HF method, then $H_\varnothing$ is simply the HF energy $E_\Phi$ and $H_{p q}$ is the Fock matrix $F_{p q}$.  The operator $\hat H$ in Eq.\ \eqref{eq:normordhamiltonian} is completely equivalent to $\hat H$ in Eq.\ \eqref{eq:vacuumhamiltonian}.  The only difference is that the meaning of a ``$k$-body operator'' has been redefined with respect to the reference state $\Phi$ rather than the vacuum state $\ket{}$, causing matrix elements to be reshuffled among the $k$-body operators.  Where this makes a critical difference is when the operator expressions are \emph{truncated}, i.e.\ some $k$-body operators may be discarded from the computation for efficiency reasons.  Normal-ordering can drastically alter the importance of the $k$-body operators with respect to each other.
 
 Higher-body operators arise from integrating the flow equations of Eq.~(\ref{eq:imsrgode}), which is one of the major challenges of the SRG method.  With each evaluation of the commutator, the Hamiltonian gains terms of higher order, and these induced contributions will in subsequent integration steps feed back into terms of lower order.  Thus, the higher-body contributions are not irrelevant to the final solution even if only the ground state energy (zero-body component) is of interest.
 
@@ -330,55 +330,55 @@ Note that the loss of three- and higher-body terms (\textit{operator truncation}
 
 With the operator truncation, the generator $\hat{\eta}$ can be written as a generic 2-body operator:
 \begin{align*}
-\hat{\eta} = \sum_{p q} \eta_{p q}^{[1]} \normord{\hat a_p^\dagger \hat a_q} +
-\frac{1}{4} \sum_{p q r s}\eta_{p q r s}^{[2]} \normord{\hat a_p^\dagger \hat a_q^\dagger \hat a_s \hat a_r},
+\hat{\eta} = \sum_{p q} \eta_{p q} \normord{\hat a_p^\dagger \hat a_q} +
+\frac{1}{4} \sum_{p q r s}\eta_{p q r s} \normord{\hat a_p^\dagger \hat a_q^\dagger \hat a_s \hat a_r},
 \end{align*}
-where $\eta_{p q}^{[1]}$ and $ \eta_{p q r s}^{[2]}$ respectively are its one- and two-body matrix elements normal ordered with respect to $\Phi$, subject to the antihermittivity constraint.
+where $\eta_{p q}$ and $ \eta_{p q r s}$ respectively are its one- and two-body matrix elements normal ordered with respect to $\Phi$, subject to the antihermittivity constraint.
 
 By expanding the commutator in Eq.\ \eqref{eq:imsrgode} and discarding the three-body term, we obtain the matrix-element form of the IM-SRG(2) flow equation:
 \begin{align}
-    \frac{\D H^{[k]}}{\D s} = C^{[k]}(\eta, H), \label{eq:flowmxe}
+    \frac{\D H}{\D s} = C(\eta, H), \label{eq:flowmxe}
 \end{align}
 where
 \begin{align}
-  C^{[k]}(A, B) &\equiv 2 \antisymm_{A B} D^{[k]}(A, B), \label{eq:commutmxe} \\
+  C(A, B) &\equiv 2 \antisymm_{A B} D(A, B), \label{eq:commutmxe} \\
   \antisymm_{x y} f(x, y) &\equiv \frac{1}{2} \bigl(f(x, y) - f(y, x)\bigr),
 \end{align}
 \begin{align}
-  D^{[0]}(A, B)
+  D_\varnothing(A, B)
   &\equiv
-    \sum_{i a} A^{[1]}_{i a} B^{[1]}_{a i}
-    + \frac{1}{4} \sum_{i j a b} A^{[2]}_{i j a b} B^{[2]}_{a b i j},
+    \sum_{i a} A_{i a} B_{a i}
+    + \frac{1}{4} \sum_{i j a b} A_{i j a b} B_{a b i j},
     \label{eq:flow0} \\
-  D^{[1]}_{p q}(A, B)
+  D_{p q}(A, B)
   &\equiv
-    \sum_r A^{[1]}_{p r} B^{[1]}_{r q}
-    - \frac{1}{2} \sum_{i j a} A^{[2]}_{i j a q} B^{[2]}_{a p i j}
-    + \frac{1}{2} \sum_{i a b} A^{[2]}_{i p a b} B^{[2]}_{a b i q}
+    \sum_r A_{p r} B_{r q}
+    - \frac{1}{2} \sum_{i j a} A_{i j a q} B_{a p i j}
+    + \frac{1}{2} \sum_{i a b} A_{i p a b} B_{a b i q}
     \notag \\
   &\hphantom{=}
     + \sum_{i a} \left(
-    A^{[1]}_{i a} B^{[2]}_{a p i q}
-    + A^{[2]}_{i p a q} B^{[1]}_{a i}
+    A_{i a} B_{a p i q}
+    + A_{i p a q} B_{a i}
     \right),
     \label{eq:flow1} \\
-  D^{[2]}_{p q r s}(A, B)
+  D_{p q r s}(A, B)
   &\equiv
-    4 \antisymm_{p q} \antisymm_{r s} \sum_{i a} A^{[2]}_{i p a r} B^{[2]}_{a q i s}
-    + \frac{1}{2} \sum_{i j} A^{[2]}_{i j r s} B^{[2]}_{p q i j}
-    + \frac{1}{2} \sum_{a b} A^{[2]}_{p q a b} B^{[2]}_{a b r s}
+    4 \antisymm_{p q} \antisymm_{r s} \sum_{i a} A_{i p a r} B_{a q i s}
+    + \frac{1}{2} \sum_{i j} A_{i j r s} B_{p q i j}
+    + \frac{1}{2} \sum_{a b} A_{p q a b} B_{a b r s}
     \notag \\
   &\hphantom{=}
     + 2 \sum_t \left(
-    \antisymm_{p q} A^{[1]}_{q t} B^{[2]}_{p t r s}
-    + \antisymm_{r s} A^{[2]}_{p q r t} B^{[1]}_{t s}
+    \antisymm_{p q} A_{q t} B_{p t r s}
+    + \antisymm_{r s} A_{p q r t} B_{t s}
     \right).
     \label{eq:flow2}
 \end{align}
 
 \begin{figure}
 \includegraphics{fig-diagrams-imsrg.pdf}
-\caption{(Color online) Diagrammatic representation of $D^{[k]}(\circ, \bullet)$ of Eq.\ \eqref{eq:flow0}, Eq.\ \eqref{eq:flow1}, and Eq.\ \eqref{eq:flow2}, where open circles represent $A$ and filled circles represent $B$.  The two-body vertices are implicitly antisymmetric (i.e.\ \textit{Hugenholtz diagrams} \cite{HUGENHOLTZ1957481}, as described in \cite{shavitt2009many} \S 4.4.3).  Internal directed lines (bound/dummy indices) that point upward denote summations over unoccupied states, whereas lines that point downward denote summations over occupied states.  External undirected lines denote unconstrained free indices.  In IM-SRG(2), the three-body diagrams are not included.}
+\caption{(Color online) Diagrammatic representation of $D(\circ, \bullet)$ of Eq.\ \eqref{eq:flow0}, Eq.\ \eqref{eq:flow1}, and Eq.\ \eqref{eq:flow2}, where open circles represent $A$ and filled circles represent $B$.  The two-body vertices are implicitly antisymmetric (i.e.\ \textit{Hugenholtz diagrams} \cite{HUGENHOLTZ1957481}, as described in \cite{shavitt2009many} \S 4.4.3).  Internal directed lines (bound/dummy indices) that point upward denote summations over unoccupied states, whereas lines that point downward denote summations over occupied states.  External undirected lines denote unconstrained free indices.  In IM-SRG(2), the three-body diagrams are not included.}
 \label{fig:diagrams-imsrg}
 \end{figure}
 
@@ -388,7 +388,7 @@ The commutator in the flow equations Eq.\ \eqref{eq:imsrgode} ensures that the e
 
 An accurate and robust ODE solver is required to solve Eq.\ \eqref{eq:imsrgode}.  In particular, the solver must be capable of handling the stiffness that often arises in such problems.  For our numerical experiments, we used a high-order ODE solver algorithm by L.\ F.\ Shampine and M.\ K.\ Gordon \cite{shampine1975computer}, which is a multistep method based on the implicit Adams predictor-corrector formulas.  Its source code is freely available \cite{odesolver}.
 
-Through the flow equation and with an appropriate choice of the generator $\hat{\eta}$, the evolved state $\hat U(s) \ket{\Phi}$ will gradually approach a more ``diagonal'' form.  If the ``diagonal'' form decouples the ground state from the excited states, then $\hat U(\infty) \ket{\Phi}$ would yield the exact ground state solution of the problem if no operator or basis truncations are made.  In particular, $H^{[0]}(\infty)$ would be the exact ground state energy.
+Through the flow equation and with an appropriate choice of the generator $\hat{\eta}$, the evolved state $\hat U(s) \ket{\Phi}$ will gradually approach a more ``diagonal'' form.  If the ``diagonal'' form decouples the ground state from the excited states, then $\hat U(\infty) \ket{\Phi}$ would yield the exact ground state solution of the problem if no operator or basis truncations are made.  In particular, $H_\varnothing(\infty)$ would be the exact ground state energy.
 
 The original choice of generator suggested by Wegner \cite{Wegner200177} reads
 \begin{align*}
@@ -410,17 +410,17 @@ The White generator is explicitly constructed the following way \cite{PhysRevLet
 \end{align*}
 where
 \begin{align*}
-\eta^{\prime [1]}_{a i} &\equiv \frac{H^{[1]}_{a i}}{\tilde{\Delta}^{[1]}_{a i}}, &
-\eta^{\prime [2]}_{a b i j} &\equiv \frac{H^{[2]}_{a b i j}}{\tilde{\Delta}^{[2]}_{a b i j}},
+\eta'_{a i} &\equiv \frac{H_{a i}}{\tilde{\Delta}_{a i}}, &
+\eta'_{a b i j} &\equiv \frac{H_{a b i j}}{\tilde{\Delta}_{a b i j}},
 \end{align*}
 and the Epstein--Nesbet energy denominators $\tilde{\Delta}$ \cite{shavitt2009many} are defined as
 \begin{align}
-\tilde{\Delta}^{[1]}_{a i} &\equiv \Delta_{a i} - H^{[2]}_{a i a i}, \notag \\
-\tilde{\Delta}^{[2]}_{a b i j} &\equiv \Delta_{a b i j} + w_{a b i j}, \notag \\
-\Delta_{p_1 \ldots p_k q_1 \ldots q_k} &\equiv \sum_{i = 1}^k (H^{[1]}_{p_i p_i} -  H^{[1]}_{q_i q_i}), \label{eq:moellerplessetdenominator} \\
+\tilde{\Delta}_{a i} &\equiv \Delta_{a i} - H_{a i a i}, \notag \\
+\tilde{\Delta}_{a b i j} &\equiv \Delta_{a b i j} + w_{a b i j}, \notag \\
+\Delta_{p_1 \ldots p_k q_1 \ldots q_k} &\equiv \sum_{i = 1}^k (H_{p_i p_i} -  H_{q_i q_i}), \label{eq:moellerplessetdenominator} \\
 w_{a b i j}
-  &\equiv H^{[2]}_{a b a b} - H^{[2]}_{a i a i} - H^{[2]}_{b i b i} \notag \\
-  &\qquad + H^{[2]}_{i j i j} - H^{[2]}_{a j a j} - H^{[2]}_{b j b j}. \notag
+  &\equiv H_{a b a b} - H_{a i a i} - H_{b i b i} \notag \\
+  &\qquad + H_{i j i j} - H_{a j a j} - H_{b j b j}. \notag
 \end{align}
 It is also possible \cite{IMSRG} to use $\Delta$ (also defined above), the same energy denominators from M\o ller--Plesset perturbation theory, which leads to a slightly different variant of the White generator.  For our calculations, we use exclusively Epstein--Nesbet denominators.
 
@@ -435,9 +435,9 @@ Coupled-cluster theory is based on expressing the $N$-particle correlated wave f
 \end{align*}
 where $\ket{\Phi}$ is the reference state as before.  The cluster operator $\hat{T} \equiv \hat{T}_1 + \hat{T}_2 + \cdots + \hat{T}_N$, is composed of $k$-particle $k$-hole excitation operators, $\hat{T}_k$,
 \begin{align} \label{eq:cc_amps}
-  \hat{T}_k \equiv \left(\frac{1}{k!}\right)^2 \sum_{\substack{a_1 \ldots a_k \\ i_1 \ldots i_k}} t^{[k]}_{a_1 \ldots a_k i_1 \ldots i_k} \normord{\hat{a}_{a_1}^\dagger \ldots \hat{a}_{a_k}^\dagger \hat a_{i_k}^{} \ldots \hat{a}_{i_1}^{}},
+  \hat{T}_k \equiv \left(\frac{1}{k!}\right)^2 \sum_{\substack{a_1 \ldots a_k \\ i_1 \ldots i_k}} t_{a_1 \ldots a_k i_1 \ldots i_k} \normord{\hat{a}_{a_1}^\dagger \ldots \hat{a}_{a_k}^\dagger \hat a_{i_k}^{} \ldots \hat{a}_{i_1}^{}},
 \end{align}
-where the unknown matrix elements, $t^{[k]}_{a_1 \ldots a_k i_1 \ldots i_k}$, are known as \textit{cluster amplitudes} \cite{shavitt2009many}.
+where the unknown matrix elements, $t_{a_1 \ldots a_k i_1 \ldots i_k}$, are known as \textit{cluster amplitudes} \cite{shavitt2009many}.
 
 Using the coupled cluster wave function, the Schr\"odinger equation,
 \begin{align} \label{eq:cc_schrodeq}
@@ -471,20 +471,20 @@ This is known as coupled cluster singles and doubles (CCSD), with an asymptotic 
 
 \begin{figure}
   \includegraphics{fig-diagrams-ccsd.pdf}
-  \caption{(Color online) Diagrammatic representation of $\bar{H}$ of Eq.\ \eqref{eq:cc_heff1}, where open circles represent the excitation cluster operators $\hat{T}_1$ and $\hat{T}_2$, and filled circles represent the two-body interaction $\hat{H}^{[2]}$.  As before, the diagrams are implicitly antisymmetrized (Hugenholtz diagrams).  Lines connected to $\hat{T}$ are always directed upward because they represent an excitation operator while the directions of external lines connected to $\hat{H}^{[2]}$ are unconstrained.}
+  \caption{(Color online) Diagrammatic representation of $\bar{H}$ of Eq.\ \eqref{eq:cc_heff1}, where open circles represent the excitation cluster operators $\hat{T}_1$ and $\hat{T}_2$, and filled circles represent the two-body interaction $\hat{H}_2$.  As before, the diagrams are implicitly antisymmetrized (Hugenholtz diagrams).  Lines connected to $\hat{T}$ are always directed upward because they represent an excitation operator while the directions of external lines connected to $\hat{H}_2$ are unconstrained.}
   \label{fig:diagrams-ccsd}
 \end{figure}
 
-The unknown cluster amplitudes in CCSD, $t_{a i}^{[1]}$ and $t_{a b i j}^{[2]}$, are calculated by left-multiplying Eq.\ \eqref{eq:cc_schrodeq} by $\bra{\Phi} \normord{\hat a_i^\dagger \hat a_a} \E^{-\hat{T}}$ and $\bra{\Phi} \normord{\hat a_i^\dagger \hat a_j^\dagger \hat a_b \hat a_a} \E^{-\hat{T}}$, respectively,
+The unknown cluster amplitudes in CCSD, $t_{a i}$ and $t_{a b i j}$, are calculated by left-multiplying Eq.\ \eqref{eq:cc_schrodeq} by $\bra{\Phi} \normord{\hat a_i^\dagger \hat a_a} \E^{-\hat{T}}$ and $\bra{\Phi} \normord{\hat a_i^\dagger \hat a_j^\dagger \hat a_b \hat a_a} \E^{-\hat{T}}$, respectively,
 \begin{align} \label{eq:ccsd1}
   \bra{\Phi} \normord{\hat a_i^\dagger \hat a_a} \bar{H}_{\mathrm{CC}} \ket{\Phi} &= 0, \\
   \bra{\Phi} \normord{\hat a_i^\dagger \hat a_j^\dagger \hat a_b \hat a_a}\bar{H}_{\mathrm{CC}} \ket{\Phi} &= 0. \notag
 \end{align}
 After the Fock matrix has been diagonalized, the diagonal components of Eq.\ \eqref{eq:ccsd1} can be separated and, after expanding the exponent in Eq.\ \eqref{eq:cc_heff1}, the non-vanishing terms of the CCSD amplitude equations become,
 \begin{gather} \label{eq:ccsd2}
-  \bra{\Phi} \normord{\hat a_i^\dagger \hat a_a} \hat{H}^{[2]} \bigl\{\hat{T}_1 + \hat{T}_2 + \hat{T}_1\hat{T}_2 + \frac{1}{2!} \hat{T}_1^{2} + \frac{1}{3!} \hat{T}_1^{3}\}_{\mathrm{c}} \ket{\Phi} = \Delta_{i a} t_{a i}^{[1]} \\
-  \bra{\Phi} \normord{\hat a_i^\dagger \hat a_j^\dagger \hat a_b \hat a_a} \hat{H}^{[2]} \bigl\{1 + \hat{T}_1 + \hat{T}_2 + \frac{1}{2} \hat{T}_1^{2} + \hat{T}_1\hat{T}_2 + \frac{1}{2!} \hat{T}_2^{2} + \frac{1}{3!} \hat{T}_1^{3} + \frac{1}{2!} \hat{T}_1^{2} \hat{T}_2 + \frac{1}{4!} \hat{T}_1^{4}\bigr\}_{\mathrm{c}} \ket{\Phi} \notag \\
-= \Delta_{i j a b} t_{a b i j}^{[2]} \notag
+  \bra{\Phi} \normord{\hat a_i^\dagger \hat a_a} \hat{H}_2 \bigl\{\hat{T}_1 + \hat{T}_2 + \hat{T}_1\hat{T}_2 + \frac{1}{2!} \hat{T}_1^{2} + \frac{1}{3!} \hat{T}_1^{3}\}_{\mathrm{c}} \ket{\Phi} = \Delta_{i a} t_{a i} \\
+  \bra{\Phi} \normord{\hat a_i^\dagger \hat a_j^\dagger \hat a_b \hat a_a} \hat{H}_2 \bigl\{1 + \hat{T}_1 + \hat{T}_2 + \frac{1}{2} \hat{T}_1^{2} + \hat{T}_1\hat{T}_2 + \frac{1}{2!} \hat{T}_2^{2} + \frac{1}{3!} \hat{T}_1^{3} + \frac{1}{2!} \hat{T}_1^{2} \hat{T}_2 + \frac{1}{4!} \hat{T}_1^{4}\bigr\}_{\mathrm{c}} \ket{\Phi} \notag \\
+= \Delta_{i j a b} t_{a b i j} \notag
 \end{gather}
 where $\Delta$ are the M\o ller--Plesset denominators from Eq.\ \eqref{eq:moellerplessetdenominator}.  As usual, these non-linear equations are solved using an iterative procedure.  One begins with an initial guess for the cluster amplitudes, which are used to calculate the left-hand side of Eq.\ \eqref{eq:ccsd2}.  Dividing by the denominator on the right-hand side gives updated amplitudes which are used to re-evaluate the left-hand side. This process is repeated until the amplitudes reach a fixed point.  Like the Hartree--Fock iterative procedure, employing convergence acceleration techniques can reduce the number of coupled cluster iterations required.
 
@@ -500,11 +500,11 @@ Quasidegenerate perturbation theory (QDPT) is an extension to the traditional pe
 \end{align}
 where $i$ is restricted to labels of occupied states, $a$ is restricted to labels of unoccupied states, $|\Phi_i\rangle \equiv \hat{a}_i^{} |\Phi\rangle$, and $|\Phi_a\rangle \equiv \hat{a}_a^\dagger |\Phi\rangle$.
 
-In QDPT, solutions of an approximate one-body Hamiltonian $\hat{H}^{[1]}$ form the basis of the model space.  One begins by assuming the existence of an operator $\hat{\Omega}$, known as the \textit{wave operator}, that maps some set of states $\tilde \Psi^{\mathrm{o}}_u$ within the model space to the exact ground state $\Psi_u$:
+In QDPT, solutions of an approximate one-body Hamiltonian $\hat{H}_1$ form the basis of the model space.  One begins by assuming the existence of an operator $\hat{\Omega}$, known as the \textit{wave operator}, that maps some set of states $\tilde \Psi^{\mathrm{o}}_u$ within the model space to the exact ground state $\Psi_u$:
 \begin{align} \label{eq:omega-condition1}
   \Psi_u = \hat \Omega \tilde \Psi^{\mathrm{o}}_u.
 \end{align}
-The states $\tilde \Psi^{\mathrm{o}}_u$ consist of some mixture of the eigenstates $\Psi^{\mathrm{o}}_{u'}$ of the approximate Hamiltonian $\hat{H}^{[1]}$.
+The states $\tilde \Psi^{\mathrm{o}}_u$ consist of some mixture of the eigenstates $\Psi^{\mathrm{o}}_{u'}$ of the approximate Hamiltonian $\hat{H}_1$.
 
 There is some freedom in the choice of the wave operator $\hat \Omega$.  We assume it has the following form:
 \begin{align} \label{eq:omega-condition2}
@@ -514,15 +514,15 @@ where $\hat P$ projects any state into the model space and $\hat Q$ is the compl
 
 Making use of the assumptions in Eq.\ \eqref{eq:omega-condition1} and Eq.\ \eqref{eq:omega-condition2}, one can derive from the Schr\"odinger equation the generalized Bloch equation, the principal equation of QDPT:
 \begin{gather*}
-  [\hat \Omega, \hat{H}^{[1]}] =
+  [\hat \Omega, \hat{H}_1] =
   (1 - \hat \Omega) \hat V \Omega,
 \end{gather*}
-where $\hat V \equiv \hat H - \hat{H}^{[1]}$ is the perturbation.  The commutator on the left may be ``inverted'' using the resolvent approach (\cite{shavitt2009many}, p.\ 50), resulting in:
+where $\hat V \equiv \hat H - \hat{H}_1$ is the perturbation.  The commutator on the left may be ``inverted'' using the resolvent approach (\cite{shavitt2009many}, p.\ 50), resulting in:
 \begin{align*}
   \hat Q \Omega \hat P_u =
   \hat R_u (1 - \hat \Omega) \hat V \Omega \hat P_u,
 \end{align*}
-where $\hat R_u \equiv \hat Q (E_u - \hat Q \hat{H}^{[1]} \hat Q)^{-1} \hat Q$ defines the resolvent and $\hat P_u$ is the projection operator that projects any state onto $\Psi^{\mathrm{o}}_u$.  As is standard in perturbation theory, we now assume $\hat \Omega$ can be expanded as a series of terms of increasing order, as quantified by the power of the perturbation $\hat V$:
+where $\hat R_u \equiv \hat Q (E_u - \hat Q \hat{H}_1 \hat Q)^{-1} \hat Q$ defines the resolvent and $\hat P_u$ is the projection operator that projects any state onto $\Psi^{\mathrm{o}}_u$.  As is standard in perturbation theory, we now assume $\hat \Omega$ can be expanded as a series of terms of increasing order, as quantified by the power of the perturbation $\hat V$:
 \begin{align*}
   \hat \Omega = \hat P +
   \hat Q\bigl(\hat \Omega^{(1)} + \hat \Omega^{(2)} + \cdots\bigr) \hat P.
@@ -559,14 +559,14 @@ We can then express the perturbation expansion in terms of summations over matri
 \begin{align*}
   \varepsilon_p^{(2)}
   &=
-    \sum_{i a b} \frac{|H^{[2]}_{p i a b}|^2}{2 \Delta_{p i a b}}
-    - \sum_{i j a} \frac{|H^{[2]}_{i j p a}|^2}{2 \Delta_{i j p a}},
+    \sum_{i a b} \frac{|H_{p i a b}|^2}{2 \Delta_{p i a b}}
+    - \sum_{i j a} \frac{|H_{i j p a}|^2}{2 \Delta_{i j p a}},
 \end{align*}
 where the M\o ller--Plesset denominators $\Delta$ are defined in Eq.\ \eqref{eq:moellerplessetdenominator}.  The above expression is depicted in Figure \ref{fig:diagrams-sfe}.  Since there are numerous terms in the third-order correction $\varepsilon_p^{(3)}$, they are listed in diagrammatic form in Figure \ref{fig:diagrams-sfe}.  We will refer to QDPT to third order as ``QDPT3''.
 
 Taking into account the perturbation corrections, one can extract reasonably accurate addition and removal energies for single-particle states near the Fermi level via:
 \begin{align*}
-  \varepsilon_p = H^{[1]}_{p p} + \varepsilon_p^{(2)} + \varepsilon_p^{(3)}.
+  \varepsilon_p = H_{p p} + \varepsilon_p^{(2)} + \varepsilon_p^{(3)}.
 \end{align*}
 
 There is some degree of synergy between IM-SRG and QDPT: a generator that decouples the ground state energy will necessarily drive certain classes of matrix elements to zero.  This means certain kinds of vertices in the diagrams become forbidden, reducing the number of nonzero diagrams at third order from 18 to only four.
@@ -580,9 +580,9 @@ Particle attached and particle removed equations of motion (EOM) methods can be 
 where $\hat{X}$ is in principle a linear combination of excitation and de-excitation operators that change particle number by one,
 \begin{align}
   \label{eq:gen_attached}
-  \hat{X}^{(N + 1)}_u &= \sum_a x^{[1, 0]}_a  \hat{a}^\dagger_a + \frac{1}{2} \sum_{a b i} x^{[2, 1]}_{a b i} \hat{a}^\dagger_a \hat{a}^\dagger_b \hat{a}_i^{} + \cdots,  \\
+  \hat{X}^{(N + 1)}_u &= \sum_a x^{(+)}_a  \hat{a}^\dagger_a + \frac{1}{2} \sum_{a b i} x^{(+)}_{a b i} \hat{a}^\dagger_a \hat{a}^\dagger_b \hat{a}_i^{} + \cdots,  \\
   \label{eq:gen_removed}
-  \hat{X}^{(N - 1)}_u &= \sum_i x_i^{[0, 1]} \hat{a}_i^{} + \frac{1}{2} \sum_{i j a} x^{[1, 2]}_{i j a} \hat{a}^\dagger_i \hat{a}_j^{} \hat{a}_a^{}  + \cdots.
+  \hat{X}^{(N - 1)}_u &= \sum_i x_i^{(-)} \hat{a}_i^{} + \frac{1}{2} \sum_{i j a} x^{(-)}_{i j a} \hat{a}^\dagger_i \hat{a}_j^{} \hat{a}_a^{}  + \cdots.
 \end{align}
 Substitution of Eq.\ \eqref{eq:ladder_def} into the energy eigenvalue problem
 \begin{gather*}
@@ -605,9 +605,9 @@ where bars denote rotated operators. Now the reference state is used in place of
 Despite these gains, the EOM calculation is still a partial diagonalization method, limited by the truncation to 2-particle-1-hole and 1-particle-2-hole operators. We expect $N + 1$ (or $N - 1$) states to be described appropriately by EOM-IM-SRG if their wavefunctions are dominated by 1-particle-0-hole (or 0-particle-1-hole) contributions in the rotated frame. We use partial norms of the EOM ladder operators to make this determination:
 \begin{align}
   \label{eq:partial_norms_p}
-  n_{\text{1-particle}} &= \sqrt{\sum_a | \bar{x}^{[1,0]}_a |^2},\\
+  n_{\text{1-particle}} &= \sqrt{\sum_a | \bar{x}^{(+)}_a |^2},\\
   \label{eq:partial_norms_h}
-  n_{\text{1-hole}} &= \sqrt{\sum_i | \bar{x}^{[0,1]}_i |^2}.
+  n_{\text{1-hole}} &= \sqrt{\sum_i | \bar{x}^{(-)}_i |^2}.
 \end{align}
 Large single particle partial norms indicate that the EOM truncation is valid for the relevant state. States with lower single particle norms should be treated with a higher EOM approximation, which can be accomplished directly or perturbatively \cite{PhysRevC.95.044304}.
 
@@ -615,8 +615,8 @@ Large single particle partial norms indicate that the EOM truncation is valid fo
 
 Like EOM-IM-SRG, the equation-of-motion technique can be applied after a coupled-cluster ground-state calculation, by using the coupled-cluster effective Hamiltonian.  Here, the non-Hermitian nature of $\bar{H}_{\mathrm{CC}}$ becomes apparent.  In this case, in addition to constructing excitation ladder operators Eq.\ \eqref{eq:gen_attached} and Eq.\ \eqref{eq:gen_removed} that correspond to the right-eigenvectors of the generalized eigenvalue problem Eq.\ \eqref{eq:EOMIMSRG}, there exist analogous de-excitation ladder operators, $\hat{L}^{(N + 1)}$ and $\hat{L}^{(N - 1)}$, that correspond to the left-eigenvectors,
 \begin{align*}
-    \hat{L}^{(N + 1)}_w &= \sum_a l^{[1, 0]}_a \hat{a}_a^{} + \frac{1}{2} \sum_{i a b} l^{[2, 1]}_{a b i} \hat{a}^\dagger_i \hat{a}_b^{} \hat{a}_a^{} + \cdots, \\
-    \hat{L}^{(N - 1)}_w &= \sum_i l_i^{[0, 1]} \hat{a}^\dagger_i + \frac{1}{2} \sum_{i j a} l^{[1, 2]}_{i j a} \hat{a}^\dagger_i \hat{a}^\dagger_j \hat{a}_a^{} + \cdots
+    \hat{L}^{(N + 1)}_w &= \sum_a l^{(+)}_a \hat{a}_a^{} + \frac{1}{2} \sum_{i a b} l^{(+)}_{a b i} \hat{a}^\dagger_i \hat{a}_b^{} \hat{a}_a^{} + \cdots, \\
+    \hat{L}^{(N - 1)}_w &= \sum_i l_i^{(-)} \hat{a}^\dagger_i + \frac{1}{2} \sum_{i j a} l^{(-)}_{i j a} \hat{a}^\dagger_i \hat{a}^\dagger_j \hat{a}_a^{} + \cdots
 \end{align*}
 These left-eigenvectors satisfy the left-eigenvalue problem, with left-eigenvalues $\varepsilon^{(\pm)}_w$, analogous to Eq.\ \eqref{eq:EOMIMSRG},
 \begin{align*}
