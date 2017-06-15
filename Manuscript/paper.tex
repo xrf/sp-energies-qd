@@ -577,13 +577,15 @@ Particle attached and particle removed equations of motion (EOM) methods can be 
 \begin{equation}\label{eq:ladder_def}
   \ket{\Psi^{(N \pm 1)}_u}  = \hat{X}^{(N \pm 1)}_u \ket{\Psi^{(N)}_0},
 \end{equation}
-where $\hat{X}$ is in principle a linear combination of excitation and de-excitation operators that change particle number by one,
+where $\hat{X}$ is in principle a linear combination of excitation $(+)$ and de-excitation $(-)$ operators that change particle number by one,
 \begin{align}
   \label{eq:gen_attached}
-  \hat{X}^{(N + 1)}_u &= \sum_a x^{(u, +)}_a  \hat{a}^\dagger_a + \frac{1}{2} \sum_{a b i} x^{(u, +)}_{a b i} \hat{a}^\dagger_a \hat{a}^\dagger_b \hat{a}_i^{} + \cdots,  \\
+  \hat{X}^{(N + 1)}_u &= \sum_a x^{(u, +)}_a  \normord{\hat{a}^\dagger_a} + \frac{1}{2} \sum_{a b i} x^{(u, +)}_{a b i} \normord{\hat{a}^\dagger_a \hat{a}^\dagger_b \hat{a}_i^{}} + \cdots,  \\
   \label{eq:gen_removed}
-  \hat{X}^{(N - 1)}_u &= \sum_i x_i^{(u, -)} \hat{a}_i^{} + \frac{1}{2} \sum_{i j a} x^{(u, -)}_{i j a} \hat{a}^\dagger_i \hat{a}_j^{} \hat{a}_a^{}  + \cdots.
+  \hat{X}^{(N - 1)}_u &= \sum_i x_i^{(u, -)} \normord{\hat{a}_i^{}} + \frac{1}{2} \sum_{i j a} x^{(u, -)}_{i j a} \normord{\hat{a}^\dagger_i \hat{a}_j^{} \hat{a}_a^{}}  + \cdots.
 \end{align}
+Here, $x^{(u, \pm)}_p$ and $x^{(u, \pm)}_{p q r}$ are the normal-ordered matrix elements of $\hat{X}_u^{(N \pm 1)}$, defined analogously to Eq.\ \eqref{eq:normordhamiltonian}.
+
 Substitution of Eq.\ \eqref{eq:ladder_def} into the energy eigenvalue problem
 \begin{gather*}
   \hat H \ket{\Psi_u^{(N \pm 1)}} = E^{(N\pm1)}_u \ket{\Psi_u^{(N \pm 1)}},
@@ -615,10 +617,10 @@ Large single particle partial norms indicate that the EOM truncation is valid fo
 
 Like EOM-IM-SRG, the equation-of-motion technique can be applied after a coupled-cluster ground-state calculation, by using the coupled-cluster effective Hamiltonian.  Here, the non-Hermitian nature of $\bar{H}_{\mathrm{CC}}$ becomes apparent.  In this case, in addition to constructing excitation ladder operators Eq.\ \eqref{eq:gen_attached} and Eq.\ \eqref{eq:gen_removed} that correspond to the right-eigenvectors of the generalized eigenvalue problem Eq.\ \eqref{eq:EOMIMSRG}, there exist analogous de-excitation ladder operators, $\hat{L}^{(N + 1)}$ and $\hat{L}^{(N - 1)}$, that correspond to the left-eigenvectors,
 \begin{align*}
-    \hat{L}^{(N + 1)}_u &= \sum_a l^{(u, +)}_a \hat{a}_a^{} + \frac{1}{2} \sum_{i a b} l^{(u, +)}_{a b i} \hat{a}^\dagger_i \hat{a}_b^{} \hat{a}_a^{} + \cdots, \\
-    \hat{L}^{(N - 1)}_u &= \sum_i l_i^{(u, -)} \hat{a}^\dagger_i + \frac{1}{2} \sum_{i j a} l^{(u, -)}_{i j a} \hat{a}^\dagger_i \hat{a}^\dagger_j \hat{a}_a^{} + \cdots
+    \hat{L}^{(N + 1)}_u &= \sum_a l^{(u, +)}_a \normord{\hat{a}_a^{}} + \frac{1}{2} \sum_{i a b} l^{(u, +)}_{a b i} \normord{\hat{a}^\dagger_i \hat{a}_b^{} \hat{a}_a^{}} + \cdots, \\
+    \hat{L}^{(N - 1)}_u &= \sum_i l_i^{(u, -)} \normord{\hat{a}^\dagger_i} + \frac{1}{2} \sum_{i j a} l^{(u, -)}_{i j a} \normord{\hat{a}^\dagger_i \hat{a}^\dagger_j \hat{a}_a^{}} + \cdots,
 \end{align*}
-These left-eigenvectors satisfy the left-eigenvalue problem, with left-eigenvalues $\varepsilon^{(\pm)}_u$, analogous to Eq.\ \eqref{eq:EOMIMSRG},
+where $l^{(u, \pm)}_p$ and $l^{(u, \pm)}_{p q r}$ are likewise the normal-ordered matrix elements of $\hat{L}^{(N \pm 1)}_u$.  These left-eigenvectors satisfy the left-eigenvalue problem, with left-eigenvalues $\varepsilon^{(\pm)}_u$, analogous to Eq.\ \eqref{eq:EOMIMSRG},
 \begin{align*}
   \bra{\Phi^{(N)}_0} [\bar{H}, \bar{L}^{(N \pm 1)}_u] = \pm \varepsilon^{(\pm)}_u \bra{\Phi^{(N)}_0} \bar{L}^{(N \pm 1)}_u
 \end{align*}
@@ -659,7 +661,7 @@ Ideally, ground state energies should be characterized entirely by the two syste
 
 The addition and removal energies are similar, but they require an additional parameter: the total orbital angular momentum $M_\ell$, defined as the sum of the $m_\ell$ of each particle.  This is due to the presence of multiple states with near-degenerate energies.  For this paper, we will consider exclusively the addition/removal energies with the lowest $|M_\ell|$ subject to the constraint that the particle added/removed lies within the next/last shell.  This means the $N + 1$ states of interest are those with $|M_\ell| = K_{\mathrm{F}} \bmod 2$ (where $\bmod$ stands for the modulo operation) where $K_{\mathrm{F}}$ is the number of occupied shells, while the $N - 1$ states of interest are those with $|M_\ell| = 1 - (K_{\mathrm{F}} \bmod 2)$.
 
-Not all cases are solvable with our selection many-body methods.  Low frequency systems are particularly strenuous for these many-body methods due to their strong correlations, leading to equations that are difficult and expensive to solve numerically.  In the tables, ``n.c.'' marks the cases where IM-SRG or CCSD either diverged or converged extremely slowly.  This also affects the extrapolation results in Section \ref{subsec:extrapolation}, as for consistency reasons we chose to extrapolate only when all five points were available.
+Not all cases are solvable with our selection many-body methods.  Low frequency systems are particularly strenuous for these many-body methods due to their strong correlations, leading to equations that are difficult and expensive to solve numerically.  In the tables, ``n.c.'' marks the cases where IM-SRG(2) or CCSD either diverged or converged extremely slowly.  This also affects the extrapolation results in Section \ref{subsec:extrapolation}, as for consistency reasons we chose to extrapolate only when all five points were available.
 
 Numerical calculations in this paper are performed with a relative precision of about $10^{-5}$ or lower.  This does not necessarily mean the results are as precise as $10^{-5}$, since numerical errors tend to accumulate over the multiple steps of the calculation, thus the precision of the final results is expected to be roughly $10^{-4}$.
 
@@ -669,7 +671,7 @@ Numerical calculations in this paper are performed with a relative precision of 
 
 \begin{table}
   \centering
-  \caption{Ground state energy of quantum dots with $N$ particles and an oscillator frequency of $\omega$.  For every row, the calculations performed in a harmonic oscillator basis size with $K$ shells.}
+  \caption{Ground state energy of quantum dots with $N$ particles and an oscillator frequency of $\omega$.  For every row, the calculations are performed in a harmonic oscillator basis with $K$ shells.  The abbreviation ``n.c.'' stands for ``no convergence'': these are cases where IM-SRG(2) or CCSD either diverged or converged extremely slowly.}
   \label{tab:ground}
   \input{tab-ground}
 \end{table}
@@ -764,14 +766,14 @@ In general, there does not appear to be any difference between the convergence b
 
 \begin{table}
   \centering
-  \caption{Extrapolated ground state energies for quantum dots with fit uncertainties.  The uncertainties are computed from the approximate Hessian constructed by Levenberg-Marquardt fitting algorithm.  Extrapolations are done using 5-point fits where the number of shells $K$ ranges between $K_{\text{stop}} - 4$ and $K_{\text{stop}}$ (inclusive).}
+  \caption{Extrapolated ground state energies for quantum dots with fit uncertainties, computed from the approximate Hessian in the Levenberg--Marquardt fitting algorithm.  These uncertainties also determine the number of significant figures presented.  Extrapolations are done using 5-point fits where the number of shells $K$ ranges between $K_{\text{stop}} - 4$ and $K_{\text{stop}}$ (inclusive).  The abbreviation ``n.c.'' stands for ``no convergence'': these are extrapolations where, out of the 5 points, at least one of them was unavailable because IM-SRG(2) or CCSD either diverged or converged extremely slowly.}
   \label{tab:ground-extrapolated}
   \input{tab-ground-extrapolated}
 \end{table}
 
 \begin{table}
   \centering
-  \caption{Extrapolated addition energies for quantum dots with fit uncertainties.  See Table \ref{tab:ground-extrapolated} for details.}
+  \caption{Extrapolated addition energies for quantum dots with fit uncertainties.  The abbreviation ``n.c.'' has the same meaning as in Table \ref{tab:ground-extrapolated}.  The abbreviation``n.f.'' stands for ``no fit'': this particular extrapolation resulted in unphysical parameters ($\beta \le 0$).  See Table \ref{tab:ground-extrapolated} for other details.}
   \label{tab:add-extrapolated}
   \input{tab-add-extrapolated}
 \end{table}
