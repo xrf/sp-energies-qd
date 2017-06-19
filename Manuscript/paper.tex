@@ -585,7 +585,7 @@ where $\hat{X}$ is in principle a linear combination of excitation $(+)$ and de-
   \label{eq:gen_attached}
   \hat{X}^{(N + 1)}_u &= \sum_a x^{(u, +)}_a  \normord{\hat{a}^\dagger_a} + \frac{1}{2} \sum_{a b i} x^{(u, +)}_{a b i} \normord{\hat{a}^\dagger_a \hat{a}^\dagger_b \hat{a}_i^{}} + \cdots,  \\
   \label{eq:gen_removed}
-  \hat{X}^{(N - 1)}_u &= \sum_i x_i^{(u, -)} \normord{\hat{a}_i^{}} + \frac{1}{2} \sum_{i j a} x^{(u, -)}_{i j a} \normord{\hat{a}^\dagger_i \hat{a}_j^{} \hat{a}_a^{}}  + \cdots.
+  \hat{X}^{(N - 1)}_u &= \sum_i x_i^{(u, -)} \normord{\hat{a}_i^{}} + \frac{1}{2} \sum_{i j a} x^{(u, -)}_{a i j} \normord{\hat{a}^\dagger_a \hat{a}_j^{} \hat{a}_i^{}}  + \cdots.
 \end{align}
 Here, $x^{(u, \pm)}_p$ and $x^{(u, \pm)}_{p q r}$ are the normal-ordered matrix elements of $\hat{X}_u^{(N \pm 1)}$, defined analogously to Eq.\ \eqref{eq:normordhamiltonian}.
 
@@ -620,7 +620,7 @@ Large single particle partial norms indicate that the EOM truncation is valid fo
 
 Like EOM-IM-SRG, the equation-of-motion technique can be applied after a coupled-cluster ground-state calculation, by using the coupled-cluster effective Hamiltonian.  Here, the non-Hermitian nature of $\bar{H}_{\mathrm{CC}}$ becomes apparent.  In this case, in addition to constructing excitation ladder operators Eq.\ \eqref{eq:gen_attached} and Eq.\ \eqref{eq:gen_removed} that correspond to the right-eigenvectors of the generalized eigenvalue problem Eq.\ \eqref{eq:EOMIMSRG}, there exist analogous de-excitation ladder operators, $\hat{L}^{(N + 1)}$ and $\hat{L}^{(N - 1)}$, that correspond to the left-eigenvectors,
 \begin{align*}
-    \hat{L}^{(N + 1)}_u &= \sum_a l^{(u, +)}_a \normord{\hat{a}_a^{}} + \frac{1}{2} \sum_{i a b} l^{(u, +)}_{a b i} \normord{\hat{a}^\dagger_i \hat{a}_b^{} \hat{a}_a^{}} + \cdots, \\
+    \hat{L}^{(N + 1)}_u &= \sum_a l^{(u, +)}_a \normord{\hat{a}_a^{}} + \frac{1}{2} \sum_{i a b} l^{(u, +)}_{i a b} \normord{\hat{a}^\dagger_i \hat{a}_b^{} \hat{a}_a^{}} + \cdots, \\
     \hat{L}^{(N - 1)}_u &= \sum_i l_i^{(u, -)} \normord{\hat{a}^\dagger_i} + \frac{1}{2} \sum_{i j a} l^{(u, -)}_{i j a} \normord{\hat{a}^\dagger_i \hat{a}^\dagger_j \hat{a}_a^{}} + \cdots,
 \end{align*}
 where $l^{(u, \pm)}_p$ and $l^{(u, \pm)}_{p q r}$ are likewise the normal-ordered matrix elements of $\hat{L}^{(N \pm 1)}_u$.  These left-eigenvectors satisfy the left-eigenvalue problem, with left-eigenvalues $\varepsilon^{(\pm)}_u$, analogous to Eq.\ \eqref{eq:EOMIMSRG},
