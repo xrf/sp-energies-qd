@@ -454,7 +454,7 @@ where we define a coupled-cluster effective Hamiltonian,
 \begin{align} \label{eq:cc_heff0}
   \bar{H}_{\mathrm{CC}} \equiv \E^{-\hat{T}} \hat{H} \E^{\hat{T}},
 \end{align}
-in which the wave operator, $\E^{\hat{T}}$, acts as a similarity transform on the Hamiltonian in the same way that $\hat{U}(s)$ acts to transform the Hamiltonian in SRG methods.  An important difference, however, is that the coupled cluster wave operator is not unitary, and thus $\bar{H}$ is not Hermitian.
+in which the wave operator, $\E^{\hat{T}}$, acts as a similarity transform on the Hamiltonian in the same way that $\hat{U}(s)$ acts to transform the Hamiltonian in SRG methods.  An important difference, however, is that the coupled cluster wave operator, which contains no de-excitations, is not unitary, and thus $\bar{H}$ is not Hermitian.
 
 The effective Hamiltonian in Eq.\ \eqref{eq:cc_heff0} can be rewritten with commutators according to the Baker--Campbell--Hausdorff expansion as,
 \begin{align*}
@@ -466,7 +466,7 @@ which terminates at four-nested commutators due to the two-body nature of the in
 \end{align}
 where the subscript ``$\mathrm{c}$'' indicates that only connected terms are used.
 
-In practice, the cluster operator $\hat{T}$ must be truncated to be computationally feasible.  In this paper, we truncate it to only single and double excitations,
+In practice, the cluster operator $\hat{T}$ must be truncated for calculations to be computationally feasible.  In this work, we use only single and double excitations,
 \begin{align*}
   \hat{T} = \hat{T}_1 + \hat{T}_2.
 \end{align*}
@@ -474,7 +474,7 @@ This is known as coupled cluster singles and doubles (CCSD), with an asymptotic 
 
 \begin{figure}
   \includegraphics{fig-diagrams-ccsd.pdf}
-  \caption{(Color online) Diagrammatic representation of $\bar{H}$ of Eq.\ \eqref{eq:cc_heff1}, where open circles represent the excitation cluster operators $\hat{T}_1$ and $\hat{T}_2$, and filled circles represent the two-body interaction $\hat{H}_2$.  As before, the diagrams are implicitly antisymmetrized (Hugenholtz diagrams).  Lines connected to $\hat{T}$ are always directed upward because they represent an excitation operator while the directions of external lines connected to $\hat{H}_2$ are unconstrained.}
+  \caption{(Color online) Diagrammatic representation of $\bar{H}$ of Eq.\ \eqref{eq:cc_heff1}, excluding terms involving the one-body interaction $\hat{H}_1$ and first-order terms involving only the bare Hamiltonian. Open circles represent the excitation cluster operators $\hat{T}_1$ and $\hat{T}_2$, and filled circles represent the two-body interaction $\hat{H}_2$.  As before, the diagrams are implicitly antisymmetrized (Hugenholtz diagrams).  Lines connected to $\hat{T}$ are always directed upward because they represent an excitation operator while the directions of external lines connected to $\hat{H}_2$ are unconstrained. }
   \label{fig:diagrams-ccsd}
 \end{figure}
 
