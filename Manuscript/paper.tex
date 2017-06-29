@@ -146,7 +146,7 @@ which we conveniently call the \textit{shell index} as it labels each shell star
 Returning to the one-body part of the many-body Hamiltonian, $\hat{H}_1$, we can use the Slater determinant construction to build an $N$-particle eigenstate $|p_1, \ldots, p_N\rangle$ of the many-body Hamiltonian $\hat{H}_1$ from an arbitrary choice of $N$ single-particle eigenstates $|p_1\rangle, \ldots, |p_N\rangle$ from \eqref{eq:singleparticlestate}, where $p$ is an abbreviation for the triplet $(n, m_\ell, m_{\mathrm{s}})$.  Note that a Slater determinant $|p_1 \ldots p_N\rangle$ is not merely a product of the single-particle states, but an antisymmetrized sum over all possible products,
 \begin{align*}
   \langle \bm{r}_1 \ldots \bm{r}_N | p_1 \ldots p_N \rangle \equiv
-  \frac{1}{\sqrt{N}} \left|
+  \frac{1}{\sqrt{N!}} \left|
   \begin{matrix}
     \langle \bm{r}_1 | p_1 \rangle & \cdots & \langle \bm{r}_1 | p_N \rangle \\
     \vdots & \ddots & \vdots \\
