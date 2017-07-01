@@ -59,24 +59,24 @@ def save_table(path, label,
     if label == "ground":
         methods = ["hf", "mp2", "imsrg", "ccsd"]
         header = r"""
-        \begin{tabular}{S[table-format=2.0]SS[table-format=2.0]S[table-format=3.5]S[table-format=3.5]S[table-format=3.5]S[table-format=3.5]}%
-        \toprule
-        {$N$} & {$\omega$} & {$K$} & {HF} & {MP2} & {IM-SRG(2)} & {CCSD} \\
-        """
+\begin{tabular}{S[table-format=2.0]SS[table-format=2.0]S[table-format=3.5]S[table-format=3.5]S[table-format=3.5]S[table-format=3.5]}%
+\hline\hline
+{$N$} & {$\omega$} & {$K$} & {HF} & {MP2} & {IM-SRG(2)} & {CCSD} \\
+"""[1:]
     else:
         methods = ["hf+qdpt3", "imsrg+qdpt3", "imsrg+eom", "ccsd+eom"]
         header = r"""
-        \begin{tabular}{S[table-format=2.0]SS[table-format=2.0]S[table-format=3.5]S[table-format=3.5]S[table-format=3.5]S[table-format=3.5]}%
-        \toprule
-        {$N$} & {$\omega$} & {$K$} & {HF} & {IM-SRG(2)} & {IMSRG(2)} & {CCSD} \\
-        {} & {} & {} & {+QDPT3} & {+QDPT3} & {+EOM} & {+EOM} \\
-        """
+\begin{tabular}{S[table-format=2.0]SS[table-format=2.0]S[table-format=3.5]S[table-format=3.5]S[table-format=3.5]S[table-format=3.5]}%
+\hline\hline
+{$N$} & {$\omega$} & {$K$} & {HF} & {IM-SRG(2)} & {IMSRG(2)} & {CCSD} \\
+{} & {} & {} & {+QDPT3} & {+QDPT3} & {+EOM} & {+EOM} \\
+"""[1:]
     c = d["energy"]
 
     s = []
     s.append(header)
     for num_shells, num_particles in zip(num_shells, num_particles):
-        s.append("\\midrule\n")
+        s.append("\\hline\n")
         for freq in freqs:
             row = [num_particles, freq, num_shells]
             for method in methods:
@@ -96,7 +96,7 @@ def save_table(path, label,
                         value = "n.c."
                 row.append(render_entry(value))
             s.append(" & ".join(map(str, row)) + " \\\\\n")
-    s.append(r"""\bottomrule\end{tabular}""")
+    s.append("\\hline\\hline\n\\end{tabular}")
 
     with open(path, "w") as f:
         f.write("".join(s))
@@ -124,23 +124,23 @@ def save_extrapolated_table(path, label,
     if label == "ground":
         methods = ["mp2", "imsrg", "ccsd"]
         header = r"""
-        \begin{tabular}{S[table-format=2.0]SS[table-format=2.0]S[table-format=4.6]S[table-format=4.6]S[table-format=4.6]}%
-        \toprule
-        {$N$} & {$\omega$} & {$K_{\text{stop}}$} & {MP2} & {IM-SRG(2)} & {CCSD} \\
-        """
+\begin{tabular}{S[table-format=2.0]SS[table-format=2.0]S[table-format=4.7]S[table-format=4.7]S[table-format=4.7]}%
+\hline\hline
+{$N$} & {$\omega$} & {$K_{\text{stop}}$} & {MP2} & {IM-SRG(2)} & {CCSD} \\
+"""[1:]
     else:
         methods = ["imsrg+qdpt3", "imsrg+eom", "ccsd+eom"]
         header = r"""
-        \begin{tabular}{S[table-format=2.0]SS[table-format=2.0]S[table-format=3.6]S[table-format=3.6]S[table-format=3.6]}%
-        \toprule
-        {$N$} & {$\omega$} & {$K_{\text{stop}}$} & {IM-SRG(2)} & {IMSRG(2)} & {CCSD} \\
-        {} & {} & {} & {+QDPT3} & {+EOM} & {+EOM} \\
-        """
+\begin{tabular}{S[table-format=2.0]SS[table-format=2.0]S[table-format=3.8]S[table-format=3.8]S[table-format=3.8]}%
+\hline\hline
+{$N$} & {$\omega$} & {$K_{\text{stop}}$} & {IM-SRG(2)} & {IMSRG(2)} & {CCSD} \\
+{} & {} & {} & {+QDPT3} & {+EOM} & {+EOM} \\
+"""[1:]
 
     s = []
     s.append(header)
     for num_shells, num_particles in zip(num_shells, num_particles):
-        s.append("\\midrule\n")
+        s.append("\\hline\n")
         for freq in freqs:
             row = [num_particles, freq, num_shells]
             for method in methods:
@@ -173,7 +173,7 @@ def save_extrapolated_table(path, label,
 
                 row.append(render_entry(value, err))
             s.append(" & ".join(map(str, row)) + " \\\\\n")
-    s.append(r"""\bottomrule\end{tabular}""")
+    s.append("\\hline\\hline\\n\\end{tabular}")
 
     with open(path, "w") as f:
         f.write("".join(s))
