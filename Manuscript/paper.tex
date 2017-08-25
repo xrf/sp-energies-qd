@@ -48,7 +48,7 @@
 
 The behavior of strongly confined electrons is a major problem for many-body theory.  The prototypical system is that of quantum dots, also known as ``artificial atoms'', in which electrons are confined within artificially constructed semiconducting heterostructures.  Such nanoscale systems are highly relevant as both theoretical models and experimental observations can readily probe quantum phenomena such as tunneling, entanglement, magnetization, and symmetry breaking \cite{reimann2002,engel1993,BIRMAN20131}.  Moreover, unlike many physical systems, quantum dots enjoy the benefit of being highly tunable through changes in the external field or the structure of the confining material.  This allows experiments to quantify the impact of quantum effects at different levels of correlation.
 
-The ground states of quantum dots exhibit shell structures and magic numbers similar to those of atoms and nuclei \cite{tarucha1996}.  Thus, they provide a rare opportunity to study electronic systems without the influence of the atomic nuclei.  They also provide a testbed for the development of many-body methods for other systems with similar geometry, such as nuclei or neutrons drops \cite{PhysRevC.84.044306}.
+The ground states of quantum dots exhibit shell structures and magic numbers similar to those of atoms and nuclei \cite{tarucha1996}.  Thus, they provide a rare opportunity to study electronic systems without the influence of the atomic nuclei.  They also provide a testbed for the development of many-body methods for other systems with similar geometry, such as nuclei or neutron drops \cite{PhysRevC.84.044306}.
 
 Beyond their theoretical relevance, there are numerous potential applications of quantum dots.  The electrical and optical properties of quantum dots are particularly useful for solar cells \cite{jenks:013111,doi:10.1021/cr900289f} and laser technology \cite{strauf2010,5075760}.  They have potential medical applications in diagnosis and treatment \cite{Ben-Ari02042003}.  And of course, quantum dots are also promising candidates for the physical realization of quantum computing \cite{PhysRevA.57.120}.
 
@@ -68,35 +68,29 @@ This article is organized as follows: Section \ref{sec:formalism} introduces fir
 \subsection{The model Hamiltonian}
 \label{subsec:modelHamiltonian}
 
-We shall model the circular quantum dot system as a collection of $N$ nonrelativistic electrons of mass $m$ in two-dimensional space, trapped by an external harmonic-oscillator potential of the form $m \omega^2r^2 / 2$, where $\omega$ is the angular frequency of the oscillator trap and $r$ is the distance from the center of the trap.  The electrons interact with each other through the standard Coulomb interaction $e^2 / (4 \pi \epsilon R)$, where $e$ is the electron charge, $\epsilon$ is the permittivity of the medium, and $R$ is the distance between the two interacting electrons.
+We shall model the circular quantum dot system as a collection of $N$ nonrelativistic electrons of mass $m$ in two-dimensional space, trapped by an external harmonic-oscillator potential of the form $m \omega^2r^2 / 2$, where $\omega$ is its angular frequency and $r$ is the radial distance from the center.  The electrons interact with each other through the standard Coulomb interaction $e^2 / (4 \pi \epsilon R)$, where $e$ is the electron charge, $\epsilon$ is the permittivity of the medium, and $R$ is the distance between the two interacting electrons.
 
-Even though the model system contains five parameters $(N, m, \omega, e, \epsilon)$, many of them are redundant.  With an appropriate choice of units, the number of parameters in the system can be reduced to just two.  For rest of this paper, we shall use atomic units where $\hbar$, $m$, $e$ and $4 \pi \epsilon$ are all set to one.  The unit Hartree $E_{\mathrm{h}}$ becomes the unit of energy and the Bohr radius $a$ becomes the unit of length:
-\begin{align*}
-  E_{\mathrm{h}} &\equiv m \left(\frac{e^2}{4 \pi \epsilon \hbar}\right)^2, &
-  a &\equiv \frac{4 \pi \epsilon \hbar^2}{m e^2}.
-\end{align*}
-This leaves us with $(N, \omega)$ as the only parameters necessary to specify the quantum dot system, with $\omega$ in units of $E_{\mathrm{h}} / \hbar$.
+For simplicity, we will use atomic units, choosen such that $\hbar \equiv m \equiv e \equiv 4 \pi \epsilon \equiv 1$, reducing the parameters of the system from $(N, m, \omega, e, \epsilon)$ to just $(N, \omega)$.  Hence, all energies and frequencies are presented in hartrees and hartrees per $\hbar$ respectively.
 
-The behavior of each electron in isolation is described by the nonrelativistic kinetic energy $t(\bm{r})$ and the potential energy due to the trap $u(\bm{r})$, which combine to form the standard harmonic oscillator Hamiltonian $h(\bm{p}, \bm{r})$:
-\begin{align*}
-  t(\bm{p}) &\equiv \frac{1}{2} \bm{p}^2, &
-  u(\bm{r}) &\equiv \frac{1}{2} \omega^2 \bm{r}^2, &
-  h(\bm{p}, \bm{r}) &\equiv t(\bm{p}) + t(\bm{r}).
-\end{align*}
-Here, $\bm{p}$ is the linear momentum of the electron and $\bm{r}$ is its position relative to the center of the trap.  The pairwise interaction between two electrons at positions $\bm{r}$ and $\bm{r}'$ is simply the Coulomb interaction:
-\begin{align*}
-  v(\bm{r}, \bm{r}') \equiv \frac{1}{|\bm{r} - \bm{r}'|}.
-\end{align*}
-The full many-body problem is described by the Hamiltonian
-\begin{align*}
-  \hat H \equiv \hat H_1 + \hat H_2,
-\end{align*}
-where $\hat{H}_1$ and $\hat{H}_2$ are respectively the one- and two-body parts of the Hamiltonian, namely
-\begin{align} \label{eq:onetwobodyhamiltonian}
-\hat{H}_1 &\equiv \sum_{\alpha = 1}^N h(\hat{\bm p}_\alpha, \hat{\bm r}_\alpha), &
-\hat{H}_2 &\equiv \sum_{\alpha = 1}^N \sum_{\beta = 1}^{\alpha - 1} v(\hat{\bm r}_\alpha, \hat{\bm r}_\beta).
+In these units, the many-body problem is described by the Hamiltonian
+\begin{align} \label{eq:fullhamiltonian}
+  \hat H &\equiv \hat{H}_1 + \hat{H}_2 & \hat{H}_1 &\equiv \sum_{\alpha = 1}^N \hat{h}_\alpha & \hat{H}_2 &\equiv \sum_{\alpha = 1}^N \sum_{\beta = 1}^{\alpha - 1} \frac{1}{\hat{\bm r}_\alpha - \hat{\bm r}_\beta},
 \end{align}
-The operator $\hat{\bm r}_\alpha$ is the position operator of the $\alpha$-th particle,\footnote{The ordering of the particle labels $\alpha$ is unimportant as they exist only for the purpose of bookkeeping.} and $\hat{\bm p}_\alpha \equiv -\mathrm{i} \hat{\bm{\nabla}}_{\bm{r}_\alpha}$ is its momentum operator.
+where, $\hat{H}_1$ and $\hat{H}_2$ are its one- and two-body parts respecitvely, and for the $\alpha$-th particle, $\hat{\bm r}_\alpha$ is its position operator and  $\hat{h}_\alpha$ is its single-particle harmonic-oscillator Hamiltonian, defined as
+\begin{align*}
+  \hat{h} \equiv -\frac{1}{2} \hat{\bm{\nabla}}^2 + \frac{1}{2} \omega^2 \hat{\bm{r}}^2.
+\end{align*}
+
+The noninteracting Hamiltonian $\hat{H}_1$ can be solved as $N$ independent single-particle problems involving $\hat{h}$ with easy analytic solutions in Cartesian form.  However, to exploit circular symmetry, we use instead the Fock--Darwin states $F_{n m_\ell}$, which favor polar coordinates $\bm{r} = (\rho, \varphi)$ and conserve orbital angular momentum $\hat{L}_{\mathrm{z}} \equiv -\mathrm{i} \frac{\partial}{\partial \varphi}$.  They are defined as\cite{lohne2010coupled}
+\begin{align}
+  F_{n m_\ell}(\rho, \varphi) &\equiv \sqrt\omega R_{n |m_\ell|}(\sqrt \omega \rho) \times \frac{1}{\sqrt{2 \pi}} \mathrm{e}^{\mathrm{i} m_\ell \varphi} \label{eq:fockdarwin}, \\
+  R_{n m}(\varrho) &\equiv \sqrt{\frac{2 \times n!}{(n + m)!}} \mathrm{e}^{-\varrho^2 / 2} \varrho^m L_n^{(m)}(\varrho^2), \notag
+\end{align}
+where $L_n^{(\alpha)}$ denotes the generalized Laguerre polynomial \cite{NIST:DLMF} of degree $n$ and parameter $\alpha$,
+\begin{align*}
+  L_n^{(\alpha)}(u) \equiv \frac{1}{n!} u^{-\alpha} \mathrm{e}^u \frac{\mathrm{d}^n}{\mathrm{d} u^n} (\mathrm{e}^{-u} u^{\alpha + n}).
+\end{align*}
+The states are distinguished by two quantum numbers: the principal quantum number $n$, a nonnegative integer related to the degree of the Laguerre polynomial, and the orbital angular momentum projection $m_\ell$, the integer eigenvalue of $\hat{L}_{\mathrm{z}}$.
 
 \begin{figure}
   \includegraphics{fig-shell-structure-v2.pdf}
@@ -104,141 +98,72 @@ The operator $\hat{\bm r}_\alpha$ is the position operator of the $\alpha$-th pa
   \label{fig:shell-structure}
 \end{figure}
 
-The noninteracting part of the many-body Hamiltonian $\hat{H}_1$ can be reduced to $N$ independent single-particle Hamiltonians each of the form:
-\begin{align*}
-  \hat{h} = \frac{1}{2} \hat{\bm{\nabla}}^2 + \frac{1}{2} \omega^2 \hat{\bm{r}}^2.
-\end{align*}
-Therefore, solving the noninteracting many-body problem amounts to solving the single-particle time-independent Schr\"odinger equation
-\begin{align*}
-  \hat{h} |p\rangle = \varepsilon_p |p\rangle,
-\end{align*}
-where $p$ is an unknown tuple of quantum numbers.  In Cartesian coordinates, the two-dimensional harmonic oscillator is trivially reducible to the well-known one-dimensional problem.  However, to exploit the circular symmetry, we prefer to use Fock--Darwin states, which are written in polar coordinates $\bm{r} = (\rho, \varphi)$.  Such states have the computationally useful property of conserving orbital angular momentum $\hat{L}_{\mathrm{z}} \equiv -\mathrm{i} \frac{\partial}{\partial \varphi}$.
-
-The Fock--Darwin wave functions can be decomposed into radial and angular components,\cite{lohne2010coupled}
-\begin{align}
-  F_{n m_\ell}(\rho, \varphi) &\equiv \sqrt\omega R_{n |m_\ell|}(\sqrt \omega \rho) A_{m_\ell}(\varphi) \label{eq:fockdarwin}, \\
-  R_{n m}(\varrho) &\equiv \sqrt{\frac{2 \times n!}{(n + m)!}} \mathrm{e}^{-\varrho^2 / 2} \varrho^m L_n^{(m)}(\varrho^2), \notag \\
-  A_{m_\ell}(\varphi) &\equiv \frac{1}{\sqrt{2 \pi}} \mathrm{e}^{\mathrm{i} m_\ell \varphi}, \notag
-\end{align}
-where $L_n^{(\alpha)}$ denotes the (generalized) Laguerre polynomial \cite{NIST:DLMF} of degree $n$ and parameter $\alpha$,
-\begin{align*}
-  L_n^{(\alpha)}(u) = \frac{1}{n!} u^{-\alpha} \mathrm{e}^u \frac{\mathrm{d}^n}{\mathrm{d} u^n} (\mathrm{e}^{-u} u^{\alpha + n}).
-\end{align*}
-The states are labeled by two quantum numbers: the principal quantum number $n \in \{0, 1, 2, \ldots\}$ and orbital angular momentum projection $m_\ell \in \mathbb \{\ldots, -2, -1, 0, +1, +2, \ldots\}$.  For a wave function, $n$ indicates the degree of the Laguerre polynomial, whereas $m_\ell$ is simply the eigenvalue of $\hat{L}_{\mathrm{z}}$.
-
-Since electrons are spin-$\frac{1}{2}$ fermions, they can occupy either of the two possible spin states $\chi_{-\frac{1}{2}}$ or $\chi_{+\frac{1}{2}}$.  Thus, every single-particle basis state $|n m_\ell m_{\mathrm{s}}\rangle$ contains both a spatial component \eqref{eq:fockdarwin} and a spin component,
+Single-particle states of spin-$\frac{1}{2}$ electrons also contain a spin component,
 \begin{align} \label{eq:singleparticlestate}
-  \langle \rho \varphi m_{\mathrm{s}}' |n m_\ell m_{\mathrm{s}}\rangle \equiv F_{n m_\ell}(\rho, \varphi) \delta_{m_{\mathrm{s}}^{} m_{\mathrm{s}}'}.
+  \langle \rho \varphi m_{\mathrm{s}}' |n m_\ell m_{\mathrm{s}}\rangle \equiv F_{n m_\ell}(\rho, \varphi) \delta_{m_{\mathrm{s}}^{} m_{\mathrm{s}}'},
 \end{align}
-Here we have introduced spin projection $m_{\mathrm{s}} \in \bigl\{-\frac{1}{2}, +\frac{1}{2}\bigr\}$ as the third quantum number and $\delta_{p q}$ to denote the Kronecker delta.
+where $m_{\mathrm{s}} = \pm\frac{1}{2}$ is the spin projection quantum number and $\delta$ is the Kronecker delta.
 
-The energy of the single-particle state $|n m_\ell m_{\mathrm{s}}\rangle$ is given by
+The energy of each single-particle state $|n m_\ell m_{\mathrm{s}}\rangle$ is given by
 \begin{align} \label{eq:energysingleparticlestate}
   \varepsilon_{n m_\ell m_{\mathrm{s}}} \equiv (2 n + |m_\ell| + 1) \omega.
 \end{align}
-The energies are degenerate with respect to the spin projection $m_{\mathrm{s}}$ as our Hamiltonian $\hat{h}$ does not distinguish between them.  Additionally, they are degenerate with respect to the nonnegative integer
+They are degenerate with respect to both spin projection $m_{\mathrm{s}}$ and \textit{shell index} $k$, defined as
 \begin{align} \label{eq:shell_index}
   k \equiv 2 n + |m_\ell|,
 \end{align}
-which we conveniently call the \textit{shell index} as it labels each shell starting from zero.  The shells are equidistant with an energy spacing equal to the frequency $\omega$.
+which labels each shell from zero.  The shell structure is illustrated in Figure \ref{fig:shell-structure}.
 
-Returning to the one-body part of the many-body Hamiltonian, $\hat{H}_1$, we can use the Slater determinant construction to build an $N$-particle eigenstate $|p_1, \ldots, p_N\rangle$ of the many-body Hamiltonian $\hat{H}_1$ from an arbitrary choice of $N$ single-particle eigenstates $|p_1\rangle, \ldots, |p_N\rangle$ from \eqref{eq:singleparticlestate}, where $p$ is an abbreviation for the triplet $(n, m_\ell, m_{\mathrm{s}})$.  Note that a Slater determinant $|p_1 \ldots p_N\rangle$ is not merely a product of the single-particle states, but an antisymmetrized sum over all possible products,
-\begin{align*}
-  \langle \bm{r}_1 \ldots \bm{r}_N | p_1 \ldots p_N \rangle \equiv
-  \frac{1}{\sqrt{N!}} \left|
-  \begin{matrix}
-    \langle \bm{r}_1 | p_1 \rangle & \cdots & \langle \bm{r}_1 | p_N \rangle \\
-    \vdots & \ddots & \vdots \\
-    \langle \bm{r}_N | p_1 \rangle & \cdots & \langle \bm{r}_N | p_N \rangle \\
-  \end{matrix}
-  \right|.
-\end{align*}
-The Slater determinant $|p_1 \ldots p_N\rangle$ is said to \textit{occupy} the states $|p_1\rangle, \ldots, |p_N\rangle$.  By construction, Slater determinants satisfy the Pauli exclusion principle, ensuring that the exchange of any two particles is equivalent to a reversal in the sign of the many-body wave function.
+Fermionic $N$-particle eigenstates of the one-body Hamiltonian $\hat{H}_1$ can be explicitly constructed as Slater determinants $|p_1 \ldots p_N\rangle$ of the single-particle states $|p_1\rangle, \ldots, |p_N\rangle$ from Eq.\ \eqref{eq:singleparticlestate}, where $|p\rangle$ is an abbreviation of $|n m_\ell m_{\mathrm{s}}\rangle$.  The Slater determinant $|p_1 \ldots p_N\rangle$ is said to \textit{occupy} the single-particle states $|p_1\rangle, \ldots, |p_N\rangle$.
 
-The energy of a Slater determinant is given by a sum over the occupied single-particle energies,
-\begin{align*}
-  \hat{H}_1 | p_1 \ldots p_N \rangle = (\varepsilon_{p_1} + \cdots + \varepsilon_{p_N}) | p_1 \ldots p_N \rangle.
-\end{align*}
-It is possible for Slater determinants occupying different sets of single-particle states to be degenerate in energy.  This is possible even for ground states of $\hat{H}_1$.  However, if the number of particles $N$ satisfies $N = K_{\mathrm{F}} (K_{\mathrm{F}} + 1)$ for some nonnegative integer $K_{\mathrm{F}}$, there would be just enough particles to form a closed-shell Slater determinant, leading to a unique, well-isolated ground state.  The values of $N$ at which this occurs are said to be \textit{magic numbers}.  We call $K_{\mathrm{F}}$ the \textit{number of filled shells} (or ``Fermi level'').  In particular, a single-particle state is occupied in the ground state Slater determinant if and only if $k < K_{\mathrm{F}}$, where $k$ is the shell index of the single-particle state as defined in \eqref{eq:shell_index}.
+When the number of particles $N$ satisfies $N = K_{\mathrm{F}} (K_{\mathrm{F}} + 1)$ for some nonnegative integer $K_{\mathrm{F}}$, there would be just enough particles to form a closed-shell Slater determinant, leading to a nondegenerate, well-isolated ground state.  The values of $N$ at which this occurs are often termed \textit{magic numbers}, and $K_{\mathrm{F}}$ is the \textit{number of filled shells} (or more abstractly the ``Fermi level'').  A single-particle state is occupied in the ground state Slater determinant if and only if $k < K_{\mathrm{F}}$, where $k$ is its shell index as defined in Eq.\ \eqref{eq:shell_index}.
 
-In this paper, we use the letters $p, q, r, s, \ldots$ to label arbitrary \textit{single-particle states} in the basis.  In the discussion of many-body methods that rely a single, distinguished Slater determinant $\Phi$, known as the \textit{reference state}, we use the letters $i, j, k, l, \ldots$ as placeholders for the occupied states of $\Phi$, and $a, b, c, d, \ldots$ for the unoccupied states.  A summation such as $\sum_p$ is understood as a summation over every single-particle basis state $p$.  In contrast, $\sum_i$ only sums over those that are occupied and $\sum_a$ only sums over those that are unoccupied.
+In this paper, we use the letters $p, q, r, s, \ldots$ to label arbitrary \textit{single-particle states} in the basis.  In the discussion of many-body methods that rely a single, distinguished Slater determinant $\Phi$, known as the \textit{reference state}, we use the $i, j, k, l, \ldots$ as placeholders for the occupied states of $\Phi$, and $a, b, c, d, \ldots$ for the unoccupied states.  A summation such as $\sum_p$ is understood as a summation over every single-particle basis state $p$.  In contrast, $\sum_i$ only sums over occupied states and $\sum_a$ over unoccupied ones.
 
-We will describe many-body methods within the formalism of second quantization; see for example Ref.\ \cite{shavitt2009many}.  To properly describe fermions, we introduce the annihilation and creation operators $\hat a_p$ and $\hat a_p^\dagger$, collectively known as \textit{field operators}. These operators must satisfy the anticommutation relations that encode the Pauli principle, namely
-\begin{align*}
-  &\{\hat a_p, \hat a_q\} = \{\hat a_p^\dagger, \hat a_q^\dagger\} = 0, &
-  &\{\hat a_p, \hat a_q^\dagger\} = \delta_{p q}.
-\end{align*}
-
-In second quantization, the one- and two-body Hamiltonian operators $\hat{H}_1$ and $\hat{H}_2$ from Eq.\ \eqref{eq:onetwobodyhamiltonian} can be rewritten as
+It is generally more convenient to describe many-body methods within the formalism of second quantization; see for example Ref.\ \cite{shavitt2009many} for details.  For fermions, this involves annihilation operators $\hat a_p$ and creation operators $\hat a_p^\dagger$.  By construction, they satisfy anticommutation relations that encode the antisymmetry of the wave functions.  The one- and two-body Hamiltonian operators $\hat{H}_1$ and $\hat{H}_2$ are rewritten as
 \begin{align} \label{eq:second_quantized_hamiltonian}
   \hat{H}_1 &= \sum_{p q} \langle p | \hat{H}_1 | q \rangle \hat a_p^\dagger \hat a_q^{}, &
   \hat{H}_2 &= \frac{1}{4} \sum_{p q r s} \langle p q | \hat{H}_2 | r s \rangle \hat a_p^\dagger \hat a_q^\dagger \hat a_s^{} \hat a_r^{},
 \end{align}
-where the quantities $\langle p | \hat{H}_1 | q \rangle$ and $\langle p q | \hat{H}_2 | r s \rangle$ are known as \textit{matrix elements} and fully characterize the two operators in the basis.
-
-The complete Hamiltonian is given by the sum
-\begin{align}
-  \hat{H} = \sum_{p q} \langle p | \hat{H}_1 | q \rangle \hat{a}_p^\dagger \hat{a}_q + \frac{1}{4} \sum_{p q r s} \langle p q | \hat{H}_2 | r s \rangle \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r. \label{eq:vacuumhamiltonian}
-\end{align}
-Due to the antisymmetry of Slater determinants, we have the property that exchanging either $p$ with $q$ or $r$ with $s$ reverses the sign of $\langle p q | \hat{H}_2 | r s \rangle$, leading to a four-fold symmetry that must be canceled out by the $1/4$ factor in front of the summation in \eqref{eq:vacuumhamiltonian}.  For this reason, the two-body matrix element $\langle p q | \hat{H}_2 | r s \rangle$ is commonly referred to as the \emph{antisymmetrized} matrix element.  This is not to be confused with the (non-antisymmetric) interaction integral,
+where the quantities $\langle p | \hat{H}_1 | q \rangle$ and $\langle p q | \hat{H}_2 | r s \rangle$ are referred to as \textit{matrix elements} and fully characterize the two operators in the basis.  Specifically, $\langle p q | \hat{H}_2 | r s \rangle$ are \emph{antisymmetrized} matrix elements, which should not to be confused with the (non-antisymmetric) interaction integral,
 \begin{align} \label{eq:interactionintegral}
-  v_{p_1 p_2 p_3 p_4} \equiv \int \langle p_1 | \bm{r} \rangle \langle p_2 | \bm{r}' \rangle v(\bm r, \bm r') \langle \bm{r} | p_3 \rangle \langle \bm{r}' | p_4 \rangle \D \bm{r} \D \bm{r}'.
+  v_{p_1 p_2 p_3 p_4} \equiv \int \langle p_1 | \bm{r} \rangle \langle p_2 | \bm{r}'\rangle V(\bm r, \bm r') \langle \bm{r} | p_3 \rangle \langle \bm{r}' | p_4 \rangle \D \bm{r} \D \bm{r}'.
 \end{align}
-This object only has a two-fold symmetry: $v_{p_1 p_2 p_3 p_4} = v_{p_2 p_1 p_4 p_3}$.  The antisymmetrized matrix elements are related to the interaction integral via
-\begin{align} \label{eq:antisymmetricmatrixelement}
-  \langle p q | \hat{H}_2 | r s \rangle = v_{p q r s} - v_{p q s r}.
-\end{align}
+where for the standard Coulomb interaction we would have $V(\bm r, \bm r') = 1 / |\bm r - \bm r'|$.  In practice, antisymmetrized matrix elements are often computed from interaction integrals by antisymmetrization, $\langle p q | \hat{H}_2 | r s \rangle = v_{p q r s} - v_{p q s r}$.
 
 With the basic formalism and notation established along with the system of interest, we may begin to discuss the various techniques to solve the full many-body problem.  The principal difficulty stems from the fact that, due to the presence of interactions, the exact solution is in general \emph{not} a single Slater determinant built from the single-particle states.  Hence, it is not possible to trivially reduce the problem to that of a single particle as we had done previously.
 
-However, if we assume the interaction alters the behavior of the system only mildly, we can use a Slater determinant of the noninteracting system as a starting point and then apply various methods to improve the accuracy of the solution.  This is a general strategy for many of the many-body methods that we shall describe.
+However, if we assume the interaction alters the behavior of the system only mildly, we can use a Slater determinant of the noninteracting system as a starting point and then apply various methods to improve the accuracy of the solution.  The single-particle states of the noninteracting Hamiltonian $\hat{H}_1$ thus forms the \textit{single-particle basis} of the many-body methods that we shall describe.
 
 \subsection{Hartree--Fock method}
 \label{subsec:HartreeFockmethod}
 
-One of the simplest numerical corrections that could be applied to the initial guess is that of the Hartree--Fock (HF) method.  Using the variational principle, one can compute an approximate ground state $\Phi$ by minimizing the energy expectation value
-\begin{align} \label{eq:hfexpectation}
-  E_{\Phi} \equiv \langle \Phi | \hat H | \Phi \rangle,
-\end{align}
-with respect to $|\Phi\rangle$, subject to the restriction that $|\Phi\rangle$ remains a single Slater determinant constructed from an unknown single-particle basis.  The restriction is what enables the simplicity and efficiency of this method.  We shall denote each unknown single-particle state $|p'\rangle$ by a primed label $p'$.
+One of the simplest numerical corrections that could be applied to the initial guess is that of the Hartree--Fock (HF) method.  Using the variational principle, one can compute an approximate ground state $\Phi$ by minimizing the energy expectation value $E_{\Phi}$ with respect to some Slater determinant $|\Phi\rangle$ in an unknown single-particle basis.  We shall denote each state $|p'\rangle$ in this unknown basis by a primed label $p'$.  We assume each unknown state $|p'\rangle$ is built from a linear combination of known basis states $|p\rangle$ with an unknown unitary matrix of coefficients $C_{p p'}$.
 
-To perform numerical calculations, we further assume that each unknown state $|p'\rangle$ is built from a linear combination of known states $|p\rangle$, with an unknown matrix of coefficients $\bm C$ defined via the transformation equation
-\begin{align*}
-  |p'\rangle \equiv \sum_p |p\rangle C_{p p'}.
-\end{align*}
-This allows the problem to be reduced from an abstract minimization problem \eqref{eq:hfexpectation} to a concrete numerical problem.  The caveat is that the set of known functions must be large enough to capture the relevant behavior of the system.
-
-If the interaction is not too strong, it is common to use the single-particle states of the noninteracting Hamiltonian $\hat{H}_1$ as the set of known states.
-
-To ensure orthonormality of the states, we require there to be as many unknown states $|p'\rangle$ as known states $|p\rangle$, and the coefficient matrix $\bm C$ must be unitary.  These conditions are more strict than necessary, but they greatly simplify the calculations and allow the states $|p'\rangle$ to act as \textit{optimized} inputs for methods beyond HF.  At the end of the calculation, of the set of states $|p'\rangle$ there would exactly $N$ \textit{occupied} states that participate in the optimized Slater determinant $|\Phi\rangle$.  The remaining \textit{unoccupied} states serve as the complementary space into which particles can be excited by the interaction $\hat{H}_2$ during the post-HF calculation.
-
-The goal then is to find the coefficients $\bm C$ that minimize the \textit{Hartree--Fock energy} $E_{\Phi}$,
+The goal is to find the coefficients $C_{p p'}$ that minimize the \textit{Hartree--Fock energy} $E_{\Phi}$,
 \begin{align}
-  E_{\Phi} &= \sum_{i'} \langle i' | \hat{H}_1 | i' \rangle + \sum_{i' j'} \langle i' j' | \hat{H}_2 | i' j' \rangle \label{eq:hfenergy},
+  E_{\Phi} &= \sum_{i'} \langle i' | \hat{H}_1 | i' \rangle + \frac{1}{2} \sum_{i' j'} \langle i' j' | \hat{H}_2 | i' j' \rangle \label{eq:hfenergy},
 \end{align}
 where
 \begin{align}
   \langle p' | \hat{H}_1 | q' \rangle &= \sum_{p q} C_{p p'}^* \langle p | \hat{H}_1 | q \rangle C_{q q'}^{}, \label{eq:hftransform1} \\
   \langle p' q' | \hat{H}_2 | r' s' \rangle &= \sum_{p q r s} C_{p p'}^* C_{q q'}^* \langle p q | \hat{H}_2 | r s \rangle C_{r r'}^{} C_{s s'}^{}, \label{eq:hftransform2}
 \end{align}
-
-With the method of Lagrange multipliers, the minimization problem can be reduced to the solving of a nonlinear equation -- the self-consistent \textit{Hartree--Fock equations}:
+Using the method of Lagrange multipliers, the minimization problem reduces to a nonlinear equation -- the self-consistent \textit{Hartree--Fock equations}:
 \begin{align} \label{eq:hartreefock}
-  \bm{F} \bm{C} = \bm{C} \bm{\varepsilon},
+  \sum_q F_{p q} C_{q p'} = C_{p p'} \varepsilon_{p'},
 \end{align}
-where the \textit{Fock matrix} $\bm F$ is defined as
+where the \textit{Fock matrix} $F_{p q}$ is defined as
 \begin{align} \label{eq:fock}
   F_{p q} \equiv \langle p | \hat{H}_1 | q \rangle + \sum_{r s i'} C_{r i'}^* \langle p r | \hat{H}_2 | q s \rangle C_{s i'}^{},
 \end{align}
-and $\bm{\varepsilon}$ is a vector of Lagrange multipliers, which serve to constrain the orthonormality of the single-particle basis.  Each multiplier $\varepsilon_{p'}$ is associated with a specific single-particle state $|p'\rangle$.
+and $\varepsilon_{p'}$ is a vector of Lagrange multipliers.
 
-Aside from trivial cases that are analytically solvable, the HF equation is generally solved numerically using an iterative algorithm.  We begin with an initial guess $\bm{C}^{(j)}$ on the $j$-th iteration, which is fed into Eq.\ \eqref{eq:fock} to produce the Fock matrix.  This is then used in Eq.\ \eqref{eq:hartreefock}, which leads to a standard eigenvalue problem from which $\bm{C}^{(j + 1)}$ arise as the matrix of eigenvectors and $\bm{\varepsilon}^{(j + 1)}$ as the vector of eigenvalues.  This process can be repeated indefinitely until $\bm{C}$ approaches a fixed point (self-consistency).  While in theory it is possible for the solution to never reach a fixed point, or that it may require a unfeasibly large number of iterations, in practice this naive approach can adequately provide solutions for many cases.  In other cases where it is insufficient, methods such as DIIS \cite{PULAY1980393,JCC:JCC540030413}, Broyden's method \cite{broyden1965class}, or even \textit{ad hoc} linear mixing can improve and accelerate convergence greatly.  Therefore, the possibility of slow or non-convergence is generally not a concern in practice.
+Besides trivial cases, the HF equation is generally solved numerically using an iterative algorithm the alternates between the use of Eq.\ \eqref{eq:fock} and Eq.\ \eqref{eq:hartreefock} to successively refine an initial guess for $C_{p p'}$ until a fixed point (self-consistency) is reached.  For our calculations, we use the identity matrix as the initial guess.  When convergence is too slow, methods such as DIIS \cite{PULAY1980393,JCC:JCC540030413}, Broyden's method \cite{broyden1965class}, or even \textit{ad hoc} linear mixing can improve and accelerate convergence greatly.
 
-For the initial guess, we simply use the ground state of our noninteracting Hamiltonian, thus $\bm{C}^{(0)} = \bm{1}$, the identity matrix.  At each iteration, we calculate the sum of the Lagrange multipliers $\bm{\varepsilon}$ as a diagnostic for convergence: as the iteration approaches convergence, the change in the sum per iteration should decrease rapidly.
+HF does not provide an exact solution to problems where multi-particle correlations are present even if the single-particle basis is not truncated (infinite in size).  The discrepancy between the HF energy and the exact ground state energy is often referred to as the \textit{correlation energy}.  The focus of post-HF methods such as IM-SRG or CC is to add corrections that recover parts of the correlation energy.
 
-Since HF restricts the ground state to merely a single Slater determinant of single-particle states, it cannot provide an exact solution to a problem where multi-particle correlations are present even if the single-particle basis is not truncated (infinite in size).  The discrepancy between the HF energy and the exact ground state energy is often referred to as the \textit{correlation energy}, by definition.  The focus of post-HF methods such as IM-SRG or CC is to add corrections beyond mean-field approximations such as HF.
-
-To make use of the HF solution as the reference state for post-HF calculations, we transform the matrix elements via Eqs.\ \eqref{eq:hftransform1} and \eqref{eq:hftransform2}.  In effect, this means we are no longer operating within the harmonic oscillator single-particle basis, but rather a HF-optimized single-particle basis.  However, we will omit the prime symbols as the post-HF methods are generic and can be used in any basis, whether optimized by HF or not.
+To make use of the HF solution as the reference state for post-HF calculations, we transform the matrix elements via Eqs.\ \eqref{eq:hftransform1} and \eqref{eq:hftransform2}.  In effect, this means we are no longer operating within the harmonic oscillator single-particle basis, but rather a HF-optimized single-particle basis.  However, we will omit the prime symbols as the post-HF methods are generally basis-agnostic.
 
 \subsection{The IM-SRG method}
 \label{subsec:imsrgmethod}
@@ -281,36 +206,9 @@ The power of SRG methods lies in the flexibility of the generator $\hat{\eta}$, 
 
 \subsubsection{Evolving the flow equation in medium}
 
-The SRG flow equation Eq.\ \eqref{eq:imsrgode} can be solved in the second quantization formalism described in Section \ref{subsec:modelHamiltonian}, where field operators are defined with respect to the physical vacuum state.  However, since the basis of a many-body problem grows factorially with the number of particles and the size of the model space, the applicability of the naive (free-space) SRG method is restricted to comparatively small systems.  A more practical approach is to perform the evolution \textit{in medium}, i.e.\ using a many-body Slater determinant as a reference \cite{kehrein2006flow}.  This gives rise to the IM-SRG method \cite{PhysRevC.85.061304,Hergert2016165,lnp936}.
+The SRG flow equation Eq.\ \eqref{eq:imsrgode} can be solved in the second quantization formalism described in Section \ref{subsec:modelHamiltonian}, where creation and annihilation operators are defined with respect to the physical vacuum state.  However, since the basis of a many-body problem grows factorially with the number of particles and the size of the model space, the applicability of the naive (free-space) SRG method is restricted to comparatively small systems.  A more practical approach is to perform the evolution \textit{in medium}, i.e.\ using a many-body Slater determinant as a reference \cite{kehrein2006flow}.  This gives rise to the IM-SRG method \cite{PhysRevC.85.061304,Hergert2016165,lnp936}.
 
-In the Hamiltonian representation of Eq.\ \eqref{eq:second_quantized_hamiltonian}, the one-body operator string $\hat{a}_p^\dagger \hat{a}_q$  has an expectation value of zero in vacuum:
-\begin{align}
-&\bra{} \hat{a}_p^\dagger \hat{a}_q \ket{} = 0, \label{eq:vacuum-zero1}
-\end{align}
-and the two-body string $\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r$ does not couple states with one or fewer particles:
-\begin{align}
-&\bra{} \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r \ket{} = 0, &
-&\bra{t} \hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r \ket{u} = 0. \label{eq:vacuum-zero2}
-\end{align}
-These properties arise from the fact that the creation operators always appear to the left of the annihilation operators, the defining property of a pure $k$-body operator in vacuum.  Such strings are said to be \textit{normal-ordered with respect to the vacuum state $\ket{}$}.
-
-It is also possible to be normal-ordered with respect to a different state.  Suppose our reference state is a Slater determinant $\ket{\Phi} \equiv \ket{i_1 i_2 \ldots i_N}$ containing $N$ occupied states $I \equiv \{i_1, i_2, \ldots, i_N\}$.  Let $s$ be a string of fermionic field operators.  We define the \textit{normal ordering of $s$ with respect to $|\Phi\rangle$}, denoted $\normord{s}$, to be a syntactic transformation that (a) permutes field operators belonging to $L \equiv \{\hat{a}_i^{} \mid i \in I\} \cup \{\hat{a}_a^\dagger \mid a \notin I\}$ to the left of those not belonging to $L$, and (b) attaches a negative sign to the resulting string if the permutation is odd.  The permutation in (a) is only defined up to reordering among the $L$ and non-$L$ operators, but this ambiguity has no effect on the semantics of the result due to the sign compensation in (b).  For example,
-\begin{align*}
-  \normord{\hat{a}_i \hat{a}^\dagger_j \hat{a}_a \hat{a}_b^\dagger}
-  &= \hat{a}_i \hat{a}_b^\dagger \hat{a}^\dagger_j \hat{a}_a \\
-  &= -\hat{a}_b^\dagger \hat{a}_i \hat{a}^\dagger_j \hat{a}_a.
-\end{align*}
-Here, both of the RHS expressions are valid and equivalent interpretations of the normal ordering  of $\hat{a}_i \hat{a}^\dagger_j \hat{a}_a \hat{a}_b^\dagger$.
-
-With normal-ordering, we obtain analogs of Eqs.\ \eqref{eq:vacuum-zero1} and \eqref{eq:vacuum-zero2} for the reference state $\ket{\Phi}$:
-\begin{align*}
-&\bra{\Phi} \normord{\hat{a}_p^\dagger \hat{a}_q} \ket{\Phi} = 0, &
-&\bra{\Phi} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r} \ket{\Phi} = 0,
-&\bra{\Phi_t} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s \hat{a}_r} \ket{\Phi_u} = 0.
-\end{align*}
-where $|\Phi_i\rangle \equiv \hat{a}_i^{} |\Phi\rangle$, and $|\Phi_a\rangle \equiv \hat{a}_a^\dagger |\Phi\rangle$.
-
-Likewise, we can rewrite the Hamiltonian $\hat H = \hat{H}_1 + \hat{H}_2$ in its \emph{normal-ordered representation}:
+The Hamiltonian representation in Eq.\ \eqref{eq:second_quantized_hamiltonian} is said to be \textit{normal-ordered}\cite{shavitt2009many} with respect to the (true) vacuum, meaning that for any $k$-body operator, its matrix elements vanish unless the bra and ket states have at least $k$ particles.  It is also possible to normal order with respect to a different state, in which case matrix elements of $k$-body operators vanish unless the bra and ket states have at least $k$ \emph{quasiparticles}, as defined with respect to the reference state.  In single-reference IM-SRG, we assume the reference state to be an $N$-particle Slater determinant $\ket{\Phi} \equiv \ket{i_1 i_2 \ldots i_N}$.  We may then rewrite the Hamiltonian $\hat H$ in a representation normal-ordered with respect to the reference state (``Fermi vacuum'') $\ket{\Phi}$:
 \begin{align}
   \hat{H} = H_\varnothing + \sum_{p q} H_{p q} \normord{\hat{a}_p^\dagger \hat{a}_q^{}} + \frac{1}{4} \sum_{p q r s} H_{p q r s} \normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s^{} \hat{a}_r^{}},
   \label{eq:normordhamiltonian}
@@ -319,9 +217,11 @@ where
 \begin{align*}
   H_\varnothing &\equiv \sum_i \langle i | \hat{H}_1 | i \rangle + \frac{1}{2} \sum_{i j} \langle i j | \hat{H}_2 | i j \rangle, \\
   H_{p q} &\equiv \langle p | \hat{H}_1 | q \rangle + \sum_i \langle p i | \hat{H}_2 | q i \rangle, \\
-  H_{p q r s} &\equiv \langle p q | \hat{H}_2 | r s \rangle. \\
+  H_{p q r s} &\equiv \langle p q | \hat{H}_2 | r s \rangle.
 \end{align*}
-If $\Phi$ is a state optimized by the HF method, then $H_\varnothing$ is simply the HF energy $E_\Phi$ and $H_{p q}$ is the Fock matrix $F_{p q}$.  The operator $\hat H$ in Eq.\ \eqref{eq:normordhamiltonian} is completely equivalent to $\hat H$ in Eq.\ \eqref{eq:vacuumhamiltonian}.  The only difference is that the meaning of a pure $k$-body operator has been redefined with respect to the reference state $\ket{\Phi}$ rather than the vacuum state $\ket{}$, causing matrix elements to be reshuffled among the themselves.  Where this makes a critical difference is when the operator expressions are \emph{truncated}, i.e.\ higher-body operators discarded from the computation for efficiency reasons.  By normal-ordering with respect to an approximate state $\ket{\Phi}$, we reshuffle higher-body contributions into the lower-body terms, significantly reducing the importance of the higher-body operators.
+The colons in $\normord{\hat{a}_p^\dagger \hat{a}_q^{}}$ and $\normord{\hat{a}_p^\dagger \hat{a}_q^\dagger \hat{a}_s^{} \hat{a}_r^{}}$ denote strings of creation and annihilation operators normal-ordered with respect to $\ket{\Phi}$.
+
+If $\Phi$ is a state optimized by the HF method, then $H_\varnothing$ is simply the HF energy $E_\Phi$ in Eq.\ \eqref{eq:hfenergy} and $H_{p q}$ is the Fock matrix $F_{p q}$ in Eq.\ \eqref{eq:fock}.  The operator $\hat H$ in Eq.\ \eqref{eq:normordhamiltonian} is completely equivalent to $\hat H$ in Eq.\ \eqref{eq:second_quantized_hamiltonian}.  The only difference is that the meaning of a ``$k$-body'' operator has been redefined with respect to $\ket{\Phi}$ rather than the vacuum state $\ket{}$, causing matrix elements to be reshuffled among the the $k$-body components.  This makes a critical difference when operator expressions are \emph{truncated}, i.e.\ higher-body operators discarded from the computation for efficiency reasons.  By normal-ordering with respect to an approximate state $\ket{\Phi}$, we reshuffle higher-body contributions into the lower-body terms, significantly reducing the importance of the higher-body operators.
 
 Higher-body operators arise from integrating the flow equations of Eq.\ (\ref{eq:imsrgode}), which is one of the major challenges of the SRG method.  With each evaluation of the commutator, the Hamiltonian gains terms of higher order, and these induced contributions will in subsequent integration steps feed back into terms of lower order.  Thus, the higher-body contributions are not irrelevant to the final solution even if only the ground state energy (zero-body component) is of interest.
 
@@ -385,7 +285,7 @@ where
 \label{fig:diagrams-imsrg}
 \end{figure}
 
-The equations can be derived directly from the anticommutation relations of the field operators, but it is more convenient to use Wick's theorem \cite{PhysRev.80.268} or, even more efficiently, diagrammatic techniques \cite{shavitt2009many} to arrive at the results.  In particular, Figure \ref{fig:diagrams-imsrg} shows the diagrammatic form of Eq.\ \eqref{eq:flow0}, Eq.\ \eqref{eq:flow1}, and Eq.\ \eqref{eq:flow2}.
+The equations can be derived directly from the anticommutation relations of the creation and annihilation operators, but it is more convenient to use Wick's theorem \cite{PhysRev.80.268} or, even more efficiently, diagrammatic techniques \cite{shavitt2009many} to arrive at the results.  In particular, Figure \ref{fig:diagrams-imsrg} shows the diagrammatic form of Eq.\ \eqref{eq:flow0}, Eq.\ \eqref{eq:flow1}, and Eq.\ \eqref{eq:flow2}.
 
 The commutator in the flow equations Eq.\ \eqref{eq:imsrgode} ensures that the evolved state $\hat U(s) \ket{\Phi}$ consists of \emph{linked diagrams} only \cite{shavitt2009many}.  This indicates that IM-SRG is a size-extensive \cite{ISI:A1981MN73700014} method by construction, even if the operators are truncated.
 
