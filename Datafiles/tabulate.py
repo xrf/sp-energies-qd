@@ -9,7 +9,9 @@ NUM_SHELLS = [14, 16, 16, 16, 20, 20]
 # known cases of IM-SRG(2) that don't converge
 KNOWN_NC_IMSRG = set((k, kf * (kf + 1), f) for (k, kf, f) in [
     # diverged (no hope of convergence)
+    (5, 1, 0.1),
     (8, 3, 0.1),
+    (10, 1, 0.1),
     (11, 4, 0.1),
 
     # took more than 500 steps to reach s = 2.0
@@ -41,6 +43,56 @@ def render_entry(value, err=None, default_precision=4):
     if np.isnan(err):
         return "{{:.{}f}}{{{{(?)}}}}".format(default_precision).format(value)
     return utils.render_with_err(value, err)
+
+def save_fci_table(path,
+                   cases=[(2, [(0.1, 5), (0.28, 5), (1.0, 5),
+                               (0.1, 10), (0.28, 10), (1.0, 10)]),
+                          (6, [(0.1, 8), (0.28, 8), (1.0, 8)])]):
+    d = utils.load_all()
+    del d["ml"]
+    d = d[d["interaction"] == "normal"]
+    del d["interaction"]
+    d = d[d["label"] == "ground"]
+    del d["label"]
+    del d["num_filled"]
+    d = d.set_index(["num_shells", "num_particles", "freq", "method"])
+
+    methods = ["imsrg", "ccsd", "fci"]
+    header = r"""
+\begin{tabular}{S[table-format=2.0]SS[table-format=2.0]S[table-format=3.5]S[table-format=3.5]S[table-format=3.5]}%
+\hline\hline
+{$N$} & {$\omega$} & {$K$} & {IM-SRG(2)} & {CCSD} & {FCI} \\
+"""[1:]
+    c = d["energy"]
+
+    s = []
+    s.append(header)
+    for num_particles, case in cases:
+        s.append("\\hline\n")
+        for freq, num_shells in case:
+            row = [num_particles, freq, num_shells]
+            for method in methods:
+                def get(): # to allow early returns
+                    try:
+                        r = d.loc[(num_shells, num_particles, freq, method)]
+                    except KeyError:
+                        return None
+                    return r["energy"]
+                value = get()
+                if value is None:
+                    if ("imsrg" in method and
+                        (num_shells, num_particles, freq) in KNOWN_NC_IMSRG):
+                        value = "n.c."
+                    if ("ccsd" in method and
+                        (num_shells, num_particles, freq) in KNOWN_NC_CCSD):
+                        value = "n.c."
+                row.append(render_entry(value))
+            s.append(" & ".join(map(str, row)) + " \\\\\n")
+    s.append("\\hline\\hline\n\\end{tabular}")
+
+    with open(path, "w") as f:
+        f.write("".join(s))
+    return d
 
 def save_table(path, label,
                num_shells=NUM_SHELLS,
@@ -173,13 +225,14 @@ def save_extrapolated_table(path, label,
 
                 row.append(render_entry(value, err))
             s.append(" & ".join(map(str, row)) + " \\\\\n")
-    s.append("\\hline\\hline\\n\\end{tabular}")
+    s.append("\\hline\\hline\n\\end{tabular}")
 
     with open(path, "w") as f:
         f.write("".join(s))
     return d
 
 os.chdir(os.path.dirname(__file__))
+save_fci_table("../Manuscript/tab-ground-fci.tex")
 save_table("../Manuscript/tab-ground.tex", label="ground")
 save_table("../Manuscript/tab-add.tex", label="add")
 save_table("../Manuscript/tab-rm.tex", label="rm")

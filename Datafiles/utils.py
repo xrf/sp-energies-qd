@@ -644,6 +644,7 @@ def load_ground_dmc():
 def load_ground(with_priority=False, toler=6e-4,
                 files=FileDeps(
                     "ground-sarah.txt",
+                    "ground-veronica.txt",
                     "imsrg-qdpt/ground.txt",
                     "EOM_IMSRG_qd_attached.dat",
                     "EOMIMSRG_up_to_16_attached.dat",
@@ -685,6 +686,14 @@ def load_ground(with_priority=False, toler=6e-4,
             (d["num_shells"] == 11) &
             (d["method"] == "imsrg"))]
     d["num_filled"] = get_num_filled(d["num_particles"])
+    del d["num_particles"]
+    d["priority"] = -2
+    d = d.dropna()
+    ds.append(d)
+
+    d = load_table(files["ground-veronica.txt"])
+    d["num_filled"] = get_num_filled(d["num_particles"])
+    d["method"] = "fci"
     del d["num_particles"]
     d["priority"] = -2
     d = d.dropna()

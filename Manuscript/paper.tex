@@ -112,7 +112,7 @@ They are degenerate with respect to both spin projection $m_{\mathrm{s}}$ and \t
 \begin{align} \label{eq:shell_index}
   k \equiv 2 n + |m_\ell|,
 \end{align}
-which labels each shell from zero.  The shell structure is illustrated in Figure \ref{fig:shell-structure}.
+which labels each shell from zero.  The shell structure is illustrated in Fig.\ \ref{fig:shell-structure}.
 
 Fermionic $N$-particle eigenstates of the one-body Hamiltonian $\hat{H}_1$ can be explicitly constructed as Slater determinants $|p_1 \ldots p_N\rangle$ of the single-particle states $|p_1\rangle, \ldots, |p_N\rangle$ from Eq.\ \eqref{eq:singleparticlestate}, where $|p\rangle$ is an abbreviation of $|n m_\ell m_{\mathrm{s}}\rangle$.  The Slater determinant $|p_1 \ldots p_N\rangle$ is said to \textit{occupy} the single-particle states $|p_1\rangle, \ldots, |p_N\rangle$.
 
@@ -283,7 +283,7 @@ where
 \label{fig:diagrams-imsrg}
 \end{figure}
 
-The equations can be derived directly from the anticommutation relations of the creation and annihilation operators, but it is more convenient to use Wick's theorem \cite{PhysRev.80.268} or, even more efficiently, diagrammatic techniques \cite{shavitt2009many} to arrive at the results.  In particular, Figure \ref{fig:diagrams-imsrg} shows the diagrammatic form of Eq.\ \eqref{eq:flow0}, Eq.\ \eqref{eq:flow1}, and Eq.\ \eqref{eq:flow2}.
+The equations can be derived directly from the anticommutation relations of the creation and annihilation operators, but it is more convenient to use Wick's theorem \cite{PhysRev.80.268} or, even more efficiently, diagrammatic techniques \cite{shavitt2009many} to arrive at the results.  In particular, Fig.\ \ref{fig:diagrams-imsrg} shows the diagrammatic form of Eq.\ \eqref{eq:flow0}, Eq.\ \eqref{eq:flow1}, and Eq.\ \eqref{eq:flow2}.
 
 The commutator in the flow equations Eq.\ \eqref{eq:imsrgode} ensures that the evolved state $\hat U(s) \ket{\Phi}$ consists of \emph{linked diagrams} only \cite{shavitt2009many}.  This indicates that IM-SRG is a size-extensive \cite{ISI:A1981MN73700014} method by construction, even if the operators are truncated.
 
@@ -368,7 +368,7 @@ In practice, the cluster operator $\hat{T}$ must be truncated for calculations t
 \begin{align*}
   \hat{T} = \hat{T}_1 + \hat{T}_2.
 \end{align*}
-This is known as coupled cluster with singles and doubles (CCSD), with an asymptotic computational cost that scales like IM-SRG(2).  This truncation has been successfully applied to many problems in quantum chemistry \cite{RevModPhys.79.291} and nuclear physics \cite{2014RPPh...77i6302H}.  In addition, we also truncate the three-body effective Hamiltonian terms that are induced by the similarity transformation.  Figure \ref{fig:diagrams-ccsd} shows the diagrammatic representation of Eq.\ \eqref{eq:cc_heff1} in CCSD.
+This is known as coupled cluster with singles and doubles (CCSD), with an asymptotic computational cost that scales like IM-SRG(2).  This truncation has been successfully applied to many problems in quantum chemistry \cite{RevModPhys.79.291} and nuclear physics \cite{2014RPPh...77i6302H}.  In addition, we also truncate the three-body effective Hamiltonian terms that are induced by the similarity transformation.  Fig.\ \ref{fig:diagrams-ccsd} shows the diagrammatic representation of Eq.\ \eqref{eq:cc_heff1} in CCSD.
 
 \begin{figure}
   \includegraphics{fig-diagrams-ccsd.pdf}
@@ -463,7 +463,7 @@ We can then express the perturbation expansion in terms of summations over matri
     \sum_{i a b} \frac{|H_{p i a b}|^2}{2 \Delta_{p i a b}}
     - \sum_{i j a} \frac{|H_{i j p a}|^2}{2 \Delta_{i j p a}},
 \end{align*}
-where the M\o ller--Plesset denominators $\Delta$ are defined in Eq.\ \eqref{eq:moellerplessetdenominator}.  The above expression is depicted in Figure \ref{fig:diagrams-sfe}.  Since there are numerous terms in the third-order correction $\varepsilon_p^{(3)}$, they are listed in diagrammatic form in Figure \ref{fig:diagrams-sfe}.  We will refer to QDPT to third order as ``QDPT3''.
+where the M\o ller--Plesset denominators $\Delta$ are defined in Eq.\ \eqref{eq:moellerplessetdenominator}.  The above expression is depicted in Fig.\ \ref{fig:diagrams-sfe}.  Since there are numerous terms in the third-order correction $\varepsilon_p^{(3)}$, they are listed in diagrammatic form in Fig.\ \ref{fig:diagrams-sfe}.  We will refer to QDPT to third order as ``QDPT3''.
 
 Taking into account the perturbation corrections, one can extract reasonably accurate addition and removal energies for single-particle states near the Fermi level via:
 \begin{align*}
@@ -546,13 +546,13 @@ There is great amount of flexibility in the application of many-body methods.  T
 
 The general process begins with the input matrix elements Eq.\ \eqref{eq:interactionintegral}, computed exactly using the \texttt{OpenFCI} software library \cite{2008arXiv0810.2644K}.  Internally, \texttt{OpenFCI} calculates the interaction integrals in the center-of-mass frame using Gauss--Hermite quadrature and transforms them back into the laboratory frame to produce matrix elements suitable for use in our many-body methods.  In principle, one could also compute Eq.\ \eqref{eq:interactionintegral} analytically \cite{0953-8984-10-3-013}, but the computational cost of the analytic expression grows much more rapidly than \texttt{OpenFCI}'s quadrature-based approach.
 
-Afterward, there are several paths through which one can traverse Figure \ref{fig:methods} to obtain output observables.  We shall primarily focus on the three combinations: (a) HF + IM-SRG(2) + QDPT3, (b) HF + IM-SRG(2) + EOM2, and (c) HF + CCSD + EOM2.
+Afterward, there are several paths through which one can traverse Fig.\ \ref{fig:methods} to obtain output observables.  We shall primarily focus on the three combinations: (a) HF + IM-SRG(2) + QDPT3, (b) HF + IM-SRG(2) + EOM2, and (c) HF + CCSD + EOM2.
 
 It is possible to omit some steps of the process.  For example, one can omit HF, but continue with the remaining two steps.  While this is doable, from our experience HF significantly improves the results of the later post-HF methods at very low cost compared to the post-HF methods.  Therefore, in practice there is little reason to omit HF.  We will however investigate the effects of removing one or more of the post-HF methods.
 
 Since every calculation in this paper begins with the HF stage, we will not explicitly state ``HF'' unless there is no post-HF method used at all, in which case we write ``HF only''.
 
-All calculations of ground state energy $E_N$ in this paper are restricted to cases where the number of particles $N$ is a magic number, i.e.\ a \textit{closed shell} system (see Figure \ref{fig:shell-structure} for an illustration of the shell structure).  This is a limitation of the many-body methods used in this paper and while there are ways to overcome this limit they are beyond the scope of this paper (see Section \ref{sec:conclusions} for some ideas).  Addition/removal energies $\varepsilon^{(\pm)}$ are similarly restricted in that we only calculate the energy difference between $E_N$ of a closed shell system and $E_{N \pm 1}$ of the same system but with one particle added/removed:
+All calculations of ground state energy $E_N$ in this paper are restricted to cases where the number of particles $N$ is a magic number, i.e.\ a \textit{closed shell} system (see Fig.\ \ref{fig:shell-structure} for an illustration of the shell structure).  This is a limitation of the many-body methods used in this paper and while there are ways to overcome this limit they are beyond the scope of this paper (see Section \ref{sec:conclusions} for some ideas).  Addition/removal energies $\varepsilon^{(\pm)}$ are similarly restricted in that we only calculate the energy difference between $E_N$ of a closed shell system and $E_{N \pm 1}$ of the same system but with one particle added/removed:
 \begin{align*}
   \varepsilon^{(+)} &\equiv E_{(N + 1)} - E_N, \\
   \varepsilon^{(-)} &\equiv E_N - E_{(N - 1)}.
@@ -584,7 +584,14 @@ Numerical calculations in this paper are performed with a relative precision of 
   \label{fig:gs}
 \end{figure}
 
-In Fig.\ \ref{fig:gs} we display a selection of ground state energies calculated using HF + IM-SRG(2) and HF + CCSD as described in Section \ref{subsec:methodology}.  We also include results from M\o ller--Plesset perturbation theory to second order (MP2), DMC \cite{hoegberget2013thesis}, and FCI \cite{olsen2013thesis} for comparison where available.
+\begin{table}
+  \centering
+  \caption{Similar to Table \ref{tab:ground}, this table compares the ground state energies of quantum dots calculated using IM-SRG(2), CCSD, and FCI \cite{olsen2013thesis}.}
+  \label{tab:ground-fci}
+  \input{tab-ground-fci}\unskip
+\end{table}
+
+Fig.\ \ref{fig:gs} and Table \ref{tab:ground} display a selection of ground state energies calculated using HF + IM-SRG(2) and HF + CCSD as described in Section \ref{subsec:methodology}.  We include results from M\o ller--Plesset perturbation theory to second order (MP2), DMC \cite{hoegberget2013thesis}, and FCI \cite{olsen2013thesis} (see Table \ref{tab:ground-fci}) for comparison where available.
 
 We do not include results from ``HF only'' to avoid overshadowing the comparatively smaller differences between the non-HF results in the plots.  Some HF results can be found in Fig.\ \ref{fig:by-freq-10-6-normal} instead.  Generally, the HF ground state energies differ from the non-HF ones by a few to several percent, whereas non-HF energies tend to differ from each other by less than a percent.
 
