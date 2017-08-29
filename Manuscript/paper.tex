@@ -387,7 +387,7 @@ After the Fock matrix has been diagonalized, the diagonal components of Eq.\ \eq
   \bra{\Phi} \normord{\hat a_i^\dagger \hat a_j^\dagger \hat a_b \hat a_a} \hat{H}_2 \bigl\{1 + \hat{T}_1 + \hat{T}_2 + \frac{1}{2} \hat{T}_1^{2} + \hat{T}_1\hat{T}_2 + \frac{1}{2!} \hat{T}_2^{2} + \frac{1}{3!} \hat{T}_1^{3} + \frac{1}{2!} \hat{T}_1^{2} \hat{T}_2 + \frac{1}{4!} \hat{T}_1^{4}\bigr\}_{\mathrm{c}} \ket{\Phi} \notag \\
 = \Delta_{i j a b} t_{a b i j} \notag
 \end{gather}
-where $\Delta$ are the M\o ller--Plesset denominators from Eq.\ \eqref{eq:moellerplessetdenominator}.  As usual, these non-linear equations are solved using an iterative procedure.  One begins with an initial guess for the cluster amplitudes, which are used to calculate the left-hand side of Eq.\ \eqref{eq:ccsd2}.  Dividing by the denominator on the right-hand side gives updated amplitudes which are used to re-evaluate the left-hand side. This process is repeated until the amplitudes reach a fixed point.  Like the HF iterative procedure, employing convergence acceleration techniques can reduce the number of CC iterations required.
+where $\Delta$ are the M\o ller--Plesset denominators from Eq.\ \eqref{eq:moellerplessetdenominator}.  As usual, these non-linear equations are solved using an iterative procedure where the cluster amplitudes on the right-hand side of Eq.\ \eqref{eq:ccsd2} are updated by calculating the terms on the left-hand side until a fixed point is reached.  Like the HF iterative procedure, employing convergence acceleration techniques can reduce the number of CC iterations required.
 
 \subsection{Quasigenerate perturbation theory}
 \label{subsec:selfenergy}
@@ -527,7 +527,7 @@ where $l^{(u, \pm)}_p$ and $l^{(u, \pm)}_{p q r}$ are likewise the normal-ordere
 \end{align*}
 and form a bi-orthogonal set with the right-eigenvectors, $\braket{\bar{L}^{(N \pm 1)}_u}{\bar{X}^{(N \pm 1)}_v} = \delta_{u v}$.
 
-In this paper, because the interaction is real and thus the effective Hamiltonian is real, the left- and right-eigenvalues are equivalent. In addition, while the the left- and right-eigenvectors are generally not equal, the differences in their single-particle Eq.\ \eqref{eq:partial_norms_p} or single-hole Eq.\ \eqref{eq:partial_norms_h} natures are, in practice, not significant.  Therefore, only the right-eigenvectors are used in this paper.
+In this paper, because the effective Hamiltonian is real, the corresponding left- and right-eigenvalues are equal. In addition, while the the left- and right-eigenvectors are generally not equivalent, the differences in their single-particle Eq.\ \eqref{eq:partial_norms_p} or single-hole Eq.\ \eqref{eq:partial_norms_h} natures are, in practice, not significant.  Therefore, only the right-eigenvectors are used in this paper.
 
 \section{Results}
 \label{sec:results}
