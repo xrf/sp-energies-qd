@@ -56,7 +56,7 @@ In general, quantum dot systems are not analytically solvable, with the exceptio
 
 One of the most accurate techniques for solving many-body systems is that of exact diagonalization, also known as the full configuration interaction method.  Unlike most methods, it is assured to converge to the exact answer as the size of the finite basis is increased to infinity (the so-called \textit{infinite-basis limit}).  Despite this significant advantage, it is often not possible to perform exact diagonalization due to its factorially increasing cost with respect to the basis size and the number of particles.  This led to the development of more cost-effective methods that trade varying amounts of accuracy for varying amounts of speed.
 
-In this paper, we analyze the application of several methods to the quantum dot systems, including the Hartree--Fock (HF) method \cite{hartree_1928,Fock1930}, M\o ller--Plesset perturbation theory (MP) \cite{1934PhRv...46..618M}, the in-medium similarity renormalization group (IM-SRG) method \cite{IMSRG}, coupled cluster (CC) theory \cite{PhysRevB.67.045320,heidari:114708,PhysRevB.84.115302}, quasidegenerate perturbation theory (QDPT) \cite{0022-3700-7-18-010,Kvasnicka1974}, and equations-of-motion (EOM) methods \cite{RevModPhys.40.153}.  We compare them against variational and diffusion Monte Carlo (VMC and DMC) \cite{PhysRevB.68.035304,PhysRevB.62.8120,PhysRevB.84.115302,PhysRevB.54.4780} and full configuration interaction (FCI) theory \cite{olsen2013thesis,JJAP.36.3924,PhysRevB.56.6428,2008arXiv0810.2644K,rontani:124102} results, where available, from existing literature.
+In this paper, we analyze the application of several methods to the quantum dot systems, including the Hartree--Fock (HF) method \cite{hartree_1928,Fock1930}, M\o ller--Plesset perturbation theory (MP) \cite{1934PhRv...46..618M}, the in-medium similarity renormalization group (IM-SRG) method \cite{IMSRG}, coupled cluster (CC) theory \cite{PhysRevB.67.045320,heidari:114708,PhysRevB.84.115302}, quasidegenerate perturbation theory (QDPT) \cite{0022-3700-7-18-010,Kvasnicka1974}, and equations-of-motion (EOM) methods \cite{RevModPhys.40.153,StantonBartlettEOM,EMRICH1981379}.  We compare them against variational and diffusion Monte Carlo (VMC and DMC) \cite{PhysRevB.68.035304,PhysRevB.62.8120,PhysRevB.84.115302,PhysRevB.54.4780} and full configuration interaction (FCI) theory \cite{olsen2013thesis,JJAP.36.3924,PhysRevB.56.6428,2008arXiv0810.2644K,rontani:124102} results, where available, from existing literature.
 
 Of these methods, IM-SRG is a recently developed technique that has shown significant promises.  Similarity renormalization group (SRG) methods \cite{PhysRevD.48.5863,PhysRevD.49.4214} are a family of methods that transform the Hamiltonian into a band- or block-diagonal form through a continuous sequence of unitary transformations.  The goal of such a transformation is to reduce the coupling between a subspace of interest -- such as the ground state or a set of low-lying states -- and the remaining Hilbert space.  It has successfully been applied to systems with various underlying potentials to calculate their binding energy and other observables, especially in nuclear theory \cite{ScottSRG,PhysRevC.75.061001,SRGThreeDim}.  The \emph{in-medium} SRG (IM-SRG) method adapts the SRG approach to evolve Hamiltonians in a truncated Fock space that is centered around an approximate reference state rather than the physical vacuum, which substantially reduces the importance of the computationally costly higher-body operators.
 
@@ -328,6 +328,8 @@ w_{a b i j}
 It is also possible \cite{IMSRG} to use $\Delta$ (also defined above), the same energy denominators from M\o ller--Plesset perturbation theory, which leads to a slightly different variant of the White generator.  For our calculations, we use exclusively Epstein--Nesbet denominators.
 
 Compared to the Wegner generator, where the derivatives of the final flow equations contain cubes of the Hamiltonian matrix elements (i.e.\ each term contains a product of 3 one-body and/or two-body matrix elements), the elements in White generators contribute only linearly.  This reduces the stiffness in the differential equation, providing a net increase in computational efficiency as stiff ODE solvers tend to be slower and consume more memory.
+
+Lastly, we note that from the above discussion it is clear that the IMSRG is closely related to several other well-known methods of quantum chemistry such as coupled cluster theory \cite{shavitt2009many}, canonical transformation theory \cite{White:cond-mat0201346,CTreview}, the irreducible (or anti-Hermitian) contracted Schr\"odinger equation approach \cite{Mazzioti1,Mazzioti2}, and the driven similarity renormalization group method \cite{Evangelista}.  We refer the reader to Ref.\ \cite{HeikoReview} for a discussion of the similarities and differences from these approaches.
 
 \subsection{Coupled cluster theory}
 \label{subsec:cctheory}
@@ -657,7 +659,7 @@ To analyze the rate of convergence more quantitatively, we define $\rho_K$ as th
 \begin{align*}
   \rho_K = \frac{\varepsilon_K - \varepsilon_{(K - 1)}}{\varepsilon_K}.
 \end{align*}
-The denominator allows the quantity to be meaningfully compared between different systems.  We expect this quantity to become increasingly small as the calculations converge.
+The denominator allows the quantity to be meaningfully compared between different systems.  We expect this quantity to become increasingly small as the calculations converge towards the complete basis set limit.
 
 In Fig.\ \ref{fig:rel-slopes}, we plot the $\rho_{15}$ for IM-SRG(2) + QDPT3.  The many-body methods were tested against a \emph{modified} Coulomb-like interaction, parametrized by two lengths $\sigma_{\mathrm{A}}$ and $\sigma_{\mathrm{B}}$ that characterize the range of the interaction:
 \begin{align}
@@ -702,7 +704,7 @@ In general, there does not appear to be any difference between the convergence b
   \label{fig:by-fit-2-1p0-add}
 \end{figure}
 
-As derived by Kvaal \cite{PhysRevB.80.045321,Kvaal2007}, the asymptotic convergence of the quantum dot observables in a finite harmonic oscillator basis can be approximately described by a power law model:
+To minimize basis set truncation errors, one can either use explicitly correlated R12/F12 methods that account for the correct cusp behavior in many-electron wave functions\cite{Kutzelnigg1985,KLOPPER198717,explicitcorrelationreview}, or one can use basis extrapolation techniques. In the present work, we focus on the latter. As derived by Kvaal \cite{PhysRevB.80.045321,Kvaal2007}, the asymptotic convergence of the quantum dot observables in a finite harmonic oscillator basis can be approximately described by a power law model:
 \begin{align*}
   \Delta E \propto K^{-\beta},
 \end{align*}
