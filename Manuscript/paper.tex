@@ -704,13 +704,15 @@ In general, there does not appear to be any difference between the convergence b
   \label{fig:by-fit-2-1p0-add}
 \end{figure}
 
-To minimize basis set truncation errors, one can either use explicitly correlated R12/F12 methods that account for the correct cusp behavior in many-electron wave functions\cite{Kutzelnigg1985,KLOPPER198717,explicitcorrelationreview}, or one can use basis extrapolation techniques. In the present work, we focus on the latter. As derived by Kvaal \cite{PhysRevB.80.045321,Kvaal2007}, the asymptotic convergence of the quantum dot observables in a finite harmonic oscillator basis can be approximately described by a power law model:
+To reduce errors from the basis set truncation, one can either use explicitly correlated R12/F12 methods that account for the correct cusp behavior in many-electron wave functions\cite{Kutzelnigg1985,KLOPPER198717,explicitcorrelationreview}, or one can use basis extrapolation techniques.  In the present work, we focus on the latter.  As derived by Kvaal \cite{PhysRevB.80.045321,Kvaal2007}, the asymptotic convergence of quantum dot observables in a finite harmonic oscillator basis can be approximately described by a power law model:
 \begin{align*}
   \Delta E \propto K^{-\beta},
 \end{align*}
 where $\Delta E$ is the difference between the finite-basis result and the infinite-basis result, $K$ is the number of shells in the single-particle basis, and $\beta$ is some positive real exponent.  The \textit{smoothness} of the exact wave function determines the rate of the convergence: the more times the exact wave function can be differentiated, the higher the exponent $\beta$.
 
-It is difficult to ascertain what $\beta$ is \textit{a priori}, thus we will empirically compute $\beta$ by fitting the following model through our data:
+We note that this model was derived under the assumption that all correlations are included in the calculation (i.e.\ FCI), thus we are making an assumption that our selection of methods approximately obey the same behavior.  The validity of this assumption will be assessed at the end of this section.
+
+In general, the exponent $\beta$ cannot be determined \textit{a priori}, thus we will empirically compute $\beta$ by fitting the following model through our data:
 \begin{align} \label{eq:power_law_model}
   E = \alpha K^{-\beta} + \gamma.
 \end{align}
@@ -732,7 +734,7 @@ The LM fitting procedure also computes uncertainties for the parameters from an 
 
 We investigated this idea by performing a fit over \emph{all possible} 5-point fit ranges $[K_{\text{stop}} - 4, K_{\text{stop}}]$.  By comparing the extrapolated results at varying values of $K_{\text{stop}}$ with the extrapolated result at the highest possible $K_{\text{stop}}$ and treating the latter as the ``true'' infinite-basis result, we can statistically assess whether the fit uncertainties are a good measure of the discrepancy from the true infinite-basis result.  Our results show a somewhat bimodal distribution: when the relative fit uncertainty is higher than $10^{-3.5}$, the fit uncertainty quantifies the discrepancy well; otherwise, the fit uncertainty underestimates the discrepancy by a factor of 10 or less.
 
-Unlike the other methods, HF energies are somewhat unusual in that they generally do not conform to the power-law model.  In fact, the results and plots seem to indicate an \emph{exponential} convergence with respect to the number of shells.  It is likely that HF is insensitive to the Coulomb cusp.
+Unlike the other methods, HF energies are somewhat unusual in that they generally do not conform to the power-law model.  In fact, the plots indicate an \emph{exponential} convergence with respect to the number of shells, which has also been observed in molecular systems.\cite{HALKIER1999437}  We surmise that HF is insensitive to the Coulomb cusp.
 
 Nonetheless, despite the poor fits that often arise, the extrapolated energies are often quite good for HF.  This is likely due to its rapid convergence, which leaves very little degree of freedom even for a poorly chosen model.  Moreover, we found that the fit uncertainties of the energy are fairly good measures of the true discrepancy.
 
