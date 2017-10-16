@@ -30,7 +30,7 @@
 \affiliation{National Superconducting Cyclotron Laboratory and Department of Physics and Astronomy, Michigan State University, East Lansing, MI 48824, USA}
 \affiliation{The Ohio State University, Columbus, OH 43210, USA}
 \author{Sarah Reimann}
-\affiliation{Department of Chemistry and Center for Theoretical and Computational Chemistry, University of Oslo, N-0316 Oslo, Norway}
+\affiliation{Department of Chemistry, Hylleraas Centre for Quantum Molecular Sciences, University of Oslo, N-0316 Oslo, Norway}
 \author{S. K. Bogner}
 \affiliation{National Superconducting Cyclotron Laboratory and Department of Physics and Astronomy, Michigan State University, East Lansing, MI 48824, USA}
 \author{Morten Hjorth-Jensen}
@@ -56,7 +56,7 @@ In general, quantum dot systems are not analytically solvable, with the exceptio
 
 One of the most accurate techniques for solving many-body systems is that of exact diagonalization, also known as the full configuration interaction method.  Unlike most methods, it is assured to converge to the exact answer as the size of the finite basis is increased to infinity (the so-called \textit{infinite-basis limit}).  Despite this significant advantage, it is often not possible to perform exact diagonalization due to its factorially increasing cost with respect to the basis size and the number of particles.  This led to the development of more cost-effective methods that trade varying amounts of accuracy for varying amounts of speed.
 
-In this paper, we analyze the application of several methods to the quantum dot systems, including the Hartree--Fock (HF) method \cite{hartree_1928,Fock1930}, M\o ller--Plesset (MP) perturbation theory \cite{1934PhRv...46..618M}, the in-medium similarity renormalization group (IM-SRG) method \cite{IMSRG}, coupled cluster (CC) theory \cite{PhysRevB.67.045320,heidari:114708,PhysRevB.84.115302}, quasidegenerate perturbation theory (QDPT) \cite{0022-3700-7-18-010,Kvasnicka1974}, and equations-of-motion (EOM) methods \cite{RevModPhys.40.153,StantonBartlettEOM,EMRICH1981379}.  We compare them against variational and diffusion Monte Carlo (VMC and DMC) \cite{PhysRevB.68.035304,PhysRevB.62.8120,PhysRevB.84.115302,PhysRevB.54.4780} and full configuration interaction (FCI) theory \cite{olsen2013thesis,JJAP.36.3924,PhysRevB.56.6428,2008arXiv0810.2644K,rontani:124102} results, where available, from existing literature.
+In this paper, we analyze the application of several methods to the quantum dot systems, including the Hartree--Fock (HF) method \cite{hartree_1928,Fock1930}, M\o ller--Plesset (MP) perturbation theory \cite{1934PhRv...46..618M}, the in-medium similarity renormalization group (IM-SRG) method \cite{Hergert2016165}, coupled cluster (CC) theory \cite{PhysRevB.67.045320,heidari:114708,PhysRevB.84.115302}, quasidegenerate perturbation theory (QDPT) \cite{0022-3700-7-18-010,Kvasnicka1974}, and equations-of-motion (EOM) methods \cite{RevModPhys.40.153,StantonBartlettEOM,EMRICH1981379}.  We compare them against variational and diffusion Monte Carlo (VMC and DMC) \cite{PhysRevB.68.035304,PhysRevB.62.8120,PhysRevB.84.115302,PhysRevB.54.4780} and full configuration interaction (FCI) theory \cite{olsen2013thesis,JJAP.36.3924,PhysRevB.56.6428,2008arXiv0810.2644K,rontani:124102} results, where available, from existing literature.
 
 Of these methods, IM-SRG is a recently developed technique that has shown significant promises.  Similarity renormalization group (SRG) methods \cite{PhysRevD.48.5863,PhysRevD.49.4214} are a family of methods that transform the Hamiltonian into a band- or block-diagonal form through a continuous sequence of unitary transformations.  The goal of such a transformation is to reduce the coupling between a subspace of interest -- such as the ground state or a set of low-lying states -- and the remaining Hilbert space.  It has successfully been applied to systems with various underlying potentials to calculate their binding energy and other observables, especially in nuclear theory \cite{ScottSRG,PhysRevC.75.061001,SRGThreeDim}.  The \emph{in-medium} SRG (IM-SRG) method adapts the SRG approach to evolve Hamiltonians in a truncated Fock space that is centered around an approximate reference state rather than the physical vacuum, which substantially reduces the importance of the computationally costly higher-body operators.
 
@@ -225,7 +225,7 @@ Higher-body operators arise from integrating the flow equations of Eq.\ (\ref{eq
 
 Computationally, higher-body terms rapidly become unfeasible to handle: the amount of memory required to store a $k$-body operator grows exponentially with $k$.  Moreover, the flow equations are capable of generating an infinite number of higher-body terms as the Hamiltonian evolves.  Thus, to make the method tractable, the IM-SRG flow equations must be closed by truncating the equations to a finite order.
 
-In this paper, we truncate both $\hat{H}$ and $\hat{\eta}$ at the two-body level, leading to an approach known as IM-SRG(2).  This normal-ordered two-body approximation appears to be sufficient in many cases and has yielded excellent results for several nuclei \cite{PhysRevLett.106.222502,PhysRevLett.109.052501,IMSRG}.  The IM-SRG(2) ground state energy is third-order exact, with the most prominent error terms corresponding to fourth order energy diagrams with intermediate triples, and asymmetric intermediate quadruples.  For a wide variety of systems across nuclear physics and quantum chemistry, reincorporation of the triples adds attraction to the system, while that of the asymmetric quadruples adds repulsion.  Because of this cancellation of errors, the IM-SRG(2) tends to track with higher-order methods such as CCSD(T).
+In this paper, we truncate both $\hat{H}$ and $\hat{\eta}$ at the two-body level, leading to an approach known as IM-SRG(2).  This normal-ordered two-body approximation appears to be sufficient in many cases and has yielded excellent results for several nuclei \cite{PhysRevLett.106.222502,PhysRevLett.109.052501,Hergert2016165}.  The IM-SRG(2) ground state energy is third-order exact, with the most prominent error terms corresponding to fourth order energy diagrams with intermediate triples, and asymmetric intermediate quadruples.  For a wide variety of systems across nuclear physics and quantum chemistry, reincorporation of the triples adds attraction to the system, while that of the asymmetric quadruples adds repulsion.  Because of this cancellation of errors, the IM-SRG(2) tends to track with higher-order methods such as CCSD(T).
 
 Despite the fortuitous result, the cancellation is nonetheless accidental.  A more controlled restoration of the missing error terms can be performed perturbatively.  In Ref.\ \cite{morris2016thesis}, the difference between IM-SRG(2) and perturbative approximations to IM-SRG(3) was investigated in nuclei, the homogeneous electron gas, and several molecules.  In nuclei, differences in binding energies were typically on the order of hundreds of \si{keV}, whereas the binding energies themselves are on the order of \SI{8}{MeV} per nucleon.  This is within the tolerances prescribed by the accuracy of contemporary inter-nucleon interactions.  For electronic systems, the differences were typically less than a few millihartrees.
 
@@ -325,7 +325,7 @@ w_{a b i j}
   &\equiv H_{a b a b} - H_{a i a i} - H_{b i b i} \notag \\
   &\qquad + H_{i j i j} - H_{a j a j} - H_{b j b j}. \notag
 \end{align}
-It is also possible \cite{IMSRG} to use $\Delta$ (also defined above), the same energy denominators from M\o ller--Plesset perturbation theory, which leads to a slightly different variant of the White generator.  For our calculations, we use exclusively Epstein--Nesbet denominators.
+It is also possible \cite{Hergert2016165} to use $\Delta$ (also defined above), the same energy denominators from M\o ller--Plesset perturbation theory, which leads to a slightly different variant of the White generator.  For our calculations, we use exclusively Epstein--Nesbet denominators.
 
 Compared to the Wegner generator, where the derivatives of the final flow equations contain cubes of the Hamiltonian matrix elements (i.e.\ each term contains a product of 3 one-body and/or two-body matrix elements), the elements in White generators contribute only linearly.  This reduces the stiffness in the differential equation, providing a net increase in computational efficiency as stiff ODE solvers tend to be slower and consume more memory.
 
@@ -336,7 +336,7 @@ Lastly, we note that from the above discussion it is clear that the IM-SRG is cl
 
 Coupled cluster (CC) theory is based on expressing the $N$-particle correlated wave function $\ket{\Psi}$ using the exponential ansatz,
 \begin{align*}
-  \ket{\Psi} = e^{\hat{T}} \ket{\Phi},
+  \ket{\Psi} = \E^{\hat{T}} \ket{\Phi},
 \end{align*}
 where $\ket{\Phi}$ is the reference state as before.  The cluster operator $\hat{T} \equiv \hat{T}_1 + \hat{T}_2 + \cdots + \hat{T}_N$, is composed of $k$-particle $k$-hole excitation operators, $\hat{T}_k$,
 \begin{align} \label{eq:cc_amps}
@@ -348,7 +348,7 @@ Using the CC ansatz, the Schr\"odinger equation,
 \begin{align} \label{eq:cc_schrodeq}
   \hat{H} \E^{\hat{T}} \ket{\Phi} = E \E^{\hat{T}} \ket{\Phi},
 \end{align}
-can be rewritten by left-multiplying by $\bra{\Phi}e^{-T}$ as,
+can be rewritten by left-multiplying by $\bra{\Phi} \E^{-T}$ as,
 \begin{align*}
   \bra{\Phi} \bar{H}_{\mathrm{CC}} \ket{\Phi} = E,
 \end{align*}
@@ -364,7 +364,7 @@ The effective Hamiltonian in Eq.\ \eqref{eq:cc_heff0} can be rewritten with comm
 \end{align*}
 which terminates at four-nested commutators due to the two-body nature of the interaction.  Like with IM-SRG, this commutator expression ensures that CC is size-extensive and contains only connected terms.  In addition, because $\hat{T}$ is an excitation operator, terms of the form $\hat{T} \hat{H}$ are disconnected and thus vanish \cite{shavitt2009many}.  Therefore the CC effective Hamiltonian can be further reduced to
 \begin{align} \label{eq:cc_heff1}
-  \bar{H}_{\mathrm{CC}} = \bigl\{\hat{H}e^{\hat{T}}\bigr\}_{\mathrm{c}},
+  \bar{H}_{\mathrm{CC}} = \bigl\{\hat{H} \E^{\hat{T}}\bigr\}_{\mathrm{c}},
 \end{align}
 where the subscript ``$\mathrm{c}$'' indicates that only connected terms are used.
 
@@ -747,7 +747,7 @@ We have demonstrated calculations of ground state, addition, and removal energie
 
 We note that the HF + IM-SRG + QDPT combination provides a reasonable moderate-cost approach to the calculation of addition and removal energies for many systems in comparison to the somewhat more expensive and complicated EOM calculations.  Both IM-SRG and CC are reasonably accurate compared to the near-exact but factorial-cost FCI method, allowing exploration of much higher number of particles than would otherwise be possible.  EOM-IM-SRG does have more flexibility over perturbative approaches: in particular, it could be more readily used to construct excited states \cite{PhysRevC.95.044304}, which is more difficult for methods such as DMC.
 
-There are several directions in which the calculations may be improved.  One can attempt to improve the IM-SRG approximation by incorporating some of the missing higher-body terms in the commutator.  This would also provide some insight into the rate of convergence with respect to the operator truncation, providing a sense of how large the truncation error is.  While a full 3-body treatment of IM-SRG would be extremely costly, it is possible implicitly track for a portion of the induced 3-body forces by computing certain diagrams that are either lower cost or could be approximated at lower cost \cite{IMSRG}.
+There are several directions in which the calculations may be improved.  One can attempt to improve the IM-SRG approximation by incorporating some of the missing higher-body terms in the commutator.  This would also provide some insight into the rate of convergence with respect to the operator truncation, providing a sense of how large the truncation error is.  While a full 3-body treatment of IM-SRG would be extremely costly, it is possible implicitly track for a portion of the induced 3-body forces by computing certain diagrams that are either lower cost or could be approximated at lower cost \cite{Hergert2016165}.
 
 The application of IM-SRG eliminates a large number of the QDPT diagrams of Fig.\ \ref{fig:diagrams-sfe}, which is beneficial as it increases the efficiency of the QDPT calculations.  Thus it may be more feasible to perform higher orders of QDPT on IM-SRG evolved Hamiltonians.  Moreover, the remaining diagrams at third order can be eliminated through infinite resummation techniques, which would incorporate higher order terms and therefore further increase the accuracy of the result.
 
