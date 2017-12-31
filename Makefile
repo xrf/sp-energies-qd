@@ -23,6 +23,7 @@ regenerate:
 	Datafiles/plot_compare_rel_slopes.py
 	Datafiles/plot_by_num_shells.py
 	Datafiles/plot_by_freq.py
+	Datafiles/plot_specific_fit.py
 
 dist/gh-pages/.git/config:
 	mkdir -p $(@D)
