@@ -73,11 +73,10 @@ def save_fci_table(path,
             row = [num_particles, freq, num_shells]
             for method in methods:
                 def get(): # to allow early returns
-                    try:
-                        r = d.loc[(num_shells, num_particles, freq, method)]
-                    except KeyError:
+                    key = (num_shells, num_particles, freq, method)
+                    if key not in d.index:
                         return None
-                    return r["energy"]
+                    return d.loc[key]["energy"]
                 value = get()
                 if value is None:
                     if ("imsrg" in method and
@@ -133,11 +132,10 @@ def save_table(path, label,
             row = [num_particles, freq, num_shells]
             for method in methods:
                 def get(): # to allow early returns
-                    try:
-                        r = d.loc[(num_shells, num_particles, freq, method)]
-                    except KeyError:
+                    key = (num_shells, num_particles, freq, method)
+                    if key not in d.index:
                         return None
-                    return r["energy"]
+                    return d.loc[key]["energy"]
                 value = get()
                 if value is None:
                     if ("imsrg" in method and

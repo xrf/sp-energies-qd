@@ -130,13 +130,10 @@ def load_fit_data(label, fit_count=DEFAULT_FIT_COUNT, maxfev=DEFAULT_MAXFEV):
 
 def get_fit_params(fit_data, num_shells, num_particles, freq, method):
     '''Raises KeyError if the data cannot be found.'''
-    try:
-        return utils.merge_dicts(
-            dict(fit_data.loc[(num_shells, num_particles, freq, method)]),
-            {"fit_stop": num_shells},
-        )
-    except KeyError:
-        raise KeyError from None
+    key = (num_shells, num_particles, freq, method)
+    if key not in fit_data.index:
+        raise KeyError()
+    return utils.merge_dicts(dict(fit_data.loc[key]), {"fit_stop": num_shells})
 
 def gather_predictive_data(group):
     (label, interaction, num_filled, freq, method), subresults = group
