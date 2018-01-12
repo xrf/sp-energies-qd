@@ -566,7 +566,7 @@ Ideally, ground state energies should be characterized entirely by the two syste
 
 The addition and removal energies are similar, but they require an additional parameter: the total orbital angular momentum $M_\ell$, defined as the sum of the $m_\ell$ of each particle.  This is due to the presence of multiple states with near-degenerate energies.  For this paper, we will consider exclusively the addition/removal energies with the lowest $|M_\ell|$ subject to the constraint that the particle added/removed lies within the next/last shell.  This means the $N + 1$ states of interest are those with $|M_\ell| = K_{\mathrm{F}} \bmod 2$ (where $\bmod$ stands for the modulo operation) where $K_{\mathrm{F}}$ is the number of occupied shells, while the $N - 1$ states of interest are those with $|M_\ell| = 1 - (K_{\mathrm{F}} \bmod 2)$.
 
-Not all cases are solvable with our selection many-body methods.  Low frequency systems are particularly strenuous for these many-body methods due to their strong correlations, leading to equations that are difficult and expensive to solve numerically.  In the tables, ``n.c.'' marks the cases where IM-SRG(2) or CCSD either diverged or converged extremely slowly.  This also affects the extrapolation results in Section \ref{subsec:extrapolation}, as for consistency reasons we chose to extrapolate only when all five points were available.
+Not all cases are solvable with our selection of many-body methods.  Low frequency systems are particularly strenuous for these many-body methods due to their strong correlations, leading to equations that are difficult and expensive to solve numerically.  In the tables, ``n.c.'' marks the cases where IM-SRG(2) or CCSD either diverged or converged extremely slowly.  This also affects the extrapolation results in Section \ref{subsec:extrapolation}, as for consistency reasons we chose to extrapolate only when all five points were available.
 
 Numerical calculations in this paper are performed with a relative precision of about $10^{-5}$ or lower.  This does not necessarily mean the results are as precise as $10^{-5}$, since numerical errors tend to accumulate over the multiple steps of the calculation, thus the precision of the final results is expected to be roughly $10^{-4}$.
 
@@ -633,7 +633,7 @@ There are a few cases where the IM-SRG over-corrects the result, leading to an e
   \label{fig:rm}
 \end{figure}
 
-The results of our addition and removal energy calculations are summarized in Fig.\ \ref{fig:add} and Fig.\ \ref{fig:rm} respectively.  The figures show the the addition/removal energies for using the approaches mentioned in Section \ref{subsec:methodology}.  Where available, results from diffusion Monte Carlo (DMC) \cite{PhysRevB.84.115302} are shown as a dashed line.
+The results of our addition and removal energy calculations are summarized in Fig.\ \ref{fig:add} and Fig.\ \ref{fig:rm} respectively.  The figures show the addition/removal energies for using the approaches mentioned in Section \ref{subsec:methodology}.  Where available, results from diffusion Monte Carlo (DMC) \cite{PhysRevB.84.115302} are shown as a dashed line.
 
 As before, we do not include results from ``HF only'' in these plots as they are significantly further from the rest.  Analogously, we also exclude results from pure IM-SRG (i.e.\ without QDPT nor EOM) or pure CCSD, as QDPT or EOM both add significant contributions to addition and removal energies.  Some HF only and pure IM-SRG results can be seen in Fig.\ \ref{fig:by-freq-10-6-normal}.
 
@@ -685,7 +685,7 @@ In general, there does not appear to be any difference between the convergence b
 
 \begin{table}
   \centering
-  \caption{Extrapolated addition energies for quantum dots with fit uncertainties.  The abbreviation ``n.c.'' has the same meaning as in Table \ref{tab:ground-extrapolated}.  The abbreviation``n.f.'' stands for ``no fit'': this particular extrapolation resulted in unphysical parameters ($\beta \le 0$).  See Table \ref{tab:ground-extrapolated} for other details.}
+  \caption{Extrapolated addition energies for quantum dots with fit uncertainties.  The abbreviation ``n.c.'' has the same meaning as in Table \ref{tab:ground-extrapolated}.  The abbreviation ``n.f.'' stands for ``no fit'': this particular extrapolation resulted in unphysical parameters ($\beta \le 0$).  See Table \ref{tab:ground-extrapolated} for other details.}
   \label{tab:add-extrapolated}
   \input{tab-add-extrapolated}\unskip
 \end{table}
