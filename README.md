@@ -1,3 +1,9 @@
+# Addition and removal energies of circular quantum dots
+
+  - [Latest draft](https://xrf.github.io/sp-energies-qd)
+  - [arXiv:1707.00229](https://arxiv.org/abs/1707.00229)
+  - [doi:10.1063/1.4995615](https://doi.org/10.1063/1.4995615)
+
 ## Building
 
 Dependencies:
